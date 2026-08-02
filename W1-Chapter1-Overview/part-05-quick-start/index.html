@@ -1607,9 +1607,9 @@
 <h2 id="개념-4--슬래시-명령-지도-워크플로-단계별">개념 4 — 슬래시 명령 지도 (워크플로 단계별)<a class="headerlink" href="#개념-4--슬래시-명령-지도-워크플로-단계별" title="이 위치로 링크">¶</a></h2>
 <p><code>/help</code>를 치면 명령이 수십 개 쏟아져서 압도됩니다. 그런데 실제로는 <strong>쓰는 순간이 정해져 있어서</strong> 워크플로 순서대로 외우면 됩니다.</p>
 <pre class="mermaid"><code>flowchart LR
-    A["&lt;b&gt;첫 세션&lt;/b&gt;&lt;br/&gt;프로젝트 셋업&lt;br/&gt;&lt;br/&gt;/init /memory /mcp&lt;br/&gt;/agents /permissions"]
+    A["&lt;b&gt;첫 세션&lt;/b&gt;&lt;br/&gt;프로젝트 셋업&lt;br/&gt;&lt;br/&gt;/init /memory /mcp&lt;br/&gt;subagent 정의 /permissions"]
     B["&lt;b&gt;작업 중&lt;/b&gt;&lt;br/&gt;진행과 컨텍스트&lt;br/&gt;&lt;br/&gt;/plan /model /effort&lt;br/&gt;/context /compact /btw"]
-    C["&lt;b&gt;병렬 실행&lt;/b&gt;&lt;br/&gt;위임과 분산&lt;br/&gt;&lt;br/&gt;/agents /tasks&lt;br/&gt;/background /batch"]
+    C["&lt;b&gt;병렬 실행&lt;/b&gt;&lt;br/&gt;위임과 분산&lt;br/&gt;&lt;br/&gt;@agent-이름 /tasks&lt;br/&gt;/background /batch"]
     D["&lt;b&gt;배포 전&lt;/b&gt;&lt;br/&gt;품질 게이트&lt;br/&gt;&lt;br/&gt;/diff /code-review&lt;br/&gt;/security-review"]
     E["&lt;b&gt;세션 간&lt;/b&gt;&lt;br/&gt;전환과 재개&lt;br/&gt;&lt;br/&gt;/clear /resume&lt;br/&gt;/branch /teleport"]
     F["&lt;b&gt;문제 시&lt;/b&gt;&lt;br/&gt;복구와 진단&lt;br/&gt;&lt;br/&gt;/rewind /doctor&lt;br/&gt;/debug /feedback"]
@@ -1624,7 +1624,8 @@
     style D fill:#fff3e0,stroke:#f57c00,color:#000
     style E fill:#fce4ec,stroke:#c2185b,color:#000
     style F fill:#ffebee,stroke:#d32f2f,color:#000</code></pre>
-<p>프로젝트를 처음 열면 <strong>셋업 명령</strong>을 씁니다. <code>/init</code>으로 <code>CLAUDE.md</code> 초안을 만들고, <code>/permissions</code>로 권한 규칙을 확인하는 식입니다. 프로젝트당 한 번이면 됩니다.</p>
+<p>프로젝트를 처음 열면 <strong>셋업 명령</strong>을 씁니다. <code>/init</code>으로 <code>CLAUDE.md</code> 초안을 만들고, <code>/permissions</code>로 권한 규칙을 확인하는 식입니다. 프로젝트당 한 번이면 됩니다.
+v2.1.198부터 <code>/agents</code> 위저드는 제거됐으므로, 서브에이전트는 Claude에게 만들어 달라고 하거나 <code>.claude/agents/</code>를 직접 편집해 정의합니다.</p>
 <p>일하는 동안 가장 자주 쓰는 건 <strong>진행·컨텍스트 명령</strong>입니다. Plan 모드로 들어가고, 모델을 바꾸고, 컨텍스트가 얼마나 찼는지 보고, 정리합니다. 실질적으로 이 그룹이 일상의 90%입니다.</p>
 <p>작업이 커지면 <strong>병렬 실행 명령</strong>으로 쪼갭니다. 곁가지를 서브에이전트에 맡기거나 대규모 변경을 단위별로 분산합니다.</p>
 <p>머지 전에는 <strong>품질 게이트</strong>를 통과시킵니다. <code>/diff</code>로 변경을 훑고 <code>/code-review</code>와 <code>/security-review</code>로 점검합니다.</p>
@@ -1880,7 +1881,7 @@
 <li>기본형은 <code>claude</code>(대화형), <code>claude -p</code>(헤드리스), <code>--continue</code> / <code>--resume</code>(재개)입니다.</li>
 <li>좋은 프롬프트 = <strong>범위 + 금지 조건 + 완료 기준</strong>. "어떤 파일을 읽어라"까지 지시할 필요는 없습니다.</li>
 <li>컨텍스트 3종: 작업 전환은 <code>/clear</code>, 공간 확보는 <code>/compact</code>, 곁가지는 <code>/btw</code>.</li>
-<li>권한 모드는 <strong>Plan → Default → Accept Edits → Auto</strong> 순으로 자율성이 커지고, <code>Shift+Tab</code>으로 순환합니다.</li>
+<li>권한 모드는 <strong>설정값 기준으로 6종</strong>이고, <code>Shift+Tab</code> <strong>기본 순환은 <code>default</code> → <code>acceptEdits</code> → <code>plan</code></strong> 입니다. 계정 조건을 충족하면 <code>auto</code>가 추가되고, <code>dontAsk</code>와 <code>bypassPermissions</code>는 플래그/설정 쪽에 가깝습니다. 자율성은 대체로 <code>plan</code>에서 가장 보수적이고 <code>bypassPermissions</code>로 갈수록 커집니다.</li>
 <li>Plan 모드의 핵심 가치는 <strong>승인 전에 계획을 협상할 수 있다</strong>는 것입니다.</li>
 <li>복구는 <code>Esc Esc</code>와 <code>/rewind</code>. 단, <strong>파일만</strong> 되돌아갑니다.</li>
 </ul>

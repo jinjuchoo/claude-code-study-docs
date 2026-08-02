@@ -1439,7 +1439,7 @@ Local과 Remote Control은 실행이 내 머신이고, Cloud만 Anthropic VM으�
 <h2 id="5-권한-모델--규칙과-모드의-이중-구조">5. 권한 모델 — 규칙과 모드의 이중 구조<a class="headerlink" href="#5-권한-모델--규칙과-모드의-이중-구조" title="이 위치로 링크">¶</a></h2>
 <p>권한은 <strong>두 가지가 곱해져서</strong> 결정됩니다. 하나만 알면 반쪽입니다.</p>
 <p><strong>규칙(Rules)</strong> 은 <code>settings.json</code>에 적는 정적 정책입니다. 어떤 도구를 어떤 패턴으로 쓸 때 묻지 않고 실행할지(<code>allow</code>), 실행 전에 확인할지(<code>ask</code>), 아예 차단할지(<code>deny</code>)를 정합니다. <code>Bash(npm test)</code>처럼 도구와 인자 패턴을 함께 씁니다. 조직의 managed 설정이 항상 최우선입니다.</p>
-<p><strong>모드(Modes)</strong> 는 <code>Shift+Tab</code>으로 바꾸는 세션의 자율성 다이얼입니다. Plan은 소스를 안 건드리고, Default는 매번 묻고, Accept Edits는 파일 작업을 자동으로 하고, Auto는 백그라운드 안전 검사에 맡깁니다.</p>
+<p><strong>모드(Modes)</strong> 는 세션의 자율성 다이얼입니다. 설정값 기준으로는 <code>default</code>, <code>acceptEdits</code>, <code>plan</code>, <code>auto</code>, <code>dontAsk</code>, <code>bypassPermissions</code> 여섯 가지가 있고, <code>Shift+Tab</code> 기본 순환에는 보통 <code>default</code> → <code>acceptEdits</code> → <code>plan</code>이 나타납니다. <code>auto</code>는 계정 조건을 충족하면 추가되고, <code>dontAsk</code>와 <code>bypassPermissions</code>는 주로 플래그나 설정으로 다룹니다.</p>
 <p>한 문장으로 정리하면 이렇습니다. <strong>규칙이 "무엇을 해도 되는지"의 정적 경계라면, 모드는 "지금 이 세션에서 얼마나 맡길지"의 동적 조절입니다.</strong></p>
 <hr />
 <h2 id="6-컨텍스트-윈도우--무엇이-들어가고-언제-정리되는가">6. 컨텍스트 윈도우 — 무엇이 들어가고 언제 정리되는가<a class="headerlink" href="#6-컨텍스트-윈도우--무엇이-들어가고-언제-정리되는가" title="이 위치로 링크">¶</a></h2>

@@ -1568,7 +1568,7 @@ Agentic Coding은 <strong>목표를 받아 저장소 전체에서 작업을 완�
 <p><strong>확장 가능한 통합</strong> — Skills, Subagents, MCP, Hooks, SDK로 우리 워크플로에 맞게 확장합니다.</p>
 <p>세 번째 "안전한 권한 모델"을 조금 더 보겠습니다. 실전에서 가장 자주 만지는 부분이기 때문입니다.</p>
 <h3 id="자율성-스펙트럼--위험도에-맞춰-돌리는-다이얼">자율성 스펙트럼 — 위험도에 맞춰 돌리는 다이얼<a class="headerlink" href="#자율성-스펙트럼--위험도에-맞춰-돌리는-다이얼" title="이 위치로 링크">¶</a></h3>
-<p>권한 모드는 네 가지이고, <code>Shift+Tab</code>으로 순환합니다. 오른쪽으로 갈수록 Claude의 자율성이 커지고 내 개입이 줄어듭니다.</p>
+<p>권한 모드는 <strong>설정값 기준으로 여섯 가지</strong>(<code>default</code>, <code>acceptEdits</code>, <code>plan</code>, <code>auto</code>, <code>dontAsk</code>, <code>bypassPermissions</code>)이고, 이 중 <code>Shift+Tab</code> <strong>기본 순환에 바로 보이는 것은 <code>default</code> → <code>acceptEdits</code> → <code>plan</code> 세 가지</strong>입니다. 계정 조건을 충족하면 <code>auto</code>가 추가되고, <code>bypassPermissions</code>는 플래그로 시작한 세션에서만 순환에 들어옵니다. 오른쪽으로 갈수록 Claude의 자율성이 커지고 내 개입이 줄어듭니다.</p>
 <pre class="mermaid"><code>flowchart LR
     P["&lt;b&gt;Plan&lt;/b&gt;&lt;br/&gt;소스 수정 없이&lt;br/&gt;탐색과 계획만&lt;br/&gt;승인 후 실행"]
     DF["&lt;b&gt;Default&lt;/b&gt;&lt;br/&gt;파일 편집과&lt;br/&gt;셸 명령 전&lt;br/&gt;매번 질문"]
