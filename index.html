@@ -315,6 +315,34 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#이-기록에-대하여" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        이 기록에 대하여
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="이 기록에 대하여">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#최종-목적지는-사내-스터디-자료입니다" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        최종 목적지는 사내 스터디 자료입니다
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#30초로-보는-claude-code" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -780,6 +808,34 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#이-기록에-대하여" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        이 기록에 대하여
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="이 기록에 대하여">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#최종-목적지는-사내-스터디-자료입니다" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        최종 목적지는 사내 스터디 자료입니다
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#30초로-보는-claude-code" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -856,6 +912,16 @@
 <h1 id="claude-code-완전-정복">Claude Code 완전 정복<a class="headerlink" href="#claude-code-완전-정복" title="이 위치로 링크">¶</a></h1>
 <p class="md-typeset"><strong>터미널에서 도는 AI 코딩 에이전트, Claude Code를 처음부터 끝까지.</strong></p>
 <p>Claude Code를 한 번도 써본 적 없어도 이 문서만 읽고 <em>설명할 수 있고, 설치해서 첫 세션을 돌릴 수 있는</em> 상태가 되는 것을 목표로 정리했습니다.</p>
+<hr />
+<h2 id="이-기록에-대하여">이 기록에 대하여<a class="headerlink" href="#이-기록에-대하여" title="이 위치로 링크">¶</a></h2>
+<p>저는 지금 <strong>가시다 스터디의 6주 모각코 과정</strong>을 따라가며 Claude Code를 학습하고 있습니다. AWS 최우형 SA가 만든 워크샵 교재(6챕터·900여 슬라이드)를 매주 한 챕터씩 읽고, 그 내용을 여기에 다시 씁니다.</p>
+<p>교재를 요약하는 것만으로는 남는 게 적다고 생각해서 두 가지를 더 했습니다.</p>
+<p>첫째, <strong>Claude Code를 배우면서 Claude Code로 작업했습니다.</strong> 실습은 물론이고 문서를 정리하는 과정 자체를 AI와 함께 진행했는데, 그러다 보니 교재에서 읽은 개념이 실제로는 어떻게 동작하는지가 자연스럽게 드러났습니다. "문서에는 이렇게 쓰여 있는데 실제로는 달랐다"는 발견이 계속 나왔고, 그 간극을 그대로 기록했습니다.</p>
+<p>둘째, <strong>모든 실습을 진짜로 실행했습니다.</strong> 명령을 옮겨 적는 대신 직접 돌리고 출력을 그대로 붙였습니다. 그래서 이 문서에는 성공한 기록만 있는 게 아니라, 예상과 달랐던 것과 제가 잘못 알고 있었던 것도 함께 남아 있습니다.</p>
+<h3 id="최종-목적지는-사내-스터디-자료입니다">최종 목적지는 사내 스터디 자료입니다<a class="headerlink" href="#최종-목적지는-사내-스터디-자료입니다" title="이 위치로 링크">¶</a></h3>
+<p>개인 학습 노트로 끝낼 생각은 없습니다. 이 6주가 끝나면 <strong>사내에서 Claude Code 스터디를 열 때 그대로 쓸 수 있는 교육 자료</strong>로 다듬는 것이 목표입니다.</p>
+<p>그래서 처음부터 "내가 나중에 다시 볼 메모"가 아니라 <strong>"Claude Code를 처음 접하는 동료가 이 문서만 보고 따라올 수 있는가"</strong> 를 기준으로 썼습니다. 용어는 처음 나올 때 풀어 쓰고, 결론보다 그렇게 설계된 이유를 먼저 적고, 표로 압축하기보다 서술로 풀었습니다. 분량이 늘어난 건 그 때문입니다.</p>
+<p>인프라를 다루는 일을 하다 보니 자연스럽게 그쪽 관점이 섞였습니다. Bedrock 인증 경로, IAM 최소 권한, 폐쇄망과 프록시, 조직 단위 버전 통제 같은 것들은 <code>💡 현장 메모</code>로 따로 표시해 두었습니다. 사내 도입을 검토할 때 필요한 이야기들입니다.</p>
 <hr />
 <h2 id="30초로-보는-claude-code">30초로 보는 Claude Code<a class="headerlink" href="#30초로-보는-claude-code" title="이 위치로 링크">¶</a></h2>
 <p>자동완성 도구와 Claude Code의 차이는 딱 한 문장입니다.</p>
@@ -1020,10 +1086,10 @@ Claude Code는 <strong>목표를 받아 저장소 전체에서 작업을 끝냅�
 추측이나 미확인 출처는 본문에 넣지 않고, 모든 문서 하단에 출처를 명시합니다.</p>
 </li>
 <li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 19v-3h8v3zm-4.5-6L2.47 7h4.24l4.96 4.95c.58.59.58 1.55 0 2.12L6.74 19H2.5z"/></svg></span> <strong>실습은 실제로 실행</strong></p>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 19v-3h8v3zm-4.5-6L2.47 7h4.24l4.96 4.95c.58.59.58 1.55 0 2.12L6.74 19H2.5z"/></svg></span> <strong>출력은 편집하지 않는다</strong></p>
 <hr />
-<p>실습 파트는 요약이 아니라 <strong>직접 실행한 명령과 그 출력</strong>입니다.
-실행 환경(OS·버전·날짜)을 함께 기록하고, 출력은 편집 없이 옮깁니다.</p>
+<p>실행 환경(OS·버전·날짜)을 함께 남기고, 명령의 출력은 다듬지 않고 그대로 옮깁니다.
+보기 좋게 정리하는 순간 재현할 수 없는 기록이 되기 때문입니다.</p>
 </li>
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m18.75 22.16-2.75-3L17.16 18l1.59 1.59L22.34 16l1.16 1.41zM13 13V7h-2v6zm0 4v-2h-2v2zM12 2c5.5 0 10 4.5 10 10l-.09 1.31A6.005 6.005 0 0 0 14 19c0 .95.22 1.85.62 2.65-.84.23-1.71.35-2.62.35-5.5 0-10-4.5-10-10S6.5 2 12 2"/></svg></span> <strong>못 한 건 "미완"으로</strong></p>
