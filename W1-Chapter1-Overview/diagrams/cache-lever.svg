@@ -1,0 +1,88 @@
+<svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="프롬프트 캐시 효과 애니메이션. 캐시가 살아 있으면 입력 48,286 토큰 중 4 토큰만 새로 계산하지만, CLAUDE.md 를 수정하면 전체가 캐시 미스가 되어 다시 계산됩니다.">
+  <style>
+    :root{ --fg:#111; --sub:#555; --frame:#c9c9d2 }
+    text{ font-family:'Pretendard','Apple SD Gothic Neo',-apple-system,sans-serif }
+    .t{ font-size:13px; font-weight:700; fill:var(--fg) }
+    .s{ font-size:11px; fill:var(--sub) }
+    .num{ font-size:22px; font-weight:800 }
+    .lbl{ font-size:11px; font-weight:700 }
+
+    /* 왼쪽: 캐시 히트 — 대부분 회색(재계산 없음), 끝부분만 파랑 */
+    .cached{ fill:#90a4ae; animation:hit 8s ease-in-out infinite }
+    @keyframes hit{ 0%,44%{ fill:#90a4ae } 52%,100%{ fill:#90a4ae } }
+
+    /* 오른쪽: 캐시 미스 — 전체가 빨갛게 물듦 */
+    .missfill{ animation:miss 8s ease-in-out infinite }
+    @keyframes miss{
+      0%,42%   { fill:#90a4ae }
+      50%      { fill:#ef5350 }
+      88%      { fill:#ef5350 }
+      100%     { fill:#90a4ae }
+    }
+    .editflag{ opacity:0; animation:flag 8s ease-in-out infinite }
+    @keyframes flag{
+      0%,36%  { opacity:0 }
+      44%     { opacity:1 }
+      88%     { opacity:1 }
+      100%    { opacity:0 }
+    }
+    .costbar{ animation:cost 8s ease-in-out infinite; transform-origin:0 0 }
+    @keyframes cost{
+      0%,42%   { transform:scaleX(.04) }
+      52%      { transform:scaleX(1) }
+      88%      { transform:scaleX(1) }
+      100%     { transform:scaleX(.04) }
+    }
+    .costlbl{ animation:clbl 8s steps(1) infinite }
+    @keyframes clbl{ 0%,42%{ opacity:1 } 43%,100%{ opacity:0 } }
+    .costlbl2{ opacity:0; animation:clbl2 8s steps(1) infinite }
+    @keyframes clbl2{ 0%,42%{ opacity:0 } 43%,88%{ opacity:1 } 89%,100%{ opacity:0 } }
+
+    @media (prefers-color-scheme: dark){
+      :root{ --fg:#e8e8ea; --sub:#a8a8b3; --frame:#4a4a55 }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .missfill,.editflag,.costbar,.costlbl,.costlbl2{ animation:none }
+      .editflag{ opacity:1 } .costbar{ transform:scaleX(1) } .costlbl{ opacity:0 } .costlbl2{ opacity:1 }
+    }
+  </style>
+
+  <text class="t" x="24" y="28">한 번의 요청에서 실제로 오간 토큰 (Part 10 실측)</text>
+
+  <!-- 토큰 막대 -->
+  <rect x="24" y="52" width="712" height="42" rx="6" fill="none" stroke="var(--frame)" stroke-width="2"/>
+  <rect class="missfill" x="28" y="56" width="700" height="34" rx="4"/>
+  <rect x="728" y="56" width="4" height="34" rx="2" fill="#1976d2"/>
+
+  <text class="lbl" x="360" y="79" text-anchor="middle" fill="#fff">cacheReadInputTokens · 48,286</text>
+  <text class="s" x="736" y="46" text-anchor="end" fill="#1976d2">← inputTokens 4개</text>
+
+  <!-- 수치 대비 -->
+  <g>
+    <text class="num" x="24" y="140" fill="#1976d2">4</text>
+    <text class="s" x="24" y="158">실제로 새로 보낸 입력 토큰</text>
+  </g>
+  <g>
+    <text class="num" x="220" y="140" fill="#546e7a">48,286</text>
+    <text class="s" x="220" y="158">캐시에서 읽은 토큰 (99.99%)</text>
+  </g>
+
+  <!-- 편집 경고 -->
+  <g class="editflag">
+    <rect x="452" y="112" width="284" height="56" rx="8" fill="#ffebee" stroke="#d32f2f" stroke-width="2"/>
+    <text class="t" x="468" y="134" fill="#c62828">⚠ 세션 중 CLAUDE.md 를 수정하면</text>
+    <text class="s" x="468" y="154" fill="#c62828">48,286 토큰이 통째로 재계산됩니다</text>
+  </g>
+
+  <!-- 비용 막대 -->
+  <text class="s" x="24" y="204">이번 요청의 비용</text>
+  <rect x="24" y="214" width="600" height="26" rx="5" fill="none" stroke="var(--frame)" stroke-width="1.5"/>
+  <g style="transform:translate(26px,216px)">
+    <rect class="costbar" width="596" height="22" rx="4" fill="#ef5350"/>
+  </g>
+  <text class="costlbl s" x="636" y="232" fill="#2e7d32">캐시 적중 — 거의 무료</text>
+  <text class="costlbl2 s" x="636" y="232" fill="#c62828">캐시 미스 — 전액 재과금</text>
+
+  <text class="s" x="24" y="276" fill="#7e57c2">그래서 비용의 3축 중 하나가 '캐시'입니다 — 잦은 모델 전환과 세션 중 메모리 수정을 피하세요.</text>
+</svg>

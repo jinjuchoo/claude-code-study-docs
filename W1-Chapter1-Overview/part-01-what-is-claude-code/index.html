@@ -1469,20 +1469,7 @@
 <p>이 넷을 한 문장으로 줄이면 이렇게 됩니다. <strong>목표를 주면, 도구를 써서, 결과를 보고, 될 때까지 반복한다.</strong></p>
 <h3 id="agentic-loop--실제로-도는-세-단계">Agentic Loop — 실제로 도는 세 단계<a class="headerlink" href="#agentic-loop--실제로-도는-세-단계" title="이 위치로 링크">¶</a></h3>
 <p>작업을 하나 주면 Claude는 아래 세 단계를 섞어가며 <strong>수십 개의 행동을 연결</strong>합니다.</p>
-<pre class="mermaid"><code>flowchart LR
-    A["&lt;b&gt;① Gather Context&lt;/b&gt;&lt;br/&gt;컨텍스트 수집&lt;br/&gt;&lt;br/&gt;파일 검색·읽기로 코드 이해&lt;br/&gt;CLAUDE.md·메모리 로드"]
-    B["&lt;b&gt;② Take Action&lt;/b&gt;&lt;br/&gt;도구로 행동&lt;br/&gt;&lt;br/&gt;파일 편집·명령 실행·커밋&lt;br/&gt;실제 변경 수행"]
-    C["&lt;b&gt;③ Verify Results&lt;/b&gt;&lt;br/&gt;결과 검증&lt;br/&gt;&lt;br/&gt;테스트 실행·타입 검사&lt;br/&gt;결과 관찰 후 다음 판단"]
-    D(["완료"])
-
-    A --&gt; B --&gt; C
-    C --&gt;|아직 목표 미달| A
-    C --&gt;|목표 달성| D
-
-    style A fill:#ede7f6,stroke:#673ab7,stroke-width:2px,color:#000
-    style B fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
-    style C fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
-    style D fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000</code></pre>
+<p><img alt="Agentic Loop" src="../diagrams/agentic-loop.svg" /></p>
 <p>수집 단계에서는 관련 파일을 검색하고 읽으면서 코드를 이해합니다. 프로젝트 지침(<code>CLAUDE.md</code>)과 메모리도 이때 함께 로드됩니다.</p>
 <p>행동 단계에서는 실제로 무언가를 바꿉니다. 파일을 편집하고, 명령을 실행하고, 필요하면 커밋까지 합니다.</p>
 <p>검증 단계에서는 그 변경이 맞았는지 확인합니다. 테스트를 돌리고, 타입 검사를 하고, 결과를 보고 다음 판단을 내립니다.</p>

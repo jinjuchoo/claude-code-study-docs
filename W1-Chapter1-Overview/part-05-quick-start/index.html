@@ -1729,18 +1729,7 @@
 <hr />
 <h2 id="개념-7--권한-모드-실전-운용">개념 7 — 권한 모드 실전 운용<a class="headerlink" href="#개념-7--권한-모드-실전-운용" title="이 위치로 링크">¶</a></h2>
 <p><code>Shift+Tab</code>으로 세션 중 언제든 전환됩니다. 선택 기준은 <strong>작업의 위험도</strong>입니다.</p>
-<pre class="mermaid"><code>flowchart LR
-    P["&lt;b&gt;Plan&lt;/b&gt;&lt;br/&gt;아키텍처 변경&lt;br/&gt;50+ 파일 영향&lt;br/&gt;의사결정형 작업"]
-    D["&lt;b&gt;Default&lt;/b&gt;&lt;br/&gt;일반 작업 기본값&lt;br/&gt;승인 흐름을&lt;br/&gt;익히는 단계"]
-    A["&lt;b&gt;Accept Edits&lt;/b&gt;&lt;br/&gt;소규모 반복 수정&lt;br/&gt;빠른 루프가&lt;br/&gt;필요할 때"]
-    U["&lt;b&gt;Auto&lt;/b&gt;&lt;br/&gt;신뢰할 수 있는 저장소&lt;br/&gt;분류기 안전 검사에&lt;br/&gt;위임"]
-
-    P --&gt; D --&gt; A --&gt; U
-
-    style P fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
-    style D fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
-    style A fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
-    style U fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#000</code></pre>
+<p><img alt="권한 모드 스펙트럼" src="../diagrams/permission-modes.svg" /></p>
 <p><strong>감각을 한 줄로 잡으면</strong> 이렇습니다. 큰 변경 전에는 Plan, 반복 작업에는 Accept Edits, 믿을 수 있는 저장소에서는 Auto. 처음에는 Default에 머물면서 무엇을 승인하고 무엇을 거절하는지 감을 잡는 게 좋습니다.</p>
 <h3 id="plan-모드--탐색과-실행을-분리하기">Plan 모드 — 탐색과 실행을 분리하기<a class="headerlink" href="#plan-모드--탐색과-실행을-분리하기" title="이 위치로 링크">¶</a></h3>
 <p>Plan 모드에서는 <strong>소스 파일을 전혀 수정하지 않습니다.</strong> 읽기, 검색, 웹 조회는 되지만 파일 편집과 위험한 명령은 막혀 있습니다.</p>

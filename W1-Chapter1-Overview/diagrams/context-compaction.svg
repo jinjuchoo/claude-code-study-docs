@@ -1,0 +1,112 @@
+<svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="Context Compaction 애니메이션. 컨텍스트 윈도우가 차오르다 한계에 닿으면 오래된 도구 출력부터 제거되고, 그래도 부족하면 대화가 요약됩니다.">
+  <style>
+    :root{ --fg:#111; --sub:#555; --frame:#9e9e9e; }
+    text{ font-family:'Pretendard','Apple SD Gothic Neo',-apple-system,sans-serif }
+    .t{ font-size:13px; font-weight:700; fill:var(--fg) }
+    .s{ font-size:11px; fill:var(--sub) }
+    .cap{ font-size:12.5px; font-weight:700 }
+
+    /* 윈도우 안에 쌓이는 블록 */
+    .blk{ }
+    .sys{ fill:#7e57c2 }   /* System instructions — 안 지워짐 */
+    .cmd{ fill:#5c6bc0 }   /* CLAUDE.md — 안 지워짐 */
+    .hist{ fill:#66bb6a }  /* 대화 이력 */
+    .tool{ fill:#ffa726 }  /* 도구 출력 — 먼저 지워짐 */
+
+    .grow{ animation:grow 9s ease-in-out infinite }
+    @keyframes grow{
+      0%   { transform:scaleY(0);  opacity:0 }
+      18%  { transform:scaleY(1);  opacity:1 }
+      52%  { transform:scaleY(1);  opacity:1 }
+      100% { transform:scaleY(1);  opacity:1 }
+    }
+    /* 도구 출력 3개가 순차로 쌓였다가 한꺼번에 사라짐 */
+    .tool-a{ animation:toolcycle 9s ease-in-out infinite; animation-delay:0s }
+    .tool-b{ animation:toolcycle 9s ease-in-out infinite; animation-delay:.5s }
+    .tool-c{ animation:toolcycle 9s ease-in-out infinite; animation-delay:1s }
+    @keyframes toolcycle{
+      0%   { opacity:0; transform:translateX(-14px) }
+      12%  { opacity:1; transform:translateX(0) }
+      55%  { opacity:1; transform:translateX(0) }
+      63%  { opacity:0; transform:translateX(90px) }
+      100% { opacity:0; transform:translateX(90px) }
+    }
+    /* 대화 이력은 남았다가 요약되어 줄어듦 */
+    .histbar{ animation:shrink 9s ease-in-out infinite }
+    @keyframes shrink{
+      0%   { transform:scaleX(0); opacity:0 }
+      20%  { transform:scaleX(1); opacity:1 }
+      70%  { transform:scaleX(1); opacity:1 }
+      80%  { transform:scaleX(.42); opacity:1 }
+      100% { transform:scaleX(.42); opacity:1 }
+    }
+    /* 한계선 경고 점멸 */
+    .limit{ stroke:#e53935; stroke-width:2; stroke-dasharray:7 5; animation:warn 9s ease-in-out infinite }
+    @keyframes warn{ 0%,45%{ opacity:.3 } 50%{ opacity:1 } 62%{ opacity:1 } 70%,100%{ opacity:.3 } }
+
+    /* 단계 라벨 */
+    .step{ opacity:0 }
+    .st1{ animation:show 9s ease-in-out infinite; animation-delay:4.1s }
+    .st2{ animation:show 9s ease-in-out infinite; animation-delay:5.2s }
+    .st3{ animation:show 9s ease-in-out infinite; animation-delay:6.6s }
+    @keyframes show{ 0%{ opacity:0 } 4%{ opacity:1 } 16%{ opacity:1 } 22%{ opacity:0 } 100%{ opacity:0 } }
+
+    @media (prefers-color-scheme: dark){
+      :root{ --fg:#e8e8ea; --sub:#a8a8b3; --frame:#5a5a66 }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .grow,.tool-a,.tool-b,.tool-c,.histbar,.limit,.st1,.st2,.st3{ animation:none }
+      .step{ opacity:1 }
+      .blk{ opacity:1; transform:none }
+    }
+  </style>
+
+  <text class="t" x="30" y="30">컨텍스트 윈도우</text>
+  <rect x="30" y="44" width="330" height="212" rx="8" fill="none" stroke="var(--frame)" stroke-width="2"/>
+  <line class="limit" x1="30" y1="64" x2="360" y2="64"/>
+  <text class="s" x="366" y="60" fill="#e53935">한계선</text>
+
+  <!-- 아래부터 쌓임: 시스템 → CLAUDE.md → 대화 이력 → 도구 출력 -->
+  <g style="transform-origin:0 244px">
+    <rect class="blk sys grow" x="42" y="228" width="306" height="16" rx="3"/>
+  </g>
+  <text class="s" x="52" y="241" fill="#fff">System instructions</text>
+
+  <g style="transform-origin:0 224px">
+    <rect class="blk cmd grow" x="42" y="204" width="306" height="18" rx="3" style="animation-delay:.3s"/>
+  </g>
+  <text class="s" x="52" y="218" fill="#fff">CLAUDE.md · 메모리</text>
+
+  <g style="transform-origin:42px 0">
+    <rect class="blk hist histbar" x="42" y="170" width="306" height="26" rx="3"/>
+  </g>
+  <text class="s" x="52" y="187" fill="#fff">대화 이력</text>
+
+  <rect class="blk tool tool-a" x="42" y="140" width="306" height="22" rx="3"/>
+  <text class="s" x="52" y="155" fill="#000">도구 출력 (파일 읽기 결과)</text>
+  <rect class="blk tool tool-b" x="42" y="112" width="306" height="22" rx="3"/>
+  <text class="s" x="52" y="127" fill="#000">도구 출력 (명령 실행 로그)</text>
+  <rect class="blk tool tool-c" x="42" y="84" width="306" height="22" rx="3"/>
+  <text class="s" x="52" y="99" fill="#000">도구 출력 (검색 결과)</text>
+
+  <!-- 오른쪽 단계 설명 -->
+  <g class="step st1">
+    <rect x="410" y="70" width="320" height="52" rx="8" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+    <text class="cap" x="426" y="93" fill="#1976d2">STAGE 1 · 임계 감지</text>
+    <text class="s" x="426" y="112">윈도우 사용량이 한계에 접근</text>
+  </g>
+  <g class="step st2">
+    <rect x="410" y="132" width="320" height="52" rx="8" fill="#fff3e0" stroke="#f57c00" stroke-width="2"/>
+    <text class="cap" x="426" y="155" fill="#e65100">STAGE 2 · 출력 정리</text>
+    <text class="s" x="426" y="174">오래된 도구 출력부터 제거 ←</text>
+  </g>
+  <g class="step st3">
+    <rect x="410" y="194" width="320" height="62" rx="8" fill="#ffebee" stroke="#d32f2f" stroke-width="2"/>
+    <text class="cap" x="426" y="217" fill="#c62828">STAGE 3 · 대화 요약</text>
+    <text class="s" x="426" y="236">요청과 핵심 코드는 보존</text>
+    <text class="s" x="426" y="251">※ 초반의 세부 지시는 사라질 수 있음</text>
+  </g>
+
+  <text class="s" x="30" y="290" fill="#7e57c2">그래서 영속 규칙은 대화가 아니라 CLAUDE.md 에 둡니다.</text>
+</svg>

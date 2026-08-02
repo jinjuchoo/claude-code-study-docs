@@ -1,0 +1,77 @@
+<svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="Agentic Loop 다이어그램. 컨텍스트 수집, 도구로 행동, 결과 검증 세 단계가 순서대로 강조되며 완료까지 반복됩니다.">
+  <style>
+    :root{ --fg:#111; --sub:#555; --line:#9575cd; --card:#fff; }
+    text{ font-family:'Pretendard','Apple SD Gothic Neo',-apple-system,sans-serif; }
+    .t{ font-size:16px; font-weight:700; fill:var(--fg); }
+    .s{ font-size:11.5px; fill:var(--sub); }
+    .cap{ font-size:12px; fill:var(--line); font-weight:600; }
+    .stage{ opacity:.32; }
+    .stage rect{ stroke-width:2; }
+    .on{ animation:hl 6s ease-in-out infinite; }
+    .d1{ animation-delay:0s } .d2{ animation-delay:2s } .d3{ animation-delay:4s }
+    @keyframes hl{
+      0%   { opacity:.32 }
+      3%   { opacity:1 }
+      30%  { opacity:1 }
+      36%  { opacity:.32 }
+      100% { opacity:.32 }
+    }
+    .arrow{ stroke:var(--line); stroke-width:2.5; fill:none; stroke-linecap:round; }
+    .arrow.flash{ animation:fl 6s ease-in-out infinite; }
+    .f1{ animation-delay:1.4s } .f2{ animation-delay:3.4s } .f3{ animation-delay:5.4s }
+    @keyframes fl{ 0%,100%{ opacity:.25 } 4%{ opacity:1 } 14%{ opacity:1 } 22%{ opacity:.25 } }
+    .dot{ fill:var(--line); animation:run 6s cubic-bezier(.6,0,.4,1) infinite; }
+    @keyframes run{
+      0%   { transform:translate(0,0) }
+      30%  { transform:translate(0,0) }
+      36%  { transform:translate(238px,0) }
+      63%  { transform:translate(238px,0) }
+      69%  { transform:translate(476px,0) }
+      92%  { transform:translate(476px,0) }
+      97%  { transform:translate(476px,86px) }
+      100% { transform:translate(0px,86px) }
+    }
+    @media (prefers-color-scheme: dark){
+      :root{ --fg:#e8e8ea; --sub:#a8a8b3; --card:#1e1e24; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .on,.arrow.flash,.dot{ animation:none }
+      .stage{ opacity:1 }
+      .arrow{ opacity:1 }
+    }
+  </style>
+
+  <g class="stage on d1">
+    <rect x="24" y="52" width="214" height="94" rx="12" fill="#ede7f6" stroke="#673ab7"/>
+    <text class="t" x="131" y="84" text-anchor="middle">① Gather Context</text>
+    <text class="s" x="131" y="106" text-anchor="middle">파일 검색·읽기로 코드 이해</text>
+    <text class="s" x="131" y="124" text-anchor="middle">CLAUDE.md · 메모리 로드</text>
+  </g>
+
+  <g class="stage on d2">
+    <rect x="262" y="52" width="214" height="94" rx="12" fill="#e3f2fd" stroke="#1976d2"/>
+    <text class="t" x="369" y="84" text-anchor="middle">② Take Action</text>
+    <text class="s" x="369" y="106" text-anchor="middle">파일 편집 · 명령 실행 · 커밋</text>
+    <text class="s" x="369" y="124" text-anchor="middle">실제 변경 수행</text>
+  </g>
+
+  <g class="stage on d3">
+    <rect x="500" y="52" width="214" height="94" rx="12" fill="#e8f5e9" stroke="#388e3c"/>
+    <text class="t" x="607" y="84" text-anchor="middle">③ Verify Results</text>
+    <text class="s" x="607" y="106" text-anchor="middle">테스트 실행 · 타입 검사</text>
+    <text class="s" x="607" y="124" text-anchor="middle">결과 관찰 후 다음 판단</text>
+  </g>
+
+  <path class="arrow flash f1" d="M238,99 L256,99"/>
+  <path class="arrow flash f1" d="M250,94 L258,99 L250,104"/>
+  <path class="arrow flash f2" d="M476,99 L494,99"/>
+  <path class="arrow flash f2" d="M488,94 L496,99 L488,104"/>
+
+  <path class="arrow flash f3" d="M607,146 C607,214 131,214 131,150"/>
+  <path class="arrow flash f3" d="M126,158 L131,148 L136,158"/>
+
+  <circle class="dot" cx="131" cy="99" r="7"/>
+
+  <text class="cap" x="369" y="243" text-anchor="middle">완료될 때까지 반복 · Esc 로 언제든 개입 가능</text>
+</svg>

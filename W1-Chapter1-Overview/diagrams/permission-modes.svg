@@ -1,0 +1,99 @@
+<svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="권한 모드 스펙트럼 애니메이션. Shift+Tab 으로 Plan, Default, Accept Edits, Auto 를 순환하며 오른쪽으로 갈수록 자율성이 커지고 승인 요청이 줄어듭니다.">
+  <style>
+    :root{ --fg:#111; --sub:#555; --track:#d5d5dd }
+    text{ font-family:'Pretendard','Apple SD Gothic Neo',-apple-system,sans-serif }
+    .t{ font-size:14px; font-weight:700; fill:var(--fg) }
+    .s{ font-size:10.5px; fill:var(--sub) }
+    .k{ font-size:11px; font-weight:700; fill:#7e57c2 }
+
+    .mode{ opacity:.3; animation:sel 12s steps(1) infinite }
+    .m1{ animation-delay:0s } .m2{ animation-delay:3s }
+    .m3{ animation-delay:6s } .m4{ animation-delay:9s }
+    @keyframes sel{ 0%{ opacity:1 } 25%{ opacity:.3 } 100%{ opacity:.3 } }
+
+    /* 다이얼 손잡이가 4칸을 이동 */
+    .knob{ animation:knob 12s cubic-bezier(.5,0,.3,1) infinite }
+    @keyframes knob{
+      0%,20%   { transform:translateX(0) }
+      25%,45%  { transform:translateX(172px) }
+      50%,70%  { transform:translateX(344px) }
+      75%,95%  { transform:translateX(516px) }
+      100%     { transform:translateX(0) }
+    }
+    /* 승인 요청 아이콘 개수가 줄어드는 표현 */
+    .ask{ fill:#e53935 }
+    .a1{ animation:a1 12s steps(1) infinite }
+    .a2{ animation:a2 12s steps(1) infinite }
+    .a3{ animation:a3 12s steps(1) infinite }
+    @keyframes a1{ 0%,100%{ opacity:1 } }
+    @keyframes a2{ 0%,49%{ opacity:1 } 50%,100%{ opacity:.12 } }
+    @keyframes a3{ 0%,24%{ opacity:1 } 25%,100%{ opacity:.12 } }
+
+    .desc{ opacity:0; animation:d 12s steps(1) infinite }
+    .d1{ animation-delay:0s } .d2{ animation-delay:3s }
+    .d3{ animation-delay:6s } .d4{ animation-delay:9s }
+    @keyframes d{ 0%{ opacity:1 } 25%{ opacity:0 } 100%{ opacity:0 } }
+
+    @media (prefers-color-scheme: dark){
+      :root{ --fg:#e8e8ea; --sub:#a8a8b3; --track:#3a3a45 }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .mode,.knob,.a1,.a2,.a3,.desc{ animation:none }
+      .mode{ opacity:1 } .desc{ opacity:0 } .d1{ opacity:1 }
+    }
+  </style>
+
+  <text class="k" x="24" y="28">Shift + Tab 으로 순환 →</text>
+
+  <!-- 트랙 -->
+  <rect x="60" y="86" width="640" height="6" rx="3" fill="var(--track)"/>
+  <g class="knob">
+    <circle cx="88" cy="89" r="13" fill="#7e57c2" stroke="#fff" stroke-width="3"/>
+  </g>
+
+  <!-- 4개 모드 -->
+  <g class="mode m1">
+    <rect x="24" y="112" width="152" height="76" rx="10" fill="#e8f5e9" stroke="#388e3c" stroke-width="2"/>
+    <text class="t" x="100" y="140" text-anchor="middle">Plan</text>
+    <text class="s" x="100" y="160" text-anchor="middle">소스 수정 없이</text>
+    <text class="s" x="100" y="175" text-anchor="middle">탐색과 계획만</text>
+  </g>
+  <g class="mode m2">
+    <rect x="196" y="112" width="152" height="76" rx="10" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+    <text class="t" x="272" y="140" text-anchor="middle">Default</text>
+    <text class="s" x="272" y="160" text-anchor="middle">편집·명령 전</text>
+    <text class="s" x="272" y="175" text-anchor="middle">매번 질문</text>
+  </g>
+  <g class="mode m3">
+    <rect x="368" y="112" width="152" height="76" rx="10" fill="#fff3e0" stroke="#f57c00" stroke-width="2"/>
+    <text class="t" x="444" y="140" text-anchor="middle">Accept Edits</text>
+    <text class="s" x="444" y="160" text-anchor="middle">파일 작업 자동</text>
+    <text class="s" x="444" y="175" text-anchor="middle">그 외는 질문</text>
+  </g>
+  <g class="mode m4">
+    <rect x="540" y="112" width="152" height="76" rx="10" fill="#ffebee" stroke="#d32f2f" stroke-width="2"/>
+    <text class="t" x="616" y="140" text-anchor="middle">Auto</text>
+    <text class="s" x="616" y="160" text-anchor="middle">백그라운드</text>
+    <text class="s" x="616" y="175" text-anchor="middle">안전 검사</text>
+  </g>
+
+  <!-- 승인 요청 표시 -->
+  <text class="s" x="24" y="228">내가 승인해야 하는 횟수</text>
+  <g transform="translate(196,218)">
+    <circle class="ask a1" cx="0"  cy="0" r="6"/>
+    <circle class="ask a1" cx="18" cy="0" r="6"/>
+    <circle class="ask a1" cx="36" cy="0" r="6"/>
+    <circle class="ask a2" cx="54" cy="0" r="6"/>
+    <circle class="ask a2" cx="72" cy="0" r="6"/>
+    <circle class="ask a3" cx="90" cy="0" r="6"/>
+  </g>
+
+  <!-- 모드별 한 줄 설명 -->
+  <g class="desc d1"><text class="s" x="24" y="266" fill="#388e3c">▸ 아키텍처 변경, 50개 이상 파일 영향, 의사결정형 작업에 — 코드를 쓰기 전에 방향을 잡습니다.</text></g>
+  <g class="desc d2"><text class="s" x="24" y="266" fill="#1976d2">▸ 일반 작업 기본값 — 무엇을 승인하고 무엇을 거절할지 감을 잡는 단계입니다.</text></g>
+  <g class="desc d3"><text class="s" x="24" y="266" fill="#e65100">▸ 소규모 반복 수정 — 빠른 루프가 필요할 때. 파일 작업은 묻지 않습니다.</text></g>
+  <g class="desc d4"><text class="s" x="24" y="266" fill="#c62828">▸ 신뢰할 수 있는 저장소 — 분류기가 평가하되, hard deny 규칙이 마지노선을 긋습니다.</text></g>
+
+  <text class="s" x="700" y="70" text-anchor="end" fill="#7e57c2">자율성 커짐 · 개입 줄어듦 →</text>
+</svg>

@@ -1405,24 +1405,8 @@
 <h2 id="7-충돌하면-무엇이-이기는가--우선순위">7. 충돌하면 무엇이 이기는가 — 우선순위<a class="headerlink" href="#7-충돌하면-무엇이-이기는가--우선순위" title="이 위치로 링크">¶</a></h2>
 <p><strong>이 파트에서 가장 실용적인 내용입니다.</strong></p>
 <p>여러 자격증명이 동시에 존재할 때 위에서부터 내려오다가 <strong>가장 먼저 발견되는 것이 이깁니다.</strong></p>
-<pre class="mermaid"><code>flowchart TD
-    N0["&lt;b&gt;0. Gateway 세션&lt;/b&gt;&lt;br/&gt;apps gateway 로그인 상태면 &lt;b&gt;아래 전부보다 우선&lt;/b&gt;"]
-    N1["&lt;b&gt;1. Cloud 스위치&lt;/b&gt;&lt;br/&gt;CLAUDE_CODE_USE_BEDROCK / VERTEX / FOUNDRY"]
-    N2["&lt;b&gt;2. ANTHROPIC_AUTH_TOKEN&lt;/b&gt;&lt;br/&gt;Bearer 헤더"]
-    N3["&lt;b&gt;3. ANTHROPIC_API_KEY&lt;/b&gt;&lt;br/&gt;X-Api-Key 헤더"]
-    N4["&lt;b&gt;4. apiKeyHelper&lt;/b&gt;&lt;br/&gt;스크립트가 반환하는 동적 키, 볼트 연동"]
-    N5["&lt;b&gt;5. CLAUDE_CODE_OAUTH_TOKEN&lt;/b&gt;&lt;br/&gt;setup-token 으로 만든 장기 토큰"]
-    N6["&lt;b&gt;6. /login 구독 OAuth&lt;/b&gt;&lt;br/&gt;← 가장 약함"]
-
-    N0 --&gt; N1 --&gt; N2 --&gt; N3 --&gt; N4 --&gt; N5 --&gt; N6
-
-    style N0 fill:#4a148c,stroke:#311b92,color:#fff
-    style N1 fill:#d32f2f,stroke:#b71c1c,color:#fff
-    style N2 fill:#f57c00,stroke:#e65100,color:#fff
-    style N3 fill:#fbc02d,stroke:#f9a825,color:#000
-    style N4 fill:#7cb342,stroke:#558b2f,color:#fff
-    style N5 fill:#1976d2,stroke:#0d47a1,color:#fff
-    style N6 fill:#673ab7,stroke:#4527a0,color:#fff</code></pre>
+<p>아래는 <strong><code>ANTHROPIC_API_KEY</code>만 설정되어 있는 상태</strong>에서 어떤 일이 벌어지는지 보여줍니다. 위에서부터 훑어 내려오다 3순위에서 멈추고, 그 아래의 구독 OAuth는 평가조차 되지 않습니다.</p>
+<p><img alt="인증 우선순위 해석 과정" src="../diagrams/auth-priority.svg" /></p>
 <div class="admonition warning">
 <p class="admonition-title">가장 흔한 사고</p>
 <p>구독을 결제했는데 예전에 설정한 <code>ANTHROPIC_API_KEY</code>가 남아 있으면, <strong>3순위가 6순위를 이겨서 API 종량 요금이 나갑니다.</strong></p>

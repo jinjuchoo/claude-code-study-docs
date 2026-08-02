@@ -1,0 +1,82 @@
+<svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="Explore-Plan-Code 리듬 애니메이션. 탐색으로 이해를 만들고, 계획을 협상해 승인한 뒤, 승인된 계획대로 구현하고 테스트로 검증합니다.">
+  <style>
+    :root{ --fg:#111; --sub:#555; --frame:#d5d5dd }
+    text{ font-family:'Pretendard','Apple SD Gothic Neo',-apple-system,sans-serif }
+    .t{ font-size:15px; font-weight:700; fill:var(--fg) }
+    .s{ font-size:11px; fill:var(--sub) }
+    .q{ font-size:11.5px; font-style:italic }
+
+    .ph{ opacity:.3; animation:on 9s ease-in-out infinite }
+    .e{ animation-delay:0s } .p{ animation-delay:3s } .c{ animation-delay:6s }
+    @keyframes on{ 0%{opacity:.3} 4%{opacity:1} 30%{opacity:1} 36%{opacity:.3} 100%{opacity:.3} }
+
+    /* 진행 막대 */
+    .bar{ animation:fill 9s linear infinite; transform-origin:0 0 }
+    @keyframes fill{ 0%{transform:scaleX(0)} 100%{transform:scaleX(1)} }
+
+    /* 계획 단계에서 협상 화살표 왕복 */
+    .nego{ opacity:0; animation:nego 9s ease-in-out infinite; animation-delay:3.4s }
+    @keyframes nego{
+      0%{opacity:0; transform:translateX(0)}
+      6%{opacity:1; transform:translateX(0)}
+      12%{opacity:1; transform:translateX(-16px)}
+      18%{opacity:1; transform:translateX(0)}
+      24%{opacity:1; transform:translateX(-16px)}
+      30%{opacity:1; transform:translateX(0)}
+      36%{opacity:0}
+      100%{opacity:0}
+    }
+    /* 마지막에 테스트 통과 체크 */
+    .check{ opacity:0; animation:chk 9s ease-in-out infinite; animation-delay:7.6s }
+    @keyframes chk{ 0%{opacity:0; transform:scale(.7)} 8%{opacity:1; transform:scale(1)} 60%{opacity:1} 100%{opacity:0} }
+
+    @media (prefers-color-scheme: dark){
+      :root{ --fg:#e8e8ea; --sub:#a8a8b3; --frame:#3a3a45 }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .ph,.bar,.nego,.check{ animation:none }
+      .ph{opacity:1} .nego,.check{opacity:1} .bar{transform:scaleX(1)}
+    }
+  </style>
+
+  <rect x="24" y="34" width="712" height="7" rx="3.5" fill="var(--frame)"/>
+  <g style="transform:translate(24px,34px)">
+    <rect class="bar" width="712" height="7" rx="3.5" fill="#7e57c2"/>
+  </g>
+
+  <g class="ph e">
+    <rect x="24" y="66" width="222" height="112" rx="12" fill="#e8f5e9" stroke="#388e3c" stroke-width="2"/>
+    <text class="t" x="135" y="98" text-anchor="middle">① Explore</text>
+    <text class="s" x="135" y="120" text-anchor="middle">관련 코드 읽기 · 흐름 추적</text>
+    <text class="q" x="135" y="146" text-anchor="middle" fill="#2e7d32">"아직 코드는 만들지 마"</text>
+    <text class="s" x="135" y="165" text-anchor="middle">← 이 한 줄이 탐색 단계를 지킵니다</text>
+  </g>
+
+  <g class="ph p">
+    <rect x="269" y="66" width="222" height="112" rx="12" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+    <text class="t" x="380" y="98" text-anchor="middle">② Plan</text>
+    <text class="s" x="380" y="120" text-anchor="middle">Plan 모드로 접근 설계</text>
+    <text class="q" x="380" y="146" text-anchor="middle" fill="#1565c0">"2번 항목은 별도 PR 로"</text>
+    <text class="s" x="380" y="165" text-anchor="middle">← 승인 전에 계획을 협상합니다</text>
+  </g>
+  <g class="nego">
+    <path d="M498,122 L520,122 M514,117 L522,122 L514,127" stroke="#1976d2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g class="ph c">
+    <rect x="514" y="66" width="222" height="112" rx="12" fill="#fff3e0" stroke="#f57c00" stroke-width="2"/>
+    <text class="t" x="625" y="98" text-anchor="middle">③ Code</text>
+    <text class="s" x="625" y="120" text-anchor="middle">승인된 계획대로 구현</text>
+    <text class="q" x="625" y="146" text-anchor="middle" fill="#e65100">"테스트까지 실행해줘"</text>
+    <text class="s" x="625" y="165" text-anchor="middle">← 완료 기준에 검증을 포함</text>
+  </g>
+
+  <g class="check">
+    <circle cx="700" cy="206" r="15" fill="#2e7d32"/>
+    <path d="M693,206 L698,212 L708,200" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text class="s" x="678" y="211" text-anchor="end" fill="#2e7d32">테스트 통과 — 여기까지가 '완료'</text>
+  </g>
+
+  <text class="s" x="24" y="248" fill="#7e57c2">큰 변경일수록 단계를 나누는 효과가 커집니다 · opusplan 은 계획에 opus, 실행에 sonnet 을 자동 배분합니다</text>
+</svg>

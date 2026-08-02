@@ -1363,16 +1363,7 @@ Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 
 <hr />
 <h2 id="pattern-1--explore-plan-code-epc">Pattern 1 — Explore-Plan-Code (EPC)<a class="headerlink" href="#pattern-1--explore-plan-code-epc" title="이 위치로 링크">¶</a></h2>
 <p><strong>가장 기본이 되는 3단계 리듬</strong>입니다. 큰 변경일수록 단계 분리의 효과가 큽니다.</p>
-<pre class="mermaid"><code>flowchart LR
-    E["&lt;b&gt;① Explore&lt;/b&gt;&lt;br/&gt;탐색&lt;br/&gt;&lt;br/&gt;관련 코드 읽기&lt;br/&gt;흐름 추적&lt;br/&gt;&lt;i&gt;아직 코딩 금지&lt;/i&gt;"]
-    P["&lt;b&gt;② Plan&lt;/b&gt;&lt;br/&gt;계획&lt;br/&gt;&lt;br/&gt;Plan 모드로 접근 설계&lt;br/&gt;계획 협상&lt;br/&gt;&lt;i&gt;승인 후 다음 단계&lt;/i&gt;"]
-    C["&lt;b&gt;③ Code&lt;/b&gt;&lt;br/&gt;구현&lt;br/&gt;&lt;br/&gt;승인된 계획대로 구현&lt;br/&gt;&lt;i&gt;테스트로 검증까지&lt;/i&gt;"]
-
-    E --&gt; P --&gt; C
-
-    style E fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
-    style P fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
-    style C fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000</code></pre>
+<p><img alt="Explore-Plan-Code 리듬" src="../diagrams/epc-rhythm.svg" /></p>
 <h3 id="실전-예시--oauth-지원-추가">실전 예시 — OAuth 지원 추가<a class="headerlink" href="#실전-예시--oauth-지원-추가" title="이 위치로 링크">¶</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$ claude
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
@@ -1580,6 +1571,7 @@ Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 
 <p>프롬프트 캐시가 무효화되기 때문입니다. 캐시가 살아 있으면 매번 보내는 시스템 지침과 프로젝트 문서를 다시 계산하지 않아도 되는데, 앞부분이 하나라도 바뀌면 전체를 다시 계산합니다.</p>
 <p><a href="../part-10-recap-and-labs/">Part 10의 실측</a>에서 이걸 숫자로 확인했습니다. 실제 입력 토큰은 <strong>4개</strong>였는데 캐시에서 읽은 토큰이 <strong>48,286개</strong>였습니다. 입력의 99.99%가 캐시였다는 뜻이고, 뒤집으면 <strong>그 48,286 토큰이 통째로 재계산될 수 있다</strong>는 뜻이기도 합니다.</p>
 </div>
+<p><img alt="프롬프트 캐시가 비용에 미치는 영향" src="../diagrams/cache-lever.svg" /></p>
 <p><img alt="비용 관리 전략 슬라이드" src="../slides/slide-164.png" /></p>
 <p><em>▲ 교재 슬라이드 164 — 비용 관리: 모델·컨텍스트·캐시 3축</em></p>
 <hr />
