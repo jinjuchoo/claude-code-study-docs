@@ -1513,45 +1513,8 @@ Agentic Coding은 <strong>목표를 받아 저장소 전체에서 작업을 완�
 <p>Cursor는 아예 AI를 전제로 만든 IDE입니다. 에디터 경험 자체가 중심이고, IDE 통합 워크플로에 강합니다.</p>
 <p>OpenAI Codex는 클라우드 에이전트와 CLI를 함께 굴리는 형태로, 작업을 위임해두는 방식에 어울립니다.</p>
 <p>Gemini CLI는 Google 생태계의 CLI 에이전트로 GCP 연계 작업에 자연스럽습니다.</p>
-<details class="note">
-<summary>📋 도구 비교 — 빠른 참조</summary>
-<table>
-<thead>
-<tr>
-<th>도구</th>
-<th>특성</th>
-<th>강점 영역</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Claude Code</strong></td>
-<td>터미널 중심 에이전트, 전 환경 확장, SDK 제공</td>
-<td>저장소 단위 자율 작업</td>
-</tr>
-<tr>
-<td>GitHub Copilot</td>
-<td>IDE 자동완성에서 출발, 에이전트 기능 확장 중</td>
-<td>IDE 내 코드 제안</td>
-</tr>
-<tr>
-<td>Cursor</td>
-<td>AI 네이티브 IDE, 에디터 경험 중심</td>
-<td>IDE 통합 워크플로</td>
-</tr>
-<tr>
-<td>OpenAI Codex</td>
-<td>클라우드 에이전트와 CLI 병행</td>
-<td>위임형 클라우드 작업</td>
-</tr>
-<tr>
-<td>Gemini CLI</td>
-<td>Google 생태계 CLI 에이전트</td>
-<td>GCP 연계 작업</td>
-</tr>
-</tbody>
-</table>
-</details>
+<p><img alt="주요 코딩 AI 도구 비교 슬라이드" src="../slides/slide-014.png" /></p>
+<p><em>▲ 교재 슬라이드 14 — 주요 코딩 AI 도구 비교</em></p>
 <hr />
 <h2 id="4-모델--하나가-아니라-골라-쓰는-것">4. 모델 — 하나가 아니라 골라 쓰는 것<a class="headerlink" href="#4-모델--하나가-아니라-골라-쓰는-것" title="이 위치로 링크">¶</a></h2>
 <p>Claude Code는 모델 하나로만 도는 게 아닙니다. <strong>작업 난이도에 따라 모델을 갈아탑니다.</strong> 이걸 모르면 쉬운 작업에 비싼 모델을 쓰면서 "왜 이렇게 비싸지"라고 생각하게 됩니다.</p>
@@ -1572,81 +1535,10 @@ Agentic Coding은 <strong>목표를 받아 저장소 전체에서 작업을 완�
 <p>소프트웨어 작업에서 정말 어려운 건 "무엇을 어떻게 바꿀지 정하는 것"이고, 정해진 계획대로 코드를 치는 건 상대적으로 쉽습니다.
 그래서 비싼 모델은 계획에만 투입하고 실행은 싼 모델에 맡기면, 품질은 거의 유지하면서 비용은 크게 떨어집니다. 이 발상이 alias 하나에 들어가 있습니다.</p>
 </div>
-<details class="note">
-<summary>📋 모델과 Alias — 빠른 참조</summary>
-<table>
-<thead>
-<tr>
-<th>모델</th>
-<th>특성</th>
-<th>적합한 작업</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Claude Fable 5</strong></td>
-<td>최상위 Mythos-class, 장시간 자율 세션 특화</td>
-<td>가장 어렵고 규모가 큰 작업</td>
-</tr>
-<tr>
-<td><strong>Claude Opus 4.8</strong></td>
-<td>깊은 추론, 복잡한 아키텍처 결정</td>
-<td>복잡한 리팩토링, 설계</td>
-</tr>
-<tr>
-<td><strong>Claude Sonnet 5</strong></td>
-<td>기본 모델, 네이티브 1M 컨텍스트</td>
-<td>일상 코딩 작업 전반</td>
-</tr>
-<tr>
-<td><strong>Claude Haiku 4.5</strong></td>
-<td>빠른 응답, 비용 효율</td>
-<td>간단한 변환, 검색, 분류</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>Alias</th>
-<th>해석</th>
-<th>용도</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>default</code></td>
-<td>계정 유형별 권장 모델로 복귀</td>
-<td>오버라이드 해제</td>
-</tr>
-<tr>
-<td><code>best</code></td>
-<td>Fable 5 접근 가능하면 Fable 5, 아니면 최신 Opus</td>
-<td>최고 성능 자동 선택</td>
-</tr>
-<tr>
-<td><code>fable</code> / <code>opus</code></td>
-<td>Fable 5 또는 최신 Opus</td>
-<td>난제, 장기 세션</td>
-</tr>
-<tr>
-<td><code>sonnet</code> / <code>haiku</code></td>
-<td>최신 Sonnet 또는 Haiku</td>
-<td>일상 작업, 경량 작업</td>
-</tr>
-<tr>
-<td><code>opus[1m]</code></td>
-<td>1M 토큰 컨텍스트로 Opus 사용</td>
-<td>초장기 세션</td>
-</tr>
-<tr>
-<td><code>opusplan</code></td>
-<td>Plan은 opus, 실행은 sonnet</td>
-<td>계획 품질과 실행 비용의 균형</td>
-</tr>
-</tbody>
-</table>
-</details>
+<p><img alt="Claude 모델 패밀리 슬라이드" src="../slides/slide-009.png" /></p>
+<p><em>▲ 교재 슬라이드 9 — Claude 모델 패밀리</em></p>
+<p><img alt="모델 Alias 시스템 슬라이드" src="../slides/slide-010.png" /></p>
+<p><em>▲ 교재 슬라이드 10 — 모델 Alias 시스템</em></p>
 <hr />
 <h2 id="5-어디서-실행되는가--표면은-여섯-엔진은-하나">5. 어디서 실행되는가 — 표면은 여섯, 엔진은 하나<a class="headerlink" href="#5-어디서-실행되는가--표면은-여섯-엔진은-하나" title="이 위치로 링크">¶</a></h2>
 <p>Anthropic이 쓰는 표현은 "Use Claude Code Everywhere"입니다. 실행 표면은 여섯 가지인데, <strong>중요한 건 이 모두가 같은 엔진을 공유한다</strong>는 점입니다.</p>
@@ -1792,39 +1684,8 @@ Agentic Coding은 <strong>목표를 받아 저장소 전체에서 작업을 완�
 <h3 id="학습에-쓰이는가">학습에 쓰이는가<a class="headerlink" href="#학습에-쓰이는가" title="이 위치로 링크">¶</a></h3>
 <p>가장 많이 받는 질문입니다. 답은 <strong>상업용 계정은 기본적으로 학습에 사용되지 않습니다.</strong> 명시적으로 동의한 경우에만 사용되며, 이는 Console과 Bedrock 경로에도 동일하게 적용됩니다.</p>
 <p>보존은 안전성 검토 목적으로 제한적으로만 이뤄지고, ZDR 계약이 있으면 보존 자체가 없습니다. 사람이 내용을 보는 건 약관 위반이 의심되는 예외 상황에 한정되며 평소에는 자동화 시스템이 처리합니다. 제3자 공유는 소환장 같은 법적 의무 외에는 없습니다.</p>
-<details class="note">
-<summary>📋 데이터 정책 — 빠른 참조</summary>
-<table>
-<thead>
-<tr>
-<th>항목</th>
-<th>내용</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>학습 사용</td>
-<td>상업용 계정은 <strong>기본 미사용</strong>, 명시 동의 시에만 (Console·Bedrock 포함)</td>
-</tr>
-<tr>
-<td>보존 기간</td>
-<td>안전성 검토 목적의 제한적 보존. <strong>ZDR 계약 시 보존 없음</strong></td>
-</tr>
-<tr>
-<td>인간 검토</td>
-<td>약관 위반 의심 등 예외 상황에 한정, 자동화 시스템 우선</td>
-</tr>
-<tr>
-<td>제3자 공유</td>
-<td>법적 의무(소환장 등) 외 없음</td>
-</tr>
-<tr>
-<td>암호화</td>
-<td>TLS in transit, AES-256 at rest — 모든 경로 동일</td>
-</tr>
-</tbody>
-</table>
-</details>
+<p><img alt="Anthropic 데이터 사용 정책 슬라이드" src="../slides/slide-028.png" /></p>
+<p><em>▲ 교재 슬라이드 28 — Anthropic 데이터 사용 정책</em></p>
 <hr />
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
 <p><strong>"터미널 도구니까 IDE 쓰면 못 쓴다"</strong> — 동일 엔진이 VS Code, JetBrains, 데스크톱, 웹에서 모두 돕니다. 설정과 <code>CLAUDE.md</code>도 그대로 공유됩니다.</p>

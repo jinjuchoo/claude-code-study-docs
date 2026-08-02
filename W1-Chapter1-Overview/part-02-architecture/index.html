@@ -1311,50 +1311,8 @@
 <p>여기서 얻는 가장 중요한 시사점은 이것입니다. <strong>Interface를 바꿔도 하네스와 설정은 그대로입니다.</strong> 터미널에서 만든 <code>CLAUDE.md</code>가 VS Code에서도, 데스크톱 앱에서도 똑같이 적용됩니다.</p>
 <p><img alt="Agentic Harness 4계층 구조 슬라이드" src="../slides/slide-030.png" /></p>
 <p><em>▲ 교재 슬라이드 30 — Agentic Harness 4계층 구조</em></p>
-<details class="note">
-<summary>📋 인터페이스별 특성 — 빠른 참조</summary>
-<table>
-<thead>
-<tr>
-<th>인터페이스</th>
-<th>특성</th>
-<th>최적 용도</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Terminal CLI</td>
-<td>전체 기능 기준점, 파이프와 스크립트</td>
-<td>일상 작업, 자동화</td>
-</tr>
-<tr>
-<td>VS Code / Cursor</td>
-<td>인라인 diff, @-mention, 플랜 검토</td>
-<td>에디터 중심 개발</td>
-</tr>
-<tr>
-<td>JetBrains</td>
-<td>대화형 diff, 선택 영역 컨텍스트</td>
-<td>IntelliJ 계열 사용자</td>
-</tr>
-<tr>
-<td>Desktop App</td>
-<td>병렬 세션, 예약 작업, Dispatch</td>
-<td>멀티 세션 운영</td>
-</tr>
-<tr>
-<td>Web / iOS</td>
-<td>클라우드 세션, 설치 불필요</td>
-<td>원격, 이동 중 작업</td>
-</tr>
-<tr>
-<td>Slack / CI</td>
-<td>@Claude 멘션, Actions 통합</td>
-<td>팀 협업, 파이프라인</td>
-</tr>
-</tbody>
-</table>
-</details>
+<p><img alt="Client Layer 상세 — 인터페이스별 특성 슬라이드" src="../slides/slide-032.png" /></p>
+<p><em>▲ 교재 슬라이드 32 — Client Layer 상세 — 인터페이스별 특성</em></p>
 <hr />
 <h2 id="2-코드가-실제로-어디서-도는가">2. 코드가 실제로 어디서 도는가<a class="headerlink" href="#2-코드가-실제로-어디서-도는가" title="이 위치로 링크">¶</a></h2>
 <p>앞의 Interface가 "내가 어디서 조작하는가"였다면, 이번엔 <strong>"코드가 실제로 어느 컴퓨터에서 실행되는가"</strong> 입니다. 이 둘은 완전히 다른 축인데 헷갈리기 쉽습니다.</p>
@@ -1473,51 +1431,8 @@ Local과 Remote Control은 실행이 내 머신이고, Cloud만 Anthropic VM으�
 </span></code></pre></div>
 즉 도구 이름을 알면 → 권한 규칙을 쓸 수 있고 → 자동화를 안전하게 무인 실행할 수 있습니다. 이 연쇄가 4·5·6주차의 기반이 됩니다.</p>
 </div>
-<details class="note">
-<summary>📋 내장 도구 카탈로그 — 빠른 참조</summary>
-<table>
-<thead>
-<tr>
-<th>도구</th>
-<th>역할</th>
-<th>승인</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Read</code> / <code>Edit</code> / <code>Write</code></td>
-<td>파일 읽기, 정밀 수정, 신규 생성</td>
-<td>Edit·Write는 <strong>필요</strong></td>
-</tr>
-<tr>
-<td><code>Glob</code> / <code>Grep</code></td>
-<td>패턴 파일 찾기, 내용 정규식 검색</td>
-<td>불필요</td>
-</tr>
-<tr>
-<td><code>Bash</code> / <code>PowerShell</code></td>
-<td>셸 명령 실행, Windows 네이티브 지원</td>
-<td><strong>필요</strong></td>
-</tr>
-<tr>
-<td><code>WebSearch</code> / <code>WebFetch</code></td>
-<td>웹 검색과 URL 콘텐츠 조회</td>
-<td>도메인 규칙</td>
-</tr>
-<tr>
-<td><code>Agent</code> / <code>SendMessage</code></td>
-<td>서브에이전트 생성, 에이전트 간 메시지</td>
-<td>불필요</td>
-</tr>
-<tr>
-<td><code>LSP</code> / <code>Monitor</code> / <code>Cron</code></td>
-<td>코드 인텔리전스, 로그 감시, 예약</td>
-<td>최근 추가</td>
-</tr>
-</tbody>
-</table>
-<p><strong>2026 상반기 신규</strong>: LSP, Monitor, AskUserQuestion, Artifact, Cron 3종, RemoteTrigger, EnterWorktree, ReportFindings</p>
-</details>
+<p><img alt="내장 도구 카탈로그 슬라이드" src="../slides/slide-038.png" /></p>
+<p><em>▲ 교재 슬라이드 38 — 내장 도구 카탈로그</em></p>
 <h3 id="mcp--외부-서비스를-도구로-끌어오기">MCP — 외부 서비스를 도구로 끌어오기<a class="headerlink" href="#mcp--외부-서비스를-도구로-끌어오기" title="이 위치로 링크">¶</a></h3>
 <p>내장 도구만으로는 사내 시스템이나 GitHub, Slack을 다룰 수 없습니다. 그래서 <strong>MCP(Model Context Protocol)</strong> 가 있습니다.</p>
 <p>MCP는 AI 도구를 외부 데이터 소스에 연결하는 <strong>개방형 표준</strong>입니다. Anthropic 전용 규격이 아니라 업계 표준으로 열려 있습니다. MCP 서버를 등록하면 그 서버가 제공하는 기능이 Claude의 도구 목록에 추가됩니다.</p>
