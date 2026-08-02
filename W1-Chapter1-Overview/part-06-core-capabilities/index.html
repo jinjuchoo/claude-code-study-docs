@@ -1465,43 +1465,39 @@
 <p>즉, 도구 이름을 정확히 알면 → 권한 규칙을 쓸 수 있고 → 자동화를 안전하게 무인 실행할 수 있습니다. 이 연쇄가 4·5·6주차 내용의 기반이 됩니다.</p>
 <hr />
 <h2 id="개념-1--도구-5축-지도">개념 1 — 도구 5축 지도<a class="headerlink" href="#개념-1--도구-5축-지도" title="이 위치로 링크">¶</a></h2>
-<table>
-<thead>
-<tr>
-<th>축</th>
-<th>카테고리</th>
-<th>도구</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td><strong>File Ops</strong></td>
-<td><code>Read</code>, <code>Edit</code>, <code>Write</code>, <code>NotebookEdit</code></td>
-</tr>
-<tr>
-<td>2</td>
-<td><strong>Search</strong></td>
-<td><code>Glob</code>, <code>Grep</code></td>
-</tr>
-<tr>
-<td>3</td>
-<td><strong>Execution</strong></td>
-<td><code>Bash</code>, <code>PowerShell</code>, Git</td>
-</tr>
-<tr>
-<td>4</td>
-<td><strong>Web</strong></td>
-<td><code>WebSearch</code>, <code>WebFetch</code></td>
-</tr>
-<tr>
-<td>5</td>
-<td><strong>Intel + Orchestration</strong></td>
-<td><code>LSP</code>, <code>Monitor</code>, <code>Agent</code>, <code>AskUserQuestion</code></td>
-</tr>
-</tbody>
-</table>
-<p>여기에 <strong>MCP</strong>가 외부 도구 확장 축으로 붙습니다.</p>
+<p>도구를 다섯 갈래로 나누면, 각 갈래가 <a href="../part-01-what-is-claude-code/">Part 1의 Agentic Loop</a> 어디를 담당하는지가 보입니다.</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph G1 ["컨텍스트 수집"]
+        S["&lt;b&gt;Search&lt;/b&gt;&lt;br/&gt;Glob · Grep&lt;br/&gt;&lt;i&gt;무엇을 바꿀지 찾기&lt;/i&gt;"]
+        R["&lt;b&gt;File Ops (읽기)&lt;/b&gt;&lt;br/&gt;Read&lt;br/&gt;&lt;i&gt;코드 이해하기&lt;/i&gt;"]
+        W["&lt;b&gt;Web&lt;/b&gt;&lt;br/&gt;WebSearch · WebFetch&lt;br/&gt;&lt;i&gt;세션 밖 지식&lt;/i&gt;"]
+    end
+    subgraph G2 ["행동"]
+        F["&lt;b&gt;File Ops (쓰기)&lt;/b&gt;&lt;br/&gt;Edit · Write · NotebookEdit&lt;br/&gt;&lt;i&gt;실제 변경&lt;/i&gt;"]
+    end
+    subgraph G3 ["검증"]
+        E["&lt;b&gt;Execution&lt;/b&gt;&lt;br/&gt;Bash · PowerShell · Git&lt;br/&gt;&lt;i&gt;테스트·빌드로 확인&lt;/i&gt;"]
+        L["&lt;b&gt;Code Intel&lt;/b&gt;&lt;br/&gt;LSP&lt;br/&gt;&lt;i&gt;타입 오류·참조 확인&lt;/i&gt;"]
+    end
+    subgraph G4 ["오케스트레이션"]
+        O["&lt;b&gt;Agent · Monitor · AskUserQuestion&lt;/b&gt;&lt;br/&gt;&lt;i&gt;위임 · 관찰 · 되묻기&lt;/i&gt;"]
+    end
+
+    G1 --&gt; G2 --&gt; G3
+    G3 -.-&gt;|반복| G1
+    G4 -.-&gt; G1
+
+    style S fill:#e8f5e9,stroke:#388e3c,color:#000
+    style R fill:#e8f5e9,stroke:#388e3c,color:#000
+    style W fill:#e8f5e9,stroke:#388e3c,color:#000
+    style F fill:#e3f2fd,stroke:#1976d2,color:#000
+    style E fill:#fff3e0,stroke:#f57c00,color:#000
+    style L fill:#fff3e0,stroke:#f57c00,color:#000
+    style O fill:#ede7f6,stroke:#673ab7,color:#000</code></pre>
+<p><strong>검색 도구</strong>가 무엇을 바꿀지 찾아내고, <strong>읽기 도구</strong>가 그 코드를 이해하게 하고, <strong>웹 도구</strong>가 세션 밖의 지식을 끌어옵니다. 여기까지가 수집입니다.</p>
+<p><strong>쓰기 도구</strong>가 실제 변경을 만들고, <strong>실행 도구</strong>가 그 변경이 맞았는지 테스트로 확인합니다. <strong>코드 인텔리전스</strong>는 텍스트 검색으로는 알 수 없는 타입 정보로 검증을 보강합니다.</p>
+<p><strong>오케스트레이션 도구</strong>는 이 루프 자체를 조율합니다. 곁가지를 서브에이전트에 맡기고, 백그라운드 출력을 관찰하고, 애매하면 나에게 되묻습니다.</p>
+<p>그리고 여기에 <strong>MCP</strong>가 외부 도구 확장 축으로 붙습니다.</p>
 <hr />
 <h2 id="축-1--파일-조작">축 1 — 파일 조작<a class="headerlink" href="#축-1--파일-조작" title="이 위치로 링크">¶</a></h2>
 <h3 id="read--파일-읽기와-멀티모달"><code>Read</code> — 파일 읽기와 멀티모달<a class="headerlink" href="#read--파일-읽기와-멀티모달" title="이 위치로 링크">¶</a></h3>
@@ -1594,38 +1590,18 @@
 <hr />
 <h2 id="축-5--코드-인텔리전스와-오케스트레이션">축 5 — 코드 인텔리전스와 오케스트레이션<a class="headerlink" href="#축-5--코드-인텔리전스와-오케스트레이션" title="이 위치로 링크">¶</a></h2>
 <h3 id="lsp--언어-서버-기반-정적-이해"><code>LSP</code> — 언어 서버 기반 정적 이해<a class="headerlink" href="#lsp--언어-서버-기반-정적-이해" title="이 위치로 링크">¶</a></h3>
-<blockquote>
-<p>편집 직후 타입 오류와 경고를 확인하고, 정의로 이동하며, 참조를 찾습니다.</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>용도</th>
-<th>내용</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>편집 후 진단</strong></td>
-<td><code>Edit</code> 직후 타입 오류를 확인해 즉시 재수정 루프</td>
-</tr>
-<tr>
-<td><strong>정의 이동</strong></td>
-<td>심볼의 정의 위치로 이동해 정확한 컨텍스트 확보</td>
-</tr>
-<tr>
-<td><strong>참조 찾기</strong></td>
-<td>변경 영향 범위를 참조 목록으로 정량 파악</td>
-</tr>
-<tr>
-<td><strong>설정</strong></td>
-<td>언어별 code intelligence 플러그인 설치로 활성화</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>LSP는 <strong>텍스트 검색(Grep)의 한계를 보완</strong>합니다. <code>getUser</code>라는 문자열을 grep하면 주석·문자열까지 다 걸리지만, LSP는 실제 심볼 참조만 정확히 찾습니다.</p>
-</blockquote>
+<p>LSP(Language Server Protocol)는 IDE가 타입 오류에 빨간 줄을 긋고 "정의로 이동"을 제공하는 바로 그 기술입니다. Claude Code도 같은 언어 서버에 붙습니다.</p>
+<p>쓰임새는 세 가지입니다.</p>
+<p><strong>편집 직후 진단</strong>이 가장 실용적입니다. <code>Edit</code>로 코드를 고친 직후 타입 오류가 났는지 즉시 확인하고, 났으면 바로 다시 고칩니다. 테스트를 돌리기 전에 명백한 실수를 걸러냅니다.</p>
+<p><strong>정의로 이동</strong>해서 심볼이 실제로 어디서 정의됐는지 확인합니다. 같은 이름의 함수가 여러 개일 때 엉뚱한 걸 보고 판단하는 걸 막아줍니다.</p>
+<p><strong>참조 찾기</strong>로 변경의 영향 범위를 정량적으로 파악합니다. "이 함수를 고치면 15군데가 영향받는다"를 알고 시작하는 것과 모르고 시작하는 건 다릅니다.</p>
+<p>활성화하려면 언어별 code intelligence 플러그인을 설치합니다.</p>
+<div class="admonition tip">
+<p class="admonition-title">LSP가 Grep을 대체하는 게 아니라 보완합니다</p>
+<p><code>getUser</code>라는 문자열을 grep하면 주석에 적힌 것, 문자열 리터럴 안의 것, 비슷한 이름의 다른 함수까지 전부 걸립니다.
+LSP는 <strong>실제 심볼 참조만</strong> 정확히 찾습니다. 텍스트가 아니라 코드 구조를 이해하기 때문입니다.
+빠르게 훑을 때는 Grep, 정확해야 할 때는 LSP입니다.</p>
+</div>
 <h3 id="monitor--출력을-지켜보다-반응하는-도구"><code>Monitor</code> — 출력을 지켜보다 반응하는 도구<a class="headerlink" href="#monitor--출력을-지켜보다-반응하는-도구" title="이 위치로 링크">¶</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>&gt; npm run dev를 Monitor로 띄우고, 로그에 UnhandledPromiseRejection이
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  보이면 원인 파일을 찾아서 바로 고쳐줘
@@ -1783,42 +1759,23 @@
 <p><code>deny</code>에 <code>Read(./.env*)</code>를 넣는 건 필수입니다. 시크릿 파일을 아예 읽지 못하게 하면, 실수로 컨텍스트에 키가 올라가는 사고 자체가 원천 차단됩니다.</p>
 </div>
 <h3 id="도구별-승인-매트릭스">도구별 승인 매트릭스<a class="headerlink" href="#도구별-승인-매트릭스" title="이 위치로 링크">¶</a></h3>
-<table>
-<thead>
-<tr>
-<th>도구</th>
-<th>승인</th>
-<th>이유</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Read</code>, <code>Glob</code>, <code>Grep</code></td>
-<td><strong>불필요</strong></td>
-<td>부작용 없음 → 탐색 속도의 원천</td>
-</tr>
-<tr>
-<td><code>Edit</code>, <code>Write</code>, <code>NotebookEdit</code></td>
-<td><strong>필요</strong></td>
-<td>diff 검토 후 수락</td>
-</tr>
-<tr>
-<td><code>Bash</code>, <code>PowerShell</code>, <code>Monitor</code></td>
-<td><strong>필요</strong></td>
-<td><code>allow</code> 규칙으로 통과 가능</td>
-</tr>
-<tr>
-<td><code>WebSearch</code>, <code>WebFetch</code></td>
-<td>규칙 기반</td>
-<td>도메인 단위 통제 권장</td>
-</tr>
-<tr>
-<td><code>Agent</code>, <code>AskUserQuestion</code></td>
-<td><strong>불필요</strong></td>
-<td>위임과 질문은 안전 동작</td>
-</tr>
-</tbody>
-</table>
+<p>승인 정책에는 일관된 원리가 하나 있습니다. <strong>부작용이 있으면 묻고, 없으면 안 묻습니다.</strong></p>
+<pre class="mermaid"><code>flowchart TD
+    Q{"이 도구가&lt;br/&gt;바깥 세상을&lt;br/&gt;바꾸는가?"}
+    Q --&gt;|"아니오 — 읽기만"| N["&lt;b&gt;승인 불필요&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Read · Glob · Grep&lt;br/&gt;Agent · AskUserQuestion&lt;br/&gt;&lt;br/&gt;&lt;i&gt;탐색 속도의 원천&lt;/i&gt;"]
+    Q --&gt;|"예 — 파일을 바꿈"| E["&lt;b&gt;승인 필요&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Edit · Write · NotebookEdit&lt;br/&gt;&lt;br/&gt;&lt;i&gt;diff 검토 후 수락&lt;/i&gt;"]
+    Q --&gt;|"예 — 명령을 실행"| B["&lt;b&gt;승인 필요&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Bash · PowerShell · Monitor&lt;br/&gt;&lt;br/&gt;&lt;i&gt;allow 규칙으로 통과 가능&lt;/i&gt;"]
+    Q --&gt;|"경우에 따라 다름"| W["&lt;b&gt;규칙 기반&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;WebSearch · WebFetch&lt;br/&gt;&lt;br/&gt;&lt;i&gt;도메인 단위 통제 권장&lt;/i&gt;"]
+
+    style Q fill:#673ab7,stroke:#4527a0,stroke-width:3px,color:#fff
+    style N fill:#e8f5e9,stroke:#388e3c,color:#000
+    style E fill:#fff3e0,stroke:#f57c00,color:#000
+    style B fill:#ffebee,stroke:#d32f2f,color:#000
+    style W fill:#e3f2fd,stroke:#1976d2,color:#000</code></pre>
+<p><strong>읽기와 검색은 안 묻습니다.</strong> 파일을 읽거나 패턴을 찾는 건 아무것도 망가뜨리지 않기 때문입니다. 그래서 Claude가 저장소를 마음껏 훑을 수 있고, 이게 탐색이 빠른 이유입니다.</p>
+<p><strong>서브에이전트 생성과 질문도 안 묻습니다.</strong> 위임과 되묻기는 그 자체로 안전한 동작입니다.</p>
+<p><strong>파일 편집과 명령 실행은 묻습니다.</strong> 여기서만 사람이 개입하면 되도록 설계되어 있습니다. 자주 쓰는 안전한 명령은 <code>allow</code> 규칙으로 통과시켜서 승인 피로를 줄입니다.</p>
+<p><strong>웹 도구는 중간입니다.</strong> 조회 자체는 안전하지만 어떤 도메인에 나가느냐가 조직마다 다르므로 규칙으로 통제합니다.</p>
 <hr />
 <h2 id="개념-4--sandboxed-bash">개념 4 — Sandboxed Bash<a class="headerlink" href="#개념-4--sandboxed-bash" title="이 위치로 링크">¶</a></h2>
 <blockquote>

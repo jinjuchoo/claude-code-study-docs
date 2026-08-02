@@ -1374,51 +1374,29 @@ Native 설치로 바뀌면서 Node.js 의존성이 사라졌고, 자동 업데�
 </table>
 <hr />
 <h2 id="개념-1--설치-방법-5종-비교">개념 1 — 설치 방법 5종 비교<a class="headerlink" href="#개념-1--설치-방법-5종-비교" title="이 위치로 링크">¶</a></h2>
-<table>
-<thead>
-<tr>
-<th>방법</th>
-<th>명령</th>
-<th>대상</th>
-<th>자동 업데이트</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Native (권장)</strong></td>
-<td><code>curl</code> / <code>irm</code> 원라이너</td>
-<td>개인, 팀 기본 선택</td>
-<td>✅ 백그라운드</td>
-</tr>
-<tr>
-<td><strong>Homebrew</strong></td>
-<td><code>claude-code</code>(stable), <code>claude-code@latest</code></td>
-<td>macOS 패키지 일원화</td>
-<td>❌ 수동</td>
-</tr>
-<tr>
-<td><strong>WinGet</strong></td>
-<td><code>winget install Anthropic.ClaudeCode</code></td>
-<td>Windows 표준 관리</td>
-<td>❌ 수동(옵션 제공)</td>
-</tr>
-<tr>
-<td><strong>apt / dnf / apk</strong></td>
-<td>서명된 공식 저장소, stable·latest 채널</td>
-<td>리눅스 플릿 배포</td>
-<td>시스템 절차</td>
-</tr>
-<tr>
-<td><strong>npm (레거시)</strong></td>
-<td><code>@anthropic-ai/claude-code</code>, Node 18+ 필요</td>
-<td>기존 파이프라인 호환</td>
-<td>❌</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p><strong>핵심</strong>: 자동 업데이트는 <strong>Native 설치에서만</strong> 백그라운드로 동작합니다. 나머지는 패키지 매니저 절차를 따라야 합니다.</p>
-</blockquote>
+<p>설치 방법이 다섯 개나 되지만, <strong>어떤 상황이냐</strong>로 나누면 고민할 게 별로 없습니다.</p>
+<pre class="mermaid"><code>flowchart TD
+    Q{"어떤 상황인가?"}
+    Q --&gt;|"그냥 내 노트북에 깔고 싶다"| N["&lt;b&gt;Native (권장)&lt;/b&gt;&lt;br/&gt;curl / irm 원라이너&lt;br/&gt;&lt;br/&gt;✅ 백그라운드 자동 업데이트&lt;br/&gt;✅ Node.js 불필요"]
+    Q --&gt;|"macOS 패키지를 brew로 일원화"| H["&lt;b&gt;Homebrew&lt;/b&gt;&lt;br/&gt;claude-code / @latest&lt;br/&gt;&lt;br/&gt;❌ 수동 업그레이드"]
+    Q --&gt;|"Windows 표준 관리 체계"| W["&lt;b&gt;WinGet&lt;/b&gt;&lt;br/&gt;Anthropic.ClaudeCode&lt;br/&gt;&lt;br/&gt;❌ 수동 (옵션 제공)"]
+    Q --&gt;|"사내 리눅스 플릿에 배포"| L["&lt;b&gt;apt / dnf / apk&lt;/b&gt;&lt;br/&gt;GPG 서명된 공식 저장소&lt;br/&gt;&lt;br/&gt;기존 시스템 절차 편입"]
+    Q --&gt;|"기존 npm 파이프라인 호환"| P["&lt;b&gt;npm (레거시)&lt;/b&gt;&lt;br/&gt;@anthropic-ai/claude-code&lt;br/&gt;&lt;br/&gt;⚠️ Node 18+ 필요, 신규 비권장"]
+
+    style Q fill:#673ab7,stroke:#4527a0,stroke-width:3px,color:#fff
+    style N fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
+    style H fill:#e3f2fd,stroke:#1976d2,color:#000
+    style W fill:#e3f2fd,stroke:#1976d2,color:#000
+    style L fill:#fff3e0,stroke:#f57c00,color:#000
+    style P fill:#ffebee,stroke:#d32f2f,color:#000</code></pre>
+<p>특별한 이유가 없다면 <strong>Native가 답입니다.</strong> 원라이너 하나로 끝나고, Node.js가 필요 없는 단일 바이너리이며, 무엇보다 자동 업데이트가 됩니다.</p>
+<p>패키지 매니저 경로(Homebrew, WinGet, apt 등)는 <strong>이미 그 체계로 소프트웨어를 관리하고 있을 때</strong> 의미가 있습니다. 사내 리눅스 플릿처럼 <code>apt upgrade</code> 절차가 이미 돌고 있다면 거기 편입시키는 게 맞습니다.</p>
+<p>npm 경로는 이제 레거시입니다. 기존 파이프라인 호환이 필요한 경우가 아니면 쓰지 않는 게 좋습니다.</p>
+<div class="admonition warning">
+<p class="admonition-title">여기가 가장 중요한 차이입니다</p>
+<p><strong>자동 업데이트는 Native 설치에서만 백그라운드로 동작합니다.</strong>
+나머지 경로는 각 패키지 매니저의 업그레이드 절차를 따로 밟아야 합니다. 깔아놓고 잊어버리면 몇 달 전 버전을 계속 쓰게 됩니다.</p>
+</div>
 <hr />
 <h2 id="설치-방법별-상세">설치 방법별 상세<a class="headerlink" href="#설치-방법별-상세" title="이 위치로 링크">¶</a></h2>
 <h3 id="native--macos--linux--wsl">Native — macOS / Linux / WSL<a class="headerlink" href="#native--macos--linux--wsl" title="이 위치로 링크">¶</a></h3>

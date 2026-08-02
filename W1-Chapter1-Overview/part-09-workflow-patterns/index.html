@@ -1557,39 +1557,33 @@ Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 
 </blockquote>
 <hr />
 <h2 id="비용-관리-전략--3개의-레버">비용 관리 전략 — 3개의 레버<a class="headerlink" href="#비용-관리-전략--3개의-레버" title="이 위치로 링크">¶</a></h2>
+<p>비용을 줄이려면 먼저 비용이 무엇으로 결정되는지 알아야 합니다. 공식은 이렇습니다.</p>
 <blockquote>
-<p>비용은 <strong>모델 선택 × 컨텍스트 크기 × 캐시 적중</strong>의 함수입니다.
-<code>/usage</code> 분해 뷰로 소비처를 찾고 세 레버를 조정합니다.</p>
+<p>비용 = <strong>모델 선택 × 컨텍스트 크기 × 캐시 적중</strong></p>
 </blockquote>
-<table>
-<thead>
-<tr>
-<th>레버</th>
-<th>조정 방법</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>MODEL — 작업별 모델</strong></td>
-<td>일상은 <code>sonnet</code>, 난제만 <code>opus</code>, 배치는 <code>haiku</code>로 배분</td>
-</tr>
-<tr>
-<td><strong>CONTEXT — 가볍게 유지</strong></td>
-<td><code>/clear</code>, <code>/compact</code>, 경로 스코프 <code>rules</code>로 윈도우 최소화</td>
-</tr>
-<tr>
-<td><strong>CACHE — 캐시 친화</strong></td>
-<td><strong>잦은 모델 전환과 세션 중 <code>CLAUDE.md</code> 수정은 캐시 미스를 유발</strong></td>
-</tr>
-<tr>
-<td><strong>MONITOR — 관측</strong></td>
-<td><code>/usage</code> 분해와 OTel로 팀 단위 소비 추적</td>
-</tr>
-</tbody>
-</table>
+<p>세 개가 곱해지므로, 하나만 잡아도 효과가 크고 셋을 다 잡으면 배수로 줄어듭니다.</p>
+<pre class="mermaid"><code>flowchart TD
+    C["&lt;b&gt;비용&lt;/b&gt;"]
+    C --- M["&lt;b&gt;① 모델 레버&lt;/b&gt;&lt;br/&gt;작업 난이도별 배분&lt;br/&gt;&lt;br/&gt;일상은 sonnet&lt;br/&gt;난제만 opus&lt;br/&gt;배치는 haiku"]
+    C --- X["&lt;b&gt;② 컨텍스트 레버&lt;/b&gt;&lt;br/&gt;윈도우를 가볍게&lt;br/&gt;&lt;br/&gt;/clear · /compact&lt;br/&gt;경로 스코프 rules&lt;br/&gt;MCP 다이어트"]
+    C --- K["&lt;b&gt;③ 캐시 레버&lt;/b&gt;&lt;br/&gt;캐시 적중률 유지&lt;br/&gt;&lt;br/&gt;잦은 모델 전환 ✗&lt;br/&gt;세션 중 CLAUDE.md 수정 ✗"]
+
+    M -.-&gt; O["&lt;b&gt;관측&lt;/b&gt;&lt;br/&gt;/usage 분해 뷰로 소비처 특정&lt;br/&gt;조직은 OTel 로 팀 단위 추적"]
+    X -.-&gt; O
+    K -.-&gt; O
+
+    style C fill:#d32f2f,stroke:#b71c1c,stroke-width:3px,color:#fff
+    style M fill:#e3f2fd,stroke:#1976d2,color:#000
+    style X fill:#e8f5e9,stroke:#388e3c,color:#000
+    style K fill:#fff3e0,stroke:#f57c00,color:#000
+    style O fill:#ede7f6,stroke:#673ab7,color:#000</code></pre>
+<p><strong>모델 레버</strong>는 가장 직관적입니다. 모든 작업을 <code>opus</code>로 돌리면 당연히 비쌉니다. 일상 작업은 <code>sonnet</code>, 정말 어려운 것만 <code>opus</code>, 단순 배치는 <code>haiku</code>로 나눕니다.</p>
+<p><strong>컨텍스트 레버</strong>는 윈도우에 뭐가 들어있느냐의 문제입니다. 작업 경계마다 <code>/clear</code>하고, 같은 작업이 길어지면 <code>/compact</code>하고, 경로 스코프 <code>rules</code>로 필요할 때만 규칙이 로드되게 합니다. 안 쓰는 MCP 서버를 끄는 것도 여기 해당합니다.</p>
+<p><strong>캐시 레버</strong>가 가장 의외이고, 그래서 가장 자주 놓칩니다.</p>
 <div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>세 번째 레버가 의외입니다. 세션 중간에 모델을 계속 바꾸거나 <code>CLAUDE.md</code>를 수정하면 <strong>프롬프트 캐시가 무효화</strong>되어 오히려 비용이 올라갑니다.</p>
+<p class="admonition-title">세션 중간에 모델을 계속 바꾸거나 <code>CLAUDE.md</code>를 수정하면 오히려 비용이 올라갑니다</p>
+<p>프롬프트 캐시가 무효화되기 때문입니다. 캐시가 살아 있으면 매번 보내는 시스템 지침과 프로젝트 문서를 다시 계산하지 않아도 되는데, 앞부분이 하나라도 바뀌면 전체를 다시 계산합니다.</p>
+<p><a href="../part-10-recap-and-labs/">Part 10의 실측</a>에서 이걸 숫자로 확인했습니다. 실제 입력 토큰은 <strong>4개</strong>였는데 캐시에서 읽은 토큰이 <strong>48,286개</strong>였습니다. 입력의 99.99%가 캐시였다는 뜻이고, 뒤집으면 <strong>그 48,286 토큰이 통째로 재계산될 수 있다</strong>는 뜻이기도 합니다.</p>
 </div>
 <hr />
 <h2 id="컨텍스트-관리-전략">컨텍스트 관리 전략<a class="headerlink" href="#컨텍스트-관리-전략" title="이 위치로 링크">¶</a></h2>
