@@ -23,6 +23,19 @@
   padding-top: .8em;
   border-top: 1px solid var(--md-default-fg-color--lightest);
 }
+
+/* 원고에서 `---` 로 구분한 뒤 바로 h2 가 오는 경우가 많다.
+   그대로 두면 hr 과 h2 의 border-top 이 겹쳐 구분선이 두 줄로 보인다.
+   hr 을 살리고 h2 쪽 선을 지운다. */
+.md-typeset hr + h2 {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 1.6em;
+}
+.md-typeset hr {
+  margin: 2.2em 0 0;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
 .md-typeset h3 { font-weight: 600; letter-spacing: -.01em; margin-top: 1.8em; }
 
 /* 표 — 가로 스크롤 허용 + 헤더 강조 */
