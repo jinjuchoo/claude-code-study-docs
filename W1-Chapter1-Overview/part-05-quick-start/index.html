@@ -1740,6 +1740,7 @@
 <p>계획이 나오면 그대로 받아들이거나 거절하는 두 선택지만 있는 게 아닙니다.
 "2번 항목은 별도 PR로 빼줘", "이 부분은 기존 방식과 호환되게 해줘"처럼 <strong>계획 자체를 고쳐서</strong> 승인할 수 있습니다.
 코드를 한 줄도 쓰기 전에 방향을 바로잡는 것 — 이게 큰 작업에서 시간을 가장 많이 아껴줍니다.</p>
+<p><a href="../part-10-recap-and-labs/">Part 10의 Lab 4</a>에서 이걸 실제로 해봤습니다. Claude가 "<code>ownerId</code> 누락 시 400을 반환하겠다"는 계획을 내면서 <strong>"이 저장소에 400을 쓰는 곳이 아직 없어 새 선례를 만드는 결정"</strong> 이라고 스스로 짚었고, 저는 코드가 나오기 전에 그 설계를 뒤집었습니다. 협상 과정에서 <code>0/0 = NaN</code> 문제까지 미리 걸러졌습니다.</p>
 </div>
 <p>모델 배분도 자동화할 수 있습니다. <code>opusplan</code> alias를 쓰면 계획은 opus로, 실행은 sonnet으로 자동 전환됩니다. 클라우드 확장판인 <code>ultraplan</code>도 있습니다.</p>
 <h3 id="auto-모드-research-preview">Auto 모드 (Research Preview)<a class="headerlink" href="#auto-모드-research-preview" title="이 위치로 링크">¶</a></h3>
