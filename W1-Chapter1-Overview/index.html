@@ -602,7 +602,7 @@
   <span class="md-ellipsis">
     
   
-    9. 워크플로 패턴
+    9. 워크플로 패턴 10선
   
 
     
@@ -630,7 +630,7 @@
   <span class="md-ellipsis">
     
   
-    10. 정리와 실습 랩
+    10. 정리와 실습 랩 (실제 수행 기록)
   
 
     
@@ -676,6 +676,17 @@
       목차
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#회고" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        회고
+      
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#30초-요약" class="md-nav__link">
@@ -767,6 +778,15 @@
 </blockquote>
 <p><strong>원본</strong>: Claude Code Deep Dive Workshop / Chapter 1 — Overview (10 파트, 약 190 슬라이드)
 <strong>기준 버전</strong>: Claude Code v2.1 / 2026년 7월 · 공식 문서 <code>code.claude.com/docs</code> 반영</p>
+<hr />
+<h2 id="회고">회고<a class="headerlink" href="#회고" title="이 위치로 링크">¶</a></h2>
+<p>Chapter 1은 Claude Code의 정체성부터 설치·인증·핵심 도구·워크플로 패턴까지를 훑는 입문 챕터입니다. 분량은 많지만 어려운 개념은 없어서, 오히려 <strong>"이미 아는 것 같은데 실은 모르는 것"</strong> 이 걸리는 챕터였습니다.</p>
+<p>정리하면서 가장 크게 바뀐 생각은 두 가지입니다.</p>
+<p>하나는 <strong>Claude Code를 "터미널에서 쓰는 자동완성"으로 이해하면 절반도 못 쓴다</strong>는 것입니다. 차이는 범위(파일 vs 저장소)보다 <strong>책임</strong>에 있었습니다. 자동완성은 제안까지가 끝이지만 Claude Code는 테스트를 돌려 스스로 검증합니다. 그래서 좋은 지시는 "무엇을 해라"가 아니라 <strong>"무엇이 완료인지"</strong> 를 함께 주는 것이더군요.</p>
+<p>다른 하나는 <strong>문서를 읽는 것과 직접 돌려보는 것의 간극</strong>입니다. 실습을 전부 실제로 실행했는데, 예상과 다른 지점이 계속 나왔습니다. 제 설치가 Native가 아니라 npm 경로였다는 것도 <code>claude doctor</code>를 돌리고서야 알았고, 디버깅 랩에서는 "4/4 통과"라는 결과 뒤에 <strong>요청하지 않은 방어 코드</strong>가 숨어 있었습니다. diff를 안 읽었으면 몰랐을 변경이었습니다.</p>
+<p>가장 인상적이었던 건 Plan 모드였습니다. 계획을 내면서 <code>ownerId</code> 누락 시 400을 반환하겠다고 하더니, <strong>"이 저장소에 400을 쓰는 곳이 아직 없어 새 선례를 만드는 결정"</strong> 이라고 스스로 짚었습니다. 코드가 나오기 전에 그 설계를 뒤집을 수 있었고, 협상 과정에서 <code>0/0 = NaN</code> 같은 문제까지 미리 걸러졌습니다. <strong>계획을 협상하면 버그를 코드가 아니라 문서에서 잡는다</strong>는 걸 체감했습니다.</p>
+<p>작성을 마친 뒤 교재 PDF와 공식 문서를 전수 대조했는데, 교재가 2026년 7월판이라 <strong>v2.1.207 전후로 바뀐 사실이 여럿</strong> 있었습니다. Bedrock의 <code>opus</code> alias가 4.6에서 4.8로 바뀐 것, 자동 업데이트가 Native 전용이 아니라는 것 등입니다. 특히 후자는 <strong>제 실습 로그가 이미 반증하고 있었는데도 본문 주장을 고치지 않고 넘어갔던 것</strong>이라 뼈아팠습니다. 관찰과 결론이 어긋나는지 따로 확인하는 절차가 필요하다는 걸 배웠습니다.</p>
+<p>아쉬운 점은 교재의 실습 랩 경로(<code>ch1/lab3-buggy-app</code> 등)가 현재 저장소에 없다는 것입니다. 시나리오를 직접 재현해서 진행했는데, 그 과정 자체는 오히려 공부가 됐습니다.</p>
 <hr />
 <h2 id="30초-요약">30초 요약<a class="headerlink" href="#30초-요약" title="이 위치로 링크">¶</a></h2>
 <p>Claude Code는 <strong>터미널에서 도는 AI 코딩 에이전트</strong>입니다. 자동완성 도구와 다른 점은 딱 하나입니다.</p>
