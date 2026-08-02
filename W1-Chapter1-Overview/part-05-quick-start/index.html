@@ -844,10 +844,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#수정-전--실패-재현" class="md-nav__link">
+  <a href="#버그-재현" class="md-nav__link">
     <span class="md-ellipsis">
       
-        수정 전 — 실패 재현
+        버그 재현
       
     </span>
   </a>
@@ -855,10 +855,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#위임" class="md-nav__link">
+  <a href="#위임--교재가-주는-프롬프트" class="md-nav__link">
     <span class="md-ellipsis">
       
-        위임
+        위임 — 교재가 주는 프롬프트
       
     </span>
   </a>
@@ -866,10 +866,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#결과--그런데-diff를-읽어야-하는-이유" class="md-nav__link">
+  <a href="#결과" class="md-nav__link">
     <span class="md-ellipsis">
       
-        결과 — 그런데 diff를 읽어야 하는 이유
+        결과
       
     </span>
   </a>
@@ -1398,10 +1398,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#수정-전--실패-재현" class="md-nav__link">
+  <a href="#버그-재현" class="md-nav__link">
     <span class="md-ellipsis">
       
-        수정 전 — 실패 재현
+        버그 재현
       
     </span>
   </a>
@@ -1409,10 +1409,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#위임" class="md-nav__link">
+  <a href="#위임--교재가-주는-프롬프트" class="md-nav__link">
     <span class="md-ellipsis">
       
-        위임
+        위임 — 교재가 주는 프롬프트
       
     </span>
   </a>
@@ -1420,10 +1420,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#결과--그런데-diff를-읽어야-하는-이유" class="md-nav__link">
+  <a href="#결과" class="md-nav__link">
     <span class="md-ellipsis">
       
-        결과 — 그런데 diff를 읽어야 하는 이유
+        결과
       
     </span>
   </a>
@@ -1821,51 +1821,49 @@
 <p>조직 단위 집계는 OTel 텔레메트리로 합니다 (3주차 Chapter 3).</p>
 <hr />
 <h2 id="직접-해보기--시나리오-1디버깅-실제-실행-기록">직접 해보기 — 시나리오 1(디버깅) 실제 실행 기록<a class="headerlink" href="#직접-해보기--시나리오-1디버깅-실제-실행-기록" title="이 위치로 링크">¶</a></h2>
-<p>위 시나리오가 실제로 어떻게 도는지 확인하려고, <strong>의도된 버그가 있는 앱을 만들어 직접 돌렸습니다.</strong> (2026-08-02)</p>
-<h3 id="수정-전--실패-재현">수정 전 — 실패 재현<a class="headerlink" href="#수정-전--실패-재현" title="이 위치로 링크">¶</a></h3>
+<p>교재 Hands-on Lab이 주는 실습 프로젝트로 그대로 돌려봤습니다. (2026-08-02)</p>
+<h3 id="버그-재현">버그 재현<a class="headerlink" href="#버그-재현" title="이 위치로 링크">¶</a></h3>
+<p><code>profile</code> 필드가 없는 사용자(<code>{ id: 3, name: "Park" }</code>)를 조회하면 터집니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="gp">$ </span>npm<span class="w"> </span><span class="nb">test</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="go">✔ 만료월 당월 말일까지는 결제된다</span>
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="go">✖ expiry 가 없는 카드는 거부된다</span>
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="go">ℹ tests 4 | pass 3 | fail 1</span>
-</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>
-</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="go">  TypeError: Cannot read properties of undefined (reading &#39;split&#39;)</span>
-</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="go">      at isExpired (.../src/checkout.js:3:30)</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="go">Test 1 - pro 플랜 사용자: PASS</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="go">Test 2 - free 플랜 사용자: PASS</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="go">  return user.profile.plan;</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="go">                      ^</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="go">TypeError: Cannot read properties of undefined (reading &#39;plan&#39;)</span>
 </span></code></pre></div>
-<h3 id="위임">위임<a class="headerlink" href="#위임" title="이 위치로 링크">¶</a></h3>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;npm test가 실패해. 원인을 찾아 수정하고 전체 테스트 통과까지 확인해줘. 테스트 파일은 명세이므로 수정하지 마.&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">    </span>--permission-mode<span class="w"> </span>acceptEdits<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">    </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Read,Edit,Grep,Glob,Bash(npm test)&quot;</span>
+<h3 id="위임--교재가-주는-프롬프트">위임 — 교재가 주는 프롬프트<a class="headerlink" href="#위임--교재가-주는-프롬프트" title="이 위치로 링크">¶</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;npm test 실행 시 다음 에러가 발생합니다. 원인을 찾고 수정해 주세요.</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="go">TypeError: Cannot read properties of undefined (reading &#39;plan&#39;)</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="go">at getUserPlan (src/userService.js:9)</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="go">기대 동작: profile이 없는 사용자는 \&quot;unknown\&quot;을 반환해야 합니다.</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="go">수정 후 npm test로 3개 테스트가 모두 PASS 하는지 직접 확인해 주세요.&quot;</span>
 </span></code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p><code>"테스트 파일은 명세이므로 수정하지 마"</code> — <strong>이 한 줄이 중요합니다.</strong> 없으면 테스트를 고쳐서 통과시킬 여지가 생깁니다. 위에서 말한 <strong>"금지 조건"</strong> 이 실전에서 이렇게 쓰입니다.</p>
+<p>이 프롬프트가 좋은 교보재입니다. <strong>에러 메시지 + 기대 동작 + 검증 방법</strong>이 한 문단에 다 들어 있습니다. 위에서 정리한 "범위 + 완료 기준"이 그대로 구현된 형태입니다.</p>
 </div>
-<h3 id="결과--그런데-diff를-읽어야-하는-이유">결과 — 그런데 diff를 읽어야 하는 이유<a class="headerlink" href="#결과--그런데-diff를-읽어야-하는-이유" title="이 위치로 링크">¶</a></h3>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="gp">$ </span>npm<span class="w"> </span><span class="nb">test</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="go">ℹ tests 4 | pass 4 | fail 0</span>
+<h3 id="결과">결과<a class="headerlink" href="#결과" title="이 위치로 링크">¶</a></h3>
+<div class="language-diff highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="w"> </span>export function getUserPlan(id) {
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w"> </span>  const user = getUser(id);
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="gd">-  return user.profile.plan;</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="gi">+  return user?.profile?.plan ?? &quot;unknown&quot;;</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w"> </span>}
 </span></code></pre></div>
-<p>4/4 통과. 그런데 <code>git diff</code>를 보니:</p>
-<div class="language-diff highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="w"> </span>function isExpired(card, now) {
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="gi">+  // 만료월이 없거나 형식이 잘못된 카드는 만료된 것으로 취급한다</span>
-</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="gi">+  if (typeof card?.expiry !== &#39;string&#39;) {</span>
-</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="gi">+    return true;</span>
-</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="gi">+  }</span>
-</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w"> </span>  const [y, m] = card.expiry.split(&#39;-&#39;).map(Number);
-</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="gi">+  if (!Number.isInteger(y) || !Number.isInteger(m) || m &lt; 1 || m &gt; 12) {</span>
-</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="gi">+    return true;</span>
-</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="gi">+  }</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="gp">$ </span>npm<span class="w"> </span><span class="nb">test</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="go">Test 1 - pro 플랜 사용자: PASS</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="go">Test 2 - free 플랜 사용자: PASS</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="go">Test 3 - profile 없는 사용자: PASS</span>
 </span></code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">직접 해보고 알게 된 것</p>
-<p>테스트는 <code>expiry</code> <strong>누락</strong>만 검사하는데, <code>'2026-13'</code>이나 <code>'abc'</code> 같은 <strong>잘못된 형식까지 방어</strong>했습니다. 요청하지 않은 범위의 변경입니다.
-"4/4 통과"라는 결과만 보고 넘어갔다면 몰랐을 변경이고, 이게 <a href="../part-06-core-capabilities/">Part 6</a>에서 "diff를 반사적으로 <code>y</code> 하지 말라"고 강조하는 이유입니다.</p>
-<p>동시에 균형도 있었습니다. 응답 마지막에 이렇게 덧붙였습니다.</p>
-<blockquote>
-<p>"잘못된 형식을 <code>CARD_EXPIRED</code>로 뭉뚱그리는 건 테스트가 요구하는 동작이지만, 실제 서비스라면 '만료됨'과 '카드 정보 오류'는 사용자에게 다른 안내가 필요할 수 있습니다. <strong>명세를 넘어서는 변경이라 별도 에러 코드는 추가하지 않았습니다.</strong>"</p>
-</blockquote>
-<p>즉 <strong>명세 안에서는 넉넉히 방어하고, 명세를 넘는 설계 변경은 보고만 하고 자제</strong>했습니다.</p>
+<p>교재는 도구 호출이 <code>Read → Grep → Edit → Bash</code> 순으로 갈 거라고 예고했는데, <strong>실제로는 <code>Grep</code>을 쓰지 않았습니다.</strong> <code>ls</code>로 구조를 보고 네 파일을 전부 읽어버렸습니다.
+파일이 네 개뿐이라 검색보다 통독이 빨랐던 겁니다. 검색은 "다 읽기엔 큰" 코드베이스에서 의미가 생기는 도구라는 걸 보여줍니다.</p>
+<p>그리고 요구된 것보다 한 칸 더 방어했습니다. 버그는 <code>profile</code> 누락인데 <code>user?.</code>까지 붙였고, <strong>"존재하지 않는 id를 조회할 때의 같은 계열 크래시도 함께 막기 위해서"</strong> 라고 이유를 먼저 밝혔습니다.</p>
 </div>
-<p>(전체 기록: <a href="../part-10-recap-and-labs/#lab-3--디버깅-실습-소요-20분">Part 10 / Lab 3</a>)</p>
+<p>(전체 기록: <a href="../part-10-recap-and-labs/">Part 10 / Lab 3</a>)</p>
 <h3 id="이어서-직접-해볼-것">이어서 직접 해볼 것<a class="headerlink" href="#이어서-직접-해볼-것" title="이 위치로 링크">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>&lt;아무<span class="w"> </span>프로젝트&gt;<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>claude
 </span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>

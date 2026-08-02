@@ -783,10 +783,11 @@
 <p>Chapter 1은 Claude Code의 정체성부터 설치·인증·핵심 도구·워크플로 패턴까지를 훑는 입문 챕터입니다. 분량은 많지만 어려운 개념은 없어서, 오히려 <strong>"이미 아는 것 같은데 실은 모르는 것"</strong> 이 걸리는 챕터였습니다.</p>
 <p>정리하면서 가장 크게 바뀐 생각은 두 가지입니다.</p>
 <p>하나는 <strong>Claude Code를 "터미널에서 쓰는 자동완성"으로 이해하면 절반도 못 쓴다</strong>는 것입니다. 차이는 범위(파일 vs 저장소)보다 <strong>책임</strong>에 있었습니다. 자동완성은 제안까지가 끝이지만 Claude Code는 테스트를 돌려 스스로 검증합니다. 그래서 좋은 지시는 "무엇을 해라"가 아니라 <strong>"무엇이 완료인지"</strong> 를 함께 주는 것이더군요.</p>
-<p>다른 하나는 <strong>문서를 읽는 것과 직접 돌려보는 것의 간극</strong>입니다. 실습을 전부 실제로 실행했는데, 예상과 다른 지점이 계속 나왔습니다. 제 설치가 Native가 아니라 npm 경로였다는 것도 <code>claude doctor</code>를 돌리고서야 알았고, 디버깅 랩에서는 "4/4 통과"라는 결과 뒤에 <strong>요청하지 않은 방어 코드</strong>가 숨어 있었습니다. diff를 안 읽었으면 몰랐을 변경이었습니다.</p>
-<p>가장 인상적이었던 건 Plan 모드였습니다. 계획을 내면서 <code>ownerId</code> 누락 시 400을 반환하겠다고 하더니, <strong>"이 저장소에 400을 쓰는 곳이 아직 없어 새 선례를 만드는 결정"</strong> 이라고 스스로 짚었습니다. 코드가 나오기 전에 그 설계를 뒤집을 수 있었고, 협상 과정에서 <code>0/0 = NaN</code> 같은 문제까지 미리 걸러졌습니다. <strong>계획을 협상하면 버그를 코드가 아니라 문서에서 잡는다</strong>는 걸 체감했습니다.</p>
+<p>다른 하나는 <strong>문서를 읽는 것과 직접 돌려보는 것의 간극</strong>입니다. 예상과 다른 지점이 계속 나왔습니다. 제 설치가 Native가 아니라 npm 경로였다는 것도 <code>claude doctor</code>를 돌리고서야 알았습니다. 디버깅 랩에서는 교재가 <code>Grep</code>으로 영향 범위를 검색할 거라고 예고했는데 <strong>실제로는 <code>Grep</code>을 쓰지 않았습니다.</strong> 파일이 네 개뿐이라 전부 읽는 게 빨랐던 겁니다. 교재 흐름도가 틀린 게 아니라 상황에 따라 도구 선택이 달라진다는 걸 눈으로 본 셈입니다.</p>
+<p>가장 인상적이었던 건 Plan 모드였습니다. soft delete 기능을 요청하면서 "<code>getUser</code>와 <code>getUserPlan</code>이 삭제된 사용자를 제외해야 한다"고 명시했는데, 계획을 보니 <strong><code>getUserPlan</code>은 고칠 필요가 없다고 반박</strong>해 왔습니다. 직전 랩에서 이미 <code>?.</code> 체이닝을 넣었기 때문에 <code>getUser</code>만 고치면 자동으로 충족된다는 것이었습니다. 액면 그대로 구현했다면 중복 방어가 들어갔을 겁니다.</p>
+<p>테스트 파일을 분리해 달라고 했을 때도, 제가 몰랐던 이유를 덧붙였습니다. 삭제 테스트가 전역 배열을 변경하는데 파일을 나누면 <strong>별도 프로세스로 실행되어 오염이 원천 차단된다</strong>는 것이었습니다. 저는 그냥 정리 차원에서 요청한 것이었는데 말이죠. <strong>계획을 협상하면 버그를 코드가 아니라 문서에서 잡는다</strong>는 걸 체감했습니다.</p>
 <p>작성을 마친 뒤 교재 PDF와 공식 문서를 전수 대조했는데, 교재가 2026년 7월판이라 <strong>v2.1.207 전후로 바뀐 사실이 여럿</strong> 있었습니다. Bedrock의 <code>opus</code> alias가 4.6에서 4.8로 바뀐 것, 자동 업데이트가 Native 전용이 아니라는 것 등입니다. 특히 후자는 <strong>제 실습 로그가 이미 반증하고 있었는데도 본문 주장을 고치지 않고 넘어갔던 것</strong>이라 뼈아팠습니다. 관찰과 결론이 어긋나는지 따로 확인하는 절차가 필요하다는 걸 배웠습니다.</p>
-<p>아쉬운 점은 교재의 실습 랩 경로(<code>ch1/lab3-buggy-app</code> 등)가 현재 저장소에 없다는 것입니다. 시나리오를 직접 재현해서 진행했는데, 그 과정 자체는 오히려 공부가 됐습니다.</p>
+<p>마지막으로 하나 더. PDF에 적힌 실습 경로(<code>ch1/lab3-buggy-app</code> 등)가 저장소에 없어서 처음에는 "교재 자산이 빠졌다"고 판단하고 시나리오를 직접 재현했습니다. <strong>그 판단이 틀렸습니다.</strong> 실습은 <code>ccw-hands-on-lab/</code> 아래 HTML로 온전히 제공되고 있었고, 저장소에서 클론하는 대신 <strong>프로젝트를 직접 만들게 설계</strong>되어 있어서 애초에 그 디렉토리가 있을 이유가 없었습니다. 없는 걸 확인하는 데서 멈추지 말고 <strong>있을 만한 다른 곳을 먼저 찾았어야</strong> 했습니다. 지금은 HTML 랩의 원본 시나리오로 다시 수행한 기록으로 바꿔뒀습니다.</p>
 <hr />
 <h2 id="30초-요약">30초 요약<a class="headerlink" href="#30초-요약" title="이 위치로 링크">¶</a></h2>
 <p>Claude Code는 <strong>터미널에서 도는 AI 코딩 에이전트</strong>입니다. 자동완성 도구와 다른 점은 딱 하나입니다.</p>
@@ -896,12 +897,12 @@
 <tr>
 <td>Lab 3 — 디버깅</td>
 <td>✅ 완료</td>
-<td>4/4 통과 뒤에 <strong>요청하지 않은 방어 코드</strong>가 숨어 있었음 → diff 검토의 이유</td>
+<td>교재는 <code>Grep</code>을 예고했지만 <strong>실제로는 안 썼음</strong> — 4파일짜리라 전부 읽는 게 빨랐음</td>
 </tr>
 <tr>
 <td>Lab 4 — Plan 모드</td>
 <td>✅ 완료</td>
-<td><code>--resume</code> 체이닝으로 <strong>계획 협상까지 재현</strong> — 400 반환 설계를 코드 전에 뒤집음</td>
+<td>계획 협상 재현. 요구사항 중 <strong>하나는 고칠 필요가 없다고 반박</strong>해 옴</td>
 </tr>
 <tr>
 <td>Lab 5 — Headless</td>
@@ -912,11 +913,12 @@
 </table>
 <p><strong>5개 랩 전부 수행했습니다.</strong></p>
 <p>전체 로그와 원본 출력은 → <strong><a href="part-10-recap-and-labs/">Part 10 — 정리와 실습 랩</a></strong></p>
-<blockquote>
-<p>교재의 랩 경로(<code>ch1/lab3-buggy-app</code>, <code>ch1/lab4-todo-api</code>)는 현재 저장소(<code>20260703</code> 에디션)에 존재하지 않았습니다.
-랩 가이드는 <code>ccw-hands-on-lab/*.html</code>로, 코드 스니펫은 <code>Script/workshop-code/</code>로 재편된 것으로 보입니다.
-Lab 3은 PDF의 시나리오(만료 카드 결제 실패)를 그대로 재현한 앱을 직접 만들어 진행했습니다.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">실습 자료 위치에 대하여</p>
+<p>PDF 슬라이드가 안내하는 <code>ch1/lab3-buggy-app</code>, <code>ch1/lab4-todo-api</code> 경로는 저장소에 실재하지 않습니다(전체 클론·전 브랜치 확인).
+실제 실습은 <strong><code>ccw-hands-on-lab/ClaudeCode_Ch1_HandsOnLab.html</code></strong> 에 Task 1~7로 온전히 제공되며, 저장소에서 클론하는 대신 <strong>힙독으로 프로젝트를 직접 만드는</strong> 방식입니다. 구판(<code>20260525</code>) PDF와 스니펫 아카이브도 같은 방식이라, 경로를 지정한 건 신판 PDF뿐입니다.
+Lab 3·4는 <strong>이 HTML 랩의 원본 시나리오</strong>를 그대로 따라 수행했습니다.</p>
+</div>
 <hr />
 <h2 id="학습-목표-체크리스트">학습 목표 체크리스트<a class="headerlink" href="#학습-목표-체크리스트" title="이 위치로 링크">¶</a></h2>
 <p>Chapter 1을 끝냈다면 아래 네 문장에 스스로 답할 수 있어야 합니다.</p>

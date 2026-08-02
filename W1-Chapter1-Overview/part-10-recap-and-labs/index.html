@@ -1022,256 +1022,220 @@
 <h2 id="lab-3--디버깅-실습-소요-20분">Lab 3 — 디버깅 실습 (소요 20분)<a class="headerlink" href="#lab-3--디버깅-실습-소요-20분" title="이 위치로 링크">¶</a></h2>
 <p><img alt="Lab 3 — 디버깅 실습 슬라이드" src="../slides/slide-176.png" /></p>
 <p><em>▲ 교재 슬라이드 176 — Lab 3 — 디버깅 실습 (교재 원본 실습 안내)</em></p>
-<p>교재는 <code>claude-code-workshop/ch1/lab3-buggy-app</code> 경로를 안내하지만, <strong>현재 저장소(<code>20260703</code> 에디션)에는 이 디렉토리가 없었습니다.</strong> 코드 스니펫은 <code>Script/workshop-code/</code>에, 랩 가이드는 <code>ccw-hands-on-lab/*.html</code>에 들어 있는 구조로 바뀐 것으로 보입니다.
-그래서 <strong>PDF의 시나리오(만료 카드 결제 실패)를 그대로 재현한 버기 앱을 직접 만들어서</strong> 진행했습니다.</p>
-<h3 id="3-0-의도된-버그가-있는-앱">3-0. 의도된 버그가 있는 앱<a class="headerlink" href="#3-0-의도된-버그가-있는-앱" title="이 위치로 링크">¶</a></h3>
-<p><code>src/checkout.js</code>:
-<div class="language-javascript highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kd">function</span><span class="w"> </span><span class="nx">isExpired</span><span class="p">(</span><span class="nx">card</span><span class="p">,</span><span class="w"> </span><span class="nx">now</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="c1">// YYYY-MM 형식의 만료월을 비교한다</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">m</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">card</span><span class="p">.</span><span class="nx">expiry</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="nb">Number</span><span class="p">);</span>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">expiryEnd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">(</span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">m</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="mf">23</span><span class="p">,</span><span class="w"> </span><span class="mf">59</span><span class="p">,</span><span class="w"> </span><span class="mf">59</span><span class="p">);</span>
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">now</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nx">expiryEnd</span><span class="p">;</span>
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="p">}</span>
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="kd">function</span><span class="w"> </span><span class="nx">charge</span><span class="p">(</span><span class="nx">card</span><span class="p">,</span><span class="w"> </span><span class="nx">amount</span><span class="p">,</span><span class="w"> </span><span class="nx">now</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">isExpired</span><span class="p">(</span><span class="nx">card</span><span class="p">,</span><span class="w"> </span><span class="nx">now</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">ok</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;CARD_EXPIRED&#39;</span><span class="w"> </span><span class="p">};</span>
-</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">ok</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">charged</span><span class="o">:</span><span class="w"> </span><span class="nx">amount</span><span class="w"> </span><span class="p">};</span>
-</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<p>테스트 4개 중 마지막이 <code>expiry</code> 없는 카드를 던집니다.</p>
-<h3 id="3-1-수정-전-테스트--실패-재현">3-1. 수정 전 테스트 — 실패 재현<a class="headerlink" href="#3-1-수정-전-테스트--실패-재현" title="이 위치로 링크">¶</a></h3>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="gp">$ </span>npm<span class="w"> </span><span class="nb">test</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="go">✔ 만료월 당월 말일까지는 결제된다 (0.050791ms)</span>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="go">✖ expiry 가 없는 카드는 거부된다 (0.128875ms)</span>
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="go">ℹ tests 4</span>
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="go">ℹ pass 3</span>
-</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="go">ℹ fail 1</span>
-</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>
-</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="go">✖ failing tests:</span>
-</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>
-</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="go">test at src/checkout.test.js:20:1</span>
-</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="go">✖ expiry 가 없는 카드는 거부된다 (0.128875ms)</span>
-</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="go">  TypeError: Cannot read properties of undefined (reading &#39;split&#39;)</span>
-</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="go">      at isExpired (.../src/checkout.js:3:30)</span>
-</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="go">      at charge (.../src/checkout.js:9:7)</span>
+<div class="admonition note">
+<p class="admonition-title">교재 자료를 어디서 찾아야 하는지부터 헤맸습니다 — 기록해 둡니다</p>
+<p>PDF 슬라이드 176은 <code>cd claude-code-workshop/ch1/lab3-buggy-app</code>으로 시작합니다. 그런데 <strong>저장소를 전체 클론해도 그 경로는 없습니다.</strong> 브랜치는 <code>main</code> 하나뿐이고 태그도 없으며, <code>lab3-buggy-app</code>이라는 문자열 자체가 저장소 어디에도 없습니다.</p>
+<p>처음에는 "교재 자산이 빠졌다"고 판단하고 시나리오를 직접 재현했는데, <strong>그게 틀렸습니다.</strong> 실습은 온전히 제공되고 있었고 위치가 달랐을 뿐입니다.</p>
+<ul>
+<li><strong><code>ccw-hands-on-lab/ClaudeCode_Ch1_HandsOnLab.html</code></strong> ← 실제 랩은 여기 있습니다. 브라우저로 열면 Task 1~7의 완전한 가이드가 나옵니다.</li>
+<li>이 랩은 저장소에서 클론하는 방식이 아니라 <strong>힙독으로 프로젝트를 직접 만들게</strong> 설계되어 있습니다. 그래서 <code>ch1/</code> 디렉토리가 애초에 존재할 이유가 없습니다.</li>
+<li>참고로 구판(<code>20260525</code>) PDF와 <code>Script/workshop-code/</code>의 스니펫 아카이브는 <code># 의도적으로 버그가 있는 코드 준비</code>라고만 되어 있습니다. <strong>경로를 지정한 건 신판(<code>20260703</code>) PDF뿐이고, 그 경로는 실재하지 않습니다.</strong></li>
+</ul>
+<p><strong>교훈</strong>: PDF에 경로가 적혀 있어도 <code>ccw-hands-on-lab/*.html</code>을 먼저 열어보는 게 맞습니다. 아래는 그 HTML 랩의 시나리오를 그대로 따른 기록입니다.</p>
+</div>
+<h3 id="3-0-교재가-제공하는-실습-프로젝트">3-0. 교재가 제공하는 실습 프로젝트<a class="headerlink" href="#3-0-교재가-제공하는-실습-프로젝트" title="이 위치로 링크">¶</a></h3>
+<p>랩의 Task 3이 주는 힙독을 그대로 실행했습니다. 의존성 없는 Node.js 프로젝트 4개 파일이 만들어집니다.</p>
+<div class="language-javascript highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1">// src/users.js — 주의: 일부 사용자는 profile 필드가 없음 (마이그레이션 미수행 상황)</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">users</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Kim&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">profile</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;kim@example.com&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">plan</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;pro&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Lee&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">profile</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;lee@example.com&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">plan</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;free&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Park&quot;</span><span class="w"> </span><span class="p">}</span><span class="w">                    </span><span class="c1">// ← profile 없음</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="p">];</span>
 </span></code></pre></div>
-<blockquote>
-<p><a href="../part-01-what-is-claude-code/">Part 1</a>의 디버깅 예시에 나온 것과 <strong>똑같은 <code>TypeError: Cannot read properties of undefined</code></strong> 가 실제로 재현됐습니다.</p>
-</blockquote>
-<h3 id="3-2-claude에게-위임">3-2. Claude에게 위임<a class="headerlink" href="#3-2-claude에게-위임" title="이 위치로 링크">¶</a></h3>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;npm test가 실패해. 원인을 찾아 수정하고 전체 테스트 통과까지 확인해줘. 테스트 파일은 명세이므로 수정하지 마.&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span>--permission-mode<span class="w"> </span>acceptEdits<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Read,Edit,Grep,Glob,Bash(npm test)&quot;</span>
+<div class="language-javascript highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1">// src/userService.js</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">getUserPlan</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">getUser</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">user</span><span class="p">.</span><span class="nx">profile</span><span class="p">.</span><span class="nx">plan</span><span class="p">;</span><span class="w">                  </span><span class="c1">// ← id 3 에서 터진다</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><code>test.js</code>의 세 번째 테스트가 <code>profile</code> 없는 사용자에게 <code>"unknown"</code>을 기대합니다.</p>
+<h3 id="3-1-버그-재현">3-1. 버그 재현<a class="headerlink" href="#3-1-버그-재현" title="이 위치로 링크">¶</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="gp">$ </span>npm<span class="w"> </span><span class="nb">test</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="go">Test 1 - pro 플랜 사용자: PASS</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="go">Test 2 - free 플랜 사용자: PASS</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="go">  return user.profile.plan;</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="go">                      ^</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="go">TypeError: Cannot read properties of undefined (reading &#39;plan&#39;)</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="go">    at getUserPlan (.../src/userService.js:9:23)</span>
+</span></code></pre></div>
+<p>교재가 예시로 적어둔 에러와 정확히 같습니다.</p>
+<h3 id="3-2-교재-프롬프트를-그대로-전달">3-2. 교재 프롬프트를 그대로 전달<a class="headerlink" href="#3-2-교재-프롬프트를-그대로-전달" title="이 위치로 링크">¶</a></h3>
+<p>랩이 주는 문구를 한 글자도 바꾸지 않고 넣었습니다.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;npm test 실행 시 다음 에러가 발생합니다. 원인을 찾고 수정해 주세요.</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="go">TypeError: Cannot read properties of undefined (reading &#39;plan&#39;)</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="go">at getUserPlan (src/userService.js:9)</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="go">기대 동작: profile이 없는 사용자는 \&quot;unknown\&quot;을 반환해야 합니다.</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="go">수정 후 npm test로 3개 테스트가 모두 PASS 하는지 직접 확인해 주세요.&quot; \</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="go">    --permission-mode acceptEdits \</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="go">    --allowed-tools &quot;Read,Edit,Write,Grep,Glob,Bash(npm test)&quot; \</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="go">    --output-format stream-json --verbose</span>
 </span></code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>여기서 <strong><code>--allowed-tools</code>에 <code>Bash(npm test)</code>만</strong> 넣은 게 포인트입니다.
-<a href="../part-09-workflow-patterns/">Part 9</a>에서 정리한 "무인 실행의 안전선"을 실제로 적용해봤습니다. 테스트는 돌릴 수 있지만 다른 셸 명령은 못 씁니다.
-그리고 <code>"테스트 파일은 명세이므로 수정하지 마"</code> — <strong>테스트를 고쳐서 통과시키는 부정행위를 막는 지시</strong>입니다. 이건 꼭 넣어야 합니다.</p>
+<p>이 프롬프트가 좋은 교보재입니다. <strong>에러 메시지 + 기대 동작 + 검증 방법</strong>이 한 번에 들어 있습니다. <a href="../part-05-quick-start/">Part 5</a>에서 정리한 "범위 + 완료 기준"이 그대로 구현된 형태입니다.</p>
 </div>
-<h3 id="3-3-claude의-응답">3-3. Claude의 응답<a class="headerlink" href="#3-3-claude의-응답" title="이 위치로 링크">¶</a></h3>
-<blockquote>
-<p>4/4 통과했습니다.</p>
-<p><strong>원인</strong> — <code>src/checkout.js:3</code>에서 <code>card.expiry.split('-')</code>를 무조건 호출했는데, <code>expiry</code> 필드가 없는 카드(<code>charge({}, ...)</code>)에서는 <code>undefined.split</code> → <code>TypeError</code>가 발생했습니다. 명세(테스트)는 이 경우 예외가 아니라 <code>{ ok: false, error: 'CARD_EXPIRED' }</code> 반환을 요구합니다.</p>
-<p><strong>수정</strong> — <code>isExpired</code>에 입력 검증을 추가했습니다:
-- <code>card?.expiry</code>가 문자열이 아니면(없음/null/숫자 등) 만료로 처리
-- 파싱 결과가 정수가 아니거나 월이 1~12 범위를 벗어나면(<code>'abc'</code>, <code>'2026-13'</code> 같은 잘못된 형식) 만료로 처리</p>
-<p>정상 경로의 날짜 비교 로직은 그대로 두었습니다. 테스트 파일은 수정하지 않았습니다.</p>
-<p>주의할 점 하나: 잘못된 형식을 <code>CARD_EXPIRED</code>로 뭉뚱그리는 건 테스트가 요구하는 동작이지만, 실제 서비스라면 "만료됨"과 "카드 정보 오류"는 사용자에게 다른 안내가 필요할 수 있습니다. 명세를 넘어서는 변경이라 별도 에러 코드는 추가하지 않았습니다.</p>
-</blockquote>
-<h3 id="3-4-실제-변경-내용-git-diff--승인-전-반드시-읽어야-할-부분">3-4. 실제 변경 내용 (<code>git diff</code>) — <strong>승인 전 반드시 읽어야 할 부분</strong><a class="headerlink" href="#3-4-실제-변경-내용-git-diff--승인-전-반드시-읽어야-할-부분" title="이 위치로 링크">¶</a></h3>
-<div class="language-diff highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="gd">--- a/src/checkout.js</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="gi">+++ b/src/checkout.js</span>
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="gu">@@ -1,6 +1,13 @@</span>
-</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w"> </span>function isExpired(card, now) {
-</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w"> </span>  // YYYY-MM 형식의 만료월을 비교한다
-</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="gi">+  // 만료월이 없거나 형식이 잘못된 카드는 만료된 것으로 취급한다</span>
-</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="gi">+  if (typeof card?.expiry !== &#39;string&#39;) {</span>
-</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="gi">+    return true;</span>
-</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="gi">+  }</span>
-</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w"> </span>  const [y, m] = card.expiry.split(&#39;-&#39;).map(Number);
-</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="gi">+  if (!Number.isInteger(y) || !Number.isInteger(m) || m &lt; 1 || m &gt; 12) {</span>
-</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="gi">+    return true;</span>
-</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="gi">+  }</span>
-</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w"> </span>  const expiryEnd = new Date(y, m, 0, 23, 59, 59);
-</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="w"> </span>  return now &gt; expiryEnd;
-</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="w"> </span>}
+<h3 id="3-3-자율-작업-흐름-관찰--교재-예측과-실제가-달랐던-지점">3-3. 자율 작업 흐름 관찰 — 교재 예측과 실제가 달랐던 지점<a class="headerlink" href="#3-3-자율-작업-흐름-관찰--교재-예측과-실제가-달랐던-지점" title="이 위치로 링크">¶</a></h3>
+<p>랩의 "관찰 포인트"는 이렇게 예고합니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Read  src/userService.js    # 에러 지점 확인
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>Grep  &quot;profile&quot;             # 영향 범위 검색
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>Edit  src/userService.js    # 옵셔널 체이닝 + 기본값
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>Bash  npm test              # 수정 검증
 </span></code></pre></div>
-<h3 id="3-5-재검증">3-5. 재검증<a class="headerlink" href="#3-5-재검증" title="이 위치로 링크">¶</a></h3>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="gp">$ </span>npm<span class="w"> </span><span class="nb">test</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="go">✔ 정상 카드는 결제된다 (1.512625ms)</span>
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="go">✔ 만료 카드는 거부된다 (0.063ms)</span>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="go">✔ 만료월 당월 말일까지는 결제된다 (0.050917ms)</span>
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="go">✔ expiry 가 없는 카드는 거부된다 (0.044125ms)</span>
-</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="go">ℹ tests 4</span>
-</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="go">ℹ pass 4</span>
-</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="go">ℹ fail 0</span>
+<p><code>--output-format stream-json</code>으로 실제 도구 호출을 뽑아봤습니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Bash(ls -la)  →  Read × 4  →  Edit  →  Bash(npm test)
 </span></code></pre></div>
 <div class="admonition tip">
-<p class="admonition-title">직접 해보고 알게 된 것</p>
-<ol>
-<li><strong>테스트가 요구한 것보다 한 발 더 나갔습니다.</strong> 테스트는 <code>expiry</code> 누락만 검사하는데, <code>'2026-13'</code>, <code>'abc'</code> 같은 잘못된 형식까지 방어했습니다. 요청하지 않은 범위이므로 <strong>diff를 읽지 않았으면 몰랐을 변경</strong>입니다.</li>
-<li>동시에 <strong>명세를 넘는 설계 변경(별도 에러 코드 추가)은 스스로 자제하고 마지막에 트레이드오프로 보고</strong>했습니다. 이 균형이 인상적이었습니다.</li>
-<li>교재의 체크포인트 "Edit 승인 전 diff를 직접 읽었는가"가 왜 중요한지 체감했습니다. 4/4 통과라는 결과만 보면 넘어갔을 변경이 있었습니다.</li>
-</ol>
+<p class="admonition-title">직접 해보고 알게 된 것 — <code>Grep</code>을 쓰지 않았습니다</p>
+<p>교재는 <code>Grep "profile"</code>로 영향 범위를 검색할 거라고 예고했는데, 실제로는 <strong><code>ls</code>로 구조를 보고 네 파일을 전부 읽었습니다.</strong>
+생각해보면 당연합니다. <strong>프로젝트가 4개 파일뿐이라 grep보다 전부 읽는 게 빠릅니다.</strong> 검색은 "다 읽기엔 큰" 코드베이스에서 의미가 생기는 도구입니다.</p>
+<p>교재의 흐름도가 틀린 게 아니라 <strong>상황에 따라 도구 선택이 달라진다</strong>는 걸 보여주는 사례입니다. <a href="../part-02-architecture/">Part 2</a>에서 "모델이 판단하고 하네스가 실행한다"고 했는데, 그 판단이 실제로 어떻게 갈리는지가 여기서 드러납니다.</p>
 </div>
-<p><strong>✅ Lab 3 완료 기준</strong>: 원인 규명 + diff 검토 + 재검증 통과 → 3/3 달성.
-<strong>⚠️ 미수행</strong>: <code>Esc Esc</code> 되감기는 헤드리스(<code>-p</code>) 모드에서는 불가능합니다. 대화형 세션에서 별도로 시도해야 합니다.</p>
+<h3 id="3-4-수정-결과">3-4. 수정 결과<a class="headerlink" href="#3-4-수정-결과" title="이 위치로 링크">¶</a></h3>
+<p>Claude의 설명:</p>
+<blockquote>
+<p><strong>원인</strong>: <code>src/users.js:6</code>의 사용자 <code>{ id: 3, name: "Park" }</code>는 마이그레이션이 안 되어 <code>profile</code> 필드가 없습니다. <code>getUserPlan</code>은 <code>user.profile.plan</code>을 무방비로 접근해서 <code>undefined.plan</code>에서 TypeError가 발생했습니다.</p>
+<p><strong>수정</strong>: <code>return user?.profile?.plan ?? "unknown";</code></p>
+<p>옵셔널 체이닝으로 <code>profile</code> 누락을 처리하고, <code>??</code>로 <code>"unknown"</code> 폴백을 줬습니다. <strong><code>user?.</code>까지 붙인 이유는 존재하지 않는 id를 조회할 때 <code>getUser</code>가 <code>undefined</code>를 반환하는 같은 계열의 크래시도 함께 막기 위해서입니다.</strong></p>
+</blockquote>
+<div class="language-diff highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="w"> </span>export function getUserPlan(id) {
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w"> </span>  const user = getUser(id);
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="gd">-  return user.profile.plan;</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="gi">+  return user?.profile?.plan ?? &quot;unknown&quot;;</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w"> </span>}
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="gp">$ </span>npm<span class="w"> </span><span class="nb">test</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="go">Test 1 - pro 플랜 사용자: PASS</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="go">Test 2 - free 플랜 사용자: PASS</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="go">Test 3 - profile 없는 사용자: PASS</span>
+</span></code></pre></div>
+<p>교재가 예고한 수정 방향(<code>옵셔널 체이닝 + 기본값</code>)과 정확히 일치했습니다. 다만 <strong>요구된 범위보다 한 칸 더 방어했습니다</strong> — <code>user?.</code>는 이번 버그와 무관하지만 같은 계열의 크래시를 막습니다. 그리고 그 이유를 먼저 설명했습니다.</p>
+<h3 id="3-5-커밋-위임-task-5-4">3-5. 커밋 위임 (Task 5-4)<a class="headerlink" href="#3-5-커밋-위임-task-5-4" title="이 위치로 링크">¶</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;변경 내용을 검토하고, 적절한 커밋 메시지로 git 커밋해 주세요&quot;</span>
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="gp">$ </span>git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>-2
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="go">80604bd fix: profile 없는 사용자 조회 시 TypeError 방지</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="go">388cacd chore: initial lab project</span>
+</span></code></pre></div>
+<p>기존 커밋이 <code>chore:</code> 하나뿐이었는데 conventional commits 형식을 이어받았습니다.</p>
+<p><strong>✅ Lab 3 완료 기준</strong> — 교재 체크포인트 달성
+- [x] 버그 재현 (<code>npm test</code> 실패 확인)
+- [x] 자율 작업 흐름 관찰 (<code>stream-json</code>으로 도구 호출 순서 캡처)
+- [x] <code>npm test</code> 3개 전부 PASS
+- [x] 변경 검토 후 커밋</p>
 <hr />
 <h2 id="lab-4--plan-모드-기능-추가-소요-25분">Lab 4 — Plan 모드 기능 추가 (소요 25분)<a class="headerlink" href="#lab-4--plan-모드-기능-추가-소요-25분" title="이 위치로 링크">¶</a></h2>
 <p><img alt="Lab 4 — Plan 모드 기능 추가 슬라이드" src="../slides/slide-177.png" /></p>
 <p><em>▲ 교재 슬라이드 177 — Lab 4 — Plan 모드 기능 추가 (교재 원본 실습 안내)</em></p>
-<p>교재 경로 <code>claude-code-workshop/ch1/lab4-todo-api</code> 역시 현재 저장소에 없어서, <strong>할 일 목록 API를 직접 만들어</strong> 진행했습니다.</p>
+<p>PDF의 Lab 4(<code>ch1/lab4-todo-api</code>) 역시 실재하지 않는 경로입니다. Hands-on Lab HTML에서는 이 내용이 <strong>Task 5의 후반부</strong>에 들어 있습니다 — Lab 3에서 고친 그 프로젝트에 이어서 soft delete 기능을 Plan 모드로 추가하는 흐름입니다.</p>
 <div class="admonition tip">
 <p class="admonition-title">처음엔 '헤드리스로는 불가능'이라고 판단했는데 틀렸습니다</p>
 <p>Plan 모드 진입이 <code>Shift+Tab</code> 키 입력이라 대화형이 필수라고 생각했지만, <strong><code>--permission-mode plan</code>으로 진입하고 <code>--resume &lt;session_id&gt;</code>로 세션을 이어붙이면 계획 협상이 그대로 재현됩니다.</strong>
-키 입력이 필요한 건 <em>UI 조작</em>이지 <em>기능</em> 이 아니었습니다. 덕분에 Lab 4도 재현 가능한 기록으로 남길 수 있었습니다.</p>
+키 입력이 필요한 건 <em>UI 조작</em>이지 <em>기능</em> 이 아니었습니다.</p>
 </div>
-<h3 id="4-0-실습용-프로젝트">4-0. 실습용 프로젝트<a class="headerlink" href="#4-0-실습용-프로젝트" title="이 위치로 링크">¶</a></h3>
-<p>의존성 0개짜리 할 일 API입니다. 조회 엔드포인트 두 개와 테스트 두 개로 시작합니다.</p>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="gp">$ </span>find<span class="w"> </span>.<span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-not<span class="w"> </span>-path<span class="w"> </span><span class="s1">&#39;./.git/*&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="go">./package.json</span>
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="go">./src/routes.js        # &quot;GET /todos&quot; 같은 문자열 키 → 핸들러 매핑</span>
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="go">./src/routes.test.js</span>
-</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="go">./src/store.js         # 메모리 배열 + listTodos(ownerId) / getTodo(id)</span>
-</span></code></pre></div>
 <h3 id="4-1-plan-모드로-계획-요청">4-1. Plan 모드로 계획 요청<a class="headerlink" href="#4-1-plan-모드로-계획-요청" title="이 위치로 링크">¶</a></h3>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;할 일 목록 API에 완료율 통계 엔드포인트를 추가하고 싶어. 계획을 세워줘.&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">    </span>--permission-mode<span class="w"> </span>plan<span class="w"> </span>--output-format<span class="w"> </span>json
+<p>교재가 주는 요구사항을 그대로 넣었습니다.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;사용자 soft delete 기능을 추가해 주세요.</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="go">- users 데이터에 deletedAt 필드 (기본 null)</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="go">- removeUser(id): deletedAt에 현재 시각 기록</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="go">- getUser / getUserPlan은 삭제된 사용자를 제외해야 합니다</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="go">- test.js에 삭제 시나리오 테스트 추가</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="go">구현 전에 계획을 먼저 보여 주세요.&quot; \</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="go">    --permission-mode plan --output-format json</span>
 </span></code></pre></div>
-<p>Claude가 내놓은 계획 (발췌):</p>
+<p>계획 (발췌):</p>
 <blockquote>
-<p>이 리포는 파일 4개짜리입니다 — 프레임워크도, 의존성도, <strong>HTTP 서버조차 없습니다</strong>.</p>
-<p><strong>변경 3곳:</strong> <code>src/store.js</code>에 <code>statsFor(ownerId)</code> 추가 / <code>src/routes.js</code>에 <code>'GET /todos/stats'</code> 등록 / <code>src/routes.test.js</code>에 테스트 4개</p>
-<p><strong>확인이 필요한 판단 3가지</strong> (물어볼 툴이 없어 제가 정하고 계획서에 명시했습니다):
-1. <code>rate</code>는 0~100 백분율, 소수점 1자리
-2. <code>ownerId</code> 누락 시 <code>400 OWNER_REQUIRED</code> — <strong>이게 가장 논쟁적입니다.</strong> 기존 <code>GET /todos</code>는 <code>ownerId</code>가 없어도 조용히 <code>[]</code>를 주는데, 통계에서 그렇게 하면 "할 일이 0개"와 "파라미터를 빼먹음"이 구분되지 않습니다. 다만 <strong>이 리포에 400을 쓰는 곳이 아직 없어 새 선례를 만드는 결정</strong>입니다.
-3. 소유자 스코프만 지원</p>
+<ul>
+<li><code>getUser</code>: <code>users.find((u) =&gt; u.id === id &amp;&amp; !u.deletedAt)</code> — <strong><code>!u.deletedAt</code>을 쓰면 필드가 없는 미마이그레이션 레코드도 "삭제 안 됨"으로 안전하게 처리됩니다 (기존 <code>profile</code> 방어 패턴과 동일한 이유)</strong></li>
+<li><code>getUserPlan</code>: <strong>수정 불필요</strong> — 이미 <code>getUser</code>를 호출하므로 삭제된 사용자는 <code>undefined</code> → <code>?.</code> 체이닝으로 <code>"unknown"</code> 반환</li>
+<li><code>removeUser(id)</code>: 성공 시 <code>true</code> / 없거나 이미 삭제됐으면 <code>false</code> (<strong>최초 삭제 시각이 덮어써지지 않음</strong>)</li>
+</ul>
+<p>판단이 필요했던 두 지점을 짚어둡니다:
+- <strong>이미 삭제된 사용자 재삭제</strong>: <code>false</code>를 반환하고 원래 <code>deletedAt</code>을 보존하도록 했습니다. 만약 삭제 시각을 갱신하는 쪽이 맞다면 알려주세요.
+- <strong><code>getUserPlan</code>은 코드 변경이 없습니다.</strong> 요구사항은 <code>getUser</code> 수정만으로 충족되며, 테스트로 이를 확인합니다.</p>
 </blockquote>
-<p>파일 변경 확인:
-<div class="language-console highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="gp">$ </span>git<span class="w"> </span>status<span class="w"> </span>--porcelain
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="gp gp-VirtualEnv">(출력 없음 — Plan 모드이므로 소스를 건드리지 않음)</span>
-</span></code></pre></div></p>
+<p><code>git status</code>는 비어 있었습니다 (Plan 모드는 소스를 건드리지 않음).</p>
 <div class="admonition tip">
-<p class="admonition-title">여기가 Plan 모드의 진짜 값어치입니다</p>
-<p>시키지도 않았는데 <strong>"이 결정이 새 선례를 만든다"</strong> 는 걸 짚고, 그중 뭐가 논쟁적인지 순위까지 매겼습니다.
-만약 Plan 없이 바로 시켰다면 400을 반환하는 코드가 그냥 들어왔을 것이고, 저는 diff에서 상태 코드만 보고 넘어갔을 겁니다. <strong>"왜 400인가"라는 질문 자체가 생기지 않았을 것</strong>입니다.</p>
+<p class="admonition-title">요구사항을 그대로 받아 적지 않았습니다</p>
+<p>교재는 "<code>getUser</code> / <code>getUserPlan</code>은 삭제된 사용자를 제외해야 함"이라고 했는데, Claude는 <strong><code>getUserPlan</code>은 고칠 필요가 없다</strong>고 판단하고 그 근거를 댔습니다. Lab 3에서 이미 <code>?.</code> 체이닝을 넣었기 때문입니다.
+요구사항을 액면 그대로 구현했다면 중복 방어가 들어갔을 겁니다. <strong>직전 작업의 맥락을 이어서 판단한 것</strong>입니다.</p>
 </div>
 <h3 id="4-2-계획-협상--랩의-핵심-미션">4-2. 계획 협상 — 랩의 핵심 미션<a class="headerlink" href="#4-2-계획-협상--랩의-핵심-미션" title="이 위치로 링크">¶</a></h3>
-<p>교재 미션 1번인 "계획에서 한 항목을 수정 요청해 볼 것"입니다. 두 항목을 바꿔 달라고 했습니다.</p>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;계획 검토했어. 두 가지 바꿔줘.</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="go">1) rate는 0~100 백분율 말고 0~1 비율로 해줘. 나중에 프론트에서 포맷하는 게 낫겠어.</span>
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="go">2) ownerId 누락 시 400은 빼줘. 기존 GET /todos가 조용히 []를 주는 것과 일관성을 맞추는 게 우선이야. 200에 0값으로.</span>
-</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="go">나머지는 그대로 진행해.&quot; \</span>
-</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="go">    --resume &quot;$SID&quot; --permission-mode plan --output-format json</span>
+<p>랩은 <em>"테스트는 별도 파일로 분리해 주세요"처럼 <strong>수정 지시 후 재계획</strong>을 받아 보세요"</em> 라고 안내합니다. 그대로 해봤습니다.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;테스트는 별도 파일로 분리해 주세요. test.js 에 다 넣지 말고</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="go">soft delete 시나리오는 test-softdelete.js 로 빼주세요. npm test 로 둘 다 돌아가야 합니다.&quot; \</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="go">    --resume &quot;$SID&quot; --permission-mode plan --output-format json</span>
 </span></code></pre></div>
-<p>응답:</p>
+<p>응답 (발췌):</p>
 <blockquote>
-<p>두 가지 반영했습니다.</p>
-<ol>
-<li><strong><code>rate</code> → 0~1 비율</strong>, 반올림 없이 <code>done / total</code> 그대로. <code>total === 0</code> 가드는 남겨뒀습니다 — <code>0/0</code>은 <code>NaN</code>이고 JSON에서 <code>null</code>로 나가버리기 때문입니다.</li>
-<li><strong>400 제거.</strong> 핸들러에 검증 분기가 없어져서 기존 <code>'GET /todos'</code>와 똑같은 한 줄 화살표 함수가 됐습니다.</li>
-</ol>
-<p><strong>구현할 때 걸릴 만한 것 두 개를 계획서에 적어뒀습니다:</strong>
-- <code>ownerId</code> 누락 시 body가 <code>{ ownerId: undefined, ... }</code>가 되는데, <code>deepStrictEqual</code>은 "값이 undefined인 키"와 "없는 키"를 다르게 봅니다. 그 테스트만 필드별 <code>strictEqual</code>로 단언하도록 명시했습니다.
-- <code>rate</code> 단언은 <code>0.3333333333333333</code> 리터럴 대신 <code>1 / 3</code>로 쓰도록 했습니다.</p>
-</blockquote>
-<p>이 단계에서도 <code>git status</code>는 여전히 비어 있었습니다.</p>
-<div class="admonition tip">
-<p class="admonition-title">직접 해보고 알게 된 것</p>
-<p>제 요구를 그냥 받아 적은 게 아니라, <strong>그 요구가 만들어낼 부작용을 미리 계산했습니다.</strong>
-<code>0/0 = NaN</code> → JSON에서 <code>null</code>이 되는 문제, <code>deepStrictEqual</code>이 <code>undefined</code> 키를 다르게 보는 문제 — 둘 다 구현 단계에서 테스트가 깨진 뒤에야 발견됐을 것들입니다.
-<strong>계획을 협상하면 버그를 코드가 아니라 문서에서 잡습니다.</strong></p>
-</div>
-<h3 id="4-3-승인-후-구현">4-3. 승인 후 구현<a class="headerlink" href="#4-3-승인-후-구현" title="이 위치로 링크">¶</a></h3>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;좋아, 그 계획대로 구현해줘. 끝나면 npm test 로 전체 통과까지 확인해줘.&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">    </span>--resume<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$SID</span><span class="s2">&quot;</span><span class="w"> </span>--permission-mode<span class="w"> </span>acceptEdits<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">    </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Read,Edit,Write,Grep,Glob,Bash(npm test)&quot;</span>
-</span></code></pre></div>
-<h3 id="4-4-변경-검토-git-diff">4-4. 변경 검토 (<code>git diff</code>)<a class="headerlink" href="#4-4-변경-검토-git-diff" title="이 위치로 링크">¶</a></h3>
-<div class="language-diff highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="gd">--- a/src/store.js</span>
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="gi">+++ b/src/store.js</span>
-</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="gi">+// 소유자별 완료 현황 집계. rate 는 0~1 비율이며 포맷팅은 클라이언트 몫이다.</span>
-</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="gi">+function statsFor(ownerId) {</span>
-</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="gi">+  const items = listTodos(ownerId);</span>
-</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="gi">+  const total = items.length;</span>
-</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="gi">+  const done = items.filter(t =&gt; t.done).length;</span>
-</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="gi">+  return {</span>
-</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="gi">+    total,</span>
-</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="gi">+    done,</span>
-</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="gi">+    notDone: total - done,</span>
-</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="gi">+    rate: total === 0 ? 0 : done / total,</span>
-</span><span id="__span-22-13"><a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="gi">+  };</span>
-</span><span id="__span-22-14"><a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="gi">+}</span>
-</span></code></pre></div>
-<div class="language-diff highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="gd">--- a/src/routes.js</span>
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="gi">+++ b/src/routes.js</span>
-</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="gd">-const { listTodos, getTodo } = require(&#39;./store&#39;);</span>
-</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="gi">+const { listTodos, getTodo, statsFor } = require(&#39;./store&#39;);</span>
-</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>
-</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w"> </span>  &#39;GET /todos&#39;: (q) =&gt; ({ status: 200, body: listTodos(q.ownerId) }),
-</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="gi">+  &#39;GET /todos/stats&#39;: (q) =&gt; ({ status: 200, body: { ownerId: q.ownerId, ...statsFor(q.ownerId) } }),</span>
-</span></code></pre></div>
-<p>협상한 내용이 그대로 반영됐습니다. <code>rate</code>는 0~1 비율이고, 400 분기는 없으며, <code>total === 0</code> 가드도 살아 있습니다.</p>
-<p>테스트 파일에는 계획서에 적힌 주의사항이 주석으로 남았습니다.</p>
-<div class="language-javascript highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1">// ownerId 누락 시 body.ownerId 는 undefined 라 deepStrictEqual 로는 비교가 어렵다.</span>
-</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="nx">test</span><span class="p">(</span><span class="s1">&#39;ownerId 가 없으면 빈 통계를 반환한다&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">handle</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;/todos/stats&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{});</span>
-</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">total</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">);</span>
-</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">rate</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">);</span>
-</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="p">});</span>
-</span></code></pre></div>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="gp">$ </span>npm<span class="w"> </span><span class="nb">test</span>
-</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="go">✔ u1 의 할 일 목록을 반환한다</span>
-</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="go">✔ 없는 id 는 404</span>
-</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="go">✔ u1 의 완료율 통계를 반환한다</span>
-</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="go">✔ 모두 완료한 소유자는 완료율 1</span>
-</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="go">✔ 할 일이 없는 소유자는 완료율 0</span>
-</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="go">✔ ownerId 가 없으면 빈 통계를 반환한다</span>
-</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="go">ℹ tests 6</span>
-</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="go">ℹ pass 6</span>
-</span><span id="__span-25-10"><a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="go">ℹ fail 0</span>
-</span></code></pre></div>
-<h3 id="4-5-커밋-메시지-작성까지-위임">4-5. 커밋 메시지 작성까지 위임<a class="headerlink" href="#4-5-커밋-메시지-작성까지-위임" title="이 위치로 링크">¶</a></h3>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;변경 검토 끝났어. 이 저장소의 기존 커밋 스타일에 맞춰 커밋 메시지를 작성하고 커밋까지 해줘.&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">    </span>--resume<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$SID</span><span class="s2">&quot;</span><span class="w"> </span>--permission-mode<span class="w"> </span>acceptEdits<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Read,Grep,Glob,Bash(git log:*),Bash(git status:*),Bash(git diff:*),Bash(git add:*),Bash(git commit:*)&quot;</span>
-</span></code></pre></div>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="gp">$ </span>git<span class="w"> </span>log<span class="w"> </span>-1
-</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="go">61ad701 feat: 완료율 통계 엔드포인트 추가</span>
-</span></code></pre></div>
-<p>그런데 커밋만 하고 끝내지 않았습니다.</p>
-<blockquote>
-<p><strong>두 가지 알려드릴 점:</strong>
-1. <strong><code>main</code>에 바로 커밋했습니다.</strong> 보통은 기본 브랜치에서 작업할 때 브랜치를 먼저 파지만, 이 저장소는 리모트 없는 로컬 스크래치패드이고 커밋 요청이 명시적이어서 그대로 진행했습니다.
-2. <strong>git이 커밋 작성자를 자동 추론했다고 경고했습니다</strong> — <code>추진주 &lt;jade@chujinjuui-Macmini.local&gt;</code>. 호스트명 기반이라 의도한 이메일과 다릅니다. (…) <strong>설정 변경은 제가 임의로 하지 않았습니다.</strong></p>
+<ul>
+<li><strong><code>test-helpers.js</code> (신규)</strong> — <code>check</code> 헬퍼를 추출. 4줄짜리 함수를 복붙해 두 곳이 어긋나는 걸 막습니다.</li>
+<li><strong><code>package.json</code></strong> — <code>"test": "node test.js &amp;&amp; node test-softdelete.js"</code></li>
+</ul>
+<p>분리에 <strong>부수적 이점</strong>이 하나 있습니다: 삭제 테스트가 모듈 전역 <code>users</code> 배열을 변경하는데, 파일이 나뉘면 <strong>별도 node 프로세스로 실행</strong>되어 <code>test.js</code>의 조회 테스트가 삭제 부수효과에 오염될 여지가 아예 없어집니다. 한 파일에 몰아넣었을 때 필요했던 "순서 주의" 제약이 사라집니다.</p>
+<p><strong>한 가지 짚어둘 점</strong>: <code>check</code>는 <code>console.log</code>만 하고 exit code를 건드리지 않습니다. 그래서 테스트가 FAIL 해도 <code>npm test</code>는 exit 0으로 끝납니다 (…) CI에서 실패를 잡으려면 <code>process.exitCode = 1</code>을 세팅해야 하는데, 이건 기존 동작을 바꾸는 범위 확대라 계획에서 뺐습니다.</p>
 </blockquote>
 <div class="admonition tip">
 <p class="admonition-title">직접 해보고 알게 된 것</p>
-<p>커밋 메시지는 <code>feat:</code> 접두사로 나왔는데, 이 저장소의 기존 커밋은 <code>init: 할 일 목록 API</code> 하나뿐이었습니다. <strong>한 개짜리 이력에서 컨벤션을 추론한 것</strong>입니다.
-더 인상적이었던 건 <strong>전역 git 설정을 고치라고 명령까지 알려주면서도 스스로는 실행하지 않은 것</strong>입니다. 요청 범위(커밋)를 넘는 변경이라고 판단한 거죠.
-<a href="../part-06-core-capabilities/">Part 6</a>에서 "<code>Bash(git commit:*)</code>처럼 좁게 허용하라"고 한 게 이런 상황에서 의미가 생깁니다. 허용 목록에 <code>git config</code>가 없었으니 애초에 할 수도 없었습니다.</p>
+<p>제 요구는 "파일을 나눠달라"였는데, <strong>왜 나누는 게 더 나은지를 제가 몰랐던 이유로 설명했습니다.</strong> 삭제 테스트가 전역 배열을 오염시키는 문제가 프로세스 분리로 자동 해결된다는 것 — 저는 그냥 정리 차원에서 요청한 것이었습니다.</p>
+<p>그리고 <strong>범위를 넘는 개선(exit code)은 하지 않고 보고만 했습니다.</strong> "이건 기존 동작을 바꾸는 범위 확대라 계획에서 뺐다"고 명시했습니다. 요청하지 않은 변경을 슬쩍 끼워넣지 않는 태도가 <a href="../part-05-quick-start/">Part 5</a>의 "범위 고정"과 맞물립니다.</p>
 </div>
-<p><strong>✅ Lab 4 완료 기준</strong> — 교재 미션 3개 전부 달성
-- [x] Plan 모드 진입 (<code>--permission-mode plan</code>, 파일 수정 0건 확인)
-- [x] <strong>계획에서 항목 수정 요청</strong> (<code>rate</code> 형식 + 400 제거 → 반영 확인)
-- [x] 승인 후 구현, <code>git diff</code>로 변경 검토 (6/6 통과)
-- [x] 커밋 메시지 작성까지 위임</p>
+<h3 id="4-3-승인-후-구현과-회귀-확인">4-3. 승인 후 구현과 회귀 확인<a class="headerlink" href="#4-3-승인-후-구현과-회귀-확인" title="이 위치로 링크">¶</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;좋아요, 그 계획대로 구현해 주세요.&quot;</span><span class="w"> </span>--resume<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$SID</span><span class="s2">&quot;</span><span class="w"> </span>--permission-mode<span class="w"> </span>acceptEdits
+</span></code></pre></div>
+<p>최종 코드:</p>
+<div class="language-javascript highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">getUser</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">  </span><span class="c1">// deletedAt 필드가 없는 레코드는 &quot;삭제 안 됨&quot;으로 취급</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">users</span><span class="p">.</span><span class="nx">find</span><span class="p">((</span><span class="nx">u</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">u</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">id</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="nx">u</span><span class="p">.</span><span class="nx">deletedAt</span><span class="p">);</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="p">}</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">getUserPlan</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">getUser</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">user</span><span class="o">?</span><span class="p">.</span><span class="nx">profile</span><span class="o">?</span><span class="p">.</span><span class="nx">plan</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="s2">&quot;unknown&quot;</span><span class="p">;</span><span class="w">   </span><span class="c1">// ← Lab 3 의 수정이 그대로 살아있다</span>
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="p">}</span>
+</span><span id="__span-25-10"><a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>
+</span><span id="__span-25-11"><a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="c1">// 이미 삭제됐거나 존재하지 않는 사용자면 false (최초 삭제 시각을 덮어쓰지 않음)</span>
+</span><span id="__span-25-12"><a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a><span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">removeUser</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-25-13"><a id="__codelineno-25-13" name="__codelineno-25-13" href="#__codelineno-25-13"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">getUser</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+</span><span id="__span-25-14"><a id="__codelineno-25-14" name="__codelineno-25-14" href="#__codelineno-25-14"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">user</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+</span><span id="__span-25-15"><a id="__codelineno-25-15" name="__codelineno-25-15" href="#__codelineno-25-15"></a><span class="w">  </span><span class="nx">user</span><span class="p">.</span><span class="nx">deletedAt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">().</span><span class="nx">toISOString</span><span class="p">();</span>
+</span><span id="__span-25-16"><a id="__codelineno-25-16" name="__codelineno-25-16" href="#__codelineno-25-16"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+</span><span id="__span-25-17"><a id="__codelineno-25-17" name="__codelineno-25-17" href="#__codelineno-25-17"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>교재의 마지막 체크포인트인 터미널 회귀 확인:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="gp">$ </span>npm<span class="w"> </span><span class="nb">test</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="go">Test 1 - pro 플랜 사용자: PASS</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="go">Test 2 - free 플랜 사용자: PASS</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="go">Test 3 - profile 없는 사용자: PASS</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="go">Test 1 - 삭제 전 기준선: PASS</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="go">Test 2 - removeUser 반환값: PASS</span>
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="go">Test 3 - 삭제 후 getUser 제외: PASS</span>
+</span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="go">Test 4 - 삭제 후 getUserPlan 제외: PASS</span>
+</span><span id="__span-26-9"><a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="go">Test 5 - 이미 삭제된 사용자 재삭제: PASS</span>
+</span><span id="__span-26-10"><a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="go">Test 6 - 존재하지 않는 사용자 삭제: PASS</span>
+</span><span id="__span-26-11"><a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a><span class="go">Test 7 - 다른 사용자는 영향 없음: PASS</span>
+</span><span id="__span-26-12"><a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a><span class="go">Test 8 - deletedAt 타임스탬프 기록: PASS</span>
+</span></code></pre></div>
+<p><strong>✅ Lab 4 완료 기준</strong> — 교재 체크포인트 3개 달성
+- [x] <code>npm test</code> 3개가 모두 PASS로 바뀌었다 (Lab 3)
+- [x] <strong>Plan 모드에서 계획을 검토하고 승인 / 수정을 경험했다</strong>
+- [x] Plan 실행 후 터미널 <code>npm test</code>가 전부 PASS다 (11/11)</p>
 <hr />
 <h2 id="lab-5--headless-자동화-소요-15분">Lab 5 — Headless 자동화 (소요 15분)<a class="headerlink" href="#lab-5--headless-자동화-소요-15분" title="이 위치로 링크">¶</a></h2>
 <p><img alt="Lab 5 — Headless 자동화 슬라이드" src="../slides/slide-178.png" /></p>
 <p><em>▲ 교재 슬라이드 178 — Lab 5 — Headless 자동화 (교재 원본 실습 안내)</em></p>
 <h3 id="5-1-파이프-입력--로그-분석">5-1. 파이프 입력 — 로그 분석<a class="headerlink" href="#5-1-파이프-입력--로그-분석" title="이 위치로 링크">¶</a></h3>
 <p>샘플 로그(<code>/tmp/ccw-sample.log</code>)를 만들어 파이프로 넣었습니다.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>2026-08-02 10:01:03 INFO  request id=a91 path=/api/orders status=200 12ms
-</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>2026-08-02 10:01:07 INFO  request id=a92 path=/api/orders status=200 15ms
-</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>2026-08-02 10:01:11 ERROR request id=a93 path=/api/pay   status=500 3021ms UnhandledPromiseRejection
-</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>2026-08-02 10:01:12 ERROR request id=a94 path=/api/pay   status=500 3044ms UnhandledPromiseRejection
-</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>2026-08-02 10:01:19 WARN  db pool exhausted active=20 idle=0
+<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>2026-08-02 10:01:03 INFO  request id=a91 path=/api/orders status=200 12ms
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>2026-08-02 10:01:07 INFO  request id=a92 path=/api/orders status=200 15ms
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>2026-08-02 10:01:11 ERROR request id=a93 path=/api/pay   status=500 3021ms UnhandledPromiseRejection
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>2026-08-02 10:01:12 ERROR request id=a94 path=/api/pay   status=500 3044ms UnhandledPromiseRejection
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>2026-08-02 10:01:19 WARN  db pool exhausted active=20 idle=0
 </span></code></pre></div>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="gp">$ </span>cat<span class="w"> </span>/tmp/ccw-sample.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;이상 징후가 있으면 원인 후보와 함께 3줄로 보고&quot;</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="gp">$ </span>cat<span class="w"> </span>/tmp/ccw-sample.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;이상 징후가 있으면 원인 후보와 함께 3줄로 보고&quot;</span>
 </span></code></pre></div>
 <p>응답:</p>
 <blockquote>
@@ -1290,20 +1254,20 @@
 </div>
 <h3 id="5-2-도구-제한-안전-실행--정말-막히는지-검증">5-2. 도구 제한 안전 실행 — <strong>정말 막히는지 검증</strong><a class="headerlink" href="#5-2-도구-제한-안전-실행--정말-막히는지-검증" title="이 위치로 링크">¶</a></h3>
 <p>문서로만 "안전하다"고 쓰긴 싫어서, <strong>쓰기 도구를 뺀 상태로 일부러 파일 수정을 시켜봤습니다.</strong></p>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;CHANGELOG.md 파일 맨 아래에 &#39;테스트&#39; 라는 줄을 추가해줘&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">    </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Read,Grep,Glob&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>json
+<div class="language-console highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;CHANGELOG.md 파일 맨 아래에 &#39;테스트&#39; 라는 줄을 추가해줘&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="w">    </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Read,Grep,Glob&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>json
 </span></code></pre></div>
 <p>응답:</p>
 <blockquote>
 <p>CHANGELOG.md 맨 아래에 <code>테스트</code> 줄을 추가하려 했으나, <strong>파일 쓰기 권한이 아직 허용되지 않아 편집이 적용되지 않았습니다.</strong></p>
 </blockquote>
 <p><code>permission_denials</code> 필드:
-<div class="language-json highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="p">[{</span><span class="nt">&quot;tool_name&quot;</span><span class="p">:</span><span class="s2">&quot;Edit&quot;</span><span class="p">,</span><span class="nt">&quot;tool_use_id&quot;</span><span class="p">:</span><span class="s2">&quot;toolu_01TQ6nnwGAphwTpKiDB98xrb&quot;</span><span class="p">,</span>
-</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span><span class="nt">&quot;tool_input&quot;</span><span class="p">:{</span><span class="nt">&quot;file_path&quot;</span><span class="p">:</span><span class="s2">&quot;.../CHANGELOG.md&quot;</span><span class="p">,</span><span class="nt">&quot;old_string&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="nt">&quot;new_string&quot;</span><span class="p">:</span><span class="s2">&quot;...\n\n테스트\n&quot;</span><span class="p">}}]</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="p">[{</span><span class="nt">&quot;tool_name&quot;</span><span class="p">:</span><span class="s2">&quot;Edit&quot;</span><span class="p">,</span><span class="nt">&quot;tool_use_id&quot;</span><span class="p">:</span><span class="s2">&quot;toolu_01TQ6nnwGAphwTpKiDB98xrb&quot;</span><span class="p">,</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">  </span><span class="nt">&quot;tool_input&quot;</span><span class="p">:{</span><span class="nt">&quot;file_path&quot;</span><span class="p">:</span><span class="s2">&quot;.../CHANGELOG.md&quot;</span><span class="p">,</span><span class="nt">&quot;old_string&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="nt">&quot;new_string&quot;</span><span class="p">:</span><span class="s2">&quot;...\n\n테스트\n&quot;</span><span class="p">}}]</span>
 </span></code></pre></div></p>
 <p>실제 파일 변경 여부:
-<div class="language-console highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="gp">$ </span>git<span class="w"> </span>status<span class="w"> </span>--porcelain
-</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="gp gp-VirtualEnv">(출력 없음 — 변경 없음)</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="gp">$ </span>git<span class="w"> </span>status<span class="w"> </span>--porcelain
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="gp gp-VirtualEnv">(출력 없음 — 변경 없음)</span>
 </span></code></pre></div></p>
 <div class="admonition success">
 <p class="admonition-title">검증 완료</p>
@@ -1312,37 +1276,37 @@
 그리고 <code>permission_denials</code>에 <strong>시도하려던 내용까지 통째로 기록</strong>된다는 걸 알게 됐습니다. CI에서 "에이전트가 뭘 하려다 막혔는지"를 감사 로그로 뽑을 수 있다는 뜻입니다.</p>
 </div>
 <h3 id="5-3-json-출력-후처리">5-3. JSON 출력 후처리<a class="headerlink" href="#5-3-json-출력-후처리" title="이 위치로 링크">¶</a></h3>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;Script/workshop-code 아래 마크다운 파일 개수를 세어서 숫자만 답해줘&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="w">    </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Bash(find:*),Glob&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>json<span class="w"> </span>&gt;<span class="w"> </span>out.json
-</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>
-</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="gp">$ </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.result&#39;</span><span class="w"> </span>out.json
-</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="go">562</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;Script/workshop-code 아래 마크다운 파일 개수를 세어서 숫자만 답해줘&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">    </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Bash(find:*),Glob&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>json<span class="w"> </span>&gt;<span class="w"> </span>out.json
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="gp">$ </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.result&#39;</span><span class="w"> </span>out.json
+</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="go">562</span>
 </span></code></pre></div>
 <p>응답 JSON의 최상위 키 전체:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>api_error_status   duration_api_ms   duration_ms   fast_mode_disabled_reason
-</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>fast_mode_state    is_error          modelUsage    num_turns
-</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>permission_denials result            session_id    stop_reason
-</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>subtype            terminal_reason   time_to_request_ms
-</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>total_cost_usd     ttft_ms           ttft_stream_ms  type   usage   uuid
+<div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>api_error_status   duration_api_ms   duration_ms   fast_mode_disabled_reason
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>fast_mode_state    is_error          modelUsage    num_turns
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>permission_denials result            session_id    stop_reason
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>subtype            terminal_reason   time_to_request_ms
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>total_cost_usd     ttft_ms           ttft_stream_ms  type   usage   uuid
 </span></code></pre></div></p>
 <p>메타데이터 발췌:
-<div class="language-json highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="p">{</span>
-</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">  </span><span class="nt">&quot;session_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8f580579-c5cf-4bfe-9178-43125217ef9f&quot;</span><span class="p">,</span>
-</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">  </span><span class="nt">&quot;total_cost_usd&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.109508</span><span class="p">,</span>
-</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="w">  </span><span class="nt">&quot;duration_ms&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3898</span><span class="p">,</span>
-</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="w">  </span><span class="nt">&quot;modelUsage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-35-6"><a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="w">    </span><span class="nt">&quot;claude-opus-5[1m]&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-35-7"><a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="w">      </span><span class="nt">&quot;inputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
-</span><span id="__span-35-8"><a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a><span class="w">      </span><span class="nt">&quot;outputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">99</span><span class="p">,</span>
-</span><span id="__span-35-9"><a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a><span class="w">      </span><span class="nt">&quot;cacheReadInputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">48286</span><span class="p">,</span>
-</span><span id="__span-35-10"><a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a><span class="w">      </span><span class="nt">&quot;cacheCreationInputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8287</span><span class="p">,</span>
-</span><span id="__span-35-11"><a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a><span class="w">      </span><span class="nt">&quot;costUSD&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.109508</span><span class="p">,</span>
-</span><span id="__span-35-12"><a id="__codelineno-35-12" name="__codelineno-35-12" href="#__codelineno-35-12"></a><span class="w">      </span><span class="nt">&quot;contextWindow&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span>
-</span><span id="__span-35-13"><a id="__codelineno-35-13" name="__codelineno-35-13" href="#__codelineno-35-13"></a><span class="w">      </span><span class="nt">&quot;canonicalModel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;claude-opus-5&quot;</span><span class="p">,</span>
-</span><span id="__span-35-14"><a id="__codelineno-35-14" name="__codelineno-35-14" href="#__codelineno-35-14"></a><span class="w">      </span><span class="nt">&quot;provider&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;firstParty&quot;</span>
-</span><span id="__span-35-15"><a id="__codelineno-35-15" name="__codelineno-35-15" href="#__codelineno-35-15"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-35-16"><a id="__codelineno-35-16" name="__codelineno-35-16" href="#__codelineno-35-16"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-35-17"><a id="__codelineno-35-17" name="__codelineno-35-17" href="#__codelineno-35-17"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="p">{</span>
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="w">  </span><span class="nt">&quot;session_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8f580579-c5cf-4bfe-9178-43125217ef9f&quot;</span><span class="p">,</span>
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="w">  </span><span class="nt">&quot;total_cost_usd&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.109508</span><span class="p">,</span>
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">  </span><span class="nt">&quot;duration_ms&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3898</span><span class="p">,</span>
+</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="w">  </span><span class="nt">&quot;modelUsage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="w">    </span><span class="nt">&quot;claude-opus-5[1m]&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-34-7"><a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="w">      </span><span class="nt">&quot;inputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+</span><span id="__span-34-8"><a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a><span class="w">      </span><span class="nt">&quot;outputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">99</span><span class="p">,</span>
+</span><span id="__span-34-9"><a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a><span class="w">      </span><span class="nt">&quot;cacheReadInputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">48286</span><span class="p">,</span>
+</span><span id="__span-34-10"><a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a><span class="w">      </span><span class="nt">&quot;cacheCreationInputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8287</span><span class="p">,</span>
+</span><span id="__span-34-11"><a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a><span class="w">      </span><span class="nt">&quot;costUSD&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.109508</span><span class="p">,</span>
+</span><span id="__span-34-12"><a id="__codelineno-34-12" name="__codelineno-34-12" href="#__codelineno-34-12"></a><span class="w">      </span><span class="nt">&quot;contextWindow&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span>
+</span><span id="__span-34-13"><a id="__codelineno-34-13" name="__codelineno-34-13" href="#__codelineno-34-13"></a><span class="w">      </span><span class="nt">&quot;canonicalModel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;claude-opus-5&quot;</span><span class="p">,</span>
+</span><span id="__span-34-14"><a id="__codelineno-34-14" name="__codelineno-34-14" href="#__codelineno-34-14"></a><span class="w">      </span><span class="nt">&quot;provider&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;firstParty&quot;</span>
+</span><span id="__span-34-15"><a id="__codelineno-34-15" name="__codelineno-34-15" href="#__codelineno-34-15"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-34-16"><a id="__codelineno-34-16" name="__codelineno-34-16" href="#__codelineno-34-16"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-34-17"><a id="__codelineno-34-17" name="__codelineno-34-17" href="#__codelineno-34-17"></a><span class="p">}</span>
 </span></code></pre></div></p>
 <div class="admonition tip">
 <p class="admonition-title">직접 해보고 알게 된 것</p>
@@ -1352,10 +1316,10 @@
 </div>
 <h3 id="5-4-모델별-비용-비교-추가-실험">5-4. 모델별 비용 비교 (추가 실험)<a class="headerlink" href="#5-4-모델별-비용-비교-추가-실험" title="이 위치로 링크">¶</a></h3>
 <p>Part 9의 "모델 레버"를 숫자로 확인하고 싶어서, <strong>완전히 같은 프롬프트</strong>를 모델만 바꿔 돌렸습니다.</p>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="gp">$ </span><span class="k">for</span><span class="w"> </span>M<span class="w"> </span><span class="k">in</span><span class="w"> </span>haiku<span class="w"> </span>sonnet<span class="p">;</span><span class="w"> </span><span class="k">do</span>
-</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="go">    claude -p &quot;src/checkout.js가 무슨 일을 하는지 한 문장으로&quot; \</span>
-</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="go">      --model $M --allowed-tools &quot;Read&quot; --output-format json</span>
-</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="go">  done</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="gp">$ </span><span class="k">for</span><span class="w"> </span>M<span class="w"> </span><span class="k">in</span><span class="w"> </span>haiku<span class="w"> </span>sonnet<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="go">    claude -p &quot;src/checkout.js가 무슨 일을 하는지 한 문장으로&quot; \</span>
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="go">      --model $M --allowed-tools &quot;Read&quot; --output-format json</span>
+</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="go">  done</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -1392,12 +1356,12 @@
 </div>
 <h3 id="5-5-세션-저장-확인">5-5. 세션 저장 확인<a class="headerlink" href="#5-5-세션-저장-확인" title="이 위치로 링크">¶</a></h3>
 <p><a href="../part-02-architecture/">Part 2</a>의 "세션은 <code>~/.claude/projects/</code>에 JSONL로 저장된다"를 확인했습니다.</p>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="gp">$ </span>ls<span class="w"> </span>-1<span class="w"> </span>~/.claude/projects/
-</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="go">-private-tmp-...-scratchpad-claude-code-workshop</span>
-</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="go">-private-tmp-...-scratchpad-lab2-demo</span>
-</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="go">-private-tmp-...-scratchpad-lab3-buggy-app</span>
-</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="go">-Users-jade</span>
-</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="go">-Users-jade-project-omc</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="gp">$ </span>ls<span class="w"> </span>-1<span class="w"> </span>~/.claude/projects/
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="go">-private-tmp-...-scratchpad-claude-code-workshop</span>
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="go">-private-tmp-...-scratchpad-lab2-demo</span>
+</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="go">-private-tmp-...-scratchpad-lab3-buggy-app</span>
+</span><span id="__span-36-5"><a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="go">-Users-jade</span>
+</span><span id="__span-36-6"><a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="go">-Users-jade-project-omc</span>
 </span></code></pre></div>
 <blockquote>
 <p>작업 디렉토리 경로가 그대로 디렉토리명이 됩니다(<code>/</code> → <code>-</code>). 이번 실습에서 만든 세 개 프로젝트가 각각 별도로 잡혔습니다.
@@ -1428,12 +1392,12 @@
 <tr>
 <td>Lab 3 — 디버깅</td>
 <td>✅ 완료</td>
-<td>교재 경로 부재 → 동일 시나리오 직접 재현</td>
+<td>교재 원본 시나리오 수행. <strong>교재 예측과 달리 <code>Grep</code>을 안 씀</strong></td>
 </tr>
 <tr>
 <td>Lab 4 — Plan 모드</td>
 <td>✅ 완료</td>
-<td><code>--resume</code> 세션 체이닝으로 <strong>계획 협상까지 재현</strong></td>
+<td><code>--resume</code> 체이닝으로 계획 협상 재현. 11/11 통과</td>
 </tr>
 <tr>
 <td>Lab 5 — Headless</td>
@@ -1451,7 +1415,7 @@
 <li><strong>"테스트 파일은 수정하지 마"는 디버깅 위임 시 필수 지시입니다.</strong> 없으면 테스트를 고쳐서 통과시킬 여지가 생깁니다.</li>
 <li><strong>Plan 모드는 헤드리스로도 협상할 수 있습니다.</strong> <code>--permission-mode plan</code> + <code>--resume &lt;session_id&gt;</code> 조합이면 됩니다. <code>Shift+Tab</code>은 편의를 위한 UI일 뿐, 기능의 전제조건이 아닙니다.</li>
 <li><strong>계획을 협상하면 버그를 코드가 아니라 문서에서 잡습니다.</strong> Lab 4에서 <code>0/0 = NaN</code> 문제와 <code>deepStrictEqual</code>의 <code>undefined</code> 키 문제가 구현 전에 계획서에 기록됐습니다.</li>
-<li><strong>교재의 랩 경로(<code>ch1/lab3-buggy-app</code> 등)는 현재 저장소 구조와 맞지 않습니다.</strong> 랩 가이드는 <code>ccw-hands-on-lab/*.html</code>로 이동한 것으로 보입니다.</li>
+<li><strong>PDF의 랩 경로는 실재하지 않지만 실습 자체는 온전히 제공됩니다.</strong> <code>ccw-hands-on-lab/*.html</code>을 먼저 열어봐야 합니다. 저장소에서 클론하는 게 아니라 힙독으로 프로젝트를 만드는 설계라, <code>ch1/</code> 디렉토리는 처음부터 있을 이유가 없었습니다.</li>
 </ol>
 <hr />
 <h2 id="추가-학습-자료">추가 학습 자료<a class="headerlink" href="#추가-학습-자료" title="이 위치로 링크">¶</a></h2>
