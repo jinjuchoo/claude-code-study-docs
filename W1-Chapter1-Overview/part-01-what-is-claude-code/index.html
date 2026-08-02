@@ -1,0 +1,2216 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Claude Code Deep Dive Workshop 6주 학습 정리 — 처음 배우는 사람을 위한 한국어 가이드">
+      
+      
+      
+        <link rel="canonical" href="https://jinjuchoo.github.io/claude-code-study-docs/W1-Chapter1-Overview/part-01-what-is-claude-code/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../part-02-architecture/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Part 1 — Claude Code란 무엇인가 - Claude Code 완전 정복</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pretendard:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Pretendard";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-1--claude-code란-무엇인가" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="../.." title="Claude Code 완전 정복" class="md-header__button md-logo" aria-label="Claude Code 완전 정복" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12zm0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-7 14v-2h5v2zm-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Claude Code 완전 정복
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part 1 — Claude Code란 무엇인가
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="시스템 설정 따르기"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="시스템 설정 따르기" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="deep-orange"  aria-label="다크 모드로"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="다크 모드로" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="deep-orange"  aria-label="라이트 모드로"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="라이트 모드로" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="공유" aria-label="공유" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Claude Code 완전 정복" class="md-nav__button md-logo" aria-label="Claude Code 완전 정복" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12zm0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-7 14v-2h5v2zm-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59z"/></svg>
+
+    </a>
+    Claude Code 완전 정복
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    시작하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1주차 · Overview
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    1주차 · Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Claude Code란 무엇인가
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Claude Code란 무엇인가
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#한-줄-요약" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        한 줄 요약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#왜-알아야-하나" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        왜 알아야 하나
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-1--세-가지-사실로-보는-정의" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 1 — 세 가지 사실로 보는 정의
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 1 — 세 가지 사실로 보는 정의">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#anthropic이라는-회사" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anthropic이라는 회사
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-2--agentic-ai란-무엇인가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 2 — Agentic AI란 무엇인가
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 2 — Agentic AI란 무엇인가">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agentic-loop--3단계" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agentic Loop — 3단계
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-3--agentic-coding-vs-code-completion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 3 — Agentic Coding vs Code Completion
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 3 — Agentic Coding vs Code Completion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#다른-도구들과의-포지셔닝-202607-기준" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        다른 도구들과의 포지셔닝 (2026.07 기준)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-4--모델-패밀리와-alias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 4 — 모델 패밀리와 Alias
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 4 — 모델 패밀리와 Alias">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alias-시스템--버전-번호를-외우지-않아도-되는-이유" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alias 시스템 — 버전 번호를 외우지 않아도 되는 이유
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-5--어디서-실행되는가-실행-환경-스펙트럼" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 5 — 어디서 실행되는가 (실행 환경 스펙트럼)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 5 — 어디서 실행되는가 (실행 환경 스펙트럼)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#그런데-왜-터미널이-기준점인가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        그런데 왜 터미널이 기준점인가
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-6--4대-핵심-가치" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 6 — 4대 핵심 가치
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 6 — 4대 핵심 가치">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#자율성-스펙트럼--권한-모드-4종" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        자율성 스펙트럼 — 권한 모드 4종
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-7--주요-사용-사례-6선" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 7 — 주요 사용 사례 6선
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 7 — 주요 사용 사례 6선">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#사례-1--디버깅-실제-흐름" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사례 1 — 디버깅 (실제 흐름)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#사례-2--리팩토링" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사례 2 — 리팩토링
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#사례-3--신기능-개발-plan-모드-2단계" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사례 3 — 신기능 개발 (Plan 모드 2단계)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#사례-4--코드베이스-학습" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사례 4 — 코드베이스 학습
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#사례-5--테스트-작성" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사례 5 — 테스트 작성
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#사례-6--devops-자동화" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사례 6 — DevOps 자동화
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#라이선스와-구독-모델" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        라이선스와 구독 모델
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#데이터-보안-및-프라이버시" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        데이터 보안 및 프라이버시
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="데이터 보안 및 프라이버시">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#anthropic-데이터-사용-정책-요약" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anthropic 데이터 사용 정책 요약
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#흔한-오해--함정" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        흔한 오해 / 함정
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#정리" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        정리
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#출처" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        출처
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-02-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. 아키텍처
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-03-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. 설치
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-04-authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. 인증
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-05-quick-start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. 퀵스타트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-06-core-capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. 핵심 도구
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-07-interfaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. 인터페이스
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-08-claude-md-and-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. CLAUDE.md와 메모리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-09-workflow-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. 워크플로 패턴
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-10-recap-and-labs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. 정리와 실습 랩
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#한-줄-요약" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        한 줄 요약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#왜-알아야-하나" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        왜 알아야 하나
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-1--세-가지-사실로-보는-정의" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 1 — 세 가지 사실로 보는 정의
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 1 — 세 가지 사실로 보는 정의">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#anthropic이라는-회사" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anthropic이라는 회사
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-2--agentic-ai란-무엇인가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 2 — Agentic AI란 무엇인가
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 2 — Agentic AI란 무엇인가">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agentic-loop--3단계" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agentic Loop — 3단계
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-3--agentic-coding-vs-code-completion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 3 — Agentic Coding vs Code Completion
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 3 — Agentic Coding vs Code Completion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#다른-도구들과의-포지셔닝-202607-기준" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        다른 도구들과의 포지셔닝 (2026.07 기준)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-4--모델-패밀리와-alias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 4 — 모델 패밀리와 Alias
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 4 — 모델 패밀리와 Alias">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alias-시스템--버전-번호를-외우지-않아도-되는-이유" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alias 시스템 — 버전 번호를 외우지 않아도 되는 이유
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-5--어디서-실행되는가-실행-환경-스펙트럼" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 5 — 어디서 실행되는가 (실행 환경 스펙트럼)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 5 — 어디서 실행되는가 (실행 환경 스펙트럼)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#그런데-왜-터미널이-기준점인가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        그런데 왜 터미널이 기준점인가
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-6--4대-핵심-가치" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 6 — 4대 핵심 가치
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 6 — 4대 핵심 가치">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#자율성-스펙트럼--권한-모드-4종" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        자율성 스펙트럼 — 권한 모드 4종
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-7--주요-사용-사례-6선" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 7 — 주요 사용 사례 6선
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 7 — 주요 사용 사례 6선">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#사례-1--디버깅-실제-흐름" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사례 1 — 디버깅 (실제 흐름)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#사례-2--리팩토링" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사례 2 — 리팩토링
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#사례-3--신기능-개발-plan-모드-2단계" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사례 3 — 신기능 개발 (Plan 모드 2단계)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#사례-4--코드베이스-학습" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사례 4 — 코드베이스 학습
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#사례-5--테스트-작성" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사례 5 — 테스트 작성
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#사례-6--devops-자동화" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사례 6 — DevOps 자동화
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#라이선스와-구독-모델" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        라이선스와 구독 모델
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#데이터-보안-및-프라이버시" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        데이터 보안 및 프라이버시
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="데이터 보안 및 프라이버시">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#anthropic-데이터-사용-정책-요약" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anthropic 데이터 사용 정책 요약
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#흔한-오해--함정" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        흔한 오해 / 함정
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#정리" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        정리
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#출처" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        출처
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="part-1--claude-code란-무엇인가">Part 1 — Claude Code란 무엇인가<a class="headerlink" href="#part-1--claude-code란-무엇인가" title="이 위치로 링크">¶</a></h1>
+<h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
+<p>Claude Code는 <strong>코드베이스를 읽고, 파일을 편집하고, 명령을 실행하며 개발 도구와 통합되는 Anthropic의 Agentic Coding 도구</strong>입니다. 자연어 지시를 받아 여러 단계의 작업을 자율적으로 완수합니다.</p>
+<hr />
+<h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
+<p>"AI 코딩 도구"라는 말은 지금 너무 많은 걸 가리킵니다. GitHub Copilot도, Cursor도, ChatGPT에 코드 붙여넣는 것도 다 AI 코딩입니다.
+그런데 이것들은 <strong>작동 방식이 근본적으로 다릅니다.</strong> 이 차이를 모르면 Claude Code를 "터미널에서 쓰는 Copilot" 정도로 오해하고, 실제로는 자동완성처럼 쓰다가 "생각보다 별로네"로 끝납니다.</p>
+<p>Part 1의 핵심은 그래서 딱 하나입니다. <strong>왜 이것이 자동완성이 아닌가.</strong></p>
+<hr />
+<h2 id="개념-1--세-가지-사실로-보는-정의">개념 1 — 세 가지 사실로 보는 정의<a class="headerlink" href="#개념-1--세-가지-사실로-보는-정의" title="이 위치로 링크">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>축</th>
+<th>값</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>WHAT</strong></td>
+<td>Agentic Tool</td>
+<td>자율적으로 도구를 호출하며 멀티스텝 작업을 완수하는 에이전트형 도구</td>
+</tr>
+<tr>
+<td><strong>WHERE</strong></td>
+<td>Everywhere</td>
+<td>터미널, VS Code, JetBrains, Desktop 앱, 웹, Slack까지 <strong>동일한 엔진</strong></td>
+</tr>
+<tr>
+<td><strong>WHO BY</strong></td>
+<td>Anthropic</td>
+<td>Claude 모델을 만든 회사의 1차(first-party) 도구 → 모델 통합 깊이가 가장 깊음</td>
+</tr>
+</tbody>
+</table>
+<p>여기서 <strong>"1차 도구"</strong> 라는 표현이 중요합니다. Cursor나 Copilot은 남이 만든 모델을 가져다 쓰는 반면, Claude Code는 모델을 만든 회사가 그 모델에 맞춰 직접 설계한 도구입니다. 모델의 학습 방식과 도구 사용 규약이 처음부터 맞춰져 있다는 뜻입니다.</p>
+<ul>
+<li>최초 출시: 2024년</li>
+<li>현재 상태: GA (정식 출시)</li>
+<li>기본 주력 모델: Claude Sonnet 5</li>
+</ul>
+<h3 id="anthropic이라는-회사">Anthropic이라는 회사<a class="headerlink" href="#anthropic이라는-회사" title="이 위치로 링크">¶</a></h3>
+<ul>
+<li>2021년 설립. 안전하고 신뢰 가능한 AI를 목표로 하는 프론티어 AI 기업</li>
+<li>Constitutional AI 등 <strong>AI Safety 연구를 제품에 직접 반영</strong>하는 개발 철학</li>
+<li>제품군: Claude 모델 패밀리 / Claude Code / Agent SDK / Claude API / Claude 앱</li>
+<li>AWS와 전략적 파트너십 — Amazon Bedrock에서 Claude 모델 제공</li>
+</ul>
+<hr />
+<h2 id="개념-2--agentic-ai란-무엇인가">개념 2 — Agentic AI란 무엇인가<a class="headerlink" href="#개념-2--agentic-ai란-무엇인가" title="이 위치로 링크">¶</a></h2>
+<blockquote>
+<p><strong>정의</strong>: Agentic AI는 사용자의 <strong>목표</strong>를 받아 스스로 계획을 세우고, 도구를 사용하며, 결과를 관찰하면서 목표 달성까지 자율적으로 작동하는 AI 시스템입니다.</p>
+</blockquote>
+<p>일반 챗봇은 "질문 → 답변"의 1회성 반응(Reactive)입니다. Agentic AI는 네 가지 속성이 추가됩니다.</p>
+<table>
+<thead>
+<tr>
+<th>속성</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Goal-driven</strong> (목표 주도)</td>
+<td>단계별 명령이 아니라 최종 목표를 받아 스스로 경로를 결정</td>
+</tr>
+<tr>
+<td><strong>Tool-using</strong> (도구 사용)</td>
+<td>파일 읽기, 명령 실행, 웹 검색 등 외부 도구를 능동적으로 호출</td>
+</tr>
+<tr>
+<td><strong>Observative</strong> (관찰)</td>
+<td>도구 실행 결과를 관찰하고 다음 행동을 결정하는 피드백 루프</td>
+</tr>
+<tr>
+<td><strong>Iterative</strong> (반복)</td>
+<td>실패하면 다른 접근을 시도하며 완료까지 반복, 자가 수정</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agentic-loop--3단계">Agentic Loop — 3단계<a class="headerlink" href="#agentic-loop--3단계" title="이 위치로 링크">¶</a></h3>
+<p>작업을 하나 주면 Claude는 아래 세 단계를 섞어가며 <strong>수십 개의 행동을 연결</strong>합니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────────┐
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│                                                         │
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│  ① Gather Context  →  ② Take Action  →  ③ Verify       │
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│     컨텍스트 수집         도구로 실행         결과 검증      │
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│     ・파일 검색/읽기      ・파일 편집         ・테스트 실행   │
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│     ・CLAUDE.md 로드     ・명령 실행         ・타입 검사    │
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│     ・메모리 로드         ・커밋            ・결과 관찰     │
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│                                                         │
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│          ↑                                    │         │
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│          └──────────── Repeat / Steer ────────┘         │
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│              완료까지 반복 · Esc로 언제든 개입              │
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>└─────────────────────────────────────────────────────────┘
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">초보자가 놓치기 쉬운 포인트</p>
+<p>이 루프가 도는 동안 나는 구경만 하는 게 아닙니다. <code>Esc</code> 한 번으로 즉시 중단하고 방향을 바꿀 수 있습니다.
+"AI가 알아서 다 한다"가 아니라 <strong>"AI가 달리는 중에 내가 핸들을 잡을 수 있다"</strong> 가 정확한 그림입니다.</p>
+</div>
+<hr />
+<h2 id="개념-3--agentic-coding-vs-code-completion">개념 3 — Agentic Coding vs Code Completion<a class="headerlink" href="#개념-3--agentic-coding-vs-code-completion" title="이 위치로 링크">¶</a></h2>
+<p>이 표 하나가 Part 1의 결론입니다.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Code Completion</strong> (기존 자동완성)</th>
+<th><strong>Agentic Coding</strong> (Claude Code)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>컨텍스트 범위</td>
+<td>현재 파일, 커서 주변</td>
+<td>저장소 전체 + 터미널 + git 상태</td>
+</tr>
+<tr>
+<td>산출물</td>
+<td>다음 몇 줄 제안</td>
+<td>여러 파일 편집 + 명령 실행</td>
+</tr>
+<tr>
+<td>검증 주체</td>
+<td>실행과 검증은 <strong>개발자 몫</strong></td>
+<td>테스트로 <strong>스스로 검증 후 수정</strong></td>
+</tr>
+<tr>
+<td>동작 위치</td>
+<td>IDE 안에서만</td>
+<td>터미널, IDE, 웹 어디서든</td>
+</tr>
+<tr>
+<td>대표 예시</td>
+<td>함수 시그니처 자동완성</td>
+<td>실패 테스트 원인 추적과 수정</td>
+</tr>
+</tbody>
+</table>
+<h3 id="다른-도구들과의-포지셔닝-202607-기준">다른 도구들과의 포지셔닝 (2026.07 기준)<a class="headerlink" href="#다른-도구들과의-포지셔닝-202607-기준" title="이 위치로 링크">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>도구</th>
+<th>특성</th>
+<th>강점 영역</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Claude Code</strong></td>
+<td>터미널 중심 에이전트, 전 환경 확장, SDK 제공</td>
+<td>저장소 단위 자율 작업</td>
+</tr>
+<tr>
+<td>GitHub Copilot</td>
+<td>IDE 자동완성에서 출발, 에이전트 기능 확장 중</td>
+<td>IDE 내 코드 제안</td>
+</tr>
+<tr>
+<td>Cursor</td>
+<td>AI 네이티브 IDE, 에디터 경험 중심</td>
+<td>IDE 통합 워크플로</td>
+</tr>
+<tr>
+<td>OpenAI Codex</td>
+<td>클라우드 에이전트와 CLI 병행</td>
+<td>위임형 클라우드 작업</td>
+</tr>
+<tr>
+<td>Gemini CLI</td>
+<td>Google 생태계 CLI 에이전트</td>
+<td>GCP 연계 작업</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="개념-4--모델-패밀리와-alias">개념 4 — 모델 패밀리와 Alias<a class="headerlink" href="#개념-4--모델-패밀리와-alias" title="이 위치로 링크">¶</a></h2>
+<p>Claude Code는 하나의 모델만 쓰는 게 아니라 <strong>작업 난이도에 따라 모델을 갈아탑니다.</strong></p>
+<table>
+<thead>
+<tr>
+<th>모델</th>
+<th>특성</th>
+<th>적합한 작업</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Claude Fable 5</strong></td>
+<td>최상위 Mythos-class, 장시간 자율 세션 특화</td>
+<td>가장 어렵고 규모가 큰 작업</td>
+</tr>
+<tr>
+<td><strong>Claude Opus 4.8</strong></td>
+<td>깊은 추론, 복잡한 아키텍처 결정</td>
+<td>복잡한 리팩토링, 설계</td>
+</tr>
+<tr>
+<td><strong>Claude Sonnet 5</strong></td>
+<td>기본 모델, 네이티브 1M 컨텍스트</td>
+<td>일상 코딩 작업 전반</td>
+</tr>
+<tr>
+<td><strong>Claude Haiku 4.5</strong></td>
+<td>빠른 응답, 비용 효율</td>
+<td>간단한 변환, 검색, 분류</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Sonnet 5 컨텍스트: <strong>1M 토큰</strong></li>
+<li>세션 중 전환: <code>/model</code> 명령</li>
+<li>Sonnet 5는 v2.1.197+, Fable 5는 v2.1.170+ 필요</li>
+</ul>
+<h3 id="alias-시스템--버전-번호를-외우지-않아도-되는-이유">Alias 시스템 — 버전 번호를 외우지 않아도 되는 이유<a class="headerlink" href="#alias-시스템--버전-번호를-외우지-않아도-되는-이유" title="이 위치로 링크">¶</a></h3>
+<p>모델 버전은 계속 바뀝니다. 그래서 버전 번호 대신 <strong>별칭(alias)</strong> 으로 지정합니다.</p>
+<table>
+<thead>
+<tr>
+<th>Alias</th>
+<th>해석</th>
+<th>용도</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>default</code></td>
+<td>계정 유형별 권장 모델로 복귀하는 특수 값</td>
+<td>오버라이드 해제</td>
+</tr>
+<tr>
+<td><code>best</code></td>
+<td>Fable 5 접근 가능하면 Fable 5, 아니면 최신 Opus</td>
+<td>최고 성능 자동 선택</td>
+</tr>
+<tr>
+<td><code>fable</code> / <code>opus</code></td>
+<td>Fable 5 또는 최신 Opus 지정</td>
+<td>난제, 장기 세션</td>
+</tr>
+<tr>
+<td><code>sonnet</code> / <code>haiku</code></td>
+<td>최신 Sonnet 또는 Haiku 지정</td>
+<td>일상 작업, 경량 작업</td>
+</tr>
+<tr>
+<td><code>opus[1m]</code></td>
+<td>1M 토큰 컨텍스트 윈도우로 Opus 사용</td>
+<td>초장기 세션</td>
+</tr>
+<tr>
+<td><code>opusplan</code></td>
+<td><strong>Plan 모드는 opus, 실행은 sonnet으로 자동 전환</strong></td>
+<td>계획 품질과 실행 비용의 균형</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><code>opusplan</code>은 실무에서 가장 가성비 좋은 선택지입니다. 어려운 건 "계획 세우기"이고 계획대로 코드를 치는 건 상대적으로 쉽기 때문에, 비싼 모델은 계획에만 쓰고 실행은 싼 모델에 맡기는 구조입니다.</p>
+</div>
+<hr />
+<h2 id="개념-5--어디서-실행되는가-실행-환경-스펙트럼">개념 5 — 어디서 실행되는가 (실행 환경 스펙트럼)<a class="headerlink" href="#개념-5--어디서-실행되는가-실행-환경-스펙트럼" title="이 위치로 링크">¶</a></h2>
+<p>"Use Claude Code Everywhere" — 표면은 6가지지만 <strong>엔진은 하나</strong>입니다.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>환경</th>
+<th>특징</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Terminal CLI</strong></td>
+<td>모든 기능의 기준점. 파이프와 스크립트 등 Unix 조합성</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>VS Code / Cursor</strong></td>
+<td>인라인 diff, @-mention, 플랜 검토를 에디터에서</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>JetBrains</strong></td>
+<td>IntelliJ, PyCharm 등에서 대화형 diff와 컨텍스트 공유</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Desktop App</strong></td>
+<td>병렬 세션, 시각적 diff, 예약 작업, 클라우드 세션 실행</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Web / iOS</strong></td>
+<td><code>claude.ai/code</code>에서 설치 없이 클라우드 실행, 모바일 연속 작업</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Slack / CI / Chrome</strong></td>
+<td>@Claude 멘션, GitHub Actions, 라이브 웹앱 디버깅</td>
+</tr>
+</tbody>
+</table>
+<h3 id="그런데-왜-터미널이-기준점인가">그런데 왜 터미널이 기준점인가<a class="headerlink" href="#그런데-왜-터미널이-기준점인가" title="이 위치로 링크">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>이유</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>도구 접근성</strong></td>
+<td>빌드, git, 패키지 매니저 등 개발 도구가 모두 CLI에 존재</td>
+</tr>
+<tr>
+<td><strong>조합 가능성</strong></td>
+<td>파이프, 리다이렉트, <code>jq</code>와 결합해 워크플로를 자유롭게 구성</td>
+</tr>
+<tr>
+<td><strong>자동화 친화</strong></td>
+<td><code>-p</code> 헤드리스 모드로 CI/CD와 스크립트에 즉시 통합</td>
+</tr>
+<tr>
+<td><strong>IDE 중립</strong></td>
+<td>특정 에디터에 종속되지 않고 모든 개발 환경과 공존</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Unix 철학</strong>: 터미널에서 할 수 있는 모든 것을 Claude도 할 수 있습니다.</p>
+</blockquote>
+<hr />
+<h2 id="개념-6--4대-핵심-가치">개념 6 — 4대 핵심 가치<a class="headerlink" href="#개념-6--4대-핵심-가치" title="이 위치로 링크">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>가치</th>
+<th>내용</th>
+<th>키워드</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>깊은 코드 이해</strong></td>
+<td>단일 파일이 아닌 프로젝트 전체를 자율 탐색하며 컨텍스트 구축</td>
+<td>Repo-wide</td>
+</tr>
+<tr>
+<td><strong>실제 작업 완수</strong></td>
+<td>제안에 그치지 않고 파일 수정, 테스트 실행, PR 생성까지 수행</td>
+<td>End-to-end</td>
+</tr>
+<tr>
+<td><strong>안전한 권한 모델</strong></td>
+<td><code>allow</code> / <code>ask</code> / <code>deny</code> 규칙과 체크포인트로 동작 범위를 통제</td>
+<td>Granular</td>
+</tr>
+<tr>
+<td><strong>확장 가능한 통합</strong></td>
+<td>Skills, Subagents, MCP, Hooks, SDK로 워크플로에 맞춰 확장</td>
+<td>SDK + MCP</td>
+</tr>
+</tbody>
+</table>
+<h3 id="자율성-스펙트럼--권한-모드-4종">자율성 스펙트럼 — 권한 모드 4종<a class="headerlink" href="#자율성-스펙트럼--권한-모드-4종" title="이 위치로 링크">¶</a></h3>
+<p><code>Shift+Tab</code>으로 순환합니다. 오른쪽으로 갈수록 자율성이 커지고 내 개입이 줄어듭니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Plan  →  Default  →  Accept Edits  →  Auto
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a> 낮음  ←──────── 자율성 ────────→  높음
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>모드</th>
+<th>동작</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Plan</strong></td>
+<td>소스 수정 없이 탐색과 계획만, 승인 후 실행</td>
+</tr>
+<tr>
+<td><strong>Default</strong></td>
+<td>파일 편집과 셸 명령 전에 매번 질문</td>
+</tr>
+<tr>
+<td><strong>Accept Edits</strong></td>
+<td>편집과 <code>mkdir</code> 등 파일 작업은 자동, 그 외는 질문</td>
+</tr>
+<tr>
+<td><strong>Auto</strong></td>
+<td>백그라운드 안전 검사로 전 행동을 평가 (리서치 프리뷰)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>CI 등 비대화 환경에서는 <code>--permission-mode</code> 플래그와 사전 합의된 <code>allow</code> 규칙으로 운영합니다.</p>
+</blockquote>
+<hr />
+<h2 id="개념-7--주요-사용-사례-6선">개념 7 — 주요 사용 사례 6선<a class="headerlink" href="#개념-7--주요-사용-사례-6선" title="이 위치로 링크">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>사례</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>디버깅</strong></td>
+<td>에러 메시지로부터 원인을 추적하고 수정안을 제시·적용</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>리팩토링</strong></td>
+<td>대규모 코드베이스의 일관된 패턴 변경과 구조 개선</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>신기능 개발</strong></td>
+<td>요구사항으로부터 계획, 구현, 테스트까지 일괄 처리</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>코드베이스 학습</strong></td>
+<td>낯선 프로젝트의 구조와 흐름을 자연어 대화로 학습</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>테스트 작성</strong></td>
+<td>커버리지 갭 분석과 자동 테스트 생성, 실패 수정</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>DevOps 자동화</strong></td>
+<td>셸 스크립트, IaC, CI/CD 파이프라인 작성과 점검</td>
+</tr>
+</tbody>
+</table>
+<h3 id="사례-1--디버깅-실제-흐름">사례 1 — 디버깅 (실제 흐름)<a class="headerlink" href="#사례-1--디버깅-실제-흐름" title="이 위치로 링크">¶</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$<span class="w"> </span>npm<span class="w"> </span><span class="nb">test</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># FAIL src/auth/session.test.ts</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1">#     TypeError: Cannot read properties of undefined</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>$<span class="w"> </span>claude<span class="w"> </span><span class="s2">&quot;npm test가 실패해. 원인을 찾아 고치고 테스트가 통과하는지 확인해줘&quot;</span>
+</span></code></pre></div>
+<p>Claude의 진행 순서:
+1. 테스트를 실행해 실패 로그 확보
+2. 스택트레이스에 나온 <code>session.ts</code>를 읽음
+3. null 가드 누락을 확인하고 <code>Edit</code> 수행
+4. <code>npm test</code> 재실행으로 통과 검증</p>
+<p><strong>왜 이게 되는가</strong>: 에러 메시지가 곧 시작 컨텍스트이고, 스스로 테스트를 돌려 검증하며, 여러 파일에 걸친 원인도 추적하기 때문입니다. 수정 전 스냅샷이 남아 되돌리기도 가능합니다.</p>
+<h3 id="사례-2--리팩토링">사례 2 — 리팩토링<a class="headerlink" href="#사례-2--리팩토링" title="이 위치로 링크">¶</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; src/ 전체에서 콜백 스타일 fs 호출을 fs/promises 기반 async/await로 바꿔줘.
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  변경 후 lint와 테스트로 검증해줘.
+</span></code></pre></div>
+<ol>
+<li><code>Grep</code>으로 <code>fs.readFile(</code> 등 호출 지점 수집</li>
+<li>파일별 <code>Edit</code>, import 구문까지 일괄 정리</li>
+<li><code>npm run lint &amp;&amp; npm test</code> 실행</li>
+<li>실패 지점 재수정 후 요약 보고</li>
+</ol>
+<p><strong>규모의 이점</strong>: 수십 개 파일에 동일 규칙을 적용하고, import 정리 같은 부수 변경까지 포함하며, 린트·테스트로 회귀를 방지합니다. <code>/diff</code>로 전체 변경을 한눈에 검토합니다.</p>
+<h3 id="사례-3--신기능-개발-plan-모드-2단계">사례 3 — 신기능 개발 (Plan 모드 2단계)<a class="headerlink" href="#사례-3--신기능-개발-plan-모드-2단계" title="이 위치로 링크">¶</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$ claude
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>&gt; (Shift+Tab 두 번으로 Plan 모드 진입)
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>&gt; /users API에 커서 기반 페이지네이션을 추가하고 싶어. 먼저 계획을 세워줘.
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a># Plan 모드 산출물 예시
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>#   1. 스키마: cursor, limit 파라미터 정의
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>#   2. 변경 파일: routes, service, repo 3곳
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>#   3. 테스트: 경계값 4케이스 추가
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>&gt; 계획 승인. 구현하고 테스트까지 실행해줘.
+</span></code></pre></div>
+<h3 id="사례-4--코드베이스-학습">사례 4 — 코드베이스 학습<a class="headerlink" href="#사례-4--코드베이스-학습" title="이 위치로 링크">¶</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>unfamiliar-project<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>claude
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>&gt;<span class="w"> </span>이<span class="w"> </span>프로젝트의<span class="w"> </span>전체<span class="w"> </span>구조를<span class="w"> </span>설명해줘.
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>&gt;<span class="w"> </span>인증은<span class="w"> </span>어디서<span class="w"> </span>어떻게<span class="w"> </span>처리돼?
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>&gt;<span class="w"> </span>결제<span class="w"> </span>실패<span class="w"> </span>시<span class="w"> </span>재시도<span class="w"> </span>로직을<span class="w"> </span>따라가며<span class="w"> </span>호출<span class="w"> </span>흐름을<span class="w"> </span>정리해줘.
+</span></code></pre></div>
+<p><code>Glob</code>, <code>Grep</code>, <code>Read</code>로 구조를 탐색하고 진입점부터 호출 체인을 추적해, 다이어그램 수준의 텍스트 요약을 제공합니다. <strong>온보딩 기간을 며칠에서 시간 단위로</strong> 줄이는 것이 핵심 가치입니다.</p>
+<h3 id="사례-5--테스트-작성">사례 5 — 테스트 작성<a class="headerlink" href="#사례-5--테스트-작성" title="이 위치로 링크">¶</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$<span class="w"> </span>claude<span class="w"> </span><span class="s2">&quot;auth 모듈의 테스트를 작성하고 실행해서 실패하면 수정까지 해줘&quot;</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># 헤드리스로 커버리지 리포트 자동화</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>$<span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;커버리지 80% 미만 파일 목록&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Bash(npm run coverage),Read&quot;</span>
+</span></code></pre></div>
+<h3 id="사례-6--devops-자동화">사례 6 — DevOps 자동화<a class="headerlink" href="#사례-6--devops-자동화" title="이 위치로 링크">¶</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$<span class="w"> </span>claude<span class="w"> </span><span class="s2">&quot;이 Dockerfile을 멀티스테이지로 최적화하고 이미지 크기 변화를 보고해줘&quot;</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>$<span class="w"> </span>claude<span class="w"> </span><span class="s2">&quot;terraform plan 결과를 읽고 위험한 변경이 있는지 요약해줘&quot;</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>$<span class="w"> </span>tail<span class="w"> </span>-200<span class="w"> </span>app.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;이상 징후가 있으면 원인 후보와 함께 보고&quot;</span>
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">현장 메모 (인프라 엔지니어 관점)</p>
+<p><code>git</code>, <code>docker</code>, <code>terraform</code>, <code>kubectl</code> 등 터미널의 모든 CLI 도구를 그대로 활용합니다.
+즉, <strong>로그 파이프 분석이 한 줄로</strong> 끝나고 <strong>IaC 변경 리뷰의 1차 필터</strong>로 쓸 수 있습니다.
+클라우드 운영 업무에서 Claude Code의 가치는 "코드를 짜준다"보다 <strong>"수백 줄짜리 plan/log를 대신 읽어준다"</strong> 쪽이 훨씬 큽니다.</p>
+</div>
+<hr />
+<h2 id="라이선스와-구독-모델">라이선스와 구독 모델<a class="headerlink" href="#라이선스와-구독-모델" title="이 위치로 링크">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>플랜</th>
+<th>특성</th>
+<th>대상</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Claude Pro / Max</strong></td>
+<td>월 정액 구독, OAuth 로그인, 개인 사용량</td>
+<td>개인 개발자, 파워 유저</td>
+</tr>
+<tr>
+<td><strong>Team / Enterprise</strong></td>
+<td>중앙 청구, SSO, 정책 통제, 관리 콘솔</td>
+<td>조직 단위 도입</td>
+</tr>
+<tr>
+<td><strong>Claude Console</strong></td>
+<td>API 종량제, Claude Code 전용 롤 지원</td>
+<td>API 청구 선호 조직</td>
+</tr>
+<tr>
+<td><strong>Bedrock / Vertex / Foundry</strong></td>
+<td>클라우드 자격증명, 자체 클라우드 청구</td>
+<td>엔터프라이즈 표준 경로</td>
+</tr>
+<tr>
+<td><strong>Free plan</strong></td>
+<td><strong>Claude Code 미포함</strong></td>
+<td>웹 채팅 전용</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="데이터-보안-및-프라이버시">데이터 보안 및 프라이버시<a class="headerlink" href="#데이터-보안-및-프라이버시" title="이 위치로 링크">¶</a></h2>
+<blockquote>
+<p><strong>신뢰 경계(Trust Boundary)</strong>: 로컬 실행 시 코드는 <strong>내 머신에 있고</strong>, 모델 추론에 필요한 <strong>컨텍스트만</strong> API로 전송됩니다. 전송 구간과 저장 구간 모두 암호화됩니다.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>구간</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LOCAL</strong></td>
+<td>파일 접근과 명령 실행은 사용자 머신에서, 권한 규칙으로 통제</td>
+</tr>
+<tr>
+<td><strong>TRANSIT</strong></td>
+<td>API 통신은 TLS로 보호. 사내 프록시와 커스텀 CA도 지원</td>
+</tr>
+<tr>
+<td><strong>CLOUD</strong></td>
+<td>Bedrock 사용 시 트래픽이 AWS 계정 경계 안에서 처리</td>
+</tr>
+<tr>
+<td><strong>CONTROL</strong></td>
+<td>managed settings, 감사 로그, ZDR 옵션으로 정책 강제</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>전송 구간: <strong>TLS</strong></li>
+<li>저장 데이터: <strong>AES-256</strong></li>
+<li><strong>ZDR</strong> (Zero Data Retention) 옵션 제공</li>
+<li>Bedrock PrivateLink 경로로 VPC 내부 통신 가능</li>
+</ul>
+<h3 id="anthropic-데이터-사용-정책-요약">Anthropic 데이터 사용 정책 요약<a class="headerlink" href="#anthropic-데이터-사용-정책-요약" title="이 위치로 링크">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>학습 사용</td>
+<td>상업용 계정은 <strong>기본 미사용</strong>, 명시 동의 시에만 (Console·Bedrock 경로 포함)</td>
+</tr>
+<tr>
+<td>보존 기간</td>
+<td>안전성 검토 목적의 제한적 보존. <strong>ZDR 계약 시 보존 없음</strong></td>
+</tr>
+<tr>
+<td>인간 검토</td>
+<td>약관 위반 의심 등 예외 상황에 한정, 자동화 시스템 우선</td>
+</tr>
+<tr>
+<td>제3자 공유</td>
+<td>법적 의무(소환장 등) 외 없음</td>
+</tr>
+<tr>
+<td>암호화</td>
+<td>TLS in transit, AES-256 at rest — 모든 경로 동일</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="흔한-오해--함정">흔한 오해 / 함정<a class="headerlink" href="#흔한-오해--함정" title="이 위치로 링크">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>오해</th>
+<th>실제</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"터미널 도구니까 IDE 쓰면 못 쓴다"</td>
+<td>동일 엔진이 VS Code·JetBrains·Desktop·웹에서 다 돕니다. 설정과 <code>CLAUDE.md</code>도 공유됩니다.</td>
+</tr>
+<tr>
+<td>"Node.js를 깔아야 한다"</td>
+<td>Native 설치는 단일 바이너리라 Node 불필요. npm 경로로 설치할 때만 Node 18+ 필요.</td>
+</tr>
+<tr>
+<td>"무료로 써볼 수 있다"</td>
+<td>Free 플랜은 Claude Code 미포함. 구독 또는 API 계정이 필요합니다.</td>
+</tr>
+<tr>
+<td>"내 코드가 학습에 쓰인다"</td>
+<td>상업용 계정은 기본 미사용이며, 명시 동의 시에만 사용됩니다.</td>
+</tr>
+<tr>
+<td>"모델을 하나 골라야 한다"</td>
+<td>세션 중 <code>/model</code>로 언제든 전환합니다. <code>opusplan</code> 같은 자동 배분 alias도 있습니다.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
+<ul>
+<li>Claude Code는 <strong>Agentic Loop</strong>(수집 → 실행 → 검증 반복)로 저장소 단위 작업을 완수하는 Anthropic의 1차 도구입니다.</li>
+<li>자동완성과의 차이는 <strong>범위</strong>(파일 vs 저장소)와 <strong>책임</strong>(제안 vs 검증까지 완수)입니다.</li>
+<li>모델은 Fable 5 / Opus 4.8 / Sonnet 5 / Haiku 4.5이고, 버전 대신 <strong>alias</strong>로 지정합니다.</li>
+<li>실행 표면은 CLI, IDE, Desktop, Web, Slack까지 6종이지만 <strong>엔진과 설정은 하나</strong>입니다.</li>
+<li>코드는 로컬에 있고 컨텍스트만 전송되며, 상업용 계정은 기본적으로 학습에 사용되지 않습니다.</li>
+</ul>
+<hr />
+<h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
+<ul>
+<li>Claude Code Deep Dive Workshop — <em>Chapter 1 / Part 1: What is Claude Code</em> (26p)</li>
+<li>공식 문서: <a href="https://code.claude.com/docs/ko/overview">Overview</a> · <a href="https://code.claude.com/docs/ko/how-claude-code-works">How Claude Code works</a> · <a href="https://code.claude.com/docs/ko/model-config">Model configuration</a> · <a href="https://code.claude.com/docs/ko/data-usage">Data usage</a> · <a href="https://code.claude.com/docs/ko/security">Security</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="이전: 1주차 — Claude Code Deep Dive: Chapter 1 Overview">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                1주차 — Claude Code Deep Dive: Chapter 1 Overview
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../part-02-architecture/" class="md-footer__link md-footer__link--next" aria-label="다음: 2. 아키텍처">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                다음
+              </span>
+              <div class="md-ellipsis">
+                2. 아키텍처
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      학습 목적의 개인 정리 노트입니다.
+    </div>
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://code.claude.com/docs/ko/overview" target="_blank" rel="noopener" title="Claude Code 공식 문서" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 2-5 4.5v11l5-4.5zM6.5 5C4.55 5 2.45 5.4 1 6.5v14.66c0 .25.25.5.5.5.1 0 .15-.07.25-.07 1.35-.65 3.3-1.09 4.75-1.09 1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.31 4.75 1.06.1.05.15.03.25.03.25 0 .5-.25.5-.5V6.5c-.6-.45-1.25-.75-2-1V19c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6.5C10.55 5.4 8.45 5 6.5 5"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.top", "navigation.footer", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

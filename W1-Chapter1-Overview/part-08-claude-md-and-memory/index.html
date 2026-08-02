@@ -1,0 +1,1841 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Claude Code Deep Dive Workshop 6주 학습 정리 — 처음 배우는 사람을 위한 한국어 가이드">
+      
+      
+      
+        <link rel="canonical" href="https://jinjuchoo.github.io/claude-code-study-docs/W1-Chapter1-Overview/part-08-claude-md-and-memory/">
+      
+      
+        <link rel="prev" href="../part-07-interfaces/">
+      
+      
+        <link rel="next" href="../part-09-workflow-patterns/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Part 8 — CLAUDE.md와 메모리 - Claude Code 완전 정복</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pretendard:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Pretendard";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-8--claudemd--memory" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="../.." title="Claude Code 완전 정복" class="md-header__button md-logo" aria-label="Claude Code 완전 정복" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12zm0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-7 14v-2h5v2zm-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Claude Code 완전 정복
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part 8 — CLAUDE.md와 메모리
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="시스템 설정 따르기"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="시스템 설정 따르기" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="deep-orange"  aria-label="다크 모드로"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="다크 모드로" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="deep-orange"  aria-label="라이트 모드로"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="라이트 모드로" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="공유" aria-label="공유" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Claude Code 완전 정복" class="md-nav__button md-logo" aria-label="Claude Code 완전 정복" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12zm0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-7 14v-2h5v2zm-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59z"/></svg>
+
+    </a>
+    Claude Code 완전 정복
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    시작하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1주차 · Overview
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    1주차 · Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-01-what-is-claude-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Claude Code란 무엇인가
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-02-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. 아키텍처
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-03-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. 설치
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-04-authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. 인증
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-05-quick-start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. 퀵스타트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-06-core-capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. 핵심 도구
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-07-interfaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. 인터페이스
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. CLAUDE.md와 메모리
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. CLAUDE.md와 메모리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#한-줄-요약" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        한 줄 요약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#왜-알아야-하나" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        왜 알아야 하나
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-1--두-가지-메모리-시스템" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 1 — 두 가지 메모리 시스템
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-2--메모리-4계층-구조" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 2 — 메모리 4계층 구조
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 2 — 메모리 4계층 구조">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#로딩-순서와-병합" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        로딩 순서와 병합
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-3--project-memory-표준-골격" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 3 — Project Memory 표준 골격
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-4--auto-memory-운용" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 4 — Auto Memory 운용
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-5--세션-안에서-메모리-다루기" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 5 — 세션 안에서 메모리 다루기
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-6--import-문법-경로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 6 — Import 문법 (@경로)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-7--clauderules-디렉토리" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 7 — .claude/rules 디렉토리
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 7 — .claude/rules 디렉토리">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#path-scoped-rules--매칭될-때만-로드" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Path-scoped Rules — 매칭될 때만 로드
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-8--agentsmd-상호운용" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 8 — AGENTS.md 상호운용
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-9--작성-베스트-프랙티스" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 9 — 작성 베스트 프랙티스
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 9 — 작성 베스트 프랙티스">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#안티-패턴" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        안티 패턴
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-10--실전-예시" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 10 — 실전 예시
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 10 — 실전 예시">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-프로젝트-fastapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Python 프로젝트 (FastAPI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#모노레포" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        모노레포
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#직접-해보기-lab-2--실제-실행-기록" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        직접 해보기 (Lab 2) — 실제 실행 기록
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="직접 해보기 (Lab 2) — 실제 실행 기록">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#init-결과--예상과-가장-달랐던-부분" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /init 결과 — 예상과 가장 달랐던 부분
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#규칙-추가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        규칙 추가
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#동작-확인--정말-자동-로드되는지-증명하기" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        동작 확인 — 정말 자동 로드되는지 증명하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#정리" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        정리
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#출처" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        출처
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-09-workflow-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. 워크플로 패턴
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-10-recap-and-labs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. 정리와 실습 랩
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#한-줄-요약" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        한 줄 요약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#왜-알아야-하나" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        왜 알아야 하나
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-1--두-가지-메모리-시스템" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 1 — 두 가지 메모리 시스템
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-2--메모리-4계층-구조" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 2 — 메모리 4계층 구조
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 2 — 메모리 4계층 구조">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#로딩-순서와-병합" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        로딩 순서와 병합
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-3--project-memory-표준-골격" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 3 — Project Memory 표준 골격
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-4--auto-memory-운용" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 4 — Auto Memory 운용
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-5--세션-안에서-메모리-다루기" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 5 — 세션 안에서 메모리 다루기
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-6--import-문법-경로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 6 — Import 문법 (@경로)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-7--clauderules-디렉토리" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 7 — .claude/rules 디렉토리
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 7 — .claude/rules 디렉토리">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#path-scoped-rules--매칭될-때만-로드" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Path-scoped Rules — 매칭될 때만 로드
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-8--agentsmd-상호운용" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 8 — AGENTS.md 상호운용
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-9--작성-베스트-프랙티스" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 9 — 작성 베스트 프랙티스
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 9 — 작성 베스트 프랙티스">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#안티-패턴" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        안티 패턴
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#개념-10--실전-예시" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 10 — 실전 예시
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 10 — 실전 예시">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-프로젝트-fastapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Python 프로젝트 (FastAPI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#모노레포" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        모노레포
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#직접-해보기-lab-2--실제-실행-기록" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        직접 해보기 (Lab 2) — 실제 실행 기록
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="직접 해보기 (Lab 2) — 실제 실행 기록">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#init-결과--예상과-가장-달랐던-부분" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /init 결과 — 예상과 가장 달랐던 부분
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#규칙-추가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        규칙 추가
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#동작-확인--정말-자동-로드되는지-증명하기" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        동작 확인 — 정말 자동 로드되는지 증명하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#정리" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        정리
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#출처" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        출처
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="part-8--claudemd--memory">Part 8 — CLAUDE.md &amp; Memory<a class="headerlink" href="#part-8--claudemd--memory" title="이 위치로 링크">¶</a></h1>
+<h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
+<p><strong>지시는 <code>CLAUDE.md</code>에, 학습은 Auto memory에</strong> 쌓입니다. 짧고 구체적으로 유지하고, 커지면 <code>rules</code>와 <code>skills</code>로 분리합니다.</p>
+<hr />
+<h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
+<p>Part 2에서 이런 경고를 했습니다.</p>
+<blockquote>
+<p>컨텍스트 한계에 접근하면 오래된 것부터 정리되므로, <strong>초반에 준 세부 지시는 사라질 수 있습니다.</strong></p>
+</blockquote>
+<p>그래서 매 세션 "우리 프로젝트는 들여쓰기 2칸이야", "커밋 전에 테스트 돌려" 같은 말을 반복하게 됩니다.
+이걸 <strong>한 번 적어두면 매 세션 자동으로 로드되게</strong> 하는 장치가 메모리 시스템입니다. Part 8은 Claude Code를 "쓸 만한 도구"에서 "우리 팀 도구"로 바꾸는 지점입니다.</p>
+<hr />
+<h2 id="개념-1--두-가지-메모리-시스템">개념 1 — 두 가지 메모리 시스템<a class="headerlink" href="#개념-1--두-가지-메모리-시스템" title="이 위치로 링크">¶</a></h2>
+<p><strong>둘 다 매 세션 시작 시 로드됩니다.</strong> 차이는 <strong>누가 쓰는가</strong>입니다.</p>
+<table>
+<thead>
+<tr>
+<th><code>CLAUDE.md</code> (사용자 작성)</th>
+<th>Auto memory (Claude 작성)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>코딩 표준, 워크플로, 아키텍처 <strong>지시</strong></td>
+<td>빌드 명령, 디버깅 인사이트를 <strong>자동 축적</strong></td>
+</tr>
+<tr>
+<td>프로젝트 / 사용자 / 조직 스코프</td>
+<td>저장소 단위, 워크트리 간 공유</td>
+</tr>
+<tr>
+<td>버전 관리로 팀과 공유</td>
+<td>매 세션 첫 <strong>200줄 또는 25KB</strong> 로드</td>
+</tr>
+<tr>
+<td>지시가 반복되면 여기에 기록</td>
+<td>교정할수록 알아서 똑똑해짐</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>한 줄 구분: <strong>"내가 지켜달라고 하는 것" = CLAUDE.md</strong>, <strong>"Claude가 알아낸 것" = Auto memory</strong>.</p>
+</blockquote>
+<hr />
+<h2 id="개념-2--메모리-4계층-구조">개념 2 — 메모리 4계층 구조<a class="headerlink" href="#개념-2--메모리-4계층-구조" title="이 위치로 링크">¶</a></h2>
+<p>넓은 스코프에서 좁은 스코프로 내려갑니다.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>계층</th>
+<th>위치</th>
+<th>성격</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Managed</strong></td>
+<td>macOS <code>/Library/Application Support/ClaudeCode</code>, Linux <code>/etc/claude-code</code>의 <code>CLAUDE.md</code></td>
+<td>조직 정책</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>User</strong></td>
+<td><code>~/.claude/CLAUDE.md</code></td>
+<td>모든 프로젝트에 적용되는 개인 선호</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Project</strong></td>
+<td><code>./CLAUDE.md</code> 또는 <code>./.claude/CLAUDE.md</code></td>
+<td>버전 관리로 팀 공유</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Local</strong></td>
+<td><code>./CLAUDE.local.md</code></td>
+<td><code>.gitignore</code> 대상, 개인 프로젝트 노트</td>
+</tr>
+</tbody>
+</table>
+<h3 id="로딩-순서와-병합">로딩 순서와 병합<a class="headerlink" href="#로딩-순서와-병합" title="이 위치로 링크">¶</a></h3>
+<p><strong>디렉토리 트리를 걸어 올라가며 발견한 파일을 모두 병합합니다. 덮어쓰기가 아닙니다.</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a># foo/bar/ 에서 claude 실행 시
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  /etc/claude-code/CLAUDE.md      (조직)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  ~/.claude/CLAUDE.md             (사용자)
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  foo/CLAUDE.md                   (상위)
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  foo/bar/CLAUDE.md               (작업 디렉토리)
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  foo/bar/CLAUDE.local.md         (개인, 마지막)
+</span></code></pre></div>
+<p><strong>추가 규칙</strong>:
+- <strong>하위</strong> 디렉토리의 <code>CLAUDE.md</code>는 그 폴더의 파일을 읽을 때 <strong>온디맨드로</strong> 로드됩니다
+- HTML 주석(<code>&lt;!-- --&gt;</code>)은 컨텍스트 주입 전에 제거됩니다 → 컨텍스트 비용 없이 메모 가능</p>
+<hr />
+<h2 id="개념-3--project-memory-표준-골격">개념 3 — Project Memory 표준 골격<a class="headerlink" href="#개념-3--project-memory-표준-골격" title="이 위치로 링크">¶</a></h2>
+<p><code>./CLAUDE.md</code>:</p>
+<div class="language-markdown highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gh"># MyService</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="gu">## Commands</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">-</span><span class="w"> </span>Build: npm run build
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">-</span><span class="w"> </span>Test: npm test (커밋 전 필수)
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="k">-</span><span class="w"> </span>Lint: npm run lint:fix
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="gu">## Conventions</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="k">-</span><span class="w"> </span>들여쓰기 2칸, 세미콜론 사용
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="k">-</span><span class="w"> </span>API 핸들러는 src/api/handlers/ 에 위치
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">-</span><span class="w"> </span>에러는 AppError 클래스로 래핑
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="gu">## Architecture</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="k">-</span><span class="w"> </span>인증은 src/auth, 세션은 Redis 보관
+</span></code></pre></div>
+<p><strong>작성 기준</strong>:
+- <strong>200줄 이하</strong> 권장 상한
+- 검증 가능한 구체적 문장으로
+- 헤더 구조로 스캔 가능하게
+- 버전 관리에 포함해 팀 공유</p>
+<hr />
+<h2 id="개념-4--auto-memory-운용">개념 4 — Auto Memory 운용<a class="headerlink" href="#개념-4--auto-memory-운용" title="이 위치로 링크">¶</a></h2>
+<blockquote>
+<p><code>MEMORY.md</code> — 작업 중 발견한 빌드 명령, 프로젝트 패턴, 사용자 교정 사항을 Claude가 <strong>저장소 단위로</strong> 기록합니다. 매 세션 앞부분이 자동 로드됩니다.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>축</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>WRITE — 자동 축적</strong></td>
+<td>교정과 발견이 자동 기록. <strong>별도 작성 노력 불필요</strong></td>
+</tr>
+<tr>
+<td><strong>LOAD — 로드 상한</strong></td>
+<td>첫 200줄 또는 25KB. 초과분은 필요 시 조회</td>
+</tr>
+<tr>
+<td><strong>SCOPE — 저장소 단위</strong></td>
+<td>워크트리 간 공유, 프로젝트별 독립</td>
+</tr>
+<tr>
+<td><strong>CONTROL — 관리</strong></td>
+<td>내용 확인과 정리 요청 가능. 서브에이전트도 자체 메모리 보유</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>성격 구분: Auto memory는 <strong>지시가 아니라 학습 기록</strong>입니다. "이렇게 해라"가 아니라 "이 프로젝트는 이렇더라"가 쌓입니다.</p>
+</blockquote>
+<hr />
+<h2 id="개념-5--세션-안에서-메모리-다루기">개념 5 — 세션 안에서 메모리 다루기<a class="headerlink" href="#개념-5--세션-안에서-메모리-다루기" title="이 위치로 링크">¶</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /memory
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a># 로드된 메모리 파일 목록과 편집 진입
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>&gt; # 커밋 전에는 반드시 npm test 실행
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a># 문장 앞의 &#39;#&#39; 은 빠른 메모리 추가 단축
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>#   어느 파일에 넣을지 선택 프롬프트가 표시됨
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>&gt; /init
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a># 초안 생성 또는 기존 파일 개선안
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">가장 중요한 습관</p>
+<p>반복해서 말하게 되는 지시가 생기면, <strong>그 순간 <code>#</code>으로 바로 박제</strong>하세요.
+"또 말해야 하네"라고 느끼는 순간이 신호입니다.</p>
+</div>
+<hr />
+<h2 id="개념-6--import-문법-경로">개념 6 — Import 문법 (<code>@경로</code>)<a class="headerlink" href="#개념-6--import-문법-경로" title="이 위치로 링크">¶</a></h2>
+<p>파일을 모듈처럼 나눠서 참조합니다.</p>
+<div class="language-markdown highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>See <span class="ni">@README</span> for overview, <span class="ni">@package</span>.json for scripts.
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="gh"># Git workflow</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="ni">@docs/git</span>-instructions.md
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="gh"># Personal (워크트리 공유용, 홈 참조)</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>@~/.claude/my-project-instructions.md
+</span></code></pre></div>
+<p><strong>규칙</strong>:
+- 상대 경로는 <strong>선언 파일 기준</strong>
+- 최대 <strong>4단계 재귀</strong>
+- 백틱 안의 <code>@경로</code>는 임포트되지 않습니다: <code>`@README`</code> ← 그냥 언급할 때 유용
+- 외부 경로 임포트는 <strong>최초 1회 승인 다이얼로그</strong>가 뜹니다</p>
+<hr />
+<h2 id="개념-7--clauderules-디렉토리">개념 7 — <code>.claude/rules</code> 디렉토리<a class="headerlink" href="#개념-7--clauderules-디렉토리" title="이 위치로 링크">¶</a></h2>
+<p><code>CLAUDE.md</code>가 길어지면 주제별 파일로 분리합니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>your-project/
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  .claude/
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    CLAUDE.md              # 본체 지시
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    rules/
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>      code-style.md        # 스타일 규칙
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>      testing.md           # 테스트 컨벤션
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>      security.md          # 보안 요구사항
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>      frontend/            # 하위 폴더도 재귀 탐색
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        components.md
+</span></code></pre></div>
+<ul>
+<li><code>paths</code>가 없는 규칙은 <strong>세션 시작 시 로드</strong>됩니다</li>
+<li><strong>심볼릭 링크 지원</strong> → 사내 표준을 여러 저장소에서 공유 가능</li>
+<li><code>~/.claude/rules</code>에 두면 개인 전역 규칙이 됩니다</li>
+</ul>
+<h3 id="path-scoped-rules--매칭될-때만-로드">Path-scoped Rules — 매칭될 때만 로드<a class="headerlink" href="#path-scoped-rules--매칭될-때만-로드" title="이 위치로 링크">¶</a></h3>
+<p>컨텍스트를 아끼는 핵심 기법입니다.</p>
+<p><code>.claude/rules/api-design.md</code>:
+<div class="language-markdown highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>---
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>paths:
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="k">-</span><span class="w"> </span>&quot;src/api/**/*.ts&quot;
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="gu">  - &quot;lib/**/*.{ts,tsx}&quot;</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="gu">---</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="gh"># API Development Rules</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="k">-</span><span class="w"> </span>모든 엔드포인트는 입력 검증 필수
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="k">-</span><span class="w"> </span>표준 에러 응답 형식 사용
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="k">-</span><span class="w"> </span>OpenAPI 주석 포함
+</span></code></pre></div></p>
+<ul>
+<li><code>paths:</code> frontmatter 필드로 지정</li>
+<li>Glob 패턴, 중괄호 확장 지원</li>
+<li><strong>매칭되는 파일을 읽을 때만 로드</strong> → 프론트엔드 작업 중에는 API 규칙이 컨텍스트를 먹지 않습니다</li>
+</ul>
+<hr />
+<h2 id="개념-8--agentsmd-상호운용">개념 8 — <code>AGENTS.md</code> 상호운용<a class="headerlink" href="#개념-8--agentsmd-상호운용" title="이 위치로 링크">¶</a></h2>
+<p>다른 에이전트 도구와 지시를 공유하는 방법입니다.</p>
+<p><code>CLAUDE.md</code>:
+<div class="language-markdown highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="ni">@AGENTS</span>.md
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="gu">## Claude Code</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>src/billing/ 아래 변경은 Plan 모드 사용
+</span></code></pre></div></p>
+<p><strong>대안 — 심볼릭 링크</strong>:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ln<span class="w"> </span>-s<span class="w"> </span>AGENTS.md<span class="w"> </span>CLAUDE.md
+</span></code></pre></div></p>
+<blockquote>
+<p>Windows는 권한 문제 때문에 <code>@import</code> 방식을 권장합니다.</p>
+</blockquote>
+<p><code>/init</code>은 <code>AGENTS.md</code>, <code>.cursorrules</code>, <code>.windsurfrules</code>를 읽어 초안에 반영합니다. <strong>다른 도구를 쓰다가 넘어와도 설정을 다시 안 써도 됩니다.</strong></p>
+<hr />
+<h2 id="개념-9--작성-베스트-프랙티스">개념 9 — 작성 베스트 프랙티스<a class="headerlink" href="#개념-9--작성-베스트-프랙티스" title="이 위치로 링크">¶</a></h2>
+<blockquote>
+<p><strong>CONTEXT, NOT CONFIG</strong> — 메모리는 강제 설정이 아니라 <strong>컨텍스트</strong>입니다.
+구체적이고 간결하며 일관될수록 잘 지켜집니다.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>기준</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SIZE — 200줄 이하</strong></td>
+<td>길수록 준수율이 떨어짐. 넘치면 <code>rules</code>와 <code>skills</code>로 분리</td>
+</tr>
+<tr>
+<td><strong>STRUCT — 헤더와 불릿</strong></td>
+<td>스캔 가능한 구조. 밀집 문단 지양</td>
+</tr>
+<tr>
+<td><strong>SPECIFIC — 검증 가능하게</strong></td>
+<td>"2칸 들여쓰기"처럼 확인 가능한 표현</td>
+</tr>
+<tr>
+<td><strong>CONSIST — 모순 제거</strong></td>
+<td>상충 규칙은 임의 선택을 유발. 주기적 정리</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>"강제"가 필요하면 메모리가 아니라 Hook을 쓰세요.</strong> 메모리는 지켜지길 기대하는 컨텍스트이지, 실행을 막는 장치가 아닙니다.</p>
+</div>
+<h3 id="안티-패턴">안티 패턴<a class="headerlink" href="#안티-패턴" title="이 위치로 링크">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>❌ 피해야 할 것</th>
+<th>✅ 대신 이렇게</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>소설 같은 장문 서사</td>
+<td>명령과 규칙 중심의 간결한 목록</td>
+</tr>
+<tr>
+<td>프로젝트와 무관한 일반 상식</td>
+<td>이 저장소 고유의 사실만</td>
+</tr>
+<tr>
+<td>비밀값과 자격증명 기록</td>
+<td>비밀은 볼트에, 경로만 언급</td>
+</tr>
+<tr>
+<td>매 세션 불필요한 절차 문서 전체</td>
+<td>다단계 절차는 <strong>skill로 분리</strong></td>
+</tr>
+<tr>
+<td>모순되는 규칙 방치</td>
+<td>분기별 메모리 정리 루틴</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="개념-10--실전-예시">개념 10 — 실전 예시<a class="headerlink" href="#개념-10--실전-예시" title="이 위치로 링크">¶</a></h2>
+<h3 id="python-프로젝트-fastapi">Python 프로젝트 (FastAPI)<a class="headerlink" href="#python-프로젝트-fastapi" title="이 위치로 링크">¶</a></h3>
+<p><code>./CLAUDE.md</code>:
+<div class="language-markdown highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="gh"># Payments Service (FastAPI)</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="gu">## Commands</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="k">-</span><span class="w"> </span>Setup: uv sync
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">-</span><span class="w"> </span>Test: uv run pytest -x (커밋 전 필수)
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="k">-</span><span class="w"> </span>Lint: uv run ruff check --fix
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="gu">## Conventions</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="k">-</span><span class="w"> </span>타입 힌트 필수, mypy strict 통과
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="k">-</span><span class="w"> </span>라우터는 app/routers/, 스키마는 app/schemas/
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="k">-</span><span class="w"> </span>외부 호출은 httpx.AsyncClient 주입 방식
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="gu">## Don&#39;t</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="k">-</span><span class="w"> </span>requirements.txt 직접 수정 금지 (uv 사용)
+</span></code></pre></div></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong><code>## Don't</code> 섹션이 의외로 효과적입니다.</strong> 금지 사항을 명문화하면 "좋은 뜻으로 한 잘못된 수정"을 막을 수 있습니다.</p>
+</div>
+<h3 id="모노레포">모노레포<a class="headerlink" href="#모노레포" title="이 위치로 링크">¶</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>repo/
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  CLAUDE.md                # 전역: 워크스페이스 명령, 공통 규칙 (얇게!)
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>  .claude/rules/           # paths 스코프 규칙
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>  packages/
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    web/CLAUDE.md          # web 작업 시 온디맨드 로드
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    api/CLAUDE.md          # api 전용 컨벤션
+</span></code></pre></div>
+<p>다른 팀 파일 제외 (<code>settings.json</code>):
+<div class="language-json highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;claudeMdExcludes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;packages/legacy/**&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div></p>
+<p><strong>원칙: 루트는 얇게, 상세는 패키지와 rules로.</strong></p>
+<hr />
+<h2 id="직접-해보기-lab-2--실제-실행-기록">직접 해보기 (Lab 2) — 실제 실행 기록<a class="headerlink" href="#직접-해보기-lab-2--실제-실행-기록" title="이 위치로 링크">¶</a></h2>
+<p>작은 데모 프로젝트(<code>package.json</code> + <code>src/coupon.js</code> 단 두 파일)를 만들어 실제로 돌렸습니다. (2026-08-02)</p>
+<h3 id="init-결과--예상과-가장-달랐던-부분"><code>/init</code> 결과 — 예상과 가장 달랐던 부분<a class="headerlink" href="#init-결과--예상과-가장-달랐던-부분" title="이 위치로 링크">¶</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;/init&quot;</span><span class="w"> </span>--permission-mode<span class="w"> </span>acceptEdits
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="go">Created `CLAUDE.md`. There was no existing one, no README, and no Cursor/Copilot rules.</span>
+</span></code></pre></div>
+<p>생성된 <code>CLAUDE.md</code>에서 <code>## Repository state</code> 섹션 발췌:</p>
+<blockquote>
+<ul>
+<li><code>package.json</code> has <strong>no dependencies or devDependencies</strong> — <code>tsc</code>, <code>vitest</code>, and <code>eslint</code> are not installed, so all three scripts fail until they are added.</li>
+<li>The build script assumes TypeScript, but the only source file is CommonJS JavaScript (<code>src/coupon.js</code> uses <code>module.exports</code>). Either migrate the source to TS or change the build step — <strong>don't assume the current script reflects the intended toolchain.</strong></li>
+</ul>
+</blockquote>
+<p><code>## Architecture</code> 섹션 발췌:</p>
+<blockquote>
+<ul>
+<li><code>validateCoupon(coupon, now)</code> takes the current time as an explicit parameter rather than reading the clock. <strong>Keep time injection when extending this — it is what makes the logic testable.</strong></li>
+</ul>
+</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">직접 해보고 알게 된 것</p>
+<p><code>/init</code>이 그냥 빌드 명령 목록만 뽑을 줄 알았는데, <strong><code>package.json</code>의 스크립트가 거짓말이라는 걸 찾아냈습니다.</strong> <code>"build": "tsc -p ."</code>인데 소스는 CommonJS JS이고 <code>tsc</code>가 설치조차 안 돼 있다는 걸 명시했습니다.
+그리고 <code>now</code>를 파라미터로 주입하는 패턴에 <strong>"이게 테스트 가능성을 만드는 부분이니 확장할 때 유지하라"</strong> 고 <strong>이유까지</strong> 붙였습니다.
+이 파트에서 말한 <strong>"메모리는 config가 아니라 context"</strong> 가 이걸 뜻하는 거였습니다. 사실 나열이 아니라 "다음에 오는 사람이 실수할 지점"을 남깁니다.</p>
+</div>
+<h3 id="규칙-추가">규칙 추가<a class="headerlink" href="#규칙-추가" title="이 위치로 링크">¶</a></h3>
+<div class="language-markdown highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="gu">## Don&#39;t</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">-</span><span class="w"> </span>커밋 전에는 반드시 npm test 를 실행한다
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">-</span><span class="w"> </span>requirements 파일 직접 수정 금지
+</span></code></pre></div>
+<h3 id="동작-확인--정말-자동-로드되는지-증명하기">동작 확인 — <strong>정말 자동 로드되는지 증명하기</strong><a class="headerlink" href="#동작-확인--정말-자동-로드되는지-증명하기" title="이 위치로 링크">¶</a></h3>
+<p>교재의 성공 판정은 "탐색 없이 즉답"입니다. 그런데 "탐색을 안 했다"는 걸 눈으로 확인하기 어려워서, <strong>도구를 하나도 허용하지 않고</strong> 물었습니다. 파일을 읽을 수단이 없으니, 답을 한다면 그건 오직 자동 로드된 <code>CLAUDE.md</code>에서 나온 것입니다.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;이 프로젝트의 테스트 명령은 뭐야? 그리고 커밋 전에 지켜야 할 규칙이 있어?&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>json
+</span></code></pre></div>
+<p>응답 (발췌):</p>
+<blockquote>
+<p><strong>테스트 명령</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>npm<span class="w"> </span><span class="nb">test</span><span class="w">        </span><span class="c1"># vitest run</span>
+</span></code></pre></div>
+<strong>커밋 전 규칙</strong> (CLAUDE.md의 <code>## Don't</code> 섹션)
+1. 커밋 전에는 반드시 <code>npm test</code> 를 실행한다.
+2. requirements 파일은 직접 수정 금지.</p>
+<p><strong>주의할 점</strong>: <code>package.json:1-9</code>에 dependencies가 아예 없어서 <code>vitest</code>가 설치돼 있지 않습니다. 지금 <code>npm test</code>를 실행하면 명령 자체가 실패합니다.</p>
+</blockquote>
+<p>검증 메타데이터:
+<div class="language-json highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span><span class="nt">&quot;num_turns&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;permission_denials&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]}</span>
+</span></code></pre></div></p>
+<div class="admonition success">
+<p class="admonition-title">증명 완료</p>
+<p><code>permission_denials</code>가 <strong>비어 있습니다.</strong> 도구를 쓰려다 막힌 게 아니라 <strong>애초에 쓸 필요가 없었습니다.</strong>
+<code>CLAUDE.md</code>가 세션 시작 시 컨텍스트에 자동으로 들어간다는 게 숫자로 확인됩니다.</p>
+<p>덤으로 알게 된 것: <code>## Don't</code>에 적은 규칙을 그냥 읊는 게 아니라, <strong>"그 규칙을 지금 지킬 수 없는 상태"라는 것까지 짚어줬습니다.</strong> 메모리는 명령이 아니라 판단 재료로 쓰인다는 걸 보여주는 장면입니다.</p>
+</div>
+<p>(전체 기록: <a href="../part-10-recap-and-labs/#lab-2--claudemd-만들기-소요-15분">Part 10 / Lab 2</a>)</p>
+<hr />
+<h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
+<ul>
+<li>두 시스템: <strong>지시는 <code>CLAUDE.md</code>, 자동 학습은 Auto memory(<code>MEMORY.md</code>)</strong>.</li>
+<li>4계층: <strong>Managed → User → Project → Local</strong>. 위에서 아래로 <strong>병합</strong>되며, 작업 디렉토리가 마지막입니다.</li>
+<li>세션 중 <code>#</code> 단축으로 즉시 추가하고, <code>/memory</code>로 편집합니다.</li>
+<li><code>@import</code>는 최대 4단계 재귀. <code>rules/</code>는 주제별 분리, <code>paths:</code> frontmatter로 <strong>경로 매칭 시에만 로드</strong>.</li>
+<li><code>AGENTS.md</code>는 <code>@import</code>로 공유하고, <code>/init</code>이 다른 도구 설정도 흡수합니다.</li>
+<li><strong>200줄 이하, 구체적으로, 모순 없이.</strong> 길어지면 rules와 skills로 쪼갭니다.</li>
+</ul>
+<hr />
+<h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
+<ul>
+<li>Claude Code Deep Dive Workshop — <em>Chapter 1 / Part 8: CLAUDE.md &amp; Memory</em> (17p)</li>
+<li>공식 문서: <a href="https://code.claude.com/docs/ko/memory">Memory</a> · <a href="https://code.claude.com/docs/ko/best-practices">Best practices</a> · <a href="https://code.claude.com/docs/ko/settings">Settings</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="../part-07-interfaces/" class="md-footer__link md-footer__link--prev" aria-label="이전: 7. 인터페이스">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                7. 인터페이스
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../part-09-workflow-patterns/" class="md-footer__link md-footer__link--next" aria-label="다음: 9. 워크플로 패턴">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                다음
+              </span>
+              <div class="md-ellipsis">
+                9. 워크플로 패턴
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      학습 목적의 개인 정리 노트입니다.
+    </div>
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://code.claude.com/docs/ko/overview" target="_blank" rel="noopener" title="Claude Code 공식 문서" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 2-5 4.5v11l5-4.5zM6.5 5C4.55 5 2.45 5.4 1 6.5v14.66c0 .25.25.5.5.5.1 0 .15-.07.25-.07 1.35-.65 3.3-1.09 4.75-1.09 1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.31 4.75 1.06.1.05.15.03.25.03.25 0 .5-.25.5-.5V6.5c-.6-.45-1.25-.75-2-1V19c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6.5C10.55 5.4 8.45 5 6.5 5"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.top", "navigation.footer", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

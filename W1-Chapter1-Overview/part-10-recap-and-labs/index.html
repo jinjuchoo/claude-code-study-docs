@@ -1,0 +1,1565 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Claude Code Deep Dive Workshop 6주 학습 정리 — 처음 배우는 사람을 위한 한국어 가이드">
+      
+      
+      
+        <link rel="canonical" href="https://jinjuchoo.github.io/claude-code-study-docs/W1-Chapter1-Overview/part-10-recap-and-labs/">
+      
+      
+        <link rel="prev" href="../part-09-workflow-patterns/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Part 10 — 정리와 실습 랩 (실제 수행 기록) - Claude Code 완전 정복</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pretendard:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Pretendard";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-10--recap--labs" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="../.." title="Claude Code 완전 정복" class="md-header__button md-logo" aria-label="Claude Code 완전 정복" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12zm0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-7 14v-2h5v2zm-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Claude Code 완전 정복
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part 10 — 정리와 실습 랩 (실제 수행 기록)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="시스템 설정 따르기"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="시스템 설정 따르기" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="deep-orange"  aria-label="다크 모드로"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="다크 모드로" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="deep-orange"  aria-label="라이트 모드로"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="라이트 모드로" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="공유" aria-label="공유" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Claude Code 완전 정복" class="md-nav__button md-logo" aria-label="Claude Code 완전 정복" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12zm0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-7 14v-2h5v2zm-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59z"/></svg>
+
+    </a>
+    Claude Code 완전 정복
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    시작하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1주차 · Overview
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    1주차 · Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-01-what-is-claude-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Claude Code란 무엇인가
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-02-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. 아키텍처
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-03-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. 설치
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-04-authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. 인증
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-05-quick-start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. 퀵스타트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-06-core-capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. 핵심 도구
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-07-interfaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. 인터페이스
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-08-claude-md-and-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. CLAUDE.md와 메모리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-09-workflow-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. 워크플로 패턴
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. 정리와 실습 랩
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. 정리와 실습 랩
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#한-줄-요약" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        한 줄 요약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-1-핵심-요약--열-개-파트를-여섯-문장으로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chapter 1 핵심 요약 — 열 개 파트를 여섯 문장으로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FAQ
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#한-줄-요약" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        한 줄 요약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-1-핵심-요약--열-개-파트를-여섯-문장으로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chapter 1 핵심 요약 — 열 개 파트를 여섯 문장으로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FAQ
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="part-10--recap--labs">Part 10 — Recap &amp; Labs<a class="headerlink" href="#part-10--recap--labs" title="이 위치로 링크">¶</a></h1>
+<h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
+<p>Chapter 1의 열 개 파트를 여섯 문장으로 압축하고, <strong>실습 랩 5종을 실제로 수행한 기록</strong>을 남깁니다.</p>
+<hr />
+<h2 id="chapter-1-핵심-요약--열-개-파트를-여섯-문장으로">Chapter 1 핵심 요약 — 열 개 파트를 여섯 문장으로<a class="headerlink" href="#chapter-1-핵심-요약--열-개-파트를-여섯-문장으로" title="이 위치로 링크">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>축</th>
+<th>요약</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IDENTITY — 정체성</strong></td>
+<td>Agentic Loop로 저장소 단위 작업을 완수하는 Anthropic 1차 도구</td>
+</tr>
+<tr>
+<td><strong>ARCH — 아키텍처</strong></td>
+<td>Interface, Harness, Model, Provider 4계층과 도구, 체크포인트</td>
+</tr>
+<tr>
+<td><strong>SETUP — 설치와 인증</strong></td>
+<td>Native 원라이너 설치, 여섯 인증 경로와 우선순위 규칙</td>
+</tr>
+<tr>
+<td><strong>USE — 사용법</strong></td>
+<td>구체적 지시와 검증 기준, 슬래시 명령 지도, 권한 모드 4종</td>
+</tr>
+<tr>
+<td><strong>MEMORY — 메모리</strong></td>
+<td><code>CLAUDE.md</code> 4계층과 Auto memory, <code>rules</code> 경로 스코프</td>
+</tr>
+<tr>
+<td><strong>PATTERN — 패턴</strong></td>
+<td>EPC와 TDD, 리뷰, 병렬화, Headless와 Routines 자동화</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="faq">FAQ<a class="headerlink" href="#faq" title="이 위치로 링크">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>질문</th>
+<th>답</th>
+<th>근거</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>코드가 학습에 쓰이나요?</td>
+<td>상업 계정 기본 미사용, ZDR 옵션 제공</td>
+<td><a href="../part-01-what-is-claude-code/">Part 1 데이터 정책</a></td>
+</tr>
+<tr>
+<td>구독과 API 중 무엇이 좋나요?</td>
+<td>개인은 구독, 조직은 Bedrock·Console</td>
+<td><a href="../part-04-authentication/">Part 4 비교표</a></td>
+</tr>
+<tr>
+<td>Windows에서 잘 되나요?</td>
+<td>Native 공식 지원, <strong>샌드박스만 WSL2</strong> 필요</td>
+<td><a href="../part-03-installation/">Part 3 전략표</a></td>
+</tr>
+<tr>
+<td>실수로 망가뜨리면요?</td>
+<td>체크포인트, <code>Esc Esc</code>, <code>/rewind</code></td>
+<td><a href="../part-05-quick-start/">Part 5 복구</a></td>
+</tr>
+<tr>
+<td>팀 표준은 어떻게 만드나요?</td>
+<td><code>CLAUDE.md</code>와 <code>rules</code>를 버전 관리</td>
+<td><a href="../part-08-claude-md-and-memory/">Part 8 실전 예시</a></td>
+</tr>
+<tr>
+<td>비용 통제가 되나요?</td>
+<td><code>/usage</code> 분해, 모델 배분, OTel</td>
+<td><a href="../part-09-workflow-patterns/">Part 9 비용 전략</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="실습-랩--실제-수행-기록">실습 랩 — 실제 수행 기록<a class="headerlink" href="#실습-랩--실제-수행-기록" title="이 위치로 링크">¶</a></h1>
+<blockquote>
+<p>아래는 <strong>2026-08-02에 직접 실행한 결과</strong>입니다. 출력은 편집 없이 그대로 옮겼습니다.
+실행 환경: macOS 26.5.1 (Darwin 25.5.0, arm64), Claude Code <strong>2.1.220</strong></p>
+</blockquote>
+<hr />
+<h2 id="lab-1--설치와-첫-세션-소요-15분">Lab 1 — 설치와 첫 세션 (소요 15분)<a class="headerlink" href="#lab-1--설치와-첫-세션-소요-15분" title="이 위치로 링크">¶</a></h2>
+<h3 id="1-1-설치-확인">1-1. 설치 확인<a class="headerlink" href="#1-1-설치-확인" title="이 위치로 링크">¶</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">$ </span>which<span class="w"> </span>claude
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="go">/Applications/cmux.app/Contents/Resources/bin/claude</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">$ </span>claude<span class="w"> </span>--version
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="go">2.1.220 (Claude Code)</span>
+</span></code></pre></div>
+<h3 id="1-2-종합-자가-진단--claude-doctor">1-2. 종합 자가 진단 — <code>claude doctor</code><a class="headerlink" href="#1-2-종합-자가-진단--claude-doctor" title="이 위치로 링크">¶</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gp">$ </span>claude<span class="w"> </span>doctor
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="go">Claude Code doctor</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="go">Running: npm-global (2.1.220)</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="go">Commit: 4073f59596e2</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="go">Platform: darwin-arm64</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="go">Path: /opt/homebrew/lib/node_modules/@anthropic-ai/claude-code/bin/claude.exe</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="go">Config install method: global</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="go">Search: OK (bundled)</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="go">Auto-updates: enabled</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="go">Auto-update channel: latest</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="go">Last update attempt: success → 2.1.220 (2026-07-28)</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="go">Remote Control</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="go">Control this session from claude.ai/code or the Claude mobile app</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="go">No installation issues found.</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="go">For a full setup checkup that can also fix issues, run /doctor in a Claude Code session.</span>
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">직접 해보고 알게 된 것</p>
+<p>내 환경은 <code>Running: npm-global</code>, 경로가 <code>/opt/homebrew/lib/node_modules/@anthropic-ai/claude-code/...</code> 였습니다.
+즉 <a href="../part-03-installation/">Part 3</a>에서 "레거시"라고 정리한 <strong>npm 경로로 설치되어 있었습니다.</strong>
+다행히 <code>Auto-updates: enabled</code>, <code>Auto-update channel: latest</code>로 자동 업데이트는 동작 중이었고(<code>2026-07-28</code>에 2.1.220으로 갱신 성공), <code>Search: OK (bundled)</code>로 ripgrep도 번들 버전이 잡혀 있었습니다.
+<strong><code>claude doctor</code>는 "내가 어떤 경로로 깔았는지"를 알려주는 유일한 명령입니다.</strong> 문서만 읽었을 때는 당연히 Native일 거라 생각했는데 아니었습니다.</p>
+</div>
+<h3 id="1-3-실습-저장소-클론">1-3. 실습 저장소 클론<a class="headerlink" href="#1-3-실습-저장소-클론" title="이 위치로 링크">¶</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>https://github.com/whchoi98/claude-code-workshop
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="go">Cloning into &#39;claude-code-workshop&#39;...</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="gp">$ </span>ls<span class="w"> </span>claude-code-workshop
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="go">20260525  20260703  CHANGELOG.md  CLAUDE.md  README.md</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="go">Script  ccw-hands-on-lab  tech_doc</span>
+</span></code></pre></div>
+<h3 id="1-4-첫-질문">1-4. 첫 질문<a class="headerlink" href="#1-4-첫-질문" title="이 위치로 링크">¶</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>claude-code-workshop
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;이 저장소의 구조를 3~5줄로 설명해줘&quot;</span><span class="w"> </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Read,Grep,Glob&quot;</span>
+</span></code></pre></div>
+<p>실제 응답:</p>
+<blockquote>
+<p>Claude Code 딥다이브 워크숍용 <strong>콘텐츠 저장소</strong>입니다 (빌드 시스템·테스트·애플리케이션 코드 없음).</p>
+<ul>
+<li><code>20260525/</code>, <code>20260703/</code> — 날짜별 커리큘럼 에디션. 각각 Ch1 개요 ~ Ch6 Agent SDK까지 6개 챕터 PDF (<code>20260703/</code>이 최신판).</li>
+<li><code>Script/workshop-code/</code> — 슬라이드에서 추출한 코드 스니펫 562개 마크다운. <code>chN-주제/part-NN-슬러그/NNN-슬러그.md</code> 구조이며 <code>NNN</code>은 원본 슬라이드 번호.</li>
+<li><code>tech_doc/</code> — 아키텍처·비용 효율 PDF 2종.</li>
+<li><code>ccw-hands-on-lab/</code> — 챕터별·캡스톤별 핸즈온 랩과 레퍼런스 HTML 문서 모음 (<code>index.html</code>이 진입점).</li>
+<li><code>README.md</code>, <code>CHANGELOG.md</code> — 영문 섹션 먼저, 한글 섹션 뒤에 오는 이중 언어 문서.</li>
+</ul>
+<p>주의할 점: PDF는 외부에서 관리되는 원본 덱으로부터 렌더링된 산출물이라 직접 수정하지 않습니다. 참고로 <code>ccw-hands-on-lab/</code>은 현재 CLAUDE.md의 저장소 레이아웃 설명에 빠져 있습니다.</p>
+</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">관찰</p>
+<p>마지막 한 줄이 흥미로웠습니다. 시키지도 않았는데 <strong>저장소의 <code>CLAUDE.md</code>와 실제 디렉토리 구조가 불일치한다는 걸 찾아냈습니다.</strong>
+<a href="../part-08-claude-md-and-memory/">Part 8</a>에서 "메모리는 주기적으로 정리해야 한다"고 한 이유가 이런 것입니다. 문서와 실제가 어긋나면 그게 그대로 컨텍스트 오염이 됩니다.</p>
+</div>
+<p><strong>✅ Lab 1 완료 기준</strong>: <code>doctor</code> 진단 통과 + 저장소 구조 답변 획득.</p>
+<hr />
+<h2 id="lab-2--claudemd-만들기-소요-15분">Lab 2 — CLAUDE.md 만들기 (소요 15분)<a class="headerlink" href="#lab-2--claudemd-만들기-소요-15분" title="이 위치로 링크">¶</a></h2>
+<p>교재 저장소에는 이미 <code>CLAUDE.md</code>가 있어서, <code>/init</code>의 "초안 생성"을 그대로 재현하려고 <strong>빈 데모 프로젝트를 새로 만들어서</strong> 진행했습니다.</p>
+<h3 id="2-0-실습용-프로젝트-준비">2-0. 실습용 프로젝트 준비<a class="headerlink" href="#2-0-실습용-프로젝트-준비" title="이 위치로 링크">¶</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>lab2-demo/src<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>lab2-demo<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>init<span class="w"> </span>-q
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="gp">$ </span>cat<span class="w"> </span>package.json
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="go">{</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="go">  &quot;name&quot;: &quot;coupon-service&quot;,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="go">  &quot;version&quot;: &quot;0.1.0&quot;,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="go">  &quot;scripts&quot;: {</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="go">    &quot;build&quot;: &quot;tsc -p .&quot;,</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="go">    &quot;test&quot;: &quot;vitest run&quot;,</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="go">    &quot;lint&quot;: &quot;eslint src --fix&quot;</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="go">  }</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="go">}</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="gp">$ </span>cat<span class="w"> </span>src/coupon.js
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="go">// 쿠폰 검증. 에러는 AppError 로 래핑한다.</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="go">class AppError extends Error {}</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="go">function validateCoupon(coupon, now) {</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="go">  if (coupon.expiresAt &lt; now) throw new AppError(&#39;EXPIRED&#39;);</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="go">  if (coupon.usedAt) throw new AppError(&#39;ALREADY_USED&#39;);</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="go">  return coupon.discountRate;</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="go">}</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="go">module.exports = { validateCoupon, AppError };</span>
+</span></code></pre></div>
+<h3 id="2-1-init-실행">2-1. <code>/init</code> 실행<a class="headerlink" href="#2-1-init-실행" title="이 위치로 링크">¶</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;/init&quot;</span><span class="w"> </span>--permission-mode<span class="w"> </span>acceptEdits
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="go">Created `CLAUDE.md`. There was no existing one, no README, and no Cursor/Copilot rules.</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="go">...</span>
+</span></code></pre></div>
+<p><strong>생성된 <code>CLAUDE.md</code> (전문)</strong>:</p>
+<div class="language-markdown highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="gh"># CLAUDE.md</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="gu">## Commands</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="sb">```bash</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>npm<span class="w"> </span>run<span class="w"> </span>build<span class="w">   </span><span class="c1"># tsc -p .</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>npm<span class="w"> </span><span class="nb">test</span><span class="w">        </span><span class="c1"># vitest run</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>npm<span class="w"> </span>run<span class="w"> </span>lint<span class="w">    </span><span class="c1"># eslint src --fix</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="sb">```</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>Run a single test file / test name once vitest is wired up:
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="sb">```bash</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>npx<span class="w"> </span>vitest<span class="w"> </span>run<span class="w"> </span>src/coupon.test.js
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>npx<span class="w"> </span>vitest<span class="w"> </span>run<span class="w"> </span>-t<span class="w"> </span><span class="s2">&quot;expired coupon&quot;</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="sb">```</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="gu">## Repository state</span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>This is a minimal scaffold (<span class="sb">`coupon-service`</span>, one commit). Be aware of the gaps before running the commands above:
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="k">-</span><span class="w"> </span><span class="sb">`package.json`</span> has <span class="gs">**no dependencies or devDependencies**</span> — <span class="sb">`tsc`</span>, <span class="sb">`vitest`</span>, and <span class="sb">`eslint`</span> are not installed, so all three scripts fail until they are added.
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="k">-</span><span class="w"> </span>There is no <span class="sb">`tsconfig.json`</span>, so <span class="sb">`npm run build`</span> has nothing to configure <span class="sb">`tsc -p .`</span> with, and no ESLint config for <span class="sb">`npm run lint`</span>.
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="k">-</span><span class="w"> </span>The build script assumes TypeScript, but the only source file is CommonJS JavaScript (<span class="sb">`src/coupon.js`</span> uses <span class="sb">`module.exports`</span>). Either migrate the source to TS or change the build step — don&#39;t assume the current script reflects the intended toolchain.
+</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="k">-</span><span class="w"> </span>There are no tests yet.
+</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a>
+</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="gu">## Architecture</span>
+</span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a>
+</span><span id="__span-6-31"><a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="sb">`src/coupon.js`</span> is the whole implementation. The convention it establishes:
+</span><span id="__span-6-32"><a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a>
+</span><span id="__span-6-33"><a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="k">-</span><span class="w"> </span><span class="sb">`AppError extends Error`</span> is the wrapper for all domain failures; error identity is carried by the <span class="gs">**message string as a code**</span> (<span class="sb">`&#39;EXPIRED&#39;`</span>, <span class="sb">`&#39;ALREADY_USED&#39;`</span>), not by subclasses or a <span class="sb">`code`</span> field.
+</span><span id="__span-6-34"><a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a><span class="k">-</span><span class="w"> </span><span class="sb">`validateCoupon(coupon, now)`</span> takes the current time as an explicit parameter rather than reading the clock. Keep time injection when extending this — it is what makes the logic testable.
+</span><span id="__span-6-35"><a id="__codelineno-6-35" name="__codelineno-6-35" href="#__codelineno-6-35"></a><span class="k">-</span><span class="w"> </span>The function throws on failure and returns <span class="sb">`coupon.discountRate`</span> on success, so callers must wrap it in try/catch rather than checking a return value.
+</span><span id="__span-6-36"><a id="__codelineno-6-36" name="__codelineno-6-36" href="#__codelineno-6-36"></a>
+</span><span id="__span-6-37"><a id="__codelineno-6-37" name="__codelineno-6-37" href="#__codelineno-6-37"></a>Source comments are written in Korean; match that when editing existing files.
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">직접 해보고 알게 된 것 (예상과 가장 달랐던 부분)</p>
+<p><code>/init</code>이 그냥 "빌드 명령 목록"만 뽑을 줄 알았는데, <strong><code>package.json</code>의 스크립트가 거짓말이라는 걸 찾아냈습니다.</strong>
+<code>"build": "tsc -p ."</code>인데 소스는 CommonJS JS이고, <code>tsc</code>·<code>vitest</code>·<code>eslint</code>가 devDependencies에 아예 없어서 세 명령 다 실패한다는 걸 <code>## Repository state</code> 섹션에 명시했습니다.
+그리고 <code>now</code>를 파라미터로 주입하는 패턴을 <strong>"이게 테스트 가능성을 만드는 부분이니 확장할 때 유지하라"</strong> 고 이유까지 붙여 기록했습니다.
+<a href="../part-08-claude-md-and-memory/">Part 8</a>의 "메모리는 config가 아니라 context"라는 말이 이걸 뜻하는 거였습니다.</p>
+</div>
+<h3 id="2-2-규칙-추가">2-2. 규칙 추가<a class="headerlink" href="#2-2-규칙-추가" title="이 위치로 링크">¶</a></h3>
+<p>세션 안에서는 <code>#</code> 단축을 쓰지만, 여기서는 결과를 확인하려고 파일에 직접 덧붙였습니다.</p>
+<div class="language-markdown highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="gu">## Don&#39;t</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">-</span><span class="w"> </span>커밋 전에는 반드시 npm test 를 실행한다
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">-</span><span class="w"> </span>requirements 파일 직접 수정 금지
+</span></code></pre></div>
+<h3 id="2-3-동작-확인--새-세션이-claudemd를-정말-읽는가">2-3. 동작 확인 — <strong>새 세션이 CLAUDE.md를 정말 읽는가</strong><a class="headerlink" href="#2-3-동작-확인--새-세션이-claudemd를-정말-읽는가" title="이 위치로 링크">¶</a></h3>
+<p>교재의 성공 판정은 "탐색 없이 즉답하면 성공"입니다.
+이걸 확실히 증명하려고 <strong>도구를 하나도 허용하지 않고</strong> 물었습니다. 파일을 읽을 수단이 없으므로, 답을 한다면 그건 오직 자동 로드된 <code>CLAUDE.md</code>에서 나온 것입니다.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;이 프로젝트의 테스트 명령은 뭐야? 그리고 커밋 전에 지켜야 할 규칙이 있어?&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>json
+</span></code></pre></div>
+<p>응답:</p>
+<blockquote>
+<p><strong>테스트 명령</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>npm<span class="w"> </span><span class="nb">test</span><span class="w">        </span><span class="c1"># vitest run</span>
+</span></code></pre></div>
+단일 파일/테스트만 돌릴 때:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>npx<span class="w"> </span>vitest<span class="w"> </span>run<span class="w"> </span>src/coupon.test.js
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>npx<span class="w"> </span>vitest<span class="w"> </span>run<span class="w"> </span>-t<span class="w"> </span><span class="s2">&quot;expired coupon&quot;</span>
+</span></code></pre></div></p>
+<p><strong>커밋 전 규칙</strong> (CLAUDE.md의 <code>## Don't</code> 섹션)
+1. 커밋 전에는 반드시 <code>npm test</code> 를 실행한다.
+2. requirements 파일은 직접 수정 금지.</p>
+<p><strong>주의할 점</strong>: <code>package.json:1-9</code>에 dependencies/devDependencies가 아예 없어서 <code>vitest</code>가 설치돼 있지 않습니다. 테스트 파일도 아직 없고요. 그래서 지금 <code>npm test</code>를 실행하면 명령 자체가 실패합니다.</p>
+</blockquote>
+<p>검증 메타데이터:
+<div class="language-json highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span><span class="nt">&quot;num_turns&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">&quot;permission_denials&quot;</span><span class="p">:[]}</span>
+</span></code></pre></div></p>
+<div class="admonition success">
+<p class="admonition-title">증명 완료</p>
+<p><code>permission_denials</code>가 비어 있습니다. 즉 <strong>도구를 쓰려다 막힌 게 아니라 애초에 쓸 필요가 없었습니다.</strong>
+<code>CLAUDE.md</code>가 세션 시작 시 컨텍스트에 자동으로 들어간다는 <a href="../part-08-claude-md-and-memory/">Part 8</a>의 설명이 그대로 확인됐습니다.</p>
+</div>
+<p><strong>✅ Lab 2 완료 기준</strong>: 새 세션에서 탐색 없이 즉답 → 성공.</p>
+<hr />
+<h2 id="lab-3--디버깅-실습-소요-20분">Lab 3 — 디버깅 실습 (소요 20분)<a class="headerlink" href="#lab-3--디버깅-실습-소요-20분" title="이 위치로 링크">¶</a></h2>
+<p>교재는 <code>claude-code-workshop/ch1/lab3-buggy-app</code> 경로를 안내하지만, <strong>현재 저장소(<code>20260703</code> 에디션)에는 이 디렉토리가 없었습니다.</strong> 코드 스니펫은 <code>Script/workshop-code/</code>에, 랩 가이드는 <code>ccw-hands-on-lab/*.html</code>에 들어 있는 구조로 바뀐 것으로 보입니다.
+그래서 <strong>PDF의 시나리오(만료 카드 결제 실패)를 그대로 재현한 버기 앱을 직접 만들어서</strong> 진행했습니다.</p>
+<h3 id="3-0-의도된-버그가-있는-앱">3-0. 의도된 버그가 있는 앱<a class="headerlink" href="#3-0-의도된-버그가-있는-앱" title="이 위치로 링크">¶</a></h3>
+<p><code>src/checkout.js</code>:
+<div class="language-javascript highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kd">function</span><span class="w"> </span><span class="nx">isExpired</span><span class="p">(</span><span class="nx">card</span><span class="p">,</span><span class="w"> </span><span class="nx">now</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="c1">// YYYY-MM 형식의 만료월을 비교한다</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">m</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">card</span><span class="p">.</span><span class="nx">expiry</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="nb">Number</span><span class="p">);</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">expiryEnd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">(</span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">m</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="mf">23</span><span class="p">,</span><span class="w"> </span><span class="mf">59</span><span class="p">,</span><span class="w"> </span><span class="mf">59</span><span class="p">);</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">now</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nx">expiryEnd</span><span class="p">;</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="p">}</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="kd">function</span><span class="w"> </span><span class="nx">charge</span><span class="p">(</span><span class="nx">card</span><span class="p">,</span><span class="w"> </span><span class="nx">amount</span><span class="p">,</span><span class="w"> </span><span class="nx">now</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">isExpired</span><span class="p">(</span><span class="nx">card</span><span class="p">,</span><span class="w"> </span><span class="nx">now</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">ok</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;CARD_EXPIRED&#39;</span><span class="w"> </span><span class="p">};</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">ok</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">charged</span><span class="o">:</span><span class="w"> </span><span class="nx">amount</span><span class="w"> </span><span class="p">};</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<p>테스트 4개 중 마지막이 <code>expiry</code> 없는 카드를 던집니다.</p>
+<h3 id="3-1-수정-전-테스트--실패-재현">3-1. 수정 전 테스트 — 실패 재현<a class="headerlink" href="#3-1-수정-전-테스트--실패-재현" title="이 위치로 링크">¶</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="gp">$ </span>npm<span class="w"> </span><span class="nb">test</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="go">✔ 만료월 당월 말일까지는 결제된다 (0.050791ms)</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="go">✖ expiry 가 없는 카드는 거부된다 (0.128875ms)</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="go">ℹ tests 4</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="go">ℹ pass 3</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="go">ℹ fail 1</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="go">✖ failing tests:</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="go">test at src/checkout.test.js:20:1</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="go">✖ expiry 가 없는 카드는 거부된다 (0.128875ms)</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="go">  TypeError: Cannot read properties of undefined (reading &#39;split&#39;)</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="go">      at isExpired (.../src/checkout.js:3:30)</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="go">      at charge (.../src/checkout.js:9:7)</span>
+</span></code></pre></div>
+<blockquote>
+<p><a href="../part-01-what-is-claude-code/">Part 1</a>의 디버깅 예시에 나온 것과 <strong>똑같은 <code>TypeError: Cannot read properties of undefined</code></strong> 가 실제로 재현됐습니다.</p>
+</blockquote>
+<h3 id="3-2-claude에게-위임">3-2. Claude에게 위임<a class="headerlink" href="#3-2-claude에게-위임" title="이 위치로 링크">¶</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;npm test가 실패해. 원인을 찾아 수정하고 전체 테스트 통과까지 확인해줘. 테스트 파일은 명세이므로 수정하지 마.&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span>--permission-mode<span class="w"> </span>acceptEdits<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Read,Edit,Grep,Glob,Bash(npm test)&quot;</span>
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>여기서 <strong><code>--allowed-tools</code>에 <code>Bash(npm test)</code>만</strong> 넣은 게 포인트입니다.
+<a href="../part-09-workflow-patterns/">Part 9</a>에서 정리한 "무인 실행의 안전선"을 실제로 적용해봤습니다. 테스트는 돌릴 수 있지만 다른 셸 명령은 못 씁니다.
+그리고 <code>"테스트 파일은 명세이므로 수정하지 마"</code> — <strong>테스트를 고쳐서 통과시키는 부정행위를 막는 지시</strong>입니다. 이건 꼭 넣어야 합니다.</p>
+</div>
+<h3 id="3-3-claude의-응답">3-3. Claude의 응답<a class="headerlink" href="#3-3-claude의-응답" title="이 위치로 링크">¶</a></h3>
+<blockquote>
+<p>4/4 통과했습니다.</p>
+<p><strong>원인</strong> — <code>src/checkout.js:3</code>에서 <code>card.expiry.split('-')</code>를 무조건 호출했는데, <code>expiry</code> 필드가 없는 카드(<code>charge({}, ...)</code>)에서는 <code>undefined.split</code> → <code>TypeError</code>가 발생했습니다. 명세(테스트)는 이 경우 예외가 아니라 <code>{ ok: false, error: 'CARD_EXPIRED' }</code> 반환을 요구합니다.</p>
+<p><strong>수정</strong> — <code>isExpired</code>에 입력 검증을 추가했습니다:
+- <code>card?.expiry</code>가 문자열이 아니면(없음/null/숫자 등) 만료로 처리
+- 파싱 결과가 정수가 아니거나 월이 1~12 범위를 벗어나면(<code>'abc'</code>, <code>'2026-13'</code> 같은 잘못된 형식) 만료로 처리</p>
+<p>정상 경로의 날짜 비교 로직은 그대로 두었습니다. 테스트 파일은 수정하지 않았습니다.</p>
+<p>주의할 점 하나: 잘못된 형식을 <code>CARD_EXPIRED</code>로 뭉뚱그리는 건 테스트가 요구하는 동작이지만, 실제 서비스라면 "만료됨"과 "카드 정보 오류"는 사용자에게 다른 안내가 필요할 수 있습니다. 명세를 넘어서는 변경이라 별도 에러 코드는 추가하지 않았습니다.</p>
+</blockquote>
+<h3 id="3-4-실제-변경-내용-git-diff--승인-전-반드시-읽어야-할-부분">3-4. 실제 변경 내용 (<code>git diff</code>) — <strong>승인 전 반드시 읽어야 할 부분</strong><a class="headerlink" href="#3-4-실제-변경-내용-git-diff--승인-전-반드시-읽어야-할-부분" title="이 위치로 링크">¶</a></h3>
+<div class="language-diff highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="gd">--- a/src/checkout.js</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="gi">+++ b/src/checkout.js</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="gu">@@ -1,6 +1,13 @@</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w"> </span>function isExpired(card, now) {
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w"> </span>  // YYYY-MM 형식의 만료월을 비교한다
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="gi">+  // 만료월이 없거나 형식이 잘못된 카드는 만료된 것으로 취급한다</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="gi">+  if (typeof card?.expiry !== &#39;string&#39;) {</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="gi">+    return true;</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="gi">+  }</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w"> </span>  const [y, m] = card.expiry.split(&#39;-&#39;).map(Number);
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="gi">+  if (!Number.isInteger(y) || !Number.isInteger(m) || m &lt; 1 || m &gt; 12) {</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="gi">+    return true;</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="gi">+  }</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w"> </span>  const expiryEnd = new Date(y, m, 0, 23, 59, 59);
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="w"> </span>  return now &gt; expiryEnd;
+</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="w"> </span>}
+</span></code></pre></div>
+<h3 id="3-5-재검증">3-5. 재검증<a class="headerlink" href="#3-5-재검증" title="이 위치로 링크">¶</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="gp">$ </span>npm<span class="w"> </span><span class="nb">test</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="go">✔ 정상 카드는 결제된다 (1.512625ms)</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="go">✔ 만료 카드는 거부된다 (0.063ms)</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="go">✔ 만료월 당월 말일까지는 결제된다 (0.050917ms)</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="go">✔ expiry 가 없는 카드는 거부된다 (0.044125ms)</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="go">ℹ tests 4</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="go">ℹ pass 4</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="go">ℹ fail 0</span>
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">직접 해보고 알게 된 것</p>
+<ol>
+<li><strong>테스트가 요구한 것보다 한 발 더 나갔습니다.</strong> 테스트는 <code>expiry</code> 누락만 검사하는데, <code>'2026-13'</code>, <code>'abc'</code> 같은 잘못된 형식까지 방어했습니다. 요청하지 않은 범위이므로 <strong>diff를 읽지 않았으면 몰랐을 변경</strong>입니다.</li>
+<li>동시에 <strong>명세를 넘는 설계 변경(별도 에러 코드 추가)은 스스로 자제하고 마지막에 트레이드오프로 보고</strong>했습니다. 이 균형이 인상적이었습니다.</li>
+<li>교재의 체크포인트 "Edit 승인 전 diff를 직접 읽었는가"가 왜 중요한지 체감했습니다. 4/4 통과라는 결과만 보면 넘어갔을 변경이 있었습니다.</li>
+</ol>
+</div>
+<p><strong>✅ Lab 3 완료 기준</strong>: 원인 규명 + diff 검토 + 재검증 통과 → 3/3 달성.
+<strong>⚠️ 미수행</strong>: <code>Esc Esc</code> 되감기는 헤드리스(<code>-p</code>) 모드에서는 불가능합니다. 대화형 세션에서 별도로 시도해야 합니다.</p>
+<hr />
+<h2 id="lab-4--plan-모드-기능-추가-소요-25분--미완">Lab 4 — Plan 모드 기능 추가 (소요 25분) — <strong>미완</strong><a class="headerlink" href="#lab-4--plan-모드-기능-추가-소요-25분--미완" title="이 위치로 링크">¶</a></h2>
+<p>교재 경로 <code>claude-code-workshop/ch1/lab4-todo-api</code> 역시 현재 저장소에 없습니다.</p>
+<p>그리고 이 랩의 핵심 미션인 <strong>"계획에서 한 항목을 수정 요청해보기"</strong> 는 성격상 <strong>대화형 세션에서만</strong> 가능합니다. Plan 모드 진입 자체가 <code>Shift+Tab</code> 키 입력이고, 계획 협상은 산출된 계획을 보고 되받아치는 왕복 과정이기 때문입니다.</p>
+<div class="admonition warning">
+<p class="admonition-title">솔직하게 남깁니다</p>
+<p>Lab 4는 이번 정리에서 <strong>수행하지 못했습니다.</strong>
+이번 실습은 재현 가능한 기록을 남기려고 전부 헤드리스(<code>-p</code>)로 진행했는데, 그 방식으로는 Plan 모드 협상을 재현할 수 없습니다.
+대화형 세션에서 별도로 수행한 뒤 이 문서에 추가할 예정입니다.</p>
+</div>
+<p>수행할 때의 미션 체크리스트:
+- [ ] <code>Shift+Tab</code> 두 번으로 Plan 모드 진입
+- [ ] 계획에서 한 항목을 수정 요청해보기 (협상)
+- [ ] 승인 후 구현, <code>/diff</code>로 변경 검토
+- [ ] 커밋 메시지 작성까지 위임</p>
+<hr />
+<h2 id="lab-5--headless-자동화-소요-15분">Lab 5 — Headless 자동화 (소요 15분)<a class="headerlink" href="#lab-5--headless-자동화-소요-15분" title="이 위치로 링크">¶</a></h2>
+<h3 id="5-1-파이프-입력--로그-분석">5-1. 파이프 입력 — 로그 분석<a class="headerlink" href="#5-1-파이프-입력--로그-분석" title="이 위치로 링크">¶</a></h3>
+<p>샘플 로그(<code>/tmp/ccw-sample.log</code>)를 만들어 파이프로 넣었습니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>2026-08-02 10:01:03 INFO  request id=a91 path=/api/orders status=200 12ms
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>2026-08-02 10:01:07 INFO  request id=a92 path=/api/orders status=200 15ms
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>2026-08-02 10:01:11 ERROR request id=a93 path=/api/pay   status=500 3021ms UnhandledPromiseRejection
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>2026-08-02 10:01:12 ERROR request id=a94 path=/api/pay   status=500 3044ms UnhandledPromiseRejection
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>2026-08-02 10:01:19 WARN  db pool exhausted active=20 idle=0
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="gp">$ </span>cat<span class="w"> </span>/tmp/ccw-sample.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;이상 징후가 있으면 원인 후보와 함께 3줄로 보고&quot;</span>
+</span></code></pre></div>
+<p>응답:</p>
+<blockquote>
+<p>이상 징후 있음 — 3줄 보고:</p>
+<ol>
+<li><strong>징후</strong>: 10:01:11부터 <code>/api/pay</code>만 status=500 + 응답시간 3.0초대(정상 경로 12~15ms의 200배)로 급증, 동시에 <code>UnhandledPromiseRejection</code> 발생 후 8초 뒤 DB 풀 고갈(active=20 idle=0).</li>
+<li><strong>원인 후보</strong>: (a) 결제 경로의 외부 PG/다운스트림 호출 3초 타임아웃 → 예외가 catch되지 않아 커넥션 <code>release()</code> 누락 = 커넥션 릭, (b) 그로 인한 풀 고갈이 대기·지연을 증폭시키는 연쇄 장애, &copy; 부차적으로 풀 max=20이 결제 트래픽 대비 과소.</li>
+<li><strong>다음 확인</strong>: <code>/api/pay</code> 핸들러의 await 예외 처리·finally 릭 여부, PG 연동 타임아웃 설정값, 10:01:11 직전 배포/설정 변경 이력 — 릭이면 재시작으로 잠깐 회복 후 재발하므로 그 패턴으로 (a)와 &copy;를 구분할 수 있음.</li>
+</ol>
+</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">현장 메모 (인프라 엔지니어 관점)</p>
+<p>이게 <a href="../part-01-what-is-claude-code/">Part 1</a>에서 "로그 파이프 분석이 한 줄로"라고 한 것의 실체입니다.
+특히 3번의 <strong>"릭이면 재시작으로 잠깐 회복 후 재발하므로 그 패턴으로 (a)와 &copy;를 구분할 수 있다"</strong> — 원인 후보를 나열하는 데 그치지 않고 <strong>감별 진단 방법</strong>을 제시했습니다.
+온콜 중에 이걸 5초 만에 받는다는 건 실제로 의미가 큽니다.</p>
+</div>
+<h3 id="5-2-도구-제한-안전-실행--정말-막히는지-검증">5-2. 도구 제한 안전 실행 — <strong>정말 막히는지 검증</strong><a class="headerlink" href="#5-2-도구-제한-안전-실행--정말-막히는지-검증" title="이 위치로 링크">¶</a></h3>
+<p>문서로만 "안전하다"고 쓰긴 싫어서, <strong>쓰기 도구를 뺀 상태로 일부러 파일 수정을 시켜봤습니다.</strong></p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;CHANGELOG.md 파일 맨 아래에 &#39;테스트&#39; 라는 줄을 추가해줘&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">    </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Read,Grep,Glob&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>json
+</span></code></pre></div>
+<p>응답:</p>
+<blockquote>
+<p>CHANGELOG.md 맨 아래에 <code>테스트</code> 줄을 추가하려 했으나, <strong>파일 쓰기 권한이 아직 허용되지 않아 편집이 적용되지 않았습니다.</strong></p>
+</blockquote>
+<p><code>permission_denials</code> 필드:
+<div class="language-json highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="p">[{</span><span class="nt">&quot;tool_name&quot;</span><span class="p">:</span><span class="s2">&quot;Edit&quot;</span><span class="p">,</span><span class="nt">&quot;tool_use_id&quot;</span><span class="p">:</span><span class="s2">&quot;toolu_01TQ6nnwGAphwTpKiDB98xrb&quot;</span><span class="p">,</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="nt">&quot;tool_input&quot;</span><span class="p">:{</span><span class="nt">&quot;file_path&quot;</span><span class="p">:</span><span class="s2">&quot;.../CHANGELOG.md&quot;</span><span class="p">,</span><span class="nt">&quot;old_string&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="nt">&quot;new_string&quot;</span><span class="p">:</span><span class="s2">&quot;...\n\n테스트\n&quot;</span><span class="p">}}]</span>
+</span></code></pre></div></p>
+<p>실제 파일 변경 여부:
+<div class="language-console highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="gp">$ </span>git<span class="w"> </span>status<span class="w"> </span>--porcelain
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="gp gp-VirtualEnv">(출력 없음 — 변경 없음)</span>
+</span></code></pre></div></p>
+<div class="admonition success">
+<p class="admonition-title">검증 완료</p>
+<p>Claude는 <code>Edit</code>를 <strong>시도했고</strong>, 하네스가 <strong>차단했으며</strong>, 파일은 그대로였습니다.
+<a href="../part-02-architecture/">Part 2</a>에서 "하네스가 도구 실행 전에 권한을 검사한다"고 한 구조가 눈으로 확인됩니다.
+그리고 <code>permission_denials</code>에 <strong>시도하려던 내용까지 통째로 기록</strong>된다는 걸 알게 됐습니다. CI에서 "에이전트가 뭘 하려다 막혔는지"를 감사 로그로 뽑을 수 있다는 뜻입니다.</p>
+</div>
+<h3 id="5-3-json-출력-후처리">5-3. JSON 출력 후처리<a class="headerlink" href="#5-3-json-출력-후처리" title="이 위치로 링크">¶</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;Script/workshop-code 아래 마크다운 파일 개수를 세어서 숫자만 답해줘&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">    </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Bash(find:*),Glob&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>json<span class="w"> </span>&gt;<span class="w"> </span>out.json
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="gp">$ </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.result&#39;</span><span class="w"> </span>out.json
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="go">562</span>
+</span></code></pre></div>
+<p>응답 JSON의 최상위 키 전체:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>api_error_status   duration_api_ms   duration_ms   fast_mode_disabled_reason
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>fast_mode_state    is_error          modelUsage    num_turns
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>permission_denials result            session_id    stop_reason
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>subtype            terminal_reason   time_to_request_ms
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>total_cost_usd     ttft_ms           ttft_stream_ms  type   usage   uuid
+</span></code></pre></div></p>
+<p>메타데이터 발췌:
+<div class="language-json highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="p">{</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">&quot;session_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8f580579-c5cf-4bfe-9178-43125217ef9f&quot;</span><span class="p">,</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">  </span><span class="nt">&quot;total_cost_usd&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.109508</span><span class="p">,</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">  </span><span class="nt">&quot;duration_ms&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3898</span><span class="p">,</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">  </span><span class="nt">&quot;modelUsage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">    </span><span class="nt">&quot;claude-opus-5[1m]&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="w">      </span><span class="nt">&quot;inputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+</span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="w">      </span><span class="nt">&quot;outputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">99</span><span class="p">,</span>
+</span><span id="__span-24-9"><a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="w">      </span><span class="nt">&quot;cacheReadInputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">48286</span><span class="p">,</span>
+</span><span id="__span-24-10"><a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="w">      </span><span class="nt">&quot;cacheCreationInputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8287</span><span class="p">,</span>
+</span><span id="__span-24-11"><a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a><span class="w">      </span><span class="nt">&quot;costUSD&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.109508</span><span class="p">,</span>
+</span><span id="__span-24-12"><a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="w">      </span><span class="nt">&quot;contextWindow&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span>
+</span><span id="__span-24-13"><a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a><span class="w">      </span><span class="nt">&quot;canonicalModel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;claude-opus-5&quot;</span><span class="p">,</span>
+</span><span id="__span-24-14"><a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a><span class="w">      </span><span class="nt">&quot;provider&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;firstParty&quot;</span>
+</span><span id="__span-24-15"><a id="__codelineno-24-15" name="__codelineno-24-15" href="#__codelineno-24-15"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-24-16"><a id="__codelineno-24-16" name="__codelineno-24-16" href="#__codelineno-24-16"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-24-17"><a id="__codelineno-24-17" name="__codelineno-24-17" href="#__codelineno-24-17"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<div class="admonition tip">
+<p class="admonition-title">직접 해보고 알게 된 것</p>
+<p><a href="../part-09-workflow-patterns/">Part 9</a>에서 정리한 <code>result</code> / <code>modelUsage</code> / <code>usage</code> / <code>session_id</code> 네 가지가 실제로 다 있었고, <strong>문서에 없던 필드가 더 많았습니다</strong> — <code>total_cost_usd</code>, <code>duration_ms</code>, <code>ttft_ms</code>(첫 토큰까지 시간), <code>permission_denials</code>, <code>num_turns</code>.
+특히 <code>total_cost_usd</code>가 응답에 그대로 들어있어서, <strong>CI에서 비용 상한 가드를 거는 게 아주 쉽습니다.</strong>
+그리고 <code>inputTokens: 4</code> vs <code>cacheReadInputTokens: 48286</code> — 입력의 99.99%가 <strong>캐시에서 읽혔습니다.</strong> <a href="../part-09-workflow-patterns/">Part 9의 "캐시 레버"</a>가 왜 비용의 3축 중 하나인지 숫자로 보입니다.</p>
+</div>
+<h3 id="5-4-모델별-비용-비교-추가-실험">5-4. 모델별 비용 비교 (추가 실험)<a class="headerlink" href="#5-4-모델별-비용-비교-추가-실험" title="이 위치로 링크">¶</a></h3>
+<p>Part 9의 "모델 레버"를 숫자로 확인하고 싶어서, <strong>완전히 같은 프롬프트</strong>를 모델만 바꿔 돌렸습니다.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="gp">$ </span><span class="k">for</span><span class="w"> </span>M<span class="w"> </span><span class="k">in</span><span class="w"> </span>haiku<span class="w"> </span>sonnet<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="go">    claude -p &quot;src/checkout.js가 무슨 일을 하는지 한 문장으로&quot; \</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="go">      --model $M --allowed-tools &quot;Read&quot; --output-format json</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="go">  done</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>모델</th>
+<th>비용</th>
+<th>입력 토큰</th>
+<th>출력 토큰</th>
+<th>소요</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>haiku</code></td>
+<td><strong>$0.0264</strong></td>
+<td>18</td>
+<td>407</td>
+<td>7,402ms</td>
+</tr>
+<tr>
+<td><code>sonnet</code></td>
+<td>$0.1011</td>
+<td>4</td>
+<td>168</td>
+<td>5,890ms</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>같은 작업에 약 3.8배 차이</strong>가 났습니다.
+다만 주의할 점이 있습니다. haiku가 출력 토큰을 <strong>2.4배 더 많이</strong> 썼고 시간도 더 걸렸습니다. "한 문장으로"라고 했는데 더 장황하게 답한 것입니다.
+즉 <strong>"싼 모델 = 무조건 이득"이 아니라 "작업이 단순할수록 이득"</strong> 입니다. <a href="../part-09-workflow-patterns/">Part 9</a>에서 "난이도별 배분"이라고 표현한 이유가 이것입니다.</p>
+</div>
+<h3 id="5-5-세션-저장-확인">5-5. 세션 저장 확인<a class="headerlink" href="#5-5-세션-저장-확인" title="이 위치로 링크">¶</a></h3>
+<p><a href="../part-02-architecture/">Part 2</a>의 "세션은 <code>~/.claude/projects/</code>에 JSONL로 저장된다"를 확인했습니다.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="gp">$ </span>ls<span class="w"> </span>-1<span class="w"> </span>~/.claude/projects/
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="go">-private-tmp-...-scratchpad-claude-code-workshop</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="go">-private-tmp-...-scratchpad-lab2-demo</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="go">-private-tmp-...-scratchpad-lab3-buggy-app</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="go">-Users-jade</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="go">-Users-jade-project-omc</span>
+</span></code></pre></div>
+<blockquote>
+<p>작업 디렉토리 경로가 그대로 디렉토리명이 됩니다(<code>/</code> → <code>-</code>). 이번 실습에서 만든 세 개 프로젝트가 각각 별도로 잡혔습니다.
+<strong>경로가 바뀌면 <code>--continue</code>가 이전 세션을 못 찾는다</strong>는 뜻이기도 합니다.</p>
+</blockquote>
+<p><strong>✅ Lab 5 완료 기준</strong>: 4패턴 체험 → 파이프 / 도구 제한 / JSON 후처리 / (추가) 모델 비용 비교까지 5종 수행.</p>
+<hr />
+<h2 id="실습-총평">실습 총평<a class="headerlink" href="#실습-총평" title="이 위치로 링크">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>상태</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lab 1 — 설치와 첫 세션</td>
+<td>✅ 완료</td>
+<td>내 설치가 Native가 아닌 <strong>npm-global</strong>이었음을 발견</td>
+</tr>
+<tr>
+<td>Lab 2 — CLAUDE.md 만들기</td>
+<td>✅ 완료</td>
+<td>도구 0개로 즉답 검증까지 성공</td>
+</tr>
+<tr>
+<td>Lab 3 — 디버깅</td>
+<td>✅ 완료</td>
+<td>교재 경로 부재 → 동일 시나리오 직접 재현</td>
+</tr>
+<tr>
+<td>Lab 4 — Plan 모드</td>
+<td>⚠️ <strong>미완</strong></td>
+<td>대화형 세션 필요. 별도 수행 예정</td>
+</tr>
+<tr>
+<td>Lab 5 — Headless</td>
+<td>✅ 완료</td>
+<td>+모델 비용 비교 실험 추가</td>
+</tr>
+</tbody>
+</table>
+<h3 id="배운-것-중-문서에-없던-것">배운 것 중 문서에 없던 것<a class="headerlink" href="#배운-것-중-문서에-없던-것" title="이 위치로 링크">¶</a></h3>
+<ol>
+<li><strong><code>claude doctor</code>는 "내가 어떤 경로로 설치했는지"를 알려주는 유일한 명령입니다.</strong> 문서만 읽으면 당연히 Native일 거라 생각하지만 아닐 수 있습니다.</li>
+<li><strong><code>--output-format json</code>의 <code>permission_denials</code>에는 시도하려던 tool_input이 통째로 들어갑니다.</strong> 무인 실행 감사 로그로 그대로 쓸 수 있습니다.</li>
+<li><strong><code>total_cost_usd</code>가 응답 JSON에 있습니다.</strong> CI 비용 가드를 거는 데 별도 계측이 필요 없습니다.</li>
+<li><strong><code>cacheReadInputTokens</code>가 실제 입력 토큰을 압도합니다</strong> (48,286 vs 4). 캐시 친화적으로 쓰는 게 비용에 미치는 영향이 생각보다 훨씬 큽니다.</li>
+<li><strong>"테스트 파일은 수정하지 마"는 디버깅 위임 시 필수 지시입니다.</strong> 없으면 테스트를 고쳐서 통과시킬 여지가 생깁니다.</li>
+<li><strong>교재의 랩 경로(<code>ch1/lab3-buggy-app</code> 등)는 현재 저장소 구조와 맞지 않습니다.</strong> 랩 가이드는 <code>ccw-hands-on-lab/*.html</code>로 이동한 것으로 보입니다.</li>
+</ol>
+<hr />
+<h2 id="추가-학습-자료">추가 학습 자료<a class="headerlink" href="#추가-학습-자료" title="이 위치로 링크">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>자료</th>
+<th>링크</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>공식 문서</td>
+<td><a href="https://code.claude.com/docs/ko/overview">code.claude.com/docs/ko/overview</a></td>
+<td>본 덱의 1차 출처</td>
+</tr>
+<tr>
+<td>Best Practices</td>
+<td><a href="https://code.claude.com/docs/ko/best-practices">docs/ko/best-practices</a></td>
+<td>패턴의 원전</td>
+</tr>
+<tr>
+<td>GitHub 저장소</td>
+<td><a href="https://github.com/anthropics/claude-code">anthropics/claude-code</a></td>
+<td>이슈, 릴리스 노트</td>
+</tr>
+<tr>
+<td>Bedrock 안내</td>
+<td><a href="https://aws.amazon.com/bedrock">aws.amazon.com/bedrock</a></td>
+<td>AWS 경로 심화</td>
+</tr>
+<tr>
+<td>MCP 표준</td>
+<td><a href="https://modelcontextprotocol.io">modelcontextprotocol.io</a></td>
+<td>4주차 예습</td>
+</tr>
+<tr>
+<td>워크샵 코드</td>
+<td><a href="https://github.com/whchoi98/claude-code-workshop">whchoi98/claude-code-workshop</a></td>
+<td>본 과정 실습 자료</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="next--chapter-2-예고-2주차">Next — Chapter 2 예고 (2주차)<a class="headerlink" href="#next--chapter-2-예고-2주차" title="이 위치로 링크">¶</a></h2>
+<blockquote>
+<p>오늘 여러 번 등장한 <strong>서브에이전트</strong>를 하루 종일 파고듭니다.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>주제</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>에이전트 정의</strong></td>
+<td><code>.claude/agents/</code> 마크다운으로 역할, 도구, 모델 지정</td>
+</tr>
+<tr>
+<td><strong>오케스트레이션</strong></td>
+<td>자동 위임 원리와 명시 호출, 병렬 실행 설계</td>
+</tr>
+<tr>
+<td><strong>실전 패턴 5</strong></td>
+<td>리뷰어, 테스터, 마이그레이터 등 검증된 구성</td>
+</tr>
+<tr>
+<td><strong><code>/batch</code> 내부</strong></td>
+<td>워크트리 격리와 단위 분해 전략의 내부 동작</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
+<ul>
+<li>Claude Code Deep Dive Workshop — <em>Chapter 1 / Part 10: Recap &amp; Labs</em> (14p)</li>
+<li>공식 문서: <a href="https://code.claude.com/docs/ko/overview">Overview</a> · <a href="https://code.claude.com/docs/ko/best-practices">Best practices</a> · <a href="https://code.claude.com/docs/ko/headless">Headless mode</a> · <a href="https://code.claude.com/docs/ko/cli-reference">CLI reference</a></li>
+<li>실습 기록: 2026-08-02, macOS 26.5.1 / Claude Code 2.1.220 환경에서 직접 실행</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="../part-09-workflow-patterns/" class="md-footer__link md-footer__link--prev" aria-label="이전: 9. 워크플로 패턴">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                9. 워크플로 패턴
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      학습 목적의 개인 정리 노트입니다.
+    </div>
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://code.claude.com/docs/ko/overview" target="_blank" rel="noopener" title="Claude Code 공식 문서" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 2-5 4.5v11l5-4.5zM6.5 5C4.55 5 2.45 5.4 1 6.5v14.66c0 .25.25.5.5.5.1 0 .15-.07.25-.07 1.35-.65 3.3-1.09 4.75-1.09 1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.31 4.75 1.06.1.05.15.03.25.03.25 0 .5-.25.5-.5V6.5c-.6-.45-1.25-.75-2-1V19c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6.5C10.55 5.4 8.45 5 6.5 5"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.top", "navigation.footer", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
