@@ -810,83 +810,23 @@
 <p>Chapter 1의 열 개 파트를 여섯 문장으로 압축하고, <strong>실습 랩 5종을 실제로 수행한 기록</strong>을 남깁니다.</p>
 <hr />
 <h2 id="chapter-1-핵심-요약--열-개-파트를-여섯-문장으로">Chapter 1 핵심 요약 — 열 개 파트를 여섯 문장으로<a class="headerlink" href="#chapter-1-핵심-요약--열-개-파트를-여섯-문장으로" title="이 위치로 링크">¶</a></h2>
-<table>
-<thead>
-<tr>
-<th>축</th>
-<th>요약</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>IDENTITY — 정체성</strong></td>
-<td>Agentic Loop로 저장소 단위 작업을 완수하는 Anthropic 1차 도구</td>
-</tr>
-<tr>
-<td><strong>ARCH — 아키텍처</strong></td>
-<td>Interface, Harness, Model, Provider 4계층과 도구, 체크포인트</td>
-</tr>
-<tr>
-<td><strong>SETUP — 설치와 인증</strong></td>
-<td>Native 원라이너 설치, 여섯 인증 경로와 우선순위 규칙</td>
-</tr>
-<tr>
-<td><strong>USE — 사용법</strong></td>
-<td>구체적 지시와 검증 기준, 슬래시 명령 지도, 권한 모드 4종</td>
-</tr>
-<tr>
-<td><strong>MEMORY — 메모리</strong></td>
-<td><code>CLAUDE.md</code> 4계층과 Auto memory, <code>rules</code> 경로 스코프</td>
-</tr>
-<tr>
-<td><strong>PATTERN — 패턴</strong></td>
-<td>EPC와 TDD, 리뷰, 병렬화, Headless와 Routines 자동화</td>
-</tr>
-</tbody>
-</table>
+<p><strong>정체성.</strong> Claude Code는 Agentic Loop(수집 → 실행 → 검증의 반복)로 저장소 단위 작업을 완수하는 Anthropic의 1차 도구입니다. 자동완성과의 차이는 범위와 검증 책임입니다.</p>
+<p><strong>아키텍처.</strong> Interface / Harness / Model / Provider 네 계층이고 본체는 하네스입니다. 도구 실행, 권한 검사, 컨텍스트 관리, 체크포인트가 전부 여기서 일어납니다.</p>
+<p><strong>설치와 인증.</strong> Native 원라이너가 새 표준이며 Node.js가 필요 없습니다. 인증은 여섯 경로가 있고 충돌하면 우선순위 규칙으로 하나가 선택됩니다.</p>
+<p><strong>사용법.</strong> 좋은 프롬프트는 범위·금지 조건·완료 기준을 담습니다. 슬래시 명령은 워크플로 단계별로 묶여 있고, 권한 모드 넷으로 자율성을 조절합니다.</p>
+<p><strong>메모리.</strong> 내가 쓰는 <code>CLAUDE.md</code>는 4계층으로 병합되고, Claude가 쓰는 Auto memory가 학습을 축적합니다. 길어지면 <code>rules</code>의 경로 스코프로 쪼갭니다.</p>
+<p><strong>패턴.</strong> EPC를 축으로 TDD, 코드리뷰, 병렬화, Headless, Routines를 얹습니다. 모든 패턴의 공통점은 <strong>명세를 함께 준다</strong>는 것입니다.</p>
+<p><img alt="Chapter 1 핵심 요약 슬라이드" src="../slides/slide-170.png" /></p>
+<p><em>▲ 교재 슬라이드 170 — Chapter 1 핵심 요약</em></p>
 <hr />
 <h2 id="faq">FAQ<a class="headerlink" href="#faq" title="이 위치로 링크">¶</a></h2>
-<table>
-<thead>
-<tr>
-<th>질문</th>
-<th>답</th>
-<th>근거</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>코드가 학습에 쓰이나요?</td>
-<td>상업 계정 기본 미사용, ZDR 옵션 제공</td>
-<td><a href="../part-01-what-is-claude-code/">Part 1 데이터 정책</a></td>
-</tr>
-<tr>
-<td>구독과 API 중 무엇이 좋나요?</td>
-<td>개인은 구독, 조직은 Bedrock·Console</td>
-<td><a href="../part-04-authentication/">Part 4 비교표</a></td>
-</tr>
-<tr>
-<td>Windows에서 잘 되나요?</td>
-<td>Native 공식 지원, <strong>샌드박스만 WSL2</strong> 필요</td>
-<td><a href="../part-03-installation/">Part 3 전략표</a></td>
-</tr>
-<tr>
-<td>실수로 망가뜨리면요?</td>
-<td>체크포인트, <code>Esc Esc</code>, <code>/rewind</code></td>
-<td><a href="../part-05-quick-start/">Part 5 복구</a></td>
-</tr>
-<tr>
-<td>팀 표준은 어떻게 만드나요?</td>
-<td><code>CLAUDE.md</code>와 <code>rules</code>를 버전 관리</td>
-<td><a href="../part-08-claude-md-and-memory/">Part 8 실전 예시</a></td>
-</tr>
-<tr>
-<td>비용 통제가 되나요?</td>
-<td><code>/usage</code> 분해, 모델 배분, OTel</td>
-<td><a href="../part-09-workflow-patterns/">Part 9 비용 전략</a></td>
-</tr>
-</tbody>
-</table>
+<p>현장에서 가장 많이 나오는 여섯 가지입니다.</p>
+<p><strong>"코드가 학습에 쓰이나요?"</strong> — 상업용 계정은 기본적으로 학습에 사용되지 않습니다. 명시적으로 동의한 경우에만 쓰이고, ZDR(Zero Data Retention) 옵션을 계약하면 보존 자체가 없습니다. → <a href="../part-01-what-is-claude-code/">Part 1</a></p>
+<p><strong>"구독과 API 중 무엇이 좋나요?"</strong> — 개인은 구독이 단순하고 저렴합니다. 조직은 이미 쓰는 클라우드를 따라가는 게 맞아서 대개 Bedrock, 아니면 Console입니다. → <a href="../part-04-authentication/">Part 4</a></p>
+<p><strong>"Windows에서 잘 되나요?"</strong> — Native로 공식 지원되고 CMD와 PowerShell도 지원합니다. WSL2가 필요한 건 <strong>샌드박스를 쓸 때뿐</strong>입니다. → <a href="../part-03-installation/">Part 3</a></p>
+<p><strong>"실수로 망가뜨리면요?"</strong> — 편집 전 스냅샷이 자동으로 남습니다. <code>Esc</code> 두 번 또는 <code>/rewind</code>로 되돌립니다. 단, <strong>파일 변경만</strong> 되돌아갑니다. → <a href="../part-05-quick-start/">Part 5</a></p>
+<p><strong>"팀 표준은 어떻게 만드나요?"</strong> — <code>CLAUDE.md</code>와 <code>.claude/rules/</code>를 버전 관리에 넣으면 팀 전체가 같은 규칙을 공유합니다. → <a href="../part-08-claude-md-and-memory/">Part 8</a></p>
+<p><strong>"비용 통제가 되나요?"</strong> — <code>/usage</code> 분해 뷰로 소비처를 특정하고, 난이도별 모델 배분으로 줄입니다. 조직 단위는 OTel로 집계합니다. → <a href="../part-09-workflow-patterns/">Part 9</a></p>
 <hr />
 <h1 id="실습-랩--실제-수행-기록">실습 랩 — 실제 수행 기록<a class="headerlink" href="#실습-랩--실제-수행-기록" title="이 위치로 링크">¶</a></h1>
 <blockquote>
@@ -895,6 +835,8 @@
 </blockquote>
 <hr />
 <h2 id="lab-1--설치와-첫-세션-소요-15분">Lab 1 — 설치와 첫 세션 (소요 15분)<a class="headerlink" href="#lab-1--설치와-첫-세션-소요-15분" title="이 위치로 링크">¶</a></h2>
+<p><img alt="Lab 1 — 설치와 첫 세션 슬라이드" src="../slides/slide-174.png" /></p>
+<p><em>▲ 교재 슬라이드 174 — Lab 1 — 설치와 첫 세션 (교재 원본 실습 안내)</em></p>
 <h3 id="1-1-설치-확인">1-1. 설치 확인<a class="headerlink" href="#1-1-설치-확인" title="이 위치로 링크">¶</a></h3>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">$ </span>which<span class="w"> </span>claude
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="go">/Applications/cmux.app/Contents/Resources/bin/claude</span>
@@ -962,6 +904,8 @@
 <p><strong>✅ Lab 1 완료 기준</strong>: <code>doctor</code> 진단 통과 + 저장소 구조 답변 획득.</p>
 <hr />
 <h2 id="lab-2--claudemd-만들기-소요-15분">Lab 2 — CLAUDE.md 만들기 (소요 15분)<a class="headerlink" href="#lab-2--claudemd-만들기-소요-15분" title="이 위치로 링크">¶</a></h2>
+<p><img alt="Lab 2 — CLAUDE.md 만들기 슬라이드" src="../slides/slide-175.png" /></p>
+<p><em>▲ 교재 슬라이드 175 — Lab 2 — CLAUDE.md 만들기 (교재 원본 실습 안내)</em></p>
 <p>교재 저장소에는 이미 <code>CLAUDE.md</code>가 있어서, <code>/init</code>의 "초안 생성"을 그대로 재현하려고 <strong>빈 데모 프로젝트를 새로 만들어서</strong> 진행했습니다.</p>
 <h3 id="2-0-실습용-프로젝트-준비">2-0. 실습용 프로젝트 준비<a class="headerlink" href="#2-0-실습용-프로젝트-준비" title="이 위치로 링크">¶</a></h3>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>lab2-demo/src<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>lab2-demo<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>init<span class="w"> </span>-q
@@ -1076,6 +1020,8 @@
 <p><strong>✅ Lab 2 완료 기준</strong>: 새 세션에서 탐색 없이 즉답 → 성공.</p>
 <hr />
 <h2 id="lab-3--디버깅-실습-소요-20분">Lab 3 — 디버깅 실습 (소요 20분)<a class="headerlink" href="#lab-3--디버깅-실습-소요-20분" title="이 위치로 링크">¶</a></h2>
+<p><img alt="Lab 3 — 디버깅 실습 슬라이드" src="../slides/slide-176.png" /></p>
+<p><em>▲ 교재 슬라이드 176 — Lab 3 — 디버깅 실습 (교재 원본 실습 안내)</em></p>
 <p>교재는 <code>claude-code-workshop/ch1/lab3-buggy-app</code> 경로를 안내하지만, <strong>현재 저장소(<code>20260703</code> 에디션)에는 이 디렉토리가 없었습니다.</strong> 코드 스니펫은 <code>Script/workshop-code/</code>에, 랩 가이드는 <code>ccw-hands-on-lab/*.html</code>에 들어 있는 구조로 바뀐 것으로 보입니다.
 그래서 <strong>PDF의 시나리오(만료 카드 결제 실패)를 그대로 재현한 버기 앱을 직접 만들어서</strong> 진행했습니다.</p>
 <h3 id="3-0-의도된-버그가-있는-앱">3-0. 의도된 버그가 있는 앱<a class="headerlink" href="#3-0-의도된-버그가-있는-앱" title="이 위치로 링크">¶</a></h3>
@@ -1175,6 +1121,8 @@
 <strong>⚠️ 미수행</strong>: <code>Esc Esc</code> 되감기는 헤드리스(<code>-p</code>) 모드에서는 불가능합니다. 대화형 세션에서 별도로 시도해야 합니다.</p>
 <hr />
 <h2 id="lab-4--plan-모드-기능-추가-소요-25분--미완">Lab 4 — Plan 모드 기능 추가 (소요 25분) — <strong>미완</strong><a class="headerlink" href="#lab-4--plan-모드-기능-추가-소요-25분--미완" title="이 위치로 링크">¶</a></h2>
+<p><img alt="Lab 4 — Plan 모드 기능 추가 슬라이드" src="../slides/slide-177.png" /></p>
+<p><em>▲ 교재 슬라이드 177 — Lab 4 — Plan 모드 기능 추가 (교재 원본 실습 안내)</em></p>
 <p>교재 경로 <code>claude-code-workshop/ch1/lab4-todo-api</code> 역시 현재 저장소에 없습니다.</p>
 <p>그리고 이 랩의 핵심 미션인 <strong>"계획에서 한 항목을 수정 요청해보기"</strong> 는 성격상 <strong>대화형 세션에서만</strong> 가능합니다. Plan 모드 진입 자체가 <code>Shift+Tab</code> 키 입력이고, 계획 협상은 산출된 계획을 보고 되받아치는 왕복 과정이기 때문입니다.</p>
 <div class="admonition warning">
@@ -1190,6 +1138,8 @@
 - [ ] 커밋 메시지 작성까지 위임</p>
 <hr />
 <h2 id="lab-5--headless-자동화-소요-15분">Lab 5 — Headless 자동화 (소요 15분)<a class="headerlink" href="#lab-5--headless-자동화-소요-15분" title="이 위치로 링크">¶</a></h2>
+<p><img alt="Lab 5 — Headless 자동화 슬라이드" src="../slides/slide-178.png" /></p>
+<p><em>▲ 교재 슬라이드 178 — Lab 5 — Headless 자동화 (교재 원본 실습 안내)</em></p>
 <h3 id="5-1-파이프-입력--로그-분석">5-1. 파이프 입력 — 로그 분석<a class="headerlink" href="#5-1-파이프-입력--로그-분석" title="이 위치로 링크">¶</a></h3>
 <p>샘플 로그(<code>/tmp/ccw-sample.log</code>)를 만들어 파이프로 넣었습니다.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>2026-08-02 10:01:03 INFO  request id=a91 path=/api/orders status=200 12ms

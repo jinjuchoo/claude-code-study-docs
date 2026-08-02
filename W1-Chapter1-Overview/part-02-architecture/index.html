@@ -1309,6 +1309,8 @@
 <p><strong>Model</strong>은 판단을 담당합니다. 무엇을 읽을지, 어떻게 고칠지, 다 됐는지를 결정합니다.</p>
 <p><strong>Provider</strong>는 추론 요청이 실제로 어디로 가느냐입니다. 그리고 이 선택이 곧 <strong>데이터가 어느 경계 안에 머무는가</strong>를 결정합니다. 보안 심사에서 가장 중요한 계층입니다.</p>
 <p>여기서 얻는 가장 중요한 시사점은 이것입니다. <strong>Interface를 바꿔도 하네스와 설정은 그대로입니다.</strong> 터미널에서 만든 <code>CLAUDE.md</code>가 VS Code에서도, 데스크톱 앱에서도 똑같이 적용됩니다.</p>
+<p><img alt="Agentic Harness 4계층 구조 슬라이드" src="../slides/slide-030.png" /></p>
+<p><em>▲ 교재 슬라이드 30 — Agentic Harness 4계층 구조</em></p>
 <details class="note">
 <summary>📋 인터페이스별 특성 — 빠른 참조</summary>
 <table>
@@ -1597,6 +1599,8 @@ Local과 Remote Control은 실행이 내 머신이고, Cloud만 Anthropic VM으�
 <p><strong>권한 규칙</strong>은 사건이 일어나기 전에 막습니다. <strong>샌드박스</strong>도 사전이지만 방식이 다릅니다. 막는 게 아니라 <strong>실행 반경 자체를 좁힙니다.</strong> 무엇을 하든 정해진 경로 밖으로는 못 씁니다.</p>
 <p><strong>체크포인트</strong>는 이미 일어난 일을 되돌립니다. <strong>감사</strong>는 나중에 무슨 일이 있었는지 검증합니다.</p>
 <p>앞의 둘이 뚫려도 셋째가 복구하고, 그마저 놓쳐도 넷째가 기록으로 남깁니다. 이런 다층 구조를 보안에서는 심층 방어(defense in depth)라고 부릅니다.</p>
+<p><img alt="보안 아키텍처 4겹 방어선 슬라이드" src="../slides/slide-045.png" /></p>
+<p><em>▲ 교재 슬라이드 45 — 보안 아키텍처 4겹 방어선</em></p>
 <h3 id="방화벽을-열어야-한다면">방화벽을 열어야 한다면<a class="headerlink" href="#방화벽을-열어야-한다면" title="이 위치로 링크">¶</a></h3>
 <p>폐쇄망이나 프록시 환경에서 도입을 검토한다면 어느 목적지를 열어야 하는지가 첫 관문입니다.</p>
 <p>기본 경로는 <code>api.anthropic.com</code>(HTTPS 443)이고 모델 추론 요청이 여기로 갑니다. 로그인 콜백과 설치·업데이트는 <code>claude.ai</code>와 다운로드 도메인을 씁니다. Bedrock 경로를 쓰면 <code>bedrock-runtime.*.amazonaws.com</code>이며 PrivateLink를 붙일 수 있습니다.</p>

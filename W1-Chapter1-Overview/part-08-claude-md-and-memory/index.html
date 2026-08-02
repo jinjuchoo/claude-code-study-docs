@@ -1367,6 +1367,8 @@
 <p><strong>User</strong>는 내 개인 취향입니다. 어느 프로젝트에서 일하든 따라옵니다. "설명은 한국어로", "커밋 메시지는 이런 형식으로" 같은 것들이 여기 어울립니다.</p>
 <p><strong>Project</strong>가 실무에서 가장 많이 쓰는 계층입니다. 저장소에 커밋해서 팀 전체가 같은 규칙을 공유합니다.</p>
 <p><strong>Local</strong>은 <code>.gitignore</code>에 넣는 개인 메모입니다. "이 브랜치에서는 임시로 이렇게 해보는 중" 같은 걸 팀에 밀어넣지 않고 남길 수 있습니다.</p>
+<p><img alt="메모리 4계층 구조 슬라이드" src="../slides/slide-139.png" /></p>
+<p><em>▲ 교재 슬라이드 139 — 메모리 4계층 구조</em></p>
 <h3 id="로딩-순서와-병합">로딩 순서와 병합<a class="headerlink" href="#로딩-순서와-병합" title="이 위치로 링크">¶</a></h3>
 <p><strong>디렉토리 트리를 걸어 올라가며 발견한 파일을 모두 병합합니다. 덮어쓰기가 아닙니다.</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a># foo/bar/ 에서 claude 실행 시
@@ -1488,6 +1490,8 @@
 <li><strong>심볼릭 링크 지원</strong> → 사내 표준을 여러 저장소에서 공유 가능</li>
 <li><code>~/.claude/rules</code>에 두면 개인 전역 규칙이 됩니다</li>
 </ul>
+<p><img alt=".claude/rules 디렉토리 구조 슬라이드" src="../slides/slide-145.png" /></p>
+<p><em>▲ 교재 슬라이드 145 — .claude/rules 디렉토리 구조</em></p>
 <h3 id="path-scoped-rules--매칭될-때만-로드">Path-scoped Rules — 매칭될 때만 로드<a class="headerlink" href="#path-scoped-rules--매칭될-때만-로드" title="이 위치로 링크">¶</a></h3>
 <p>컨텍스트를 아끼는 핵심 기법입니다.</p>
 <p><code>.claude/rules/api-design.md</code>:

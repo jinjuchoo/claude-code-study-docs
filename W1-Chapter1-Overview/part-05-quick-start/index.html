@@ -1569,6 +1569,8 @@
 <p><strong>둘째, 검증 기준을 함께 줍니다.</strong> 이게 가장 효과가 큽니다. 테스트 케이스나 기대 출력처럼 <strong>Claude가 스스로 확인할 수 있는 기준</strong>을 주면, "다 됐습니다"의 판정을 내가 아니라 테스트가 하게 됩니다.</p>
 <p><strong>셋째, 복잡한 문제는 탐색과 실행을 분리합니다.</strong> Plan 모드로 조사를 먼저 시키고 코딩은 그다음입니다. 방향이 틀렸을 때 코드를 쓰기 전에 잡을 수 있습니다.</p>
 <p><strong>넷째, 완벽한 첫 프롬프트를 쓰려고 애쓰지 않습니다.</strong> 중간에 <code>Esc</code>로 개입해 방향을 고치는 게 훨씬 빠릅니다. 대화형 도구의 이점이 여기 있습니다.</p>
+<p><img alt="첫 프롬프트 작성 요령 — 공식 Best Practices 4원칙 슬라이드" src="../slides/slide-087.png" /></p>
+<p><em>▲ 교재 슬라이드 87 — 첫 프롬프트 작성 요령 — 공식 Best Practices 4원칙</em></p>
 <h3 id="명확한-지시-vs-모호한-지시">명확한 지시 vs 모호한 지시<a class="headerlink" href="#명확한-지시-vs-모호한-지시" title="이 위치로 링크">¶</a></h3>
 <p><strong>범위와 완료 기준이 담긴 지시가 1회 성공률을 결정합니다.</strong></p>
 <table>
@@ -1628,6 +1630,8 @@
 <p>머지 전에는 <strong>품질 게이트</strong>를 통과시킵니다. <code>/diff</code>로 변경을 훑고 <code>/code-review</code>와 <code>/security-review</code>로 점검합니다.</p>
 <p>작업이 끝나면 <strong>세션 전환 명령</strong>으로 정리합니다. <code>/clear</code>로 새 작업을 시작하고, 나중에 <code>/resume</code>으로 돌아옵니다.</p>
 <p>그리고 언제든 문제가 생기면 <strong>복구·진단 명령</strong>으로 빠집니다. <code>/rewind</code>로 되돌리고 <code>/doctor</code>로 진단합니다.</p>
+<p><img alt="슬래시 명령 지도 — 워크플로 단계별 슬라이드" src="../slides/slide-089.png" /></p>
+<p><em>▲ 교재 슬라이드 89 — 슬래시 명령 지도 — 워크플로 단계별</em></p>
 <h3 id="init--프로젝트-초기화"><code>/init</code> — 프로젝트 초기화<a class="headerlink" href="#init--프로젝트-초기화" title="이 위치로 링크">¶</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$ claude
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>&gt; /init
