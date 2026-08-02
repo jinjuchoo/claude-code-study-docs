@@ -1449,7 +1449,7 @@
 <p><strong>무엇인가?</strong> 에이전트형 도구입니다. 여기서 "에이전트형"이란 사람이 단계마다 지시하지 않아도 스스로 도구를 골라 호출하면서 여러 단계의 작업을 끝까지 밀고 간다는 뜻입니다. 이 성질이 뒤에 나올 모든 이야기의 출발점입니다.</p>
 <p><strong>어디서 도는가?</strong> 터미널이 기준점이지만 거기서만 도는 건 아닙니다. VS Code, JetBrains, 데스크톱 앱, 웹, 심지어 Slack에서도 돕니다. 중요한 건 이 모든 표면이 <strong>같은 엔진</strong>을 쓴다는 점입니다. 터미널에서 만든 설정이 VS Code에서도 그대로 적용됩니다.</p>
 <p><strong>누가 만들었나?</strong> Anthropic입니다. Claude 모델을 만든 바로 그 회사입니다. 이게 왜 중요하냐면, Cursor나 Copilot은 남이 만든 모델을 가져다 쓰는 반면 Claude Code는 <strong>모델을 만든 회사가 자기 모델에 맞춰 직접 설계한 도구</strong>이기 때문입니다. 업계에서는 이런 걸 "1차(first-party) 도구"라고 부릅니다. 모델의 학습 방식과 도구 사용 규약이 처음부터 서로 맞춰져 있다는 의미입니다.</p>
-<p>여기에 사실 몇 가지를 덧붙이면 그림이 완성됩니다. 2024년에 처음 나왔고, 지금은 정식 출시(GA) 상태이며, 기본 주력 모델은 Claude Sonnet 5입니다.</p>
+<p>여기에 사실 몇 가지를 덧붙이면 그림이 완성됩니다. 지금은 정식 출시(GA) 상태이고, 기본 모델은 <strong>계정 유형에 따라 다릅니다.</strong> Pro·Team Standard·Enterprise 구독 시트는 Sonnet 5, Max·Team Premium·Enterprise 종량제·Anthropic API·AWS 경로는 Opus 4.8, Microsoft Foundry는 Sonnet 4.5로 시작합니다.</p>
 <p><img alt="Claude Code 공식 정의 슬라이드" src="../slides/slide-007.png" /></p>
 <p><em>▲ 교재 슬라이드 7 — Claude Code 공식 정의</em></p>
 <h3 id="anthropic이라는-회사">Anthropic이라는 회사<a class="headerlink" href="#anthropic이라는-회사" title="이 위치로 링크">¶</a></h3>
@@ -1508,7 +1508,7 @@ Agentic Coding은 <strong>목표를 받아 저장소 전체에서 작업을 완�
 <p>현재 라인업은 네 단계입니다.</p>
 <p>가장 위에 <strong>Claude Fable 5</strong>가 있습니다. 최상위 Mythos-class 모델로 장시간 자율 세션에 특화되어 있습니다. 가장 어렵고 규모가 큰 작업에 씁니다.</p>
 <p>그다음이 <strong>Claude Opus 4.8</strong>입니다. 깊은 추론이 필요한 작업, 복잡한 아키텍처 결정에 적합합니다. 대규모 리팩토링이나 설계가 여기 해당합니다.</p>
-<p>기본값은 <strong>Claude Sonnet 5</strong>입니다. 네이티브 1M 토큰 컨텍스트를 갖고 있어서 큰 코드베이스도 감당합니다. 일상 코딩 작업 전반이 여기서 처리됩니다.</p>
+<p><strong>Claude Sonnet 5</strong>는 네이티브 1M 토큰 컨텍스트를 갖고 있어서 큰 코드베이스도 감당합니다. 일상 코딩 작업 전반이 여기서 처리되며, Pro 구독의 기본 모델이기도 합니다.</p>
 <p>가장 가벼운 건 <strong>Claude Haiku 4.5</strong>입니다. 빠르고 비용 효율이 좋습니다. 간단한 변환, 검색, 분류처럼 판단이 단순한 작업에 씁니다.</p>
 <p>세션 중에 <code>/model</code> 명령으로 언제든 바꿀 수 있습니다. 참고로 Sonnet 5는 v2.1.197 이상, Fable 5는 v2.1.170 이상이 필요합니다.</p>
 <h3 id="alias--버전-번호를-외우지-않아도-되는-이유">Alias — 버전 번호를 외우지 않아도 되는 이유<a class="headerlink" href="#alias--버전-번호를-외우지-않아도-되는-이유" title="이 위치로 링크">¶</a></h3>
@@ -1584,7 +1584,7 @@ Agentic Coding은 <strong>목표를 받아 저장소 전체에서 작업을 완�
 <p><strong>Plan 모드</strong>는 소스를 전혀 건드리지 않습니다. 탐색하고 계획만 세운 뒤 내가 승인하면 그때 실행으로 넘어갑니다.</p>
 <p><strong>Default 모드</strong>는 파일을 편집하거나 셸 명령을 실행하기 전에 매번 묻습니다. 처음 쓸 때 승인 흐름을 익히기 좋습니다.</p>
 <p><strong>Accept Edits 모드</strong>는 편집이나 디렉토리 생성 같은 파일 작업은 자동으로 진행하고, 그 외에는 묻습니다. 반복 작업에서 속도가 붙습니다.</p>
-<p><strong>Auto 모드</strong>는 백그라운드 안전 검사가 모든 행동을 평가합니다. 아직 리서치 프리뷰 상태입니다.</p>
+<p><strong>Auto 모드</strong>는 별도의 분류기가 실행 전에 모든 행동을 검토해서, 안전하면 묻지 않고 진행합니다.</p>
 <p>비대화형 환경(CI 등)에서는 키보드를 누를 사람이 없으므로 <code>--permission-mode</code> 플래그와 사전에 합의된 <code>allow</code> 규칙으로 운영합니다.</p>
 <hr />
 <h2 id="7-어디에-쓰는가--여섯-가지-실제-시나리오">7. 어디에 쓰는가 — 여섯 가지 실제 시나리오<a class="headerlink" href="#7-어디에-쓰는가--여섯-가지-실제-시나리오" title="이 위치로 링크">¶</a></h2>
@@ -1676,7 +1676,7 @@ Agentic Coding은 <strong>목표를 받아 저장소 전체에서 작업을 완�
 <hr />
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
 <p><strong>"터미널 도구니까 IDE 쓰면 못 쓴다"</strong> — 동일 엔진이 VS Code, JetBrains, 데스크톱, 웹에서 모두 돕니다. 설정과 <code>CLAUDE.md</code>도 그대로 공유됩니다.</p>
-<p><strong>"Node.js를 깔아야 한다"</strong> — Native 설치는 단일 바이너리라 Node가 필요 없습니다. npm 경로로 설치할 때만 Node 18+가 필요합니다.</p>
+<p><strong>"Node.js를 깔아야 한다"</strong> — Native 설치는 단일 바이너리라 Node가 필요 없습니다. npm으로 설치할 때만 <strong>설치 시점에</strong> Node 22+가 필요하고(v2.1.198 기준), 설치가 끝나면 실행에는 Node를 쓰지 않습니다.</p>
 <p><strong>"무료로 써볼 수 있다"</strong> — Free 플랜은 Claude Code를 포함하지 않습니다. 구독이나 API 계정이 있어야 합니다.</p>
 <p><strong>"내 코드가 학습에 쓰인다"</strong> — 상업용 계정은 기본 미사용이며 명시 동의 시에만 사용됩니다.</p>
 <p><strong>"모델을 하나 골라야 한다"</strong> — 세션 중 <code>/model</code>로 언제든 바꿉니다. <code>opusplan</code>처럼 자동으로 배분해주는 alias도 있습니다.</p>

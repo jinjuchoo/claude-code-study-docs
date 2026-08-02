@@ -627,10 +627,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#주의할-점--alias가-한-세대-보수적입니다" class="md-nav__link">
+  <a href="#주의할-점--sonnet-alias가-한-세대-보수적입니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        주의할 점 — alias가 한 세대 보수적입니다
+        주의할 점 — sonnet alias가 한 세대 보수적입니다
       
     </span>
   </a>
@@ -638,10 +638,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#iam-최소-권한-정책" class="md-nav__link">
+  <a href="#iam-정책" class="md-nav__link">
     <span class="md-ellipsis">
       
-        IAM 최소 권한 정책
+        IAM 정책
       
     </span>
   </a>
@@ -1086,10 +1086,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#주의할-점--alias가-한-세대-보수적입니다" class="md-nav__link">
+  <a href="#주의할-점--sonnet-alias가-한-세대-보수적입니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        주의할 점 — alias가 한 세대 보수적입니다
+        주의할 점 — sonnet alias가 한 세대 보수적입니다
       
     </span>
   </a>
@@ -1097,10 +1097,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#iam-최소-권한-정책" class="md-nav__link">
+  <a href="#iam-정책" class="md-nav__link">
     <span class="md-ellipsis">
       
-        IAM 최소 권한 정책
+        IAM 정책
       
     </span>
   </a>
@@ -1359,27 +1359,67 @@
 청구도 AWS 계정으로 통합되고, 트래픽이 AWS 계정 경계 안에서 처리되므로 보안 심사 난이도가 크게 내려갑니다.
 새 벤더를 하나 늘리는 게 아니라 <strong>기존 AWS 거버넌스 안에 들어오는 것</strong>이라 설득 논리가 완전히 달라집니다.</p>
 </div>
-<h3 id="주의할-점--alias가-한-세대-보수적입니다">주의할 점 — alias가 한 세대 보수적입니다<a class="headerlink" href="#주의할-점--alias가-한-세대-보수적입니다" title="이 위치로 링크">¶</a></h3>
-<p>Bedrock에서는 <code>opus</code>가 <strong>Opus 4.6</strong>, <code>sonnet</code>이 <strong>Sonnet 4.5</strong>로 해석됩니다. Claude API의 Opus 4.8 / Sonnet 5보다 한 단계 낮습니다.</p>
-<p>최신 모델을 쓰려면 <strong>전체 모델명이나 inference profile ARN을 <code>claude --model</code>로 직접 전달</strong>해야 합니다.</p>
-<p>alias가 가리킬 버전을 고정하고 싶다면 <code>ANTHROPIC_DEFAULT_OPUS_MODEL</code> 같은 환경변수를 씁니다. 배경 작업용 소형 모델은 <code>ANTHROPIC_SMALL_FAST_MODEL</code>로 지정하며 Haiku 계열을 권장합니다.</p>
-<p>리전 전략도 신경 써야 합니다. 모델마다 제공 리전이 다르므로 cross-region inference profile로 지연과 가용성의 균형을 잡습니다.</p>
-<h3 id="iam-최소-권한-정책">IAM 최소 권한 정책<a class="headerlink" href="#iam-최소-권한-정책" title="이 위치로 링크">¶</a></h3>
-<p>필요한 액션은 <strong>딱 두 개</strong>입니다.</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">      </span><span class="nt">&quot;Sid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ClaudeCodeBedrock&quot;</span><span class="p">,</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">      </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">      </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">        </span><span class="s2">&quot;bedrock:InvokeModel&quot;</span><span class="p">,</span>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">        </span><span class="s2">&quot;bedrock:InvokeModelWithResponseStream&quot;</span>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">      </span><span class="p">],</span>
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">      </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:bedrock:*::foundation-model/anthropic.*&quot;</span>
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">    </span><span class="p">}]</span>
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="p">}</span>
+<h3 id="주의할-점--sonnet-alias가-한-세대-보수적입니다">주의할 점 — <code>sonnet</code> alias가 한 세대 보수적입니다<a class="headerlink" href="#주의할-점--sonnet-alias가-한-세대-보수적입니다" title="이 위치로 링크">¶</a></h3>
+<p>Bedrock에서 <code>opus</code>는 <strong>Opus 4.8</strong>로 해석되지만, <code>sonnet</code>은 <strong>Sonnet 4.5</strong>입니다. Anthropic API의 Sonnet 5보다 한 단계 낮습니다.</p>
+<div class="admonition warning">
+<p class="admonition-title">v2.1.207에서 기본값이 크게 바뀌었습니다</p>
+<p>그 이전에는 Bedrock의 기본 모델이 Sonnet 4.5였고 <code>opus</code> alias도 Opus 4.6이었습니다. 지금은 <strong>기본 모델이 <code>us.anthropic.claude-opus-4-8</code></strong> 입니다.
+<strong>Opus는 Sonnet보다 토큰당 단가가 높으므로, 모델을 고정하지 않은 배포는 v2.1.207 이상으로 올라가면 Opus 요금으로 청구됩니다.</strong> 조직 배포라면 반드시 버전을 고정하세요.</p>
+</div>
+<p>최신·특정 모델을 쓰려면 <strong>전체 모델명이나 inference profile ARN을 직접 지정</strong>합니다. 팀에 배포할 때는 alias에 맡기지 말고 환경변수로 못박는 게 원칙입니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_DEFAULT_OPUS_MODEL</span><span class="o">=</span><span class="s1">&#39;us.anthropic.claude-opus-4-8&#39;</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_DEFAULT_SONNET_MODEL</span><span class="o">=</span><span class="s1">&#39;us.anthropic.claude-sonnet-4-6&#39;</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_DEFAULT_HAIKU_MODEL</span><span class="o">=</span><span class="s1">&#39;us.anthropic.claude-haiku-4-5-20251001-v1:0&#39;</span>
 </span></code></pre></div>
-<p><code>InvokeModel</code>은 일반 호출, <code>InvokeModelWithResponseStream</code>은 스트리밍 응답용입니다. 리소스는 <code>anthropic.*</code>로 한정해서 다른 벤더 모델은 못 부르게 막습니다. 조직 차원의 SCP 가드레일과 병행하면 더 안전합니다.</p>
+<p>배경 작업(세션 제목 생성 등)에 쓰이는 소형·빠른 모델은 <code>ANTHROPIC_DEFAULT_HAIKU_MODEL</code>로 지정합니다. 예전 자료에 나오는 <code>ANTHROPIC_SMALL_FAST_MODEL</code>은 <strong>deprecated</strong>입니다.</p>
+<p>리전 전략도 신경 써야 합니다. 모델마다 제공 리전이 다르므로 cross-region inference profile로 지연과 가용성의 균형을 잡습니다.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Bedrock에서는 <code>WebSearch</code> 도구를 쓸 수 없습니다.</strong> (<a href="../part-06-core-capabilities/">Part 6</a>의 웹 도구 참고)
+그리고 인증이 AWS 자격증명으로 처리되므로 <code>/logout</code> 명령도 동작하지 않습니다.</p>
+</div>
+<h3 id="iam-정책">IAM 정책<a class="headerlink" href="#iam-정책" title="이 위치로 링크">¶</a></h3>
+<p>호출의 핵심은 <code>InvokeModel</code>(일반)과 <code>InvokeModelWithResponseStream</code>(스트리밍) 두 개지만, <strong>실무에서 쓰는 cross-region inference profile까지 감안하면 두 개로는 부족합니다.</strong> 공식 권장 정책은 이렇습니다.</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">      </span><span class="nt">&quot;Sid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AllowModelAndInferenceProfileAccess&quot;</span><span class="p">,</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">      </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">      </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">        </span><span class="s2">&quot;bedrock:InvokeModel&quot;</span><span class="p">,</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">        </span><span class="s2">&quot;bedrock:InvokeModelWithResponseStream&quot;</span><span class="p">,</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">        </span><span class="s2">&quot;bedrock:ListInferenceProfiles&quot;</span><span class="p">,</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">        </span><span class="s2">&quot;bedrock:GetInferenceProfile&quot;</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">      </span><span class="p">],</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">      </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">        </span><span class="s2">&quot;arn:aws:bedrock:*:*:inference-profile/*&quot;</span><span class="p">,</span>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">        </span><span class="s2">&quot;arn:aws:bedrock:*:*:application-inference-profile/*&quot;</span><span class="p">,</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">        </span><span class="s2">&quot;arn:aws:bedrock:*:*:foundation-model/*&quot;</span>
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">      </span><span class="p">]</span>
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="w">      </span><span class="nt">&quot;Sid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AllowMarketplaceSubscription&quot;</span><span class="p">,</span>
+</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="w">      </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="w">      </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="w">        </span><span class="s2">&quot;aws-marketplace:ViewSubscriptions&quot;</span><span class="p">,</span>
+</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="w">        </span><span class="s2">&quot;aws-marketplace:Subscribe&quot;</span>
+</span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="w">      </span><span class="p">],</span>
+</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="w">      </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+</span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="w">      </span><span class="nt">&quot;Condition&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-28"><a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a><span class="w">        </span><span class="nt">&quot;StringEquals&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;aws:CalledViaLast&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bedrock.amazonaws.com&quot;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-8-29"><a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-8-30"><a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-8-31"><a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a><span class="w">  </span><span class="p">]</span>
+</span><span id="__span-8-32"><a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">현장 메모 — 왜 <code>GetInferenceProfile</code>이 필요한가</p>
+<p>Claude Code가 application inference profile ARN을 실제 기반 모델로 해석할 때 씁니다. 이 권한이 없어도 다른 형태로 한 번 재시도해서 <strong>결과적으로는 성공하지만, 새 모델마다 왕복이 한 번씩 더 붙습니다.</strong>
+특히 정책 범위가 좁은 <code>AWS_BEARER_TOKEN_BEDROCK</code> 배포에서 자주 걸립니다.</p>
+<p>더 조이고 싶다면 리소스를 <strong>특정 inference profile ARN</strong>으로 한정하면 됩니다. <code>foundation-model/*</code>만 허용한 정책으로는 inference profile 호출이 동작하지 않으니 주의하세요.</p>
+</div>
+<p>조직 차원의 SCP 가드레일과 병행하면 더 안전합니다. 비용 추적과 접근 통제를 단순화하려면 Claude Code 전용 AWS 계정을 파는 것도 공식 권장 사항입니다.</p>
 <p><img alt="Bedrock IAM 최소 권한 정책 슬라이드" src="../slides/slide-076.png" /></p>
 <p><em>▲ 교재 슬라이드 76 — Bedrock IAM 최소 권한 정책</em></p>
 <hr />
@@ -1411,9 +1451,9 @@
 <p class="admonition-title">가장 흔한 사고</p>
 <p>구독을 결제했는데 예전에 설정한 <code>ANTHROPIC_API_KEY</code>가 남아 있으면, <strong>3순위가 6순위를 이겨서 API 종량 요금이 나갑니다.</strong></p>
 <p>해결은 간단합니다.
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>$<span class="w"> </span><span class="nb">unset</span><span class="w"> </span>ANTHROPIC_API_KEY
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>$<span class="w"> </span>claude
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>&gt;<span class="w"> </span>/status<span class="w">        </span><span class="c1"># 무엇으로 인증됐는지 확인</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>$<span class="w"> </span><span class="nb">unset</span><span class="w"> </span>ANTHROPIC_API_KEY
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>$<span class="w"> </span>claude
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>&gt;<span class="w"> </span>/status<span class="w">        </span><span class="c1"># 무엇으로 인증됐는지 확인</span>
 </span></code></pre></div></p>
 </div>
 <hr />
@@ -1426,46 +1466,46 @@
 <hr />
 <h2 id="9-ci에서-쓸-장기-토큰">9. CI에서 쓸 장기 토큰<a class="headerlink" href="#9-ci에서-쓸-장기-토큰" title="이 위치로 링크">¶</a></h2>
 <p>CI나 스크립트 환경에는 브라우저가 없습니다. 이럴 때 쓰는 게 <code>setup-token</code>입니다.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># 토큰 발급</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>claude<span class="w"> </span>setup-token
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># OAuth 승인 후 토큰을 터미널에 출력 (자동 저장하지 않음)</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># 사용</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CLAUDE_CODE_OAUTH_TOKEN</span><span class="o">=</span>your-token
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;analyze this repo&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># 토큰 발급</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>claude<span class="w"> </span>setup-token
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="c1"># OAuth 승인 후 토큰을 터미널에 출력 (자동 저장하지 않음)</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="c1"># 사용</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CLAUDE_CODE_OAUTH_TOKEN</span><span class="o">=</span>your-token
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;analyze this repo&quot;</span>
 </span></code></pre></div>
 <p>특성을 알아둬야 합니다. 유효 기간은 <strong>1년</strong>이고 구독 요금제가 필요합니다. 스코프는 <strong>추론 전용</strong>이라 Remote Control은 되지 않습니다.</p>
 <p>그리고 <strong>출력만 하고 저장하지 않습니다.</strong> 화면에 뜬 그 순간이 유일한 기회이므로, 발급 즉시 파이프라인 시크릿에 넣어야 합니다.</p>
 <hr />
 <h2 id="10-문제가-생겼을-때--3종-명령">10. 문제가 생겼을 때 — 3종 명령<a class="headerlink" href="#10-문제가-생겼을-때--3종-명령" title="이 위치로 링크">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>&gt; /status
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a># 활성 인증 방법, 공급자, 모델, 계정 표시
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a># ★ 인증 문제 진단의 1순위 명령
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>&gt; /logout
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a># 현재 자격증명 해제
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>&gt; /login
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a># 재인증. gateway 환경에서는 SSO 흐름
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>&gt; /status
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a># 활성 인증 방법, 공급자, 모델, 계정 표시
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a># ★ 인증 문제 진단의 1순위 명령
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>&gt; /logout
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a># 현재 자격증명 해제
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>&gt; /login
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a># 재인증. gateway 환경에서는 SSO 흐름
 </span></code></pre></div>
 <p>무슨 문제든 <strong><code>/status</code>부터 봅니다.</strong> 내가 의도한 공급자와 모델이 잡혀 있는지가 여기서 바로 드러납니다.</p>
 <hr />
 <h2 id="직접-해보기">직접 해보기<a class="headerlink" href="#직접-해보기" title="이 위치로 링크">¶</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># 1. 현재 무엇으로 인증되어 있는지</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>$<span class="w"> </span>claude
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>&gt;<span class="w"> </span>/status
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="c1"># 2. 환경변수가 조용히 이기고 있는지 점검</span>
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>$<span class="w"> </span>env<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;ANTHROPIC|CLAUDE_CODE&quot;</span>
-</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>
-</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="c1"># 3. 사용량 확인</span>
-</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>&gt;<span class="w"> </span>/usage
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># 1. 현재 무엇으로 인증되어 있는지</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>$<span class="w"> </span>claude
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>&gt;<span class="w"> </span>/status
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="c1"># 2. 환경변수가 조용히 이기고 있는지 점검</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>$<span class="w"> </span>env<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;ANTHROPIC|CLAUDE_CODE&quot;</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="c1"># 3. 사용량 확인</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>&gt;<span class="w"> </span>/usage
 </span></code></pre></div>
 <p><strong>성공 판정</strong>: <code>/status</code> 출력의 인증 방법·공급자·모델이 내가 의도한 것과 일치하면 OK입니다.</p>
 <hr />
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
 <p><strong>"구독했으니 API 요금은 안 나간다"</strong> — <code>ANTHROPIC_API_KEY</code>가 남아 있으면 그쪽이 이깁니다. <code>/status</code>로 확인하세요.</p>
-<p><strong>"Bedrock 쓰면 최신 모델이 나온다"</strong> — alias 매핑이 한 세대 보수적입니다. <code>opus</code>는 Opus 4.6입니다. 최신을 쓰려면 전체 모델명을 지정하세요.</p>
+<p><strong>"Bedrock 쓰면 alias가 알아서 최신을 잡아준다"</strong> — <code>opus</code>는 Opus 4.8이지만 <code>sonnet</code>은 Sonnet 4.5입니다. 그리고 v2.1.207 전후로 매핑이 바뀌었으니, 팀 배포라면 alias에 맡기지 말고 전체 모델명으로 고정하세요.</p>
 <p><strong>"setup-token으로 뭐든 된다"</strong> — 추론 전용 스코프입니다. Remote Control은 안 됩니다.</p>
 <p><strong>"credentials.json을 편집하면 된다"</strong> — 직접 편집은 비권장입니다. <code>/login</code>과 <code>/logout</code>으로 관리하세요.</p>
 <hr />
@@ -1473,7 +1513,7 @@
 <p>인증 경로는 <strong>구독 OAuth / Console / Bedrock / Vertex / Foundry / apps gateway</strong> 여섯 가지입니다.</p>
 <p>선택 기준은 단순합니다. <strong>개인은 구독 OAuth</strong>, <strong>조직은 이미 쓰는 클라우드</strong>(대개 Bedrock) 또는 <strong>게이트웨이</strong>입니다.</p>
 <p>여러 자격증명이 공존하면 <strong>우선순위 6단계(+gateway 예외 0순위)</strong> 로 하나가 선택됩니다. 구독 OAuth가 가장 약하다는 걸 기억하세요.</p>
-<p>alias 해석은 <strong>공급자마다 다릅니다.</strong> Bedrock에서 <code>opus</code>는 Opus 4.6입니다.</p>
+<p>alias 해석은 <strong>공급자마다 다릅니다.</strong> Bedrock에서 <code>opus</code>는 Opus 4.8이지만 <code>sonnet</code>은 Sonnet 4.5입니다. 팀 배포라면 전체 모델명으로 고정하세요.</p>
 <p>문제가 생기면 <strong><code>/status</code>가 1순위 진단 명령</strong>입니다.</p>
 <p>CI에는 <code>claude setup-token</code>으로 만든 <strong>1년짜리 추론 전용 토큰</strong>을 씁니다.</p>
 <hr />

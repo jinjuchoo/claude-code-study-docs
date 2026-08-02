@@ -1743,9 +1743,19 @@
 </div>
 <p>모델 배분도 자동화할 수 있습니다. <code>opusplan</code> alias를 쓰면 계획은 opus로, 실행은 sonnet으로 자동 전환됩니다. 클라우드 확장판인 <code>ultraplan</code>도 있습니다.</p>
 <h3 id="auto-모드-research-preview">Auto 모드 (Research Preview)<a class="headerlink" href="#auto-모드-research-preview" title="이 위치로 링크">¶</a></h3>
-<p>Auto 모드에서는 <strong>백그라운드 안전 분류기가 모든 행동을 평가</strong>합니다. 안전하다고 판단되면 그냥 진행하고, 위험하면 확인을 요청합니다. 승인 피로 없이 자율성을 높이려는 시도입니다.</p>
-<p>조직은 <code>auto-mode</code> 설정으로 신뢰할 저장소와 버킷, 도메인을 지정합니다. 그리고 그 위에 <strong>hard deny 규칙</strong>이라는 계층이 하나 더 있습니다. 분류기가 뭐라고 판단하든 <strong>무조건 차단</strong>하는 선입니다. 분류기를 믿되 마지노선은 사람이 긋는 구조입니다.</p>
-<p>현재는 Pro 플랜과 Sonnet에서 지원되며 Bedrock, Vertex, Foundry로 확대 중입니다.</p>
+<p>Auto 모드에서는 <strong>별도의 분류기 모델이 모든 행동을 실행 전에 검토</strong>합니다. 요청 범위를 넘어서는 것, 모르는 인프라를 건드리는 것, Claude가 읽은 악성 콘텐츠에서 비롯된 것으로 보이는 행동을 차단합니다. 안전하면 그냥 진행하므로 승인 피로가 크게 줄어듭니다.</p>
+<p>조직은 <code>autoMode.environment</code> 설정으로 신뢰할 저장소와 버킷, 도메인을 지정합니다. 그리고 그 위에 <strong>거부 규칙</strong> 계층이 있습니다. 분류기가 뭐라고 판단하든 <code>permissions.deny</code>는 모든 모드에서 적용되므로, <strong>분류기를 믿되 마지노선은 사람이 긋는</strong> 구조입니다.</p>
+<p><strong>가용 조건</strong>은 세 가지를 모두 충족해야 합니다.</p>
+<ul>
+<li><strong>플랜</strong>: 모든 플랜에서 사용 가능합니다. 다만 Team·Enterprise는 소유자가 관리자 설정에서 먼저 켜야 합니다.</li>
+<li><strong>모델</strong>: Anthropic API에서는 Opus 4.6 이상 또는 Sonnet 4.6 이상. Bedrock·Agent Platform·Foundry·게이트웨이 세션에서는 <strong>Sonnet 5, Opus 4.7, Opus 4.8만</strong> 지원됩니다.</li>
+<li><strong>공급자</strong>: v2.1.207부터 Anthropic API, Bedrock, Agent Platform, Foundry, 게이트웨이에서 <strong>기본 지원</strong>됩니다. (v2.1.158~2.1.206에서는 API 외 공급자에서 <code>CLAUDE_CODE_ENABLE_AUTO_MODE=1</code>이 필요했습니다.)</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Auto 모드는 프롬프트를 줄여줄 뿐 안전을 보장하지 않습니다.</strong> 방향을 신뢰하는 작업에 쓰고, 민감한 작업의 검토를 대체하는 용도로는 쓰지 마세요.
+분류기가 연속 3회 또는 누적 20회 차단하면 Auto 모드가 일시 중지되고 다시 승인을 묻기 시작합니다.</p>
+</div>
 <hr />
 <h2 id="개념-8--세션-관리">개념 8 — 세션 관리<a class="headerlink" href="#개념-8--세션-관리" title="이 위치로 링크">¶</a></h2>
 <h3 id="resume--continue">resume / continue<a class="headerlink" href="#resume--continue" title="이 위치로 링크">¶</a></h3>

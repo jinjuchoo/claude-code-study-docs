@@ -543,10 +543,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#같은-opus인데-공급자마다-다른-모델-202607-기준" class="md-nav__link">
+  <a href="#같은-opus인데-공급자마다-다른-모델" class="md-nav__link">
     <span class="md-ellipsis">
       
-        같은 opus인데 공급자마다 다른 모델 (2026.07 기준)
+        같은 opus인데 공급자마다 다른 모델
       
     </span>
   </a>
@@ -1070,10 +1070,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#같은-opus인데-공급자마다-다른-모델-202607-기준" class="md-nav__link">
+  <a href="#같은-opus인데-공급자마다-다른-모델" class="md-nav__link">
     <span class="md-ellipsis">
       
-        같은 opus인데 공급자마다 다른 모델 (2026.07 기준)
+        같은 opus인데 공급자마다 다른 모델
       
     </span>
   </a>
@@ -1353,37 +1353,47 @@ Local과 Remote Control은 실행이 내 머신이고, Cloud만 Anthropic VM으�
 <p>순서는 이렇습니다. 클라우드 스위치(<code>CLAUDE_CODE_USE_BEDROCK</code> 등)가 가장 세고, 그다음이 <code>ANTHROPIC_AUTH_TOKEN</code>, <code>ANTHROPIC_API_KEY</code>, <code>apiKeyHelper</code>, <code>CLAUDE_CODE_OAUTH_TOKEN</code> 순이며, <strong>구독 OAuth(<code>/login</code>)가 가장 약합니다.</strong> 여기에 apps gateway 세션이 있으면 이 전부를 제치는 0순위가 됩니다.</p>
 <p>그래서 예전에 테스트하려고 <code>.zshrc</code>에 넣어둔 <code>ANTHROPIC_API_KEY</code>가 남아 있으면 3순위가 6순위를 눌러버립니다. 구독을 결제했는데 API 요금이 나가는 사고가 여기서 생깁니다.</p>
 <p>각 경로의 설정 방법과 이 우선순위가 실제로 해석되는 과정은 <a href="../part-04-authentication/">Part 4 인증</a>에서 자세히 다룹니다.</p>
-<h3 id="같은-opus인데-공급자마다-다른-모델-202607-기준">같은 <code>opus</code>인데 공급자마다 다른 모델 (2026.07 기준)<a class="headerlink" href="#같은-opus인데-공급자마다-다른-모델-202607-기준" title="이 위치로 링크">¶</a></h3>
+<h3 id="같은-opus인데-공급자마다-다른-모델">같은 <code>opus</code>인데 공급자마다 다른 모델<a class="headerlink" href="#같은-opus인데-공급자마다-다른-모델" title="이 위치로 링크">¶</a></h3>
 <p>여기는 함정이 하나 있어서 표로 보는 게 낫습니다.</p>
-<p><code>opus</code>라고 똑같이 써도 <strong>어느 공급자를 쓰느냐에 따라 실제로 붙는 모델이 다릅니다.</strong></p>
+<p><code>opus</code>나 <code>sonnet</code>이라고 똑같이 써도 <strong>어느 공급자를 쓰느냐에 따라 실제로 붙는 모델이 다릅니다.</strong></p>
 <table>
 <thead>
 <tr>
 <th>공급자</th>
-<th><code>opus</code>가 가리키는 것</th>
-<th><code>sonnet</code>이 가리키는 것</th>
+<th><code>opus</code></th>
+<th><code>sonnet</code></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Claude API</td>
+<td>Anthropic API</td>
 <td>Opus <strong>4.8</strong></td>
 <td>Sonnet <strong>5</strong></td>
 </tr>
 <tr>
 <td>Claude Platform on AWS</td>
-<td>Opus <strong>4.7</strong></td>
+<td>Opus <strong>4.8</strong></td>
 <td>Sonnet <strong>4.6</strong></td>
 </tr>
 <tr>
-<td>Bedrock / Vertex / Foundry</td>
+<td>Amazon Bedrock, Google Cloud의 Agent Platform</td>
+<td>Opus <strong>4.8</strong></td>
+<td>Sonnet <strong>4.5</strong></td>
+</tr>
+<tr>
+<td>Microsoft Foundry</td>
 <td>Opus <strong>4.6</strong></td>
 <td>Sonnet <strong>4.5</strong></td>
 </tr>
 </tbody>
 </table>
-<p>Bedrock 쪽 매핑이 한 세대 보수적입니다. 새 모델이 나와도 바로 alias에 붙이지 않기 때문입니다.</p>
-<p>그래서 Bedrock에서 최신 모델을 쓰려면 <strong>전체 모델명이나 inference profile ARN을 직접 지정</strong>해야 합니다. alias가 가리킬 버전을 고정하고 싶다면 <code>ANTHROPIC_DEFAULT_OPUS_MODEL</code> 같은 환경변수로 못박습니다. 조직 차원에서는 <code>availableModels</code> 관리 설정으로 허용 목록을 만들면 모델 선택 UI와 명령줄 플래그 양쪽 모두에 강제됩니다.</p>
+<p><code>opus</code>는 Foundry를 제외하면 이제 전부 Opus 4.8로 통일됐지만, <strong><code>sonnet</code>은 여전히 공급자마다 한두 세대씩 뒤처집니다.</strong> 클라우드 경로에서는 새 모델이 나와도 바로 alias에 붙이지 않고 검증을 거치기 때문입니다.</p>
+<div class="admonition warning">
+<p class="admonition-title">버전에 따라 달라집니다</p>
+<p><strong>v2.1.207 이전</strong>에는 <code>opus</code>가 Claude Platform on AWS에서 Opus 4.7로, Amazon Bedrock과 Google Cloud의 Agent Platform에서 Opus 4.6으로 해석됐습니다.
+오래된 클라이언트를 쓰는 팀원이 있다면 같은 <code>opus</code>를 쳐도 서로 다른 모델을 쓰고 있을 수 있습니다.</p>
+</div>
+<p>원하는 버전을 확실히 하려면 <strong>전체 모델명이나 inference profile ARN을 직접 지정</strong>하거나, <code>ANTHROPIC_DEFAULT_OPUS_MODEL</code> / <code>ANTHROPIC_DEFAULT_SONNET_MODEL</code> 환경변수로 alias가 가리킬 버전을 못박습니다. 조직 차원에서는 <code>availableModels</code> 관리 설정으로 허용 목록을 만들면 모델 선택 UI와 명령줄 플래그 양쪽에 강제됩니다.</p>
 <hr />
 <h2 id="4-도구-시스템--이게-없으면-그냥-챗봇">4. 도구 시스템 — 이게 없으면 그냥 챗봇<a class="headerlink" href="#4-도구-시스템--이게-없으면-그냥-챗봇" title="이 위치로 링크">¶</a></h2>
 <p>핵심 문장 하나로 시작하겠습니다.</p>
@@ -1498,7 +1508,8 @@ Local과 Remote Control은 실행이 내 머신이고, Cloud만 Anthropic VM으�
 <div class="admonition tip">
 <p class="admonition-title">현장 메모</p>
 <p>위 목록이 사실상 방화벽 신청서 초안입니다.
-그리고 <strong>Bedrock 경로를 쓰면 <code>api.anthropic.com</code> 없이</strong> AWS 계정 경계 안에서 처리되므로, 보안팀 설득 난이도가 확 내려갑니다. 이미 Bedrock을 쓰고 있는 조직이라면 새로 열 게 거의 없습니다.</p>
+그리고 Bedrock 경로를 쓰면 <strong>모델 추론 트래픽에 한해</strong> <code>api.anthropic.com</code> 없이 AWS 계정 경계 안에서 처리되므로, 보안팀 설득 난이도가 확 내려갑니다.
+다만 설치·업데이트(<code>claude.ai</code>, downloads)와 기능 플래그·오류 보고(statsig·sentry)는 별개 경로라는 점은 짚어야 합니다. 후자는 환경변수로 끌 수 있습니다.</p>
 </div>
 <h3 id="무엇이-기록되는가">무엇이 기록되는가<a class="headerlink" href="#무엇이-기록되는가" title="이 위치로 링크">¶</a></h3>
 <p>로컬에는 세션이 <code>~/.claude/projects/</code>에 JSONL로 쌓입니다. 이게 <code>resume</code>, <code>fork</code>, <code>rewind</code>를 가능하게 하는 실체입니다. 더 자세히 보려면 <code>claude --debug</code>, 대화를 꺼내려면 <code>/export</code>를 씁니다.</p>

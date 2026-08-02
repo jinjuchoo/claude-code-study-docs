@@ -1588,6 +1588,7 @@
 <div class="admonition tip">
 <p class="admonition-title">현장 메모</p>
 <p>사내망 정책상 외부 조회를 제한해야 한다면, 전면 <code>deny</code>보다 사내 문서 도메인만 <code>allow</code>하는 화이트리스트 방식이 실용적입니다. 공식 문서 도메인(<code>code.claude.com</code>)을 허용해두면 최신 사양 확인이 세션 안에서 끝납니다.</p>
+<p>⚠️ 단, <strong>Amazon Bedrock 경로에서는 <code>WebSearch</code> 도구를 아예 쓸 수 없습니다.</strong> <code>WebFetch</code>는 동작하므로, Bedrock 환경이라면 "검색해서 찾아줘" 대신 URL을 직접 주는 방식으로 설계해야 합니다. (<a href="../part-04-authentication/">Part 4</a> 참고)</p>
 </div>
 <hr />
 <h2 id="축-5--코드-인텔리전스와-오케스트레이션">축 5 — 코드 인텔리전스와 오케스트레이션<a class="headerlink" href="#축-5--코드-인텔리전스와-오케스트레이션" title="이 위치로 링크">¶</a></h2>

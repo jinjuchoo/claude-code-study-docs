@@ -1341,7 +1341,8 @@ Native 설치로 바뀌면서 Node.js 의존성이 사라졌고, 자동 업데�
 <p><strong>하드웨어</strong>는 RAM 4GB에 x64 또는 ARM64면 됩니다. Apple Silicon은 에뮬레이션이 아니라 네이티브로 돕니다.</p>
 <p><strong>셸</strong>은 Bash, Zsh는 물론 PowerShell과 CMD까지 공식 지원합니다. Windows에서 WSL을 안 써도 된다는 뜻입니다.</p>
 <p><strong>네트워크</strong>는 인터넷 연결과 HTTPS 443이 필요합니다. 사내 프록시와 커스텀 CA를 지원하므로 폐쇄망에서도 구성할 수 있습니다.</p>
-<p><strong>의존성</strong>이 가장 중요한데, 여기가 예전 자료와 크게 달라진 부분입니다. <strong>Node.js가 필요 없습니다.</strong> 검색 엔진인 ripgrep도 설치 패키지에 기본 포함되어 있어 따로 깔 필요가 없습니다. Node가 필요한 건 오직 npm 경로로 설치할 때뿐입니다.</p>
+<p><strong>의존성</strong>이 가장 중요한데, 여기가 예전 자료와 크게 달라진 부분입니다. <strong>Node.js가 필요 없습니다.</strong> 검색 엔진인 ripgrep도 설치 패키지에 기본 포함되어 있어 따로 깔 필요가 없습니다.</p>
+<p>npm으로 설치할 때만 Node.js가 등장하는데, 그것도 <strong>설치 시점에만</strong> 필요합니다(v2.1.198 기준 <strong>Node 22 이상</strong>). npm 패키지는 독립 설치본과 <strong>동일한 네이티브 바이너리</strong>를 내려받을 뿐이라, 설치가 끝나면 <code>claude</code>는 Node를 전혀 호출하지 않습니다. 구버전 Node에서는 설치가 실패하는 대신 <code>EBADENGINE</code> 경고만 출력되고 실행은 정상 동작합니다.</p>
 <p><img alt="시스템 요구사항 슬라이드" src="../slides/slide-049.png" /></p>
 <p><em>▲ 교재 슬라이드 49 — 시스템 요구사항</em></p>
 <hr />
@@ -1353,7 +1354,7 @@ Native 설치로 바뀌면서 Node.js 의존성이 사라졌고, 자동 업데�
     Q --&gt;|"macOS 패키지를 brew로 일원화"| H["&lt;b&gt;Homebrew&lt;/b&gt;&lt;br/&gt;claude-code / @latest&lt;br/&gt;&lt;br/&gt;❌ 수동 업그레이드"]
     Q --&gt;|"Windows 표준 관리 체계"| W["&lt;b&gt;WinGet&lt;/b&gt;&lt;br/&gt;Anthropic.ClaudeCode&lt;br/&gt;&lt;br/&gt;❌ 수동 (옵션 제공)"]
     Q --&gt;|"사내 리눅스 플릿에 배포"| L["&lt;b&gt;apt / dnf / apk&lt;/b&gt;&lt;br/&gt;GPG 서명된 공식 저장소&lt;br/&gt;&lt;br/&gt;기존 시스템 절차 편입"]
-    Q --&gt;|"기존 npm 파이프라인 호환"| P["&lt;b&gt;npm (레거시)&lt;/b&gt;&lt;br/&gt;@anthropic-ai/claude-code&lt;br/&gt;&lt;br/&gt;⚠️ Node 18+ 필요, 신규 비권장"]
+    Q --&gt;|"기존 npm 파이프라인 호환"| P["&lt;b&gt;npm&lt;/b&gt;&lt;br/&gt;@anthropic-ai/claude-code&lt;br/&gt;&lt;br/&gt;✅ 자동 업데이트 됨&lt;br/&gt;설치에만 Node 22+ 필요"]
 
     style Q fill:#673ab7,stroke:#4527a0,stroke-width:3px,color:#fff
     style N fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
@@ -1363,11 +1364,12 @@ Native 설치로 바뀌면서 Node.js 의존성이 사라졌고, 자동 업데�
     style P fill:#ffebee,stroke:#d32f2f,color:#000</code></pre>
 <p>특별한 이유가 없다면 <strong>Native가 답입니다.</strong> 원라이너 하나로 끝나고, Node.js가 필요 없는 단일 바이너리이며, 무엇보다 자동 업데이트가 됩니다.</p>
 <p>패키지 매니저 경로(Homebrew, WinGet, apt 등)는 <strong>이미 그 체계로 소프트웨어를 관리하고 있을 때</strong> 의미가 있습니다. 사내 리눅스 플릿처럼 <code>apt upgrade</code> 절차가 이미 돌고 있다면 거기 편입시키는 게 맞습니다.</p>
-<p>npm 경로는 이제 레거시입니다. 기존 파이프라인 호환이 필요한 경우가 아니면 쓰지 않는 게 좋습니다.</p>
+<p>npm 경로도 여전히 지원되고 자동 업데이트도 됩니다. 다만 설치할 때 Node 22 이상이 필요하므로, 새로 시작한다면 Node 의존이 없는 Native가 더 간단합니다.</p>
 <div class="admonition warning">
-<p class="admonition-title">여기가 가장 중요한 차이입니다</p>
-<p><strong>자동 업데이트는 Native 설치에서만 백그라운드로 동작합니다.</strong>
-나머지 경로는 각 패키지 매니저의 업그레이드 절차를 따로 밟아야 합니다. 깔아놓고 잊어버리면 몇 달 전 버전을 계속 쓰게 됩니다.</p>
+<p class="admonition-title">여기가 가장 중요한 차이입니다 — 자동 업데이트 여부</p>
+<p><strong>Native와 npm 설치는 백그라운드로 자동 업데이트됩니다.</strong> (npm은 전역 디렉토리에 쓸 수 있는 경우에 한하며, 못 쓰면 시작 시 1회 알림이 뜹니다.)
+<strong>Homebrew, WinGet, apt, dnf, apk는 자동 업데이트되지 않습니다.</strong> 각 패키지 매니저의 업그레이드 절차를 따로 밟아야 하고, 깔아놓고 잊어버리면 몇 달 전 버전을 계속 쓰게 됩니다.</p>
+<p>Homebrew와 WinGet은 <code>CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE=1</code>로 Claude Code가 대신 업그레이드를 실행하게 할 수 있습니다. apt·dnf·apk는 상승 권한이 필요해서 계속 수동입니다.</p>
 </div>
 <p><img alt="설치 방법 비교 슬라이드" src="../slides/slide-050.png" /></p>
 <p><em>▲ 교재 슬라이드 50 — 설치 방법 5종 비교</em></p>
@@ -1456,15 +1458,16 @@ Native 설치로 바뀌면서 Node.js 의존성이 사라졌고, 자동 업데�
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="s">baseurl=https://downloads.claude.ai/claude-code/rpm/stable</span>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="s">enabled=1</span>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="s">gpgcheck=1</span>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="s">EOF</span>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>claude-code
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="s">gpgkey=https://downloads.claude.ai/keys/claude-code.asc</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="s">EOF</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>claude-code
 </span></code></pre></div>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Alpine 준비물 (musl 계열)</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>apk<span class="w"> </span>add<span class="w"> </span>libgcc<span class="w"> </span>libstdc++<span class="w"> </span>ripgrep
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># settings.json에 추가: &quot;USE_BUILTIN_RIPGREP&quot;: &quot;0&quot;</span>
 </span></code></pre></div>
 <h3 id="npm-레거시">npm (레거시)<a class="headerlink" href="#npm-레거시" title="이 위치로 링크">¶</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Node.js 18 LTS 이상 필요</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># 설치에 Node.js 22 이상 필요 (v2.1.198 기준)</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>node<span class="w"> </span>--version
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># 글로벌 설치</span>
@@ -1472,11 +1475,15 @@ Native 설치로 바뀌면서 Node.js 의존성이 사라졌고, 자동 업데�
 </span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
 </span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="c1"># 검증</span>
 </span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>claude<span class="w"> </span>--version
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="c1"># 업그레이드 — npm update -g 는 원래 semver 범위를 따라가므로 최신으로 안 갈 수 있음</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@anthropic-ai/claude-code@latest
 </span></code></pre></div>
-<blockquote>
-<p>글로벌 디렉토리 권한 문제가 생기면 <code>claude doctor</code>가 해법을 안내합니다.
-<strong>신규 도입은 Native 경로를 권장합니다.</strong></p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong><code>sudo npm install -g</code>는 쓰지 마세요.</strong> 권한 문제와 보안 위험으로 이어집니다. 권한 오류가 나면 <code>claude doctor</code>가 해법을 안내합니다.</p>
+</div>
+<p>npm 경로도 자동 업데이트가 되고 실행 바이너리도 Native와 같지만, 신규 도입이라면 Node 의존을 아예 없앨 수 있는 <strong>Native 경로가 더 단순합니다.</strong></p>
 <hr />
 <h2 id="개념-2--버전-지정과-채널-선택">개념 2 — 버전 지정과 채널 선택<a class="headerlink" href="#개념-2--버전-지정과-채널-선택" title="이 위치로 링크">¶</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># stable 채널로 설치 (설치 채널이 이후 업데이트의 기본값이 됨)</span>

@@ -1352,7 +1352,7 @@
 <h2 id="개념-2--메모리-4계층-구조">개념 2 — 메모리 4계층 구조<a class="headerlink" href="#개념-2--메모리-4계층-구조" title="이 위치로 링크">¶</a></h2>
 <p><code>CLAUDE.md</code>는 한 곳에만 있는 게 아닙니다. <strong>넓은 범위에서 좁은 범위로 네 겹</strong>이 있고, 아래로 갈수록 더 구체적인 상황에 적용됩니다.</p>
 <pre class="mermaid"><code>flowchart TD
-    L1["&lt;b&gt;① Managed — 조직 정책&lt;/b&gt;&lt;br/&gt;macOS: /Library/Application Support/ClaudeCode&lt;br/&gt;Linux: /etc/claude-code&lt;br/&gt;&lt;i&gt;관리자가 배포, 사용자가 못 바꿈&lt;/i&gt;"]
+    L1["&lt;b&gt;① Managed — 조직 정책&lt;/b&gt;&lt;br/&gt;macOS: /Library/Application Support/ClaudeCode&lt;br/&gt;Linux: /etc/claude-code&lt;br/&gt;Windows: C:\\Program Files\\ClaudeCode&lt;br/&gt;&lt;i&gt;관리자가 배포, 사용자가 못 바꿈&lt;/i&gt;"]
     L2["&lt;b&gt;② User — 개인 선호&lt;/b&gt;&lt;br/&gt;~/.claude/CLAUDE.md&lt;br/&gt;&lt;i&gt;내 모든 프로젝트에 적용&lt;/i&gt;"]
     L3["&lt;b&gt;③ Project — 팀 공유&lt;/b&gt;&lt;br/&gt;./CLAUDE.md 또는 ./.claude/CLAUDE.md&lt;br/&gt;&lt;i&gt;버전 관리에 포함, 팀 전체가 같은 규칙&lt;/i&gt;"]
     L4["&lt;b&gt;④ Local — 개인 메모&lt;/b&gt;&lt;br/&gt;./CLAUDE.local.md&lt;br/&gt;&lt;i&gt;.gitignore 대상, 나만 보는 프로젝트 노트&lt;/i&gt;"]
