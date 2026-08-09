@@ -1002,6 +1002,290 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../W2-Chapter2-Agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2주차 · Agents
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    2주차 · Agents
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-01-subagent-concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Subagents 개념과 원리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-02-defining-subagents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Subagent 정의 방법
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-03-dispatch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Agent 도구와 디스패치
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-04-patterns-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. 패턴 1+2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-05-pattern-security-scanner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. 패턴 3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-06-patterns-docs-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. 패턴 4+5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-07-recap-and-labs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Recap & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -1603,11 +1887,23 @@ Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 
 <hr />
 <h2 id="자주-마주치는-안티-패턴">자주 마주치는 안티 패턴<a class="headerlink" href="#자주-마주치는-안티-패턴" title="이 위치로 링크">¶</a></h2>
 <p>마지막으로 자주 보는 비효율 다섯 가지입니다. 각각 신호와 교정이 짝을 이룹니다.</p>
+<ul>
+<li>
 <p><strong>한 세션에 서로 다른 작업을 뒤섞는 것</strong> — 결제 모듈을 고치다가 배포 스크립트로 넘어가고 다시 문서를 고칩니다. 컨텍스트가 뒤엉켜 엉뚱한 판단이 나옵니다. 작업 경계마다 <code>/clear</code>하세요.</p>
+</li>
+<li>
 <p><strong>거대 파일을 통째로 붙여넣는 것</strong> — Claude는 파일을 직접 읽을 수 있습니다. 붙여넣지 말고 경로를 지목하고, 필요하면 라인 범위를 알려주세요.</p>
+</li>
+<li>
 <p><strong>검증 기준 없는 막연한 지시</strong> — "잘 고쳐줘"에는 완료 판정 기준이 없습니다. 테스트나 기대 출력을 함께 주세요.</p>
+</li>
+<li>
 <p><strong>실패한 방향을 수동으로 재타이핑하며 반복하는 것</strong> — 잘못 간 걸 알았으면 그 지점으로 <code>/rewind</code>한 뒤 다시 지시하는 게 빠릅니다. 잘못된 시도가 컨텍스트에 남아 있으면 계속 영향을 줍니다.</p>
+</li>
+<li>
 <p><strong>모든 작업을 <code>opus</code>로 돌리는 것</strong> — 난이도별로 배분하세요. 단순 분류에 최상위 모델을 쓰는 건 낭비입니다.</p>
+</li>
+</ul>
 <p><img alt="안티 패턴 슬라이드" src="../slides/slide-168.png" /></p>
 <p><em>▲ 교재 슬라이드 168 — 패턴 조합: 신규 기능 하나의 전체 여정</em></p>
 <hr />
