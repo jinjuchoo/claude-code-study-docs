@@ -1,0 +1,2316 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Claude Code Deep Dive Workshop 6주 학습 정리 — 처음 배우는 사람을 위한 한국어 가이드">
+      
+      
+      
+        <link rel="canonical" href="https://jinjuchoo.github.io/claude-code-study-docs/W3-Chapter3-Admin-Setup/part-02-providers-credentials/">
+      
+      
+        <link rel="prev" href="../part-01-deployment/">
+      
+      
+        <link rel="next" href="../part-03-apps-gateway/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Part 2 — 공급자와 자격증명 - Claude Code 완전 정복</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pretendard:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Pretendard";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-2--공급자와-자격증명" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="../.." title="Claude Code 완전 정복" class="md-header__button md-logo" aria-label="Claude Code 완전 정복" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12zm0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-7 14v-2h5v2zm-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Claude Code 완전 정복
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part 2 — 공급자와 자격증명
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="시스템 설정 따르기"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="시스템 설정 따르기" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="deep-orange"  aria-label="다크 모드로"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="다크 모드로" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="deep-orange"  aria-label="라이트 모드로"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="라이트 모드로" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="공유" aria-label="공유" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Claude Code 완전 정복" class="md-nav__button md-logo" aria-label="Claude Code 완전 정복" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12zm0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-7 14v-2h5v2zm-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59z"/></svg>
+
+    </a>
+    Claude Code 완전 정복
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    시작하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../W1-Chapter1-Overview/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1주차 · Overview
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    1주차 · Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-01-what-is-claude-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Claude Code란 무엇인가
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-02-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. 아키텍처
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-03-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. 설치
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-04-authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. 인증
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-05-quick-start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. 퀵스타트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-06-core-capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. 핵심 도구
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-07-interfaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. 인터페이스
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-08-claude-md-and-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. CLAUDE.md와 메모리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-09-workflow-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. 워크플로 패턴 10선
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-10-recap-and-labs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. 정리와 실습 랩 (실제 수행 기록)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../W2-Chapter2-Agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2주차 · Agents
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    2주차 · Agents
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-01-subagent-concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Subagents 개념과 원리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-02-defining-subagents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Subagent 정의 방법
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-03-dispatch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Agent 도구와 디스패치
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-04-patterns-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. 패턴 1+2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-05-pattern-security-scanner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. 패턴 3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-06-patterns-docs-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. 패턴 4+5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-07-recap-and-labs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Recap & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3주차 · Admin Setup
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    3주차 · Admin Setup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-01-deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. 배포 전략
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. 공급자와 자격증명
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. 공급자와 자격증명
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#한-줄-요약" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        한 줄 요약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#왜-알아야-하나" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        왜 알아야 하나
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-조직은-어떤-공급자를-표준으로-정하는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 조직은 어떤 공급자를 표준으로 정하는가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-인증-우선순위--관리자는-이걸-어떻게-강제하는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 인증 우선순위 — 관리자는 이걸 어떻게 강제하는가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-bedrock-설정-개요--조직-표준-환경-구성" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Bedrock 설정 개요 — 조직 표준 환경 구성
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-bedrock-iam-정책--최소-권한의-실제-모양" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Bedrock IAM 정책 — 최소 권한의 실제 모양
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-bedrock--identity-center-sso--키-없는-인증의-전체-흐름" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Bedrock + Identity Center SSO — 키 없는 인증의 전체 흐름
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-claude-platform-on-aws--네-번째-경로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Claude Platform on AWS — 네 번째 경로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-api-key-분배--왜-이-방식이-실패하는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. API Key 분배 — 왜 이 방식이 실패하는가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-apikeyhelper--그래도-키가-필요하다면-동적으로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. apiKeyHelper — 그래도 키가 필요하다면 동적으로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-자격증명-회전--무사고로-만드는-절차" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 자격증명 회전 — 무사고로 만드는 절차
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-privatelink와-vpc-endpoint--추론-트래픽의-프라이빗-경로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. PrivateLink와 VPC Endpoint — 추론 트래픽의 프라이빗 경로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-자격증명-의사결정--주체별-표준-경로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. 자격증명 의사결정 — 주체별 표준 경로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#직접-해보기" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        직접 해보기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="직접 해보기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iam-identity-center-활성화부터-permission-set까지" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IAM Identity Center 활성화부터 Permission Set까지
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sso-로그인과-자격증명" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSO 로그인과 자격증명
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-access-화면이-없어졌습니다--그리고-anthropic만-예외입니다" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model access 화면이 없어졌습니다 — 그리고 Anthropic만 예외입니다
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#흔한-오해-바로잡기" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        흔한 오해 바로잡기
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#정리" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        정리
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#출처" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        출처
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-03-apps-gateway/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Claude apps gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-04-network-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. 네트워크와 보안
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-05-governance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. 거버넌스와 정책
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-06-monitoring-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. 모니터링과 비용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-07-identity-compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. 신원, 데이터, 컴플라이언스
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-08-troubleshooting-recap-labs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. 트러블슈팅, 정리와 실습 랩
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#한-줄-요약" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        한 줄 요약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#왜-알아야-하나" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        왜 알아야 하나
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-조직은-어떤-공급자를-표준으로-정하는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 조직은 어떤 공급자를 표준으로 정하는가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-인증-우선순위--관리자는-이걸-어떻게-강제하는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 인증 우선순위 — 관리자는 이걸 어떻게 강제하는가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-bedrock-설정-개요--조직-표준-환경-구성" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Bedrock 설정 개요 — 조직 표준 환경 구성
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-bedrock-iam-정책--최소-권한의-실제-모양" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Bedrock IAM 정책 — 최소 권한의 실제 모양
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-bedrock--identity-center-sso--키-없는-인증의-전체-흐름" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Bedrock + Identity Center SSO — 키 없는 인증의 전체 흐름
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-claude-platform-on-aws--네-번째-경로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Claude Platform on AWS — 네 번째 경로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-api-key-분배--왜-이-방식이-실패하는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. API Key 분배 — 왜 이 방식이 실패하는가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-apikeyhelper--그래도-키가-필요하다면-동적으로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. apiKeyHelper — 그래도 키가 필요하다면 동적으로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-자격증명-회전--무사고로-만드는-절차" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 자격증명 회전 — 무사고로 만드는 절차
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-privatelink와-vpc-endpoint--추론-트래픽의-프라이빗-경로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. PrivateLink와 VPC Endpoint — 추론 트래픽의 프라이빗 경로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-자격증명-의사결정--주체별-표준-경로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. 자격증명 의사결정 — 주체별 표준 경로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#직접-해보기" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        직접 해보기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="직접 해보기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iam-identity-center-활성화부터-permission-set까지" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IAM Identity Center 활성화부터 Permission Set까지
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sso-로그인과-자격증명" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSO 로그인과 자격증명
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-access-화면이-없어졌습니다--그리고-anthropic만-예외입니다" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model access 화면이 없어졌습니다 — 그리고 Anthropic만 예외입니다
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#흔한-오해-바로잡기" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        흔한 오해 바로잡기
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#정리" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        정리
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#출처" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        출처
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="part-2--공급자와-자격증명">Part 2 — 공급자와 자격증명<a class="headerlink" href="#part-2--공급자와-자격증명" title="이 위치로 링크">¶</a></h1>
+<h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
+<p>조직이 어떤 공급자를 표준으로 삼을지는 <strong>이미 쓰고 있는 클라우드 거버넌스를 무엇으로 상속할 것인가</strong>로 거의 결정됩니다. 그리고 그 위에 얹을 자격증명 설계의 목표는 단 하나 — <strong>사람 손에 정적 키를 쥐여주지 않는 것</strong>입니다.</p>
+<hr />
+<h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
+<p>개인이 Claude Code를 쓸 때 인증은 "브라우저에서 로그인 한 번"으로 끝납니다. 조직에서는 같은 문제가 전혀 다른 모양으로 나타납니다.</p>
+<blockquote>
+<p>"개발자 40명에게 API 키를 어떻게 나눠주지?"
+"그 사람 어제 퇴사했는데, 받아 간 키는 어떻게 회수하지?"
+"이번 달 청구서에 찍힌 이 호출, 누가 한 건지 증명할 수 있나?"</p>
+</blockquote>
+<p>세 질문의 정답은 전부 같습니다. <strong>키를 나눠주지 않으면 됩니다.</strong> 나눠준 적이 없으면 회수할 것도 없고, 유출될 것도 없고, 누가 호출했는지는 IdP 세션이 이미 알고 있습니다.</p>
+<p>이 파트는 그 "키 없는 인증"을 실제로 어떻게 구성하는지를 다룹니다. 공급자를 고르는 기준부터 시작해서, Bedrock IAM 정책, Identity Center SSO, 그리고 그래도 키가 필요한 경우(기계·공유 서비스)를 위한 볼트 연동과 회전 절차까지 이어집니다.</p>
+<hr />
+<h2 id="1-조직은-어떤-공급자를-표준으로-정하는가">1. 조직은 어떤 공급자를 표준으로 정하는가<a class="headerlink" href="#1-조직은-어떤-공급자를-표준으로-정하는가" title="이 위치로 링크">¶</a></h2>
+<p><a href="../../W1-Chapter1-Overview/part-04-authentication/">1주차 Part 4</a>에서 인증 경로 여섯 가지를 <strong>"누가 쓰는가"</strong> 기준으로 갈랐다면, 관리자의 질문은 방향이 다릅니다. 개인이 무엇을 고르느냐가 아니라 <strong>조직이 무엇 하나를 표준으로 못박고 나머지를 예외 처리할 것인가</strong>입니다.</p>
+<p>이 질문을 가르는 축은 세 개입니다. 첫째는 <strong>통제를 어디에서 상속할 것인가</strong> — 이미 AWS SCP와 CloudTrail로 굴러가는 조직이라면 새 벤더 콘솔에 감사 체계를 하나 더 만드는 것보다 Bedrock으로 들어오는 편이 압도적으로 싸게 먹힙니다. 둘째는 <strong>과금을 어느 청구서에 붙일 것인가</strong> — 조달 절차를 새로 타는 비용이 생각보다 큽니다. 셋째는 <strong>엔드포인트를 하나로 모아야 하는가</strong> — 여러 공급자를 동시에 쓰거나 전사 로깅 요구가 있으면 게이트웨이가 답입니다.</p>
+<pre class="mermaid"><code>flowchart TD
+    S{"조직에 이미 자리 잡은&lt;br/&gt;거버넌스 축이 있는가?"}
+
+    S --&gt;|"없음 — 인프라 부담 없이 바로 시작"| T["&lt;b&gt;Teams / Enterprise&lt;/b&gt;&lt;br/&gt;좌석제 구독&lt;br/&gt;&lt;i&gt;공식 admin-setup 기본 권장&lt;/i&gt;"]
+    S --&gt;|"자동화·파이프라인이 주 사용처"| C["&lt;b&gt;Claude Console&lt;/b&gt;&lt;br/&gt;API 우선 · 종량 과금"]
+    S --&gt;|"퍼블릭 클라우드 표준이 있음"| CL{"어느 클라우드의&lt;br/&gt;통제를 상속할 것인가?"}
+    S --&gt;|"여러 공급자 혼용 · 전사 로깅 필수"| G["&lt;b&gt;LLM gateway&lt;/b&gt;&lt;br/&gt;단일 엔드포인트로 수렴&lt;br/&gt;&lt;i&gt;Part 3 apps gateway&lt;/i&gt;"]
+
+    CL --&gt;|AWS| AW{"최신 기능 속도와&lt;br/&gt;AWS 과금 중 무엇이 우선인가?"}
+    CL --&gt;|GCP| V["&lt;b&gt;Google Vertex AI&lt;/b&gt;&lt;br/&gt;GCP IAM · 조직 정책 상속"]
+    CL --&gt;|Azure| F["&lt;b&gt;Microsoft Foundry&lt;/b&gt;&lt;br/&gt;Entra ID · Azure Policy 상속"]
+
+    AW --&gt;|"AWS 컴플라이언스·리전 통제 우선"| B["&lt;b&gt;Amazon Bedrock&lt;/b&gt;&lt;br/&gt;IAM · SSO · PrivateLink 그대로"]
+    AW --&gt;|"Anthropic 최신 기능 우선"| P["&lt;b&gt;Claude Platform on AWS&lt;/b&gt;&lt;br/&gt;엔드포인트는 Anthropic,&lt;br/&gt;인증·과금은 AWS"]
+
+    style S fill:#673ab7,stroke:#4527a0,stroke-width:3px,color:#fff
+    style CL fill:#fff3e0,stroke:#f57c00,color:#000
+    style AW fill:#fff3e0,stroke:#f57c00,color:#000
+    style T fill:#e8f5e9,stroke:#388e3c,color:#000
+    style C fill:#e3f2fd,stroke:#1976d2,color:#000
+    style G fill:#ede7f6,stroke:#673ab7,color:#000
+    style B fill:#fff8e1,stroke:#ffa000,color:#000
+    style V fill:#fff8e1,stroke:#ffa000,color:#000
+    style F fill:#fff8e1,stroke:#ffa000,color:#000
+    style P fill:#fff8e1,stroke:#ffa000,color:#000</code></pre>
+<p>교재가 권고하는 기본값은 <strong>좌석제(Teams/Enterprise)</strong> 입니다. 인프라를 하나도 세우지 않아도 되고 claude.ai와 관리가 통합된다는 게 이유인데, 실제로 이 선택지를 건너뛰는 조직은 대부분 "이미 클라우드 통제 체계가 있어서 그걸 상속하는 게 더 싸다"는 판단 때문입니다.</p>
+<p><strong>Claude Console</strong>은 사람이 앉아 쓰는 좌석보다 파이프라인이 호출량의 대부분을 차지하는 조직에 맞습니다. 종량 과금이라 좌석 수와 호출량이 비례하지 않는 형태에 유리합니다.</p>
+<p><strong>Bedrock · Vertex · Foundry</strong>는 셋 다 성격이 같습니다. 새 통제 체계를 만드는 대신 <strong>이미 있는 것을 상속</strong>합니다. AWS라면 IAM 정책·SCP·CloudTrail·PrivateLink가 그대로 적용되고, 청구서도 기존 AWS 계정에 합쳐집니다. 보안 심사 관점에서는 "새 SaaS 벤더 추가"가 아니라 "기존 AWS 서비스 하나 활성화"가 되기 때문에, 설득해야 할 상대와 논리가 완전히 달라집니다.</p>
+<p><strong>혼합(LLM gateway)</strong> 은 위 선택이 하나로 안 끝날 때입니다. 팀마다 다른 공급자를 쓰거나, 전 호출을 한 곳에서 로깅해야 하는 규제 요건이 있으면 게이트웨이로 엔드포인트를 하나로 모읍니다. 이건 <a href="../part-03-apps-gateway/">Part 3</a>에서 본격적으로 다룹니다.</p>
+<div class="admonition tip">
+<p class="admonition-title">현장 메모 — 결정표는 '무엇이 최선인가'가 아니라 '무엇을 이미 갖고 있는가' 표입니다</p>
+<p>이 표를 처음 보면 기능 비교표처럼 읽히지만, 실제 의사결정에서 성능이나 기능 차이가 결정타가 되는 경우는 거의 없습니다. 결정을 가르는 건 대부분 <strong>감사 증적을 어디에 쌓을 것인가</strong>와 <strong>조달 절차를 새로 탈 것인가</strong>입니다.
+그래서 이 결정은 개발팀이 아니라 보안·재무와 먼저 합의해야 뒤집히지 않습니다. 개발팀이 먼저 Console로 시작해두면 나중에 Bedrock으로 옮길 때 인증 코드가 아니라 <strong>조직 정책 문서를 다시 쓰는 일</strong>이 더 오래 걸립니다.</p>
+</div>
+<hr />
+<h2 id="2-인증-우선순위--관리자는-이걸-어떻게-강제하는가">2. 인증 우선순위 — 관리자는 이걸 어떻게 강제하는가<a class="headerlink" href="#2-인증-우선순위--관리자는-이걸-어떻게-강제하는가" title="이 위치로 링크">¶</a></h2>
+<p><a href="../../W1-Chapter1-Overview/part-04-authentication/">1주차 Part 4</a>에서 자세히 다룬 내용을 관리자 관점으로 한 번만 다시 짚겠습니다. 여러 자격증명이 동시에 존재하면 위에서부터 훑어 내려가다 <strong>먼저 발견되는 것이 이깁니다.</strong> 교재가 Chapter 3에서 다시 꺼내는 순서는 네 단계입니다.</p>
+<ul>
+<li><strong>1순위 — <code>CLAUDE_CODE_USE_BEDROCK</code> / <code>USE_VERTEX</code> / <code>USE_FOUNDRY</code> 강제 스위치</strong>: 공급자 자체를 못박습니다. 조직 표준을 강제하는 지점이 바로 여기입니다.</li>
+<li><strong>2순위 — <code>ANTHROPIC_API_KEY</code></strong>: 환경변수 정적 키. CI와 서버 자동화가 쓰는 경로이자, 개인 머신에 남아 있으면 사고를 내는 경로이기도 합니다.</li>
+<li><strong>3순위 — <code>apiKeyHelper</code></strong>: settings의 동적 키 헬퍼 스크립트. 볼트를 붙이는 지점입니다.</li>
+<li><strong>4순위 — OAuth 토큰</strong>: <code>setup-token</code> 장기 토큰과 claude.ai 로그인 세션.</li>
+</ul>
+<p>1주차에서 이 순서는 <strong>"내 결제가 왜 엉뚱하게 나가지"</strong> 를 푸는 도구였습니다. 관리자 입장에서 같은 순서는 정반대 방향으로 읽힙니다. <strong>강제 스위치가 최상위라는 사실이 곧 조직 표준을 강제할 수 있는 근거</strong>입니다. 개인이 <code>.zshrc</code>에 뭘 넣어뒀든, 조직이 셸 프로파일이나 managed settings로 1순위를 심어두면 공급자 선택은 개인이 뒤집을 수 없습니다.</p>
+<p>반대로 2순위가 걱정거리입니다. 개발자가 예전 프로젝트에서 받은 <code>ANTHROPIC_API_KEY</code>를 <code>.zshrc</code>에 남겨두면 그게 3·4순위를 전부 이깁니다. 조직이 Bedrock을 표준으로 정했더라도 <strong>1순위 스위치를 안 심었다면</strong> 그 개발자 한 명은 조용히 Console 종량으로 청구되고 있습니다. 감사에서 이런 게 뒤늦게 발견됩니다.</p>
+<p>그래서 관리자가 할 일은 두 가지로 압축됩니다. <strong>1순위를 조직이 소유할 것</strong>, 그리고 <strong>2순위(정적 키)를 애초에 조직 안에 존재하지 않게 만들 것.</strong> 이 파트의 나머지가 전부 두 번째 이야기입니다.</p>
+<div class="admonition note">
+<p class="admonition-title">이 네 단계는 전체 목록의 부분집합입니다</p>
+<p>공식문서(<code>authentication</code>)의 완전한 순서는 <strong>7단계</strong>입니다. 공급자 스위치(<code>CLAUDE_CODE_USE_BEDROCK</code>/<code>_VERTEX</code>/<code>_FOUNDRY</code>) → <code>ANTHROPIC_AUTH_TOKEN</code> → <code>ANTHROPIC_API_KEY</code> → <code>apiKeyHelper</code> → <code>CLAUDE_CODE_OAUTH_TOKEN</code>(setup-token) → <strong>Anthropic profile 또는 Workload Identity Federation 자격증명</strong> → <code>/login</code> 구독 OAuth 순입니다. 다섯 번째와 여섯 번째 사이에 이 문서가 다루는 네 단계가 들어가 있는 셈이고, <a href="../part-03-apps-gateway/">Part 3</a>에서 다룬 게이트웨이 세션은 이 7단계 리스트 <strong>전체보다도 위</strong>(공급자 선택 자체를 대체)에서 작동합니다. 이번 챕터가 압축한 4단계는 상대 순서가 공식 7단계와 어긋나지 않는 부분집합이라 관리자 관점 설명으로는 문제없지만, 완전한 목록이 필요하면 1주차 Part 4나 공식문서를 참고하세요.</p>
+</div>
+<hr />
+<h2 id="3-bedrock-설정-개요--조직-표준-환경-구성">3. Bedrock 설정 개요 — 조직 표준 환경 구성<a class="headerlink" href="#3-bedrock-설정-개요--조직-표준-환경-구성" title="이 위치로 링크">¶</a></h2>
+<p>Bedrock 경로 활성화 자체는 환경변수 두 줄입니다. 조직 배포에서는 이걸 개인이 각자 넣게 하는 대신 <strong>셸 프로파일에 심어 모든 세션에 자동 적용</strong>합니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># /etc/profile.d/claude.sh — 조직 표준 프로파일</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CLAUDE_CODE_USE_BEDROCK</span><span class="o">=</span><span class="m">1</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_REGION</span><span class="o">=</span>ap-northeast-2
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># 모델 alias는 리전 가용성에 맞춰 해석됨</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># 필요 시 인퍼런스 프로파일 ID로 고정</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># export ANTHROPIC_MODEL=apac.anthropic.claude-sonnet-4-5-20250929-v1:0</span>
+</span></code></pre></div>
+<p>여기서 세 가지가 각각 다른 문제를 담당합니다.</p>
+<ul>
+<li><strong><code>CLAUDE_CODE_USE_BEDROCK=1</code></strong> — 앞 절의 1순위 강제 스위치입니다. 이게 있으면 개인 환경에 뭐가 남아 있든 공급자는 Bedrock으로 고정됩니다.</li>
+<li><strong><code>AWS_REGION</code></strong> — 단순한 지역 설정이 아니라 <strong>모델 가용성과 지연을 동시에 결정</strong>합니다. 모델마다 제공 리전이 다르므로, 리전을 잘못 잡으면 "왜 이 모델만 안 되지"가 됩니다.</li>
+<li><strong><code>ANTHROPIC_MODEL</code>(선택)</strong> — alias 해석에 맡기지 않고 인퍼런스 프로파일 ID로 못박는 옵션입니다.</li>
+</ul>
+<p>세 번째는 주석 처리돼 있지만 <strong>조직 배포에서는 사실상 필수에 가깝습니다.</strong> 1주차에서 확인했듯 alias가 가리키는 실제 모델은 버전에 따라 바뀝니다. Claude Code 버전이 올라가면서 <code>opus</code> alias 해석이 바뀌어 단가가 높은 모델로 조용히 넘어간 전례가 있습니다. 40명이 쓰는 배포에서 이건 청구서에 바로 나타납니다. <strong>alias는 개인 실험용, 조직 배포는 프로파일 ID 고정</strong>으로 생각하는 편이 안전합니다.</p>
+<p>실제 사용은 AWS 표준 자격증명 체계를 그대로 탑니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$<span class="w"> </span>aws<span class="w"> </span>sso<span class="w"> </span>login<span class="w"> </span>--profile<span class="w"> </span>dev<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_PROFILE</span><span class="o">=</span>dev
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>$<span class="w"> </span>claude
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>&gt;<span class="w"> </span>/status<span class="w">        </span><span class="c1"># 활성 공급자가 Bedrock인지 확인</span>
+</span></code></pre></div>
+<p>마지막 <code>/status</code> 확인을 배포 절차에 넣어두세요. 강제 스위치가 제대로 먹었는지 개인이 스스로 확인할 수 있는 유일한 지점입니다.</p>
+<div class="admonition tip">
+<p class="admonition-title">현장 메모 — <code>/etc/profile.d</code>에 넣었는데 어떤 사람은 안 먹습니다</p>
+<p><code>/etc/profile.d/*.sh</code>는 <strong>로그인 셸</strong>에서만 읽힙니다. macOS 터미널 앱의 기본 설정이나 VS Code 통합 터미널, <code>zsh</code> 사용자의 <code>.zshrc</code> 경로에서는 그냥 건너뛰어집니다.
+조직 배포라면 셸 프로파일 하나에 의존하지 말고, <strong>managed settings의 <code>env</code> 블록</strong>(<a href="../part-01-deployment/">Part 1</a> 참고)으로 심는 쪽이 훨씬 확실합니다. 셸 종류·터미널 종류를 타지 않고, 개인이 덮어쓸 수도 없습니다. 셸 프로파일은 "대부분의 사람에게 편의로 깔아두는 것"이고, <strong>강제는 managed settings로</strong> 한다고 나누어 생각하세요.</p>
+</div>
+<hr />
+<h2 id="4-bedrock-iam-정책--최소-권한의-실제-모양">4. Bedrock IAM 정책 — 최소 권한의 실제 모양<a class="headerlink" href="#4-bedrock-iam-정책--최소-권한의-실제-모양" title="이 위치로 링크">¶</a></h2>
+<p>Bedrock 경로에서 접근 통제는 IAM 정책 하나로 수렴합니다. 교재가 제시하는 최소형은 호출 액션 두 개(<code>InvokeModel</code> 일반 호출, <code>InvokeModelWithResponseStream</code> 스트리밍 호출)를 <code>anthropic.*</code> 파운데이션 모델 리소스로 한정하는 형태입니다. 스트리밍 액션을 빠뜨리면 대화형 사용이 전부 막히므로 <strong>두 개는 세트</strong>로 생각해야 합니다.</p>
+<p>리소스 범위는 두 방향으로 더 조일 수 있습니다. ARN의 리전 와일드카드를 실제 승인된 리전으로 좁히면 데이터 처리 지역을 정책 수준에서 강제할 수 있고, 특정 모델만 막고 싶다면 Allow는 넓게 두고 별도 <code>Deny</code> 문을 얹는 조합이 관리하기 쉽습니다.</p>
+<p><img alt="Bedrock IAM 최소 권한 정책 슬라이드" src="../slides/slide-019.png" /></p>
+<p><em>▲ 교재 슬라이드 19 — Bedrock IAM 정책</em></p>
+<p>다만 이 최소형은 말 그대로 <strong>최소형</strong>입니다. 실무에서 거의 반드시 쓰게 되는 cross-region inference profile까지 감안하면 액션과 리소스를 더 넓혀야 하고, §직접 해보기에서 신규 계정에 실배포하며 겪은 함정 두 개(List 계열 액션의 Resource 분리, Marketplace 구독 권한)까지 반영한 실제 권장 형태는 이렇습니다.</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="nt">&quot;Sid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ClaudeCodeInvoke&quot;</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">      </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="s2">&quot;bedrock:InvokeModel&quot;</span><span class="p">,</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">        </span><span class="s2">&quot;bedrock:InvokeModelWithResponseStream&quot;</span><span class="p">,</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">        </span><span class="s2">&quot;bedrock:GetInferenceProfile&quot;</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">      </span><span class="p">],</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">      </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">        </span><span class="s2">&quot;arn:aws:bedrock:*:*:inference-profile/*&quot;</span><span class="p">,</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">        </span><span class="s2">&quot;arn:aws:bedrock:*:*:application-inference-profile/*&quot;</span><span class="p">,</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">        </span><span class="s2">&quot;arn:aws:bedrock:*::foundation-model/anthropic.*&quot;</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">      </span><span class="p">]</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">      </span><span class="nt">&quot;Sid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ClaudeCodeList&quot;</span><span class="p">,</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">      </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">      </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;bedrock:ListFoundationModels&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;bedrock:ListInferenceProfiles&quot;</span><span class="p">],</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">      </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*&quot;</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">      </span><span class="nt">&quot;Sid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ClaudeCodeMarketplace&quot;</span><span class="p">,</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">      </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">      </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;aws-marketplace:ViewSubscriptions&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;aws-marketplace:Subscribe&quot;</span><span class="p">],</span>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">      </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">      </span><span class="nt">&quot;Condition&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;StringEquals&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;aws:CalledViaLast&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bedrock.amazonaws.com&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">  </span><span class="p">]</span>
+</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><code>foundation-model/*</code>만 허용한 정책으로는 inference profile 호출이 동작하지 않습니다. 교재 슬라이드의 리소스만 그대로 복사해서 cross-region 프로파일을 쓰면 여기서 막힙니다. <code>ListFoundationModels</code>/<code>ListInferenceProfiles</code>를 Invoke 계열과 같은 Statement에 넣고 리소스를 좁게 잡으면, 이 둘은 애초에 리소스 단위로 평가되는 액션이 아니라서 조용히 <code>AccessDeniedException</code>이 납니다 — §직접 해보기에서 실측으로 확인했습니다. <code>aws-marketplace:*</code> 문은 신규 계정이 특정 Anthropic 모델을 처음 호출할 때 필요한 자동 구독 권한입니다.</p>
+<div class="admonition tip">
+<p class="admonition-title">현장 메모 — <code>GetInferenceProfile</code> 누락은 '되긴 되는' 종류의 실수라 더 위험합니다</p>
+<p>1주차에서 확인했듯, 이 권한이 없어도 Claude Code는 다른 형태로 한 번 재시도해서 <strong>결과적으로는 성공합니다.</strong> 개인 개발 머신에서는 "좀 느린가?" 정도로 지나갑니다.
+관리자 관점에서는 계산이 달라집니다. 새 모델을 처음 만날 때마다 왕복이 한 번씩 더 붙는데, <strong>이게 40명 × 하루 수십 세션으로 곱해지면 지연 총량과 Bedrock API 호출량 모두에서 눈에 보이는 크기</strong>가 됩니다. 게다가 에러가 안 나니까 아무도 신고하지 않아서, 원인을 찾으려면 CloudTrail에서 실패 후 재시도 패턴을 직접 뒤져야 합니다.
+정책 범위가 좁게 잡히기 쉬운 <code>AWS_BEARER_TOKEN_BEDROCK</code> 기반 배포에서 특히 자주 걸립니다. <strong>배포 전에 정책 한 줄 넣는 비용이 사후 추적 비용보다 압도적으로 쌉니다.</strong></p>
+</div>
+<p>조직 차원에서는 IAM 정책 위에 SCP 가드레일을 얹어 계정 경계에서 한 번 더 막고, 비용 추적과 접근 통제를 단순화하려면 Claude Code 전용 AWS 계정을 파는 것도 공식 권장 사항입니다.</p>
+<hr />
+<h2 id="5-bedrock--identity-center-sso--키-없는-인증의-전체-흐름">5. Bedrock + Identity Center SSO — 키 없는 인증의 전체 흐름<a class="headerlink" href="#5-bedrock--identity-center-sso--키-없는-인증의-전체-흐름" title="이 위치로 링크">¶</a></h2>
+<p>앞 절까지가 "무엇을 허용할 것인가"라면, 이 절은 <strong>"그 권한을 사람에게 어떻게 전달할 것인가"</strong> 입니다. 그리고 이 설계의 핵심 주장은 하나입니다 — <strong>전달할 키 자체를 만들지 않습니다.</strong></p>
+<p>개발자가 하는 일은 브라우저 로그인 한 번뿐입니다. 그 뒤로 자격증명은 단기 토큰으로 자동 발급되고 자동 갱신됩니다. 개발자의 디스크 어디에도 장기 비밀이 남지 않고, <strong>퇴사자는 IdP에서 계정을 끊는 순간 접근 경로가 통째로 사라집니다.</strong> 회수할 키가 없으니 회수 절차도 필요 없습니다.</p>
+<p><img alt="Bedrock + Identity Center SSO 흐름 슬라이드" src="../slides/slide-020.png" /></p>
+<p><em>▲ 교재 슬라이드 20 — Bedrock + Identity Center SSO</em></p>
+<p>흐름은 네 단계로 나뉩니다.</p>
+<ul>
+<li><strong>1단계 IdP 로그인</strong> — <code>aws sso login</code>이 브라우저를 열고 사내 IdP에서 인증합니다. 사람이 개입하는 유일한 지점입니다.</li>
+<li><strong>2단계 권한 매핑</strong> — IdP의 그룹이 Identity Center의 Permission Set에 매핑되고, Permission Set이 앞 절의 IAM 정책을 담습니다. <strong>"누가 Claude Code를 쓸 수 있는가"가 결국 IdP 그룹 멤버십 하나로 환원됩니다.</strong></li>
+<li><strong>3단계 단기 자격증명</strong> — STS가 임시 토큰을 발급하고 만료 전 자동 갱신합니다.</li>
+<li><strong>4단계 Bedrock 호출</strong> — Claude Code는 특별한 일을 하지 않습니다. AWS SDK의 표준 자격증명 체인을 그대로 타고 <code>AWS_PROFILE</code>을 읽어 호출합니다.</li>
+</ul>
+<p>4단계에서 "Claude Code가 특별한 일을 하지 않는다"는 게 이 설계의 가장 좋은 점입니다. Claude Code 전용 인증 코드가 없다는 뜻이고, 곧 <strong>이미 검증된 AWS SSO 운영 절차를 그대로 재사용한다</strong>는 뜻입니다. 새로 만들 것도, 새로 감사받을 것도 없습니다.</p>
+<p><img alt="SSO 키 없는 인증 흐름" src="../diagrams/sso-keyless-flow.svg" /></p>
+<p><em>▲ 개발자 브라우저 로그인 → IdP → 단기 자격증명 발급 → Bedrock 호출, IdP 세션 종료 시 경로 소멸</em></p>
+<div class="admonition tip">
+<p class="admonition-title">현장 메모 — 온보딩·오프보딩 비용이 0이 되는 게 진짜 이득입니다</p>
+<p>정적 키 방식에서 신규 입사자에게 Claude Code를 열어주려면 키를 발급하고, 안전한 경로로 전달하고, 어디에 저장했는지 관리하고, 대장에 기록해야 합니다. 퇴사할 땐 그걸 역순으로 밟아야 하고요.
+SSO 방식에서는 <strong>입사자를 기존 IdP 그룹에 넣는 것으로 끝나고, 퇴사자는 그룹에서 빠지는 것으로 끝납니다.</strong> 그리고 그 그룹 관리는 이미 다른 수십 개 시스템 때문에 돌아가고 있습니다. Claude Code를 위해 새로 만드는 절차가 문자 그대로 하나도 없습니다.
+감사 대응도 마찬가지입니다. CloudTrail의 <code>userIdentity</code>에 Permission Set과 IdP 사용자가 그대로 찍히므로 <strong>"이 호출을 누가 했는가"에 별도 증적 체계 없이 답할 수 있습니다.</strong> 정적 키에서는 이 질문이 답이 안 나옵니다.</p>
+</div>
+<hr />
+<h2 id="6-claude-platform-on-aws--네-번째-경로">6. Claude Platform on AWS — 네 번째 경로<a class="headerlink" href="#6-claude-platform-on-aws--네-번째-경로" title="이 위치로 링크">¶</a></h2>
+<p>교재는 여기서 2026년에 추가된 네 번째 경로를 소개합니다. 이름은 <strong>Claude Platform on AWS</strong>이고, 구조를 한 문장으로 말하면 <strong>엔드포인트는 Anthropic이 운영하고 인증과 과금만 AWS를 쓰는 형태</strong>입니다.</p>
+<p>기존 세 경로와 나란히 놓으면 위치가 분명해집니다. Bedrock은 모델 서빙까지 AWS가 하고, Console은 인증·과금·서빙이 전부 Anthropic입니다. 이 네 번째 경로는 그 사이를 가릅니다 — 호출은 Anthropic이 운영하는 API로 나가되, 접근 통제는 IAM 역할 기반이고 청구는 AWS Marketplace를 통해 AWS 청구서로 합쳐집니다.</p>
+<p><img alt="Claude Platform on AWS 슬라이드" src="../slides/slide-023.png" /></p>
+<p><em>▲ 교재 슬라이드 23 — Claude Platform on AWS</em></p>
+<p>이 경로가 답이 되는 상황은 꽤 구체적입니다. <strong>Anthropic이 새 기능을 내면 곧바로 쓰고 싶은데, 조달·과금은 AWS 밖으로 나갈 수 없는 조직</strong>입니다. Bedrock은 AWS를 거치는 만큼 새 모델·새 기능이 도달하는 데 시차가 생기는데, 그 시차가 실제로 문제가 되는 팀이 있습니다. 그렇다고 Console로 가자니 새 벤더 계약과 별도 청구서가 조달 절차를 다시 타야 하고요. 이 경로는 그 두 요구를 한 번에 처리합니다.</p>
+<p>정적 키가 필요 없다는 점은 Bedrock과 같습니다. 역할 기반 접근이므로 앞 절의 SSO 설계가 그대로 얹힙니다.</p>
+<div class="admonition warning">
+<p class="admonition-title">비교적 최근에 추가된 경로입니다</p>
+<p>교재가 2026년 신설 경로로 소개하고 있는데, 공식문서에는 이 시기를 특정하는 표현이 없어 정확한 출시 시점은 확인하지 못했습니다. 다만 공식문서에 preview·beta 표기 없이 정식 기능으로 서술돼 있는 건 확인했습니다. 활성화는 <code>CLAUDE_CODE_USE_ANTHROPIC_AWS=1</code>과 필수 헤더인 <code>ANTHROPIC_AWS_WORKSPACE_ID</code> 두 값으로 하고, 다른 클라우드 스위치(Bedrock·Foundry)가 켜져 있으면 그쪽이 라우팅 우선순위를 가져갑니다 — 공식문서가 명시하는 건 이 두 경로뿐이라, 켜져 있다면 둘 다 꺼야 합니다. 지원 리전·모델 커버리지·Marketplace 조달 절차는 계속 바뀔 여지가 크니 <strong>실제 도입 검토라면 공식 문서의 현행 상태를 반드시 직접 확인</strong>하세요.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">현장 메모 — 데이터 경로가 다르다는 걸 보안 심사에서 반드시 짚습니다</p>
+<p>"AWS 인증"이라는 말 때문에 Bedrock과 같은 것으로 오해하기 쉬운데, <strong>추론 트래픽이 나가는 목적지가 다릅니다.</strong> Bedrock은 AWS 계정 경계 안에서, 뒤에 볼 PrivateLink를 쓰면 인터넷을 거치지 않고도 처리됩니다. 이 경로는 Anthropic이 운영하는 엔드포인트로 나갑니다.
+폐쇄망 요건이나 "데이터가 AWS 밖으로 나가지 않는다"는 조건이 걸린 조직이라면 <strong>인증 방식이 같다는 이유로 같은 심사 결과를 기대하면 안 됩니다.</strong> 심사에 올릴 때 인증 축과 데이터 경로 축을 분리해서 설명하세요.</p>
+</div>
+<hr />
+<h2 id="7-api-key-분배--왜-이-방식이-실패하는가">7. API Key 분배 — 왜 이 방식이 실패하는가<a class="headerlink" href="#7-api-key-분배--왜-이-방식이-실패하는가" title="이 위치로 링크">¶</a></h2>
+<p>지금까지 SSO를 길게 다룬 이유는, 그 대안인 "키 나눠주기"가 실무에서 거의 반드시 사고로 이어지기 때문입니다. 교재는 이걸 <strong>유출·이직·회전의 3중 부담</strong>이라고 정리합니다. 하나씩 뜯어보면 이렇습니다.</p>
+<ul>
+<li><strong>유출 경로가 너무 많습니다.</strong> 키가 사람 손에 있는 순간 커밋, 로그, 슬랙 DM, 스크린샷, 로컬 백업으로 새어 나갈 수 있습니다. 이건 개인의 부주의 문제가 아니라 <strong>경로 수의 문제</strong>여서 교육으로 0이 되지 않습니다.</li>
+<li><strong>퇴사 시 회수가 불가능합니다.</strong> 키는 복사되는 물건이라 "반납"이라는 개념이 없습니다. 정직하게 하려면 그 사람이 접근했을 가능성이 있는 키를 <strong>전수 회전</strong>해야 하고, 그건 곧 다른 사람 전부의 재배포입니다.</li>
+<li><strong>귀속이 안 됩니다.</strong> 한 팀이 같은 키를 공유하면 호출 로그로는 누가 했는지 알 수 없습니다. 비용 이상 징후가 떠도 범위를 좁힐 수가 없습니다.</li>
+<li><strong>감사 증적에 공백이 생깁니다.</strong> 위 세 개가 합쳐지면 "이 접근이 인가된 것이었음"을 증명할 방법이 없어집니다. 감사에서 가장 아픈 지점입니다.</li>
+</ul>
+<p>그래서 대안은 <strong>주체별로 다른 경로를 쓰는 것</strong>입니다. 사람에게는 SSO 단기 토큰, 기계에는 볼트와 헬퍼, CI에는 OIDC 페더레이션. 그리고 이 셋을 관철하려면 <strong>환경변수 하드코딩 전면 금지</strong>를 정책으로 못박아야 합니다. 예외를 하나 열어두면 그 경로로 전부 흘러갑니다.</p>
+<div class="admonition tip">
+<p class="admonition-title">현장 메모 — '일단 키로 시작하고 나중에 SSO로 옮기자'가 가장 비싼 선택입니다</p>
+<p>파일럿 단계에서 키 몇 개 발급해서 시작하는 게 당장은 빠릅니다. 문제는 <strong>그 키가 어디까지 퍼졌는지 아무도 모르는 상태로 규모가 커진다는 것</strong>입니다. 6개월 뒤 SSO로 전환할 때, 기존 키를 그냥 끄면 어디선가 조용히 돌던 스크립트가 죽습니다. 그래서 못 끕니다.
+실제로 이런 조직에서 "SSO 전환 완료"라고 보고된 뒤에도 예전 키가 살아서 청구되는 걸 보게 됩니다. <strong>파일럿이라도 인증 방식만은 최종 형태로 시작하세요.</strong> 파일럿에서 줄여야 할 건 인증 설계가 아니라 사용자 수입니다.</p>
+</div>
+<hr />
+<h2 id="8-apikeyhelper--그래도-키가-필요하다면-동적으로">8. apiKeyHelper — 그래도 키가 필요하다면 동적으로<a class="headerlink" href="#8-apikeyhelper--그래도-키가-필요하다면-동적으로" title="이 위치로 링크">¶</a></h2>
+<p>사람에게는 SSO로 끝나지만, 공유 서비스나 배치 잡처럼 <strong>브라우저 로그인을 할 사람이 없는 주체</strong>에는 여전히 키가 필요합니다. 이때 쓰는 게 <code>apiKeyHelper</code>입니다.</p>
+<p>핵심 발상은 <strong>키를 설정 파일에 적어두는 대신, 필요할 때 가져오는 스크립트를 적어두는 것</strong>입니다. settings에는 스크립트 경로만 있고, 실제 키는 Secrets Manager 같은 중앙 저장소에만 존재합니다.</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// ~/.claude/settings.json</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="p">{</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">&quot;apiKeyHelper&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/opt/claude/get-key.sh&quot;</span><span class="p">,</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">&quot;CLAUDE_CODE_API_KEY_HELPER_TTL_MS&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;300000&quot;</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>헬퍼 스크립트는 표준 출력으로 키를 뱉기만 하면 됩니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="ch">#!/bin/bash</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># /opt/claude/get-key.sh</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>aws<span class="w"> </span>secretsmanager<span class="w"> </span>get-secret-value<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span>--secret-id<span class="w"> </span>claude/team-api-key<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span>--query<span class="w"> </span>SecretString<span class="w"> </span>--output<span class="w"> </span>text
+</span></code></pre></div>
+<p>여기서 진짜 중요한 건 <code>CLAUDE_CODE_API_KEY_HELPER_TTL_MS</code>입니다. 이 값(예시는 5분)마다 헬퍼가 다시 호출되므로, <strong>볼트에서 키를 갈아 끼우면 최대 TTL 시간 안에 모든 클라이언트에 자동 반영됩니다.</strong> 회전할 때 아무에게도 연락할 필요가 없다는 뜻이고, 이게 다음 절 회전 절차의 전제가 됩니다.</p>
+<div class="admonition tip">
+<p class="admonition-title">현장 메모 — 헬퍼 스크립트 자체가 새로운 공격면입니다</p>
+<p><code>apiKeyHelper</code>는 Claude Code가 <strong>주기적으로 실행하는 임의의 셸 스크립트</strong>입니다. 이 파일에 쓰기 권한이 있는 사람은 사실상 그 자격증명으로 무엇이든 할 수 있습니다.
+그러니 <code>/opt/claude/get-key.sh</code>는 <strong>root 소유 · <code>0755</code>(그룹·기타 쓰기 금지)</strong> 로 배포하고, 개인이 <code>~/.claude/settings.json</code>에서 헬퍼 경로를 자기 스크립트로 바꿔치기하지 못하도록 <strong>managed settings에서 지정</strong>하세요. 사용자 레벨 설정에 맡기면 통제가 아니라 권고가 됩니다.
+그리고 헬퍼가 실패했을 때 키가 아니라 <strong>에러 메시지를 표준 출력으로 뱉지 않게</strong> 하세요. 실패 문자열이 키로 취급돼서 인증 실패 원인이 한참 안 보이는 경우가 있습니다.</p>
+</div>
+<hr />
+<h2 id="9-자격증명-회전--무사고로-만드는-절차">9. 자격증명 회전 — 무사고로 만드는 절차<a class="headerlink" href="#9-자격증명-회전--무사고로-만드는-절차" title="이 위치로 링크">¶</a></h2>
+<p>헬퍼 기반 키는 정기적으로 회전해야 합니다. 회전에서 사고가 나는 이유는 거의 항상 하나 — <strong>구 키를 너무 빨리 끄기 때문</strong>입니다. 그래서 절차의 핵심은 "겹치는 구간을 의도적으로 만드는 것"입니다.</p>
+<ul>
+<li><strong>1단계 이중화</strong> — 신 키를 발급해 볼트에 <strong>구 키와 나란히</strong> 저장합니다. 아직 아무것도 전환하지 않습니다.</li>
+<li><strong>2단계 전환</strong> — 볼트의 포인터만 신 키로 스위치합니다. 이 시점부터 새로 헬퍼를 호출하는 클라이언트는 신 키를 받습니다.</li>
+<li><strong>3단계 관찰</strong> — <strong>TTL이 충분히 경과할 때까지 기다린 뒤</strong> 구 키의 호출 수가 0인지 확인합니다. 이 단계를 건너뛰는 게 사고의 원인입니다.</li>
+<li><strong>4단계 폐기</strong> — 구 키를 비활성화하고 감사 기록을 남깁니다.</li>
+</ul>
+<p>3단계의 "충분히"가 얼마인지는 TTL이 정해줍니다. TTL이 5분이면 모든 클라이언트는 늦어도 5분 안에 신 키로 넘어가므로, 그 이후에도 구 키 호출이 남아 있다면 <strong>헬퍼를 안 쓰는 경로가 어딘가 있다는 신호</strong>입니다. 회전 절차가 그 자체로 하드코딩 탐지기 역할을 하는 셈입니다.</p>
+<p>권장 주기는 분기 단위이고, <strong>SSO 경로는 이 절차 자체가 필요 없습니다.</strong> 회전할 장기 자격증명이 존재하지 않기 때문입니다. 앞에서 "사람에게는 SSO"를 강조한 이유가 여기서 한 번 더 드러납니다 — SSO를 표준으로 삼으면 회전이라는 운영 부담이 <strong>줄어드는 게 아니라 사라집니다.</strong></p>
+<hr />
+<h2 id="10-privatelink와-vpc-endpoint--추론-트래픽의-프라이빗-경로">10. PrivateLink와 VPC Endpoint — 추론 트래픽의 프라이빗 경로<a class="headerlink" href="#10-privatelink와-vpc-endpoint--추론-트래픽의-프라이빗-경로" title="이 위치로 링크">¶</a></h2>
+<p>지금까지가 "누가 호출할 수 있는가"였다면, 마지막은 <strong>"그 호출이 어디로 흐르는가"</strong> 입니다. 폐쇄망 요건이 있는 조직에서는 인증만큼이나 경로가 중요합니다.</p>
+<p>답은 AWS의 표준 답안 그대로입니다. <code>bedrock-runtime</code> 인터페이스 엔드포인트를 VPC에 만들면 Bedrock 호출이 인터넷 게이트웨이를 거치지 않고 AWS 백본 안에서 처리됩니다. 여기에 Private DNS를 활성화하면 <code>bedrock-runtime.&lt;region&gt;.amazonaws.com</code>이 VPC 내부 사설 IP로 해석되므로, <strong>Claude Code나 SDK 설정은 한 줄도 바꾸지 않아도 됩니다.</strong></p>
+<p>엔드포인트를 두면 통제 계층이 하나 더 생기는 것도 이득입니다. 엔드포인트 정책으로 이 VPC에서 호출 가능한 모델과 주체를 제한할 수 있고, VPC Flow Logs로 트래픽이 실제로 프라이빗 경로를 탔다는 증적을 남길 수 있습니다. 감사에서 "인터넷으로 안 나간다"를 말이 아니라 로그로 증명하게 됩니다.</p>
+<p><img alt="PrivateLink와 VPC Endpoint 슬라이드" src="../slides/slide-027.png" /></p>
+<p><em>▲ 교재 슬라이드 27 — PrivateLink와 VPC Endpoint</em></p>
+<div class="admonition tip">
+<p class="admonition-title">현장 메모 — PrivateLink에서 막히는 곳은 거의 항상 DNS입니다</p>
+<p>엔드포인트를 만들었는데도 트래픽이 계속 인터넷으로 나간다면 순서대로 이걸 보세요.
+- <strong>Private DNS 활성화 여부</strong> — 이걸 끄고 만들면 엔드포인트별 DNS 이름으로 직접 호출해야 합니다. SDK는 표준 이름을 쓰므로 그대로 인터넷으로 나갑니다. 가장 흔한 원인입니다.
+- <strong>VPC의 <code>enableDnsSupport</code> / <code>enableDnsHostnames</code></strong> — 둘 다 켜져 있어야 Private DNS가 동작합니다. 오래된 VPC나 IaC 템플릿에서 빠져 있는 경우가 있습니다.
+- <strong>온프레미스에서 오는 트래픽</strong> — Direct Connect나 VPN 너머의 사내 DNS는 VPC 리졸버를 안 봅니다. Route 53 Resolver 인바운드 엔드포인트를 따로 태워야 사내에서도 사설 IP로 해석됩니다. 이걸 놓쳐서 "개발자 노트북에서만 되고 사내 빌드 서버에서는 인터넷으로 나가는" 상태가 자주 생깁니다.</p>
+<p>엔드포인트 정책에도 함정이 있습니다. 기본 정책은 전체 허용이라 만들어두고 안 건드리면 통제 효과가 없고, 반대로 조이다가 앞서 본 <code>GetInferenceProfile</code> 같은 부수 액션을 빼먹으면 <strong>에러 없이 느려지는</strong> 그 증상이 여기서 다시 나타납니다. 다만 이때 빠뜨리기 쉬운 게 하나 더 있습니다 — <code>GetInferenceProfile</code>/<code>ListInferenceProfiles</code>는 데이터플레인이 아니라 <strong><code>bedrock</code> 컨트롤플레인 API</strong>에 속하므로, <code>bedrock-runtime</code> 엔드포인트 정책에 아무리 넣어봐야 그 경로로는 흐르지 않습니다. 완전 폐쇄망에서 프로파일 디스커버리까지 살리려면 <code>com.amazonaws.&lt;region&gt;.bedrock</code>(컨트롤플레인용) 엔드포인트를 <code>bedrock-runtime</code>과 <strong>별도로</strong> 하나 더 만들어야 합니다. IAM 정책과 두 엔드포인트 정책의 액션 목록은 같이 관리하세요.</p>
+</div>
+<hr />
+<h2 id="11-자격증명-의사결정--주체별-표준-경로">11. 자격증명 의사결정 — 주체별 표준 경로<a class="headerlink" href="#11-자격증명-의사결정--주체별-표준-경로" title="이 위치로 링크">¶</a></h2>
+<p>지금까지 다룬 걸 "누가 호출하는가"로 정리하면 표준 경로가 다섯 갈래로 확정됩니다.</p>
+<ul>
+<li><strong>개발자(일상 사용)</strong> — Bedrock + Identity Center SSO. 목표는 <strong>정적 키 0개</strong>입니다. 예외 없이 이 경로 하나로 갑니다.</li>
+<li><strong>CI 파이프라인</strong> — OIDC 역할 인수가 1순위입니다. GitHub Actions 등이 IdP 역할을 하고 AWS 역할을 인수하므로 장기 시크릿이 필요 없습니다. 그게 불가능한 환경에서만 <code>setup-token</code>을 쓰되 <strong>최소 범위·최소 수량</strong>으로 제한합니다.</li>
+<li><strong>공유 서비스</strong> — Secrets Manager + <code>apiKeyHelper</code>. TTL 기반 자동 회전이 붙습니다.</li>
+<li><strong>폐쇄망</strong> — PrivateLink + SSO. 경로 통제와 인증을 한 번에 해결합니다.</li>
+<li><strong>예외 승인</strong> — 위 넷에 안 들어가는 건 전부 예외입니다. <strong>기간 한정, 사유 기록, 자동 만료</strong>를 세트로 걸고 감사 대장에 남깁니다.</li>
+</ul>
+<p>마지막 항목이 실무에서 제일 중요합니다. 예외를 아예 없앨 수는 없는데, <strong>만료 없는 예외는 예외가 아니라 두 번째 표준이 됩니다.</strong> 자동 만료를 기술적으로 강제해두지 않으면 6개월 뒤에는 아무도 그 예외가 왜 열렸는지 모르는 상태가 됩니다. 예외를 승인할 때 만료일을 함께 시스템에 박아 넣으세요.</p>
+<hr />
+<h2 id="직접-해보기">직접 해보기<a class="headerlink" href="#직접-해보기" title="이 위치로 링크">¶</a></h2>
+<p>Bedrock + IAM Identity Center SSO 패턴을 개인 AWS 계정에 실제로 구성했습니다. 실행 환경은 macOS 26.5.1, 2026-08-16, AWS CLI 2.36.24 기준입니다.</p>
+<h3 id="iam-identity-center-활성화부터-permission-set까지">IAM Identity Center 활성화부터 Permission Set까지<a class="headerlink" href="#iam-identity-center-활성화부터-permission-set까지" title="이 위치로 링크">¶</a></h3>
+<p>IAM Identity Center를 켜는 화면에서 <strong>인스턴스가 생성될 리전은 "사용자 지정 인스턴스" 안에서 고르는 게 아니라, Enable을 누르기 전 콘솔 우측 상단에서 선택한 리전이 그대로 홈 리전이 됩니다.</strong> 유럽(스톡홀름)을 보고 있는 채로 활성화를 누르면 스톡홀름에 생성되고, 활성화 화면 안의 "사용자 지정 인스턴스" 옵션은 KMS 키·다중 계정 권한·복제 리전만 커스터마이징할 뿐 홈 리전 선택지는 없습니다. us-east-1으로 만들려면 <strong>콘솔 리전 선택기를 먼저 바꾸고 나서</strong> Enable을 눌러야 합니다.</p>
+<p>또 하나 걸리는 지점 — <strong>"다중 계정 권한"(Multi-account permissions)을 꺼두면 Permission Sets 메뉴 자체가 왼쪽 네비게이션에서 사라집니다.</strong> 계정이 하나뿐이라 안 켜도 될 것 같지만, IAM Identity Center가 "어느 계정에 어떤 역할로 접근시킬지"를 Permission Set으로 관리하는 구조라 이 기능은 계정 수와 무관하게 켜져 있어야 합니다.</p>
+<p>사용자(<code>choojinju_test</code>)를 만들고 Permission Set(<code>ClaudeCodeWorkshop</code>)에 인라인 정책을 넣어 계정에 할당했습니다. 처음 넣은 정책은 랩 원문 그대로였습니다.</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">&quot;Sid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ClaudeCodeInvoke&quot;</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">      </span><span class="s2">&quot;bedrock:InvokeModel&quot;</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">      </span><span class="s2">&quot;bedrock:InvokeModelWithResponseStream&quot;</span><span class="p">,</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">      </span><span class="s2">&quot;bedrock:ListFoundationModels&quot;</span><span class="p">,</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">      </span><span class="s2">&quot;bedrock:ListInferenceProfiles&quot;</span><span class="p">,</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">      </span><span class="s2">&quot;bedrock:GetInferenceProfile&quot;</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span><span class="p">],</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">    </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">      </span><span class="s2">&quot;arn:aws:bedrock:*::foundation-model/anthropic.*&quot;</span><span class="p">,</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">      </span><span class="s2">&quot;arn:aws:bedrock:*:*:inference-profile/*&quot;</span><span class="p">,</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">      </span><span class="s2">&quot;arn:aws:bedrock:*:*:application-inference-profile/*&quot;</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">    </span><span class="p">]</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">  </span><span class="p">}]</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>이걸로 <code>aws bedrock list-foundation-models</code>를 호출하면 막힙니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>AccessDeniedException: User: arn:aws:sts::&lt;account&gt;:assumed-role/AWSReservedSSO_ClaudeCodeWorkshop_.../choojinju_test
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>is not authorized to perform: bedrock:ListFoundationModels because no identity-based policy allows the action
+</span></code></pre></div>
+<p><strong><code>ListFoundationModels</code>와 <code>ListInferenceProfiles</code>는 특정 모델·프로파일 ARN으로 범위를 좁힐 수 있는 액션이 아닙니다.</strong> IAM 문서(list/describe 계열)는 대개 리소스 단위가 아니라 계정·리전 단위로 평가되므로, 이 두 액션에 한해서는 <code>Resource</code>를 특정 ARN 패턴이 아니라 <code>"*"</code>로 따로 분리해야 합니다. Invoke 계열(리소스 단위로 평가되는 액션)과 List 계열(계정 단위로 평가되는 액션)을 한 Statement에 섞고 리소스를 좁게 잡으면, List 쪽만 조용히 막힙니다.</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">      </span><span class="nt">&quot;Sid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ClaudeCodeInvoke&quot;</span><span class="p">,</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">      </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">      </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">        </span><span class="s2">&quot;bedrock:InvokeModel&quot;</span><span class="p">,</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">        </span><span class="s2">&quot;bedrock:InvokeModelWithResponseStream&quot;</span><span class="p">,</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">        </span><span class="s2">&quot;bedrock:GetInferenceProfile&quot;</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">      </span><span class="p">],</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">      </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">        </span><span class="s2">&quot;arn:aws:bedrock:*::foundation-model/anthropic.*&quot;</span><span class="p">,</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">        </span><span class="s2">&quot;arn:aws:bedrock:*:*:inference-profile/*&quot;</span><span class="p">,</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">        </span><span class="s2">&quot;arn:aws:bedrock:*:*:application-inference-profile/*&quot;</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">      </span><span class="p">]</span>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">      </span><span class="nt">&quot;Sid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ClaudeCodeList&quot;</span><span class="p">,</span>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="w">      </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="w">      </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="w">        </span><span class="s2">&quot;bedrock:ListFoundationModels&quot;</span><span class="p">,</span>
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="w">        </span><span class="s2">&quot;bedrock:ListInferenceProfiles&quot;</span>
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="w">      </span><span class="p">],</span>
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="w">      </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*&quot;</span>
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="w">  </span><span class="p">]</span>
+</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>이렇게 두 Statement로 나누자 <code>ListFoundationModels</code>가 바로 통과했습니다.</p>
+<h3 id="sso-로그인과-자격증명">SSO 로그인과 자격증명<a class="headerlink" href="#sso-로그인과-자격증명" title="이 위치로 링크">¶</a></h3>
+<p>SSO 프로파일은 <code>sso-session</code> 블록과 <code>profile</code> 블록 두 부분으로 나뉩니다. 앞쪽이 "어느 IdP로 로그인할 것인가"를, 뒤쪽이 "그 로그인으로 어느 계정의 어느 역할을 쓸 것인가"를 담습니다.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_CONFIG_FILE</span><span class="o">=</span>~/claude-lab/ch3/aws-config
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="gp">$ </span>cat<span class="w"> </span>&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$AWS_CONFIG_FILE</span><span class="s2">&quot;</span><span class="w"> </span>&lt;&lt;<span class="w"> </span><span class="s1">&#39;EOF&#39;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="go">[sso-session corp]</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="go">sso_start_url = https://d-xxxxxxxxxx.awsapps.com/start</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="go">sso_region = us-east-1</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="go">sso_registration_scopes = sso:account:access</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="go">[profile claude-workshop]</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="go">sso_session = corp</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="go">sso_account_id = 111122223333</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="go">sso_role_name = ClaudeCodeWorkshop</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="go">region = us-east-1</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="go">EOF</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="gp">$ </span>aws<span class="w"> </span>sso<span class="w"> </span>login<span class="w"> </span>--profile<span class="w"> </span>claude-workshop
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="go">Attempting to open your default browser...</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="go">Successfully logged into Start URL: https://d-xxxxxxxxxx.awsapps.com/start</span>
+</span></code></pre></div>
+<p>브라우저 인증 한 번으로 끝났고, 로그인 직후 <code>aws sts get-caller-identity</code>로 실제 발급된 자격증명을 확인했습니다.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="gp">$ </span>aws<span class="w"> </span>sts<span class="w"> </span>get-caller-identity
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="go">{</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="go">    &quot;UserId&quot;: &quot;AROA...:choojinju_test&quot;,</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="go">    &quot;Account&quot;: &quot;111122223333&quot;,</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="go">    &quot;Arn&quot;: &quot;arn:aws:sts::111122223333:assumed-role/AWSReservedSSO_ClaudeCodeWorkshop_.../choojinju_test&quot;</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="go">}</span>
+</span></code></pre></div>
+<p><code>AWSReservedSSO_ClaudeCodeWorkshop_...</code>라는 임시 역할로 assume된 게 보입니다 — 어디에도 정적 액세스 키가 없고, 브라우저 로그인 한 번이 이 단기 자격증명 전체를 발급했습니다.</p>
+<h3 id="model-access-화면이-없어졌습니다--그리고-anthropic만-예외입니다">Model access 화면이 없어졌습니다 — 그리고 Anthropic만 예외입니다<a class="headerlink" href="#model-access-화면이-없어졌습니다--그리고-anthropic만-예외입니다" title="이 위치로 링크">¶</a></h3>
+<p>Bedrock 콘솔에서 "Model access" 메뉴로 들어가면 이제 이렇게 뜹니다.</p>
+<blockquote>
+<p><strong>Model access page has been retired.</strong> Serverless foundation models are now automatically enabled across all AWS commercial regions when first invoked in your account... Note that for Anthropic models, first-time users may need to submit use case details before they can access the model.</p>
+</blockquote>
+<p>즉 대부분의 공급자는 첫 호출 시 자동으로 활성화되지만, <strong>Anthropic만 별도로 계정당 1회 "use case details" 양식을 제출</strong>해야 합니다. <code>claude doctor</code>로는 이 문제가 뭔지 알 수 없고, <code>claude -p</code>도 뭉뚱그린 404만 돌려줍니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>The model us.anthropic.claude-sonnet-4-5-20250929-v1:0 is not available on your bedrock deployment.
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>Try --model to switch to us.anthropic.claude-sonnet-4-20250514-v1:0, or ask your admin to enable this model.
+</span></code></pre></div>
+<p><code>--model</code>로 다른 버전을 시도해도 같은 404가 반복됐습니다. 원인을 좁히려고 Claude Code를 거치지 않고 <code>aws bedrock-runtime invoke-model</code>을 직접 호출해봤더니 훨씬 구체적인 메시지가 나왔습니다.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="gp">$ </span>aws<span class="w"> </span>bedrock-runtime<span class="w"> </span>invoke-model<span class="w"> </span>--model-id<span class="w"> </span>us.anthropic.claude-sonnet-4-5-20250929-v1:0<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span>--body<span class="w"> </span>fileb:///tmp/bedrock-body.json<span class="w"> </span>--content-type<span class="w"> </span>application/json<span class="w"> </span>--accept<span class="w"> </span>application/json<span class="w"> </span>out.json
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="go">ResourceNotFoundException: Model use case details have not been submitted for this account.</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="go">Fill out the Anthropic use case details form before using the model. If you have already filled out</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="go">the form, try again in 15 minutes.</span>
+</span></code></pre></div>
+<p><code>aws bedrock list-inference-profiles</code>로 확인해보면 <code>us.anthropic.claude-sonnet-4-5-20250929-v1:0</code> 자체는 프로파일 목록에 이미 존재합니다 — <strong>모델이 없는 게 아니라 계정이 승인 안 된 상태</strong>라는 뜻입니다. 양식은 Bedrock 콘솔 → 플레이그라운드에서 Anthropic 모델을 하나 선택하면 그 자리에서 뜹니다(회사명·웹사이트·용도 설명 정도의 짧은 폼). 제출 후 최대 15분 정도 기다려야 합니다.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong><code>claude doctor</code>·<code>claude -p</code>의 에러 메시지만으로는 이 원인을 못 찾습니다</strong> — Claude Code가 감싸서 보여주는 404("not available on your bedrock deployment")는 <strong>모델 ID가 틀렸을 때·권한이 없을 때·use case 승인이 안 됐을 때를 구분하지 못합니다.</strong> 원인을 좁히려면 Claude Code를 우회해서 <code>aws bedrock-runtime invoke-model</code>을 직접 호출해 AWS 원본 예외(<code>ResourceNotFoundException</code>, <code>AccessDeniedException</code> 등)를 봐야 합니다.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">직접 해보고 알게 된 것 — 프로파일 구조 자체가 설계 의도를 드러냅니다</p>
+<p><code>sso-session</code>과 <code>profile</code>이 왜 분리돼 있는지가 파일을 직접 써보니 명확해졌습니다. <strong>로그인은 한 번, 프로파일은 여러 개</strong>를 전제한 구조입니다. <code>sso_session = corp</code> 한 줄을 공유하는 프로파일을 계정·역할별로 여러 개 만들어두면, 브라우저 인증은 한 번만 하고 <code>AWS_PROFILE</code>만 바꿔가며 여러 계정을 오갈 수 있습니다.
+조직 배포 관점에서 이건 꽤 실용적입니다. <strong>이 <code>aws-config</code> 파일 자체를 조직 표준으로 배포</strong>하면 개발자는 <code>aws sso login</code> 한 번과 <code>AWS_PROFILE</code> 지정만 하면 됩니다. <code>sso_account_id</code>나 <code>sso_role_name</code>을 각자 알아내서 채우게 하는 것보다 훨씬 실수가 적습니다. 그리고 이 파일에는 <strong>비밀이 하나도 없어서</strong> Git으로 배포해도 아무 문제가 없습니다 — 이게 정적 키 방식과 갈리는 지점입니다.</p>
+</div>
+<hr />
+<h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
+<p><strong>"Bedrock을 쓰면 IAM 정책의 <code>InvokeModel</code> 두 개만 있으면 된다"</strong> — 교재 슬라이드의 최소형은 맞지만 실무 최소형은 아닙니다. cross-region inference profile을 쓰는 순간 <code>ListInferenceProfiles</code>·<code>GetInferenceProfile</code>과 inference-profile 리소스 ARN이 필요합니다. 특히 <code>GetInferenceProfile</code>은 없어도 에러가 안 나고 재시도로 넘어가기 때문에 <strong>문제를 인지하기가 더 어렵습니다.</strong></p>
+<p><strong>"SSO도 결국 자격증명이니까 회전 절차가 필요하다"</strong> — SSO 경로에는 회전할 장기 자격증명이 없습니다. STS 단기 토큰은 만료가 기본 동작이지 운영 절차가 아닙니다. 9절의 회전 4단계는 <strong>헬퍼 기반 키에만 해당</strong>합니다.</p>
+<p><strong>"Claude Platform on AWS는 AWS 인증을 쓰니까 Bedrock과 같은 보안 등급이다"</strong> — 인증 축은 같지만 데이터 경로가 다릅니다. 추론 트래픽이 Anthropic이 운영하는 엔드포인트로 나가므로, PrivateLink로 인터넷을 거치지 않게 만드는 Bedrock과는 심사 결과가 달라질 수 있습니다.</p>
+<p><strong>"<code>apiKeyHelper</code>를 쓰면 정적 키를 안 쓰는 것이다"</strong> — 볼트에는 여전히 장기 키가 존재하고 회전 책임도 남아 있습니다. 없어진 건 <strong>키가 사람 손과 개인 디스크에 흩어지는 것</strong>이지 키 자체가 아닙니다. 그래서 사람에게는 헬퍼가 아니라 SSO를 씁니다.</p>
+<hr />
+<h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
+<p>조직의 공급자 선택은 기능 비교가 아니라 <strong>거버넌스 상속 문제</strong>입니다. AWS 통제 체계가 이미 돌아가는 조직이 Bedrock을 고르는 이유는 모델이 더 좋아서가 아니라, IAM·SCP·CloudTrail·PrivateLink를 하나도 새로 만들지 않아도 되기 때문입니다. 이 결정은 개발팀보다 보안·재무와 먼저 합의해야 나중에 뒤집히지 않습니다.</p>
+<p>인증 우선순위에서 강제 스위치가 최상위라는 사실은 관리자에게 <strong>조직 표준을 강제할 수 있는 근거</strong>입니다. 다만 셸 프로파일에만 심어두면 셸 종류와 터미널에 따라 새어 나가므로, 진짜 강제는 managed settings로 해야 합니다. 동시에 2순위 <code>ANTHROPIC_API_KEY</code>가 조직 안에 존재하지 않도록 만드는 것이 나머지 절반의 일입니다.</p>
+<p>자격증명 설계의 결론은 주체별로 다른 경로를 쓰는 것입니다. <strong>사람에게는 SSO, 기계에는 볼트와 헬퍼, CI에는 OIDC.</strong> 정적 키가 없는 조직은 회전과 오프보딩 비용을 줄이는 게 아니라 <strong>구조적으로 없앱니다.</strong> 퇴사자 처리가 IdP 그룹에서 빼는 것으로 끝나고, 감사에서 "누가 호출했나"에 별도 증적 체계 없이 답할 수 있습니다.</p>
+<p>그래도 키가 필요한 기계·공유 서비스에는 <code>apiKeyHelper</code>와 TTL이 답입니다. TTL은 회전을 자동화할 뿐 아니라, 회전 후에도 구 키 호출이 남아 있는지를 통해 <strong>하드코딩된 경로를 찾아내는 탐지기</strong> 역할까지 합니다. 폐쇄망 요건은 PrivateLink로 경로를 닫고 엔드포인트 정책으로 통제 계층을 하나 더 얹되, 막히는 곳은 거의 항상 DNS라는 걸 기억하세요.</p>
+<p>다음 <a href="../part-03-apps-gateway/">Part 3</a>에서는 이 결정표의 마지막 갈래였던 <strong>혼합 — LLM gateway</strong> 경로를 자체 호스팅 SSO 게이트웨이로 구체화합니다. 그룹별 모델 라우팅, 지출 한도 Admin API, OTLP 텔레메트리가 그 위에 얹힙니다.</p>
+<hr />
+<h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
+<ul>
+<li>Claude Code Deep Dive Workshop — <em>Chapter 3 / Part 2: 공급자와 자격증명</em> (15p)</li>
+<li>공식 문서: <a href="https://code.claude.com/docs/ko/amazon-bedrock">Amazon Bedrock에서 Claude Code 사용</a></li>
+<li>공식 문서: <a href="https://code.claude.com/docs/ko/claude-platform-on-aws">Claude Platform on AWS</a></li>
+<li>공식 문서: <a href="https://code.claude.com/docs/ko/google-vertex-ai">Google Vertex AI에서 Claude Code 사용</a></li>
+<li>공식 문서: <a href="https://code.claude.com/docs/ko/microsoft-foundry">Microsoft Foundry에서 Claude Code 사용</a></li>
+<li>공식 문서: <a href="https://code.claude.com/docs/ko/third-party-integrations">기업 배포 개요</a></li>
+<li>공식 문서: <a href="https://code.claude.com/docs/ko/settings">설정 — apiKeyHelper</a></li>
+<li>1주차 <a href="../../W1-Chapter1-Overview/part-04-authentication/">Part 4 — 인증: 6가지 경로와 우선순위</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="../part-01-deployment/" class="md-footer__link md-footer__link--prev" aria-label="이전: 1. 배포 전략">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                1. 배포 전략
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../part-03-apps-gateway/" class="md-footer__link md-footer__link--next" aria-label="다음: 3. Claude apps gateway">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                다음
+              </span>
+              <div class="md-ellipsis">
+                3. Claude apps gateway
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      학습 목적의 개인 정리 노트입니다.
+    </div>
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://code.claude.com/docs/ko/overview" target="_blank" rel="noopener" title="Claude Code 공식 문서" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 2-5 4.5v11l5-4.5zM6.5 5C4.55 5 2.45 5.4 1 6.5v14.66c0 .25.25.5.5.5.1 0 .15-.07.25-.07 1.35-.65 3.3-1.09 4.75-1.09 1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.31 4.75 1.06.1.05.15.03.25.03.25 0 .5-.25.5-.5V6.5c-.6-.45-1.25-.75-2-1V19c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6.5C10.55 5.4 8.45 5 6.5 5"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.top", "navigation.footer", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

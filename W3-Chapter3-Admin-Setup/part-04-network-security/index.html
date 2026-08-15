@@ -1,0 +1,2280 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Claude Code Deep Dive Workshop 6주 학습 정리 — 처음 배우는 사람을 위한 한국어 가이드">
+      
+      
+      
+        <link rel="canonical" href="https://jinjuchoo.github.io/claude-code-study-docs/W3-Chapter3-Admin-Setup/part-04-network-security/">
+      
+      
+        <link rel="prev" href="../part-03-apps-gateway/">
+      
+      
+        <link rel="next" href="../part-05-governance/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Part 4 — 네트워크와 보안 - Claude Code 완전 정복</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pretendard:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Pretendard";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-4--네트워크와-보안" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="../.." title="Claude Code 완전 정복" class="md-header__button md-logo" aria-label="Claude Code 완전 정복" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12zm0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-7 14v-2h5v2zm-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Claude Code 완전 정복
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part 4 — 네트워크와 보안
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="시스템 설정 따르기"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="시스템 설정 따르기" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="deep-orange"  aria-label="다크 모드로"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="다크 모드로" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="deep-orange"  aria-label="라이트 모드로"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="라이트 모드로" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="공유" aria-label="공유" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Claude Code 완전 정복" class="md-nav__button md-logo" aria-label="Claude Code 완전 정복" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12zm0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-7 14v-2h5v2zm-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59z"/></svg>
+
+    </a>
+    Claude Code 완전 정복
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    시작하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../W1-Chapter1-Overview/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1주차 · Overview
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    1주차 · Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-01-what-is-claude-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Claude Code란 무엇인가
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-02-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. 아키텍처
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-03-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. 설치
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-04-authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. 인증
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-05-quick-start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. 퀵스타트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-06-core-capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. 핵심 도구
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-07-interfaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. 인터페이스
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-08-claude-md-and-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. CLAUDE.md와 메모리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-09-workflow-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. 워크플로 패턴 10선
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W1-Chapter1-Overview/part-10-recap-and-labs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. 정리와 실습 랩 (실제 수행 기록)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../W2-Chapter2-Agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2주차 · Agents
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    2주차 · Agents
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-01-subagent-concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Subagents 개념과 원리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-02-defining-subagents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Subagent 정의 방법
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-03-dispatch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Agent 도구와 디스패치
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-04-patterns-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. 패턴 1+2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-05-pattern-security-scanner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. 패턴 3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-06-patterns-docs-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. 패턴 4+5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../W2-Chapter2-Agents/part-07-recap-and-labs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Recap & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3주차 · Admin Setup
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    3주차 · Admin Setup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-01-deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. 배포 전략
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-02-providers-credentials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. 공급자와 자격증명
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-03-apps-gateway/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Claude apps gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. 네트워크와 보안
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. 네트워크와 보안
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#한-줄-요약" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        한 줄 요약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#왜-알아야-하나" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        왜 알아야 하나
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-전체-경로부터-그려-봅니다" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 전체 경로부터 그려 봅니다
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-필수-아웃바운드-도메인--방화벽-기준선" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 필수 아웃바운드 도메인 — 방화벽 기준선
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-사내-프록시-통과--표준-변수-세-개" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 사내 프록시 통과 — 표준 변수 세 개
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-인증-프록시--basic은-지원되지만-ntlmkerberos는-다른-답이-필요합니다" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 인증 프록시 — Basic은 지원되지만, NTLM·Kerberos는 다른 답이 필요합니다
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-사내-ca-인증서--tls-검사-장비-뒤에서" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 사내 CA 인증서 — TLS 검사 장비 뒤에서
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-sandbox-네트워크--권한-규칙이-못-막는-층을-os가-막는다" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. sandbox 네트워크 — 권한 규칙이 못 막는 층을 OS가 막는다
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-vpn과-ztna-위에서" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. VPN과 ZTNA 위에서
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-dlp-훅--나가는-내용을-검사하는-마지막-관문" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. DLP 훅 — 나가는 내용을 검사하는 마지막 관문
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-사내-mcp-서버-통합" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 사내 MCP 서버 통합
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-트러블슈팅--증상에서-원인으로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. 트러블슈팅 — 증상에서 원인으로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-롤아웃-전-체크리스트" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. 롤아웃 전 체크리스트
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#직접-해보기" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        직접 해보기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="직접 해보기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#훅-스크립트와-배포" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        훅 스크립트와 배포
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#대조군--비밀-없는-파일은-승인-프롬프트도-없이-통과" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        대조군 — 비밀 없는 파일은 승인 프롬프트도 없이 통과
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#실제-차단--aws-키가-섞인-파일은-훅이-막습니다" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        실제 차단 — AWS 키가 섞인 파일은 훅이 막습니다
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#흔한-오해-바로잡기" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        흔한 오해 바로잡기
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#정리" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        정리
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#출처" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        출처
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-05-governance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. 거버넌스와 정책
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-06-monitoring-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. 모니터링과 비용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-07-identity-compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. 신원, 데이터, 컴플라이언스
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part-08-troubleshooting-recap-labs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. 트러블슈팅, 정리와 실습 랩
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#한-줄-요약" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        한 줄 요약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#왜-알아야-하나" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        왜 알아야 하나
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-전체-경로부터-그려-봅니다" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 전체 경로부터 그려 봅니다
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-필수-아웃바운드-도메인--방화벽-기준선" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 필수 아웃바운드 도메인 — 방화벽 기준선
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-사내-프록시-통과--표준-변수-세-개" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 사내 프록시 통과 — 표준 변수 세 개
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-인증-프록시--basic은-지원되지만-ntlmkerberos는-다른-답이-필요합니다" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 인증 프록시 — Basic은 지원되지만, NTLM·Kerberos는 다른 답이 필요합니다
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-사내-ca-인증서--tls-검사-장비-뒤에서" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 사내 CA 인증서 — TLS 검사 장비 뒤에서
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-sandbox-네트워크--권한-규칙이-못-막는-층을-os가-막는다" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. sandbox 네트워크 — 권한 규칙이 못 막는 층을 OS가 막는다
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-vpn과-ztna-위에서" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. VPN과 ZTNA 위에서
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-dlp-훅--나가는-내용을-검사하는-마지막-관문" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. DLP 훅 — 나가는 내용을 검사하는 마지막 관문
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-사내-mcp-서버-통합" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 사내 MCP 서버 통합
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-트러블슈팅--증상에서-원인으로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. 트러블슈팅 — 증상에서 원인으로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-롤아웃-전-체크리스트" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. 롤아웃 전 체크리스트
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#직접-해보기" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        직접 해보기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="직접 해보기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#훅-스크립트와-배포" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        훅 스크립트와 배포
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#대조군--비밀-없는-파일은-승인-프롬프트도-없이-통과" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        대조군 — 비밀 없는 파일은 승인 프롬프트도 없이 통과
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#실제-차단--aws-키가-섞인-파일은-훅이-막습니다" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        실제 차단 — AWS 키가 섞인 파일은 훅이 막습니다
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#흔한-오해-바로잡기" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        흔한 오해 바로잡기
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#정리" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        정리
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#출처" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        출처
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="part-4--네트워크와-보안">Part 4 — 네트워크와 보안<a class="headerlink" href="#part-4--네트워크와-보안" title="이 위치로 링크">¶</a></h1>
+<hr />
+<h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
+<p>들어오는 길은 필수 도메인·프록시·사내 CA로 열고, 나가는 길은 sandbox 도메인 목록과 DLP 훅으로 좁힙니다. <strong>권한 규칙과 샌드박스는 서로 다른 계층이며, 권한 규칙이 못 막는 갭을 OS가 막습니다.</strong></p>
+<hr />
+<h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
+<p>앞의 세 파트에서 설치와 인증 경로를 정리했지만, 그건 전부 "패키지가 내려오고 토큰이 발급되는" 이야기였습니다. 실제 사내망에 배포하면 그다음에 벽이 나옵니다. 설치는 됐는데 첫 프롬프트에서 타임아웃이 나고, 프록시 변수를 넣었더니 이번엔 <code>SELF_SIGNED_CERT_IN_CHAIN</code>이 뜨고, 그걸 넘겼더니 스트리밍 응답이 중간에 끊깁니다. 각각 원인이 다른 층에 있는데 증상만 보면 전부 "Claude Code가 안 됩니다"로 보고됩니다.</p>
+<p>반대 방향도 있습니다. 사내망에서 도구가 나가는 길을 열어 주면, 그 길로 나가면 안 되는 것도 같이 나갈 수 있습니다. <code>WebFetch</code>를 deny 목록에 넣어 웹 접근을 막았다고 안심하는 조직이 많은데, 같은 세션에서 <code>Bash</code>가 허용돼 있으면 <code>curl</code>로 임의 URL에 붙을 수 있습니다. 권한 규칙은 <strong>도구 이름 단위</strong>로 판정하지, 그 도구가 안에서 무엇을 하는지는 보지 않습니다.</p>
+<p>이 파트는 그 두 방향을 다룹니다. 앞쪽 절반은 "어떻게 나가게 할 것인가"(도메인·프록시·CA), 뒤쪽 절반은 "무엇을 못 나가게 할 것인가"(sandbox 네트워크·DLP 훅)입니다.</p>
+<hr />
+<h2 id="1-전체-경로부터-그려-봅니다">1. 전체 경로부터 그려 봅니다<a class="headerlink" href="#1-전체-경로부터-그려-봅니다" title="이 위치로 링크">¶</a></h2>
+<p>층별로 들어가기 전에 요청 하나가 어디를 지나는지 먼저 봐 두면 뒤 내용이 훨씬 붙기 쉽습니다. 폐쇄망에서 Claude Code가 모델을 한 번 호출할 때, 요청은 최소 다섯 개의 통제 지점을 통과합니다. 중요한 건 <strong>이 통제 지점들이 서로 다른 주체의 관할</strong>이라는 점입니다 — 어떤 건 Claude Code 설정이, 어떤 건 OS가, 어떤 건 네트워크 팀이 소유합니다.</p>
+<pre class="mermaid"><code>flowchart TD
+    M["&lt;b&gt;모델 판단&lt;/b&gt;&lt;br/&gt;어떤 도구를 부를지 결정"]
+    PERM{"&lt;b&gt;권한 규칙&lt;/b&gt;&lt;br/&gt;allow / deny / ask&lt;br/&gt;&lt;i&gt;도구 이름 단위 판정&lt;/i&gt;"}
+    HOOK{"&lt;b&gt;PreToolUse 훅&lt;/b&gt;&lt;br/&gt;DLP 패턴 검사&lt;br/&gt;&lt;i&gt;도구 입력 내용 판정&lt;/i&gt;"}
+    TOOL["&lt;b&gt;도구 실행&lt;/b&gt;&lt;br/&gt;Bash · WebFetch · MCP"]
+    SB{"&lt;b&gt;sandbox.network&lt;/b&gt;&lt;br/&gt;allowedDomains&lt;br/&gt;&lt;i&gt;OS 레벨 아웃바운드 통제&lt;/i&gt;"}
+    PX["&lt;b&gt;사내 프록시&lt;/b&gt;&lt;br/&gt;HTTPS_PROXY · NO_PROXY&lt;br/&gt;인증은 로컬 중계로"]
+    TLS["&lt;b&gt;TLS 검사 장비&lt;/b&gt;&lt;br/&gt;사내 CA로 재서명&lt;br/&gt;NODE_EXTRA_CA_CERTS"]
+    FW{"&lt;b&gt;방화벽 화이트리스트&lt;/b&gt;&lt;br/&gt;필수 아웃바운드 도메인"}
+    PL["&lt;b&gt;PrivateLink / VPC 엔드포인트&lt;/b&gt;&lt;br/&gt;인터넷 경유 없는 내부 경로"]
+    BR["&lt;b&gt;Bedrock&lt;/b&gt;&lt;br/&gt;bedrock-runtime.리전.amazonaws.com"]
+    ANT["&lt;b&gt;api.anthropic.com&lt;/b&gt;&lt;br/&gt;Anthropic 직결"]
+    MCP["&lt;b&gt;사내 MCP · 게이트웨이&lt;/b&gt;&lt;br/&gt;NO_PROXY + allowedDomains 동시 등록"]
+    DENY["차단&lt;br/&gt;사유를 모델에 회신"]
+    DROP["차단&lt;br/&gt;curl · wget 우회도 여기서 막힘"]
+
+    M --&gt; PERM
+    PERM --&gt;|"deny"| DENY
+    PERM --&gt;|"allow"| HOOK
+    HOOK --&gt;|"exit 2"| DENY
+    HOOK --&gt;|"exit 0"| TOOL
+    TOOL --&gt; SB
+    SB --&gt;|"목록 밖 도메인"| DROP
+    SB --&gt;|"목록 안 도메인"| PX
+    PX --&gt; TLS
+    TLS --&gt; FW
+    FW --&gt; ANT
+    FW --&gt; PL
+    PL --&gt; BR
+    PX -.-&gt;|"NO_PROXY 예외"| MCP
+
+    style M fill:#ede7f6,stroke:#5e35b1,color:#000
+    style PERM fill:#fff3e0,stroke:#ef6c00,color:#000
+    style HOOK fill:#fff3e0,stroke:#ef6c00,color:#000
+    style TOOL fill:#f5f5f5,stroke:#616161,color:#000
+    style SB fill:#ffebee,stroke:#c62828,stroke-width:3px,color:#000
+    style PX fill:#e3f2fd,stroke:#1976d2,color:#000
+    style TLS fill:#e3f2fd,stroke:#1976d2,color:#000
+    style FW fill:#e3f2fd,stroke:#1976d2,color:#000
+    style PL fill:#e8f5e9,stroke:#388e3c,color:#000
+    style BR fill:#e8f5e9,stroke:#388e3c,color:#000
+    style ANT fill:#e8f5e9,stroke:#388e3c,color:#000
+    style MCP fill:#e8f5e9,stroke:#388e3c,color:#000
+    style DENY fill:#ffcdd2,stroke:#b71c1c,color:#000
+    style DROP fill:#ffcdd2,stroke:#b71c1c,color:#000</code></pre>
+<p>위에서부터 읽으면 통제의 성격이 단계마다 달라집니다.</p>
+<ul>
+<li>
+<p><strong>권한 규칙(주황)</strong> 은 Claude Code 안쪽의 판정입니다. "이 도구를 써도 되는가"를 이름으로 봅니다. 빠르고 설정이 쉽지만, 도구가 무엇을 하려는지는 모릅니다.</p>
+</li>
+<li>
+<p><strong>PreToolUse 훅(주황)</strong> 도 Claude Code 안쪽이지만, 판정 대상이 <strong>도구 입력의 내용</strong>입니다. 여기가 DLP가 사는 층입니다.</p>
+</li>
+<li>
+<p><strong>sandbox 네트워크(빨강)</strong> 는 OS가 강제합니다. Claude Code가 만든 프로세스든 그 프로세스가 띄운 <code>curl</code>이든 똑같이 적용됩니다. 이 파트의 핵심 통찰이 여기 있습니다.</p>
+</li>
+<li>
+<p><strong>프록시·TLS·방화벽(파랑)</strong> 은 네트워크 팀 관할입니다. Claude Code는 환경변수로 순응할 뿐 통제권이 없습니다.</p>
+</li>
+<li>
+<p><strong>PrivateLink 이후(초록)</strong> 는 목적지입니다. Bedrock 경로를 쓰면 상당 부분을 인터넷 밖으로 뺄 수 있습니다.</p>
+</li>
+</ul>
+<p>한 층에서 막힌 걸 다른 층 설정으로 고치려다 시간을 날리는 일이 흔합니다. 증상이 나오면 먼저 <strong>몇 번째 층인지</strong>를 특정하는 습관이 트러블슈팅 시간을 가장 크게 줄입니다.</p>
+<hr />
+<h2 id="2-필수-아웃바운드-도메인--방화벽-기준선">2. 필수 아웃바운드 도메인 — 방화벽 기준선<a class="headerlink" href="#2-필수-아웃바운드-도메인--방화벽-기준선" title="이 위치로 링크">¶</a></h2>
+<p>방화벽 요청서를 쓰려면 "무엇을, 왜, 안 열면 어떻게 되는지" 세 가지를 채워야 합니다. 교재 슬라이드는 이 목록을 여섯 갈래로 정리하는데, <strong>공식문서와 대조해보니 그사이 목록 자체가 꽤 바뀌어 있었습니다.</strong> 아래는 실제 공식문서(<code>network-config</code>) 기준으로 다시 정리한 목록입니다.</p>
+<p>추론 트래픽이 나가는 곳이 첫 번째입니다. Anthropic에 직결하는 구성이라면 <code>api.anthropic.com</code>이 유일한 필수 도메인입니다. Bedrock 경로로 운영하면 <strong>모델 트래픽 자체는 이 도메인으로 안 나갑니다</strong> — 요청이 <code>bedrock-runtime.&lt;리전&gt;.amazonaws.com</code>으로 나가고, 그마저도 VPC 엔드포인트(PrivateLink)로 대체하면 인터넷 구간을 타지 않습니다. 다만 "아예 필요 없다"까지는 아닙니다 — <code>WebFetch</code> 도구는 도메인 안전성 사전 점검을 위해 공급자 설정과 무관하게 여전히 <code>api.anthropic.com</code>을 호출합니다(<code>skipWebFetchPreflight: true</code>로 끄지 않는 한). Part 2에서 정리한 인증 경로 선택이 여기서 방화벽 요청서의 분량을 바꾸지만, <code>api.anthropic.com</code> 자체를 완전히 빼도 되는 건 WebFetch까지 막을 각오가 됐을 때뿐입니다.</p>
+<p>구독 계정으로 로그인하는 구성이라면 <code>claude.ai</code>가 추가되고, 여기에 <strong><code>claude.com</code>(로그인 리다이렉트)과 <code>platform.claude.com</code>도 함께 열어야 합니다.</strong> <code>platform.claude.com</code>을 빠뜨리기 쉬운데, 실제로는 OAuth 토큰 교환이 이 호스트를 거치기 때문에 <strong>구독 로그인 방식이어도 필수</strong>입니다. Teams·Enterprise 플랜의 서버 관리 설정을 내려받는 경로도 여기 물려 있어서, 이 셋 중 하나라도 막히면 로그인이나 관리 설정 수신이 조용히 죽습니다.</p>
+<p>설치와 갱신 자산은 <code>downloads.claude.ai</code>(네이티브 설치·자동 갱신·플러그인 실행 파일)에서 옵니다. npm 경로로 설치한다면 <code>registry.npmjs.org</code>가 별도로 필요하고, Homebrew로 설치한다면 <code>formulae.brew.sh</code>도 열어야 합니다. 사내 미러나 아티팩트 저장소를 운영한다면 이 도메인들 대신 미러를 열어 주는 쪽이 낫습니다.</p>
+<p>여기에 잘 알려지지 않은 도메인 몇 개가 더 필요합니다. <code>mcp-proxy.anthropic.com</code>(MCP 연결 중계), <code>storage.googleapis.com</code>(플러그인 마켓플레이스 메타데이터), <code>bridge.claudeusercontent.com</code>, <code>raw.githubusercontent.com</code>(릴리스 노트 조회), <code>code.claude.com</code>(세션 중 문서 조회 기능을 쓴다면). 기능 플래그와 원격 측정은 이제 별도 도메인이 아니라 <strong><code>api.anthropic.com</code>이 함께 처리</strong>하고, 운영 텔레메트리·오류 리포트만 Datadog 계열 호스트(<code>http-intake.logs.us5.datadoghq.com</code>, <code>browser-intake-us5-datadoghq.com</code>)로 따로 나갑니다 — 이 둘은 <code>DISABLE_TELEMETRY</code>나 <code>CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC</code>으로 끌 수 있습니다.</p>
+<p><img alt="필수 아웃바운드 도메인 슬라이드" src="../slides/slide-039.png" /></p>
+<p><em>▲ 교재 슬라이드 39 — 필수 아웃바운드 도메인</em></p>
+<blockquote>
+<p>🔴 <strong>교재 버전 드리프트 — 목록이 통째로 바뀌었습니다</strong> — 슬라이드가 든 statsig·sentry 계열 도메인은 현재 공식문서에 없습니다(기능 플래그·텔레메트리가 <code>api.anthropic.com</code>으로 흡수됨). 반대로 <code>platform.claude.com</code>, <code>claude.com</code>, <code>mcp-proxy.anthropic.com</code>, <code>storage.googleapis.com</code>, <code>raw.githubusercontent.com</code>처럼 슬라이드에 없는 필수 도메인이 여럿 새로 생겼습니다. <strong>이 목록은 릴리스마다 추가되는 경향이 있으니, 실제 방화벽 요청서를 쓸 때는 이 문서가 아니라 그 시점의 공식문서 <code>network-config</code> 페이지를 원본으로 삼으세요.</strong></p>
+</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">부분 개방이 가장 나쁜 상태입니다</p>
+<p>목록 중 몇 개만 열린 상태는 "완전 차단"보다 진단이 어렵습니다. 완전 차단은 첫 요청에서 바로 실패하지만, 부분 개방은 설치도 되고 로그인도 되는데 특정 동작에서만 이상하게 실패합니다. 롤아웃 초기에는 <strong>필수 도메인 목록을 통째로 열고 시작해서, 안정화된 뒤에 하나씩 좁히는</strong> 순서를 권합니다.</p>
+</div>
+<hr />
+<h2 id="3-사내-프록시-통과--표준-변수-세-개">3. 사내 프록시 통과 — 표준 변수 세 개<a class="headerlink" href="#3-사내-프록시-통과--표준-변수-세-개" title="이 위치로 링크">¶</a></h2>
+<p>Claude Code는 프록시를 위한 별도 설정 체계를 두지 않습니다. Node.js 생태계의 관행을 그대로 따르므로, 이미 사내에서 다른 CLI 도구에 쓰던 환경변수가 그대로 먹습니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://proxy.corp.example:8080
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">HTTP_PROXY</span><span class="o">=</span>http://proxy.corp.example:8080
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">NO_PROXY</span><span class="o">=</span>localhost,127.0.0.1,.corp.example
+</span></code></pre></div>
+<p>실질적으로 중요한 건 <code>HTTPS_PROXY</code>입니다. Claude Code의 트래픽은 사실상 전부 HTTPS이므로 <code>HTTP_PROXY</code>는 보조입니다. 그런데 실제로 사고가 나는 건 대개 세 번째 줄, <strong><code>NO_PROXY</code></strong> 입니다.</p>
+<p><code>NO_PROXY</code>는 "프록시를 거치지 않을 목적지" 목록입니다. 사내 MCP 서버, 사내 게이트웨이(Part 3에서 다룬 apps gateway 같은), 사내 아티팩트 저장소가 여기 빠져 있으면 내부 요청이 굳이 외부 프록시로 나갔다가 되돌아옵니다. 운이 좋으면 느려질 뿐이지만, 보통은 프록시가 내부 도메인을 해석하지 못해 실패합니다. 그래서 <strong><code>NO_PROXY</code>는 프록시 도입 시점이 아니라 사내 서비스를 추가할 때마다 갱신해야 하는 목록</strong>입니다.</p>
+<p>조직 배포는 개인이 셸 프로파일에 넣게 두지 말고 일괄 주입하는 편이 낫습니다. 리눅스라면 <code>/etc/profile.d/</code>에 스크립트를 하나 놓고, macOS·Windows 관리 단말이라면 MDM 프로파일로 환경변수를 밀어 넣습니다. 개인 <code>.zshrc</code>에 맡기면 신규 입사자 온보딩마다 같은 문제가 재발하고, 값이 바뀔 때 전수 갱신이 불가능합니다.</p>
+<p>동작 확인은 두 단계로 나눠서 합니다. 먼저 <code>claude</code>를 띄워 <code>/status</code>와 첫 응답이 정상인지 봅니다. 실패한다면 그때부터는 Claude Code를 붙들고 있지 말고 <code>curl</code>로 계층을 분리하세요.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-v<span class="w"> </span>https://api.anthropic.com/
+</span></code></pre></div>
+<p><code>-v</code> 출력에서 <strong>프록시 연결(<code>CONNECT</code> 응답)까지 갔는지</strong>, <strong>TLS 핸드셰이크에서 깨졌는지</strong>가 갈립니다. 앞에서 깨지면 프록시·방화벽 문제이고, 뒤에서 깨지면 다음 절의 CA 문제입니다. 이 한 줄이 트러블슈팅 시간의 절반을 아껴 줍니다.</p>
+<hr />
+<h2 id="4-인증-프록시--basic은-지원되지만-ntlmkerberos는-다른-답이-필요합니다">4. 인증 프록시 — Basic은 지원되지만, NTLM·Kerberos는 다른 답이 필요합니다<a class="headerlink" href="#4-인증-프록시--basic은-지원되지만-ntlmkerberos는-다른-답이-필요합니다" title="이 위치로 링크">¶</a></h2>
+<p>프록시가 자격증명을 요구하는 환경에서 인증 방식에 따라 답이 갈립니다. <strong>여기서 초안이 실제와 반대로 적혀 있던 부분이 있어 정정합니다.</strong></p>
+<p>Basic 인증 프록시는 공식문서가 URL 자격증명 방식을 실제로 지원합니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://username:password@proxy.corp.example:8080
+</span></code></pre></div>
+<p>다만 이 형태를 셸 프로파일이나 스크립트에 그대로 하드코딩하면 평문 비밀번호가 셸 히스토리·프로세스 목록·CI 로그로 흘러갈 위험이 있다고 공식문서도 경고합니다. 그래서 조직 배포에서는 이 값을 정적으로 박아 넣기보다, 비밀번호 관리자나 볼트에서 런타임에 읽어와 환경변수를 채우는 스크립트로 감싸는 편이 안전합니다.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>교재 버전 드리프트 — Basic 인증 URL 방식은 "하지 말아야 할 것"이 아니라 공식 지원 경로입니다</strong> — 이 챕터 초안은 URL에 자격증명을 넣는 걸 전면 금지 대상으로 적었는데, 공식문서를 대조해보니 Basic 인증은 이 방식 자체를 명시적으로 지원하고 있었습니다(하드코딩만 경고). "URL에 자격증명을 넣지 마세요"가 아니라 <strong>"하드코딩하지 말고 런타임에 주입하세요"</strong> 가 정확한 조언입니다.</p>
+</div>
+<p>NTLM이나 Kerberos처럼 협상 기반 인증을 요구하는 프록시는 애초에 URL 자격증명 방식으로 인증되지 않습니다. 이런 환경에서 공식문서가 권장하는 답은 로컬 중계 도구(Px, Cntlm 등)가 아니라 <strong><a href="../part-03-apps-gateway/">Part 3</a>에서 다룬 LLM Gateway(apps gateway 또는 호환 게이트웨이)를 앞단에 두는 것</strong>입니다. 게이트웨이가 상류 인증을 대행하면 Claude Code는 게이트웨이의 <code>BASE_URL</code>만 바라보면 되고, NTLM·Kerberos 협상은 게이트웨이와 프록시 사이의 문제로 옮겨갑니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_BASE_URL</span><span class="o">=</span>https://claude-gw.corp.example
+</span></code></pre></div>
+<p>구조적으로 이 편이 낫습니다. 로컬 중계 데몬을 단말마다 깔고 관리하는 비용, 비밀번호 만료 때마다 재발하는 문의, 중계가 죽었을 때의 진단 난이도가 전부 게이트웨이라는 한 지점으로 모입니다.</p>
+<div class="admonition tip">
+<p class="admonition-title">현장 메모</p>
+<p>NTLM·Kerberos 프록시 뒤에서 게이트웨이 도입 전까지 임시로 버텨야 한다면, 로컬 중계 자체가 틀린 접근은 아닙니다(공식문서가 명시적으로 권장하는 경로는 아니지만 흔히 쓰이는 임시방편입니다). 다만 그 경우에도 비밀번호 만료 주기를 놓치면 만료 다음 날 아침 "갑자기 아무 도구도 안 됩니다" 문의가 한꺼번에 들어오고, 심하면 잘못된 자격증명으로 반복 인증하다가 <strong>AD 계정이 잠기는</strong> 사고로 이어집니다. 임시방편으로 쓰더라도 비밀번호 변경 절차에 중계 도구의 자격증명 갱신 항목을 같이 넣어 두세요. 프록시 인증 실패는 HTTP <code>407</code>로 나타나므로, 이 코드가 보이면 도메인·방화벽 쪽을 뒤지지 말고 곧장 인증 계층부터 확인하면 됩니다.</p>
+</div>
+<hr />
+<h2 id="5-사내-ca-인증서--tls-검사-장비-뒤에서">5. 사내 CA 인증서 — TLS 검사 장비 뒤에서<a class="headerlink" href="#5-사내-ca-인증서--tls-검사-장비-뒤에서" title="이 위치로 링크">¶</a></h2>
+<p>TLS 검사(SSL inspection) 장비가 있는 사내망은 나가는 HTTPS 연결을 중간에서 풀었다가 <strong>사내 루트 CA로 다시 서명해서</strong> 클라이언트에 돌려줍니다. Claude Code는 <strong>기본적으로 번들 Mozilla CA와 OS 인증서 저장소를 동시에</strong> 신뢰하므로, 네이티브 설치(권장 경로)나 Node 22.15 이상에서의 npm 설치라면 사내 루트 CA를 OS 신뢰 저장소에 등록하는 것만으로 CrowdStrike Falcon·Zscaler 같은 검사 장비가 추가 설정 없이 그대로 동작합니다. 문제는 <strong>그보다 오래된 npm 설치(Node 22.15 미만)</strong> 에서만 남습니다 — 이 경우엔 Node가 OS 저장소를 안 보고 자체 번들만 신뢰해서, 브라우저에서는 멀쩡한 사이트가 Claude Code에서만 깨집니다.</p>
+<p>이 구버전 npm 설치 케이스에서 증상은 대체로 이렇게 나옵니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Error: self-signed certificate in certificate chain
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  code: &#39;SELF_SIGNED_CERT_IN_CHAIN&#39;
+</span></code></pre></div>
+<p><code>UNABLE_TO_VERIFY_LEAF_SIGNATURE</code>나 <code>unable to get local issuer certificate</code>로 나오기도 합니다. 문구가 달라도 원인은 하나 — <strong>사내 루트 CA가 Node의 신뢰 체인에 없다</strong>는 것입니다.</p>
+<p>해법은 환경변수 하나입니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">NODE_EXTRA_CA_CERTS</span><span class="o">=</span>/etc/ssl/corp/corp-root-ca.pem
+</span></code></pre></div>
+<p>여기서 세 가지를 같이 챙겨야 합니다.</p>
+<ul>
+<li>
+<p><strong>형식은 PEM 번들</strong> 이어야 합니다. <code>-----BEGIN CERTIFICATE-----</code> 블록이 이어진 텍스트 파일입니다. 사내에서 배포하는 CA가 DER(<code>.crt</code> 바이너리)이나 PKCS#12(<code>.pfx</code>)면 <code>openssl x509 -inform der -in corp.crt -out corp.pem</code>처럼 변환해서 넣어야 합니다.</p>
+</li>
+<li>
+<p><strong>OS 신뢰 저장소에도 병행 등록</strong>해야 합니다. <code>NODE_EXTRA_CA_CERTS</code>는 Node 프로세스에만 적용됩니다. 같은 세션에서 <code>curl</code>, <code>git</code>, <code>pip</code>가 도는데 이들은 OS 저장소를 보므로 별도 등록이 필요합니다. Debian 계열은 <code>/usr/local/share/ca-certificates/</code>에 넣고 <code>update-ca-certificates</code>, RHEL 계열은 <code>/etc/pki/ca-trust/source/anchors/</code>에 넣고 <code>update-ca-trust</code>를 돌립니다. 한쪽만 하면 "Claude Code는 되는데 그 안에서 부른 <code>curl</code>이 안 되는" 이상한 상태가 됩니다.</p>
+</li>
+<li>
+<p><strong>검증을 끄지 마세요.</strong> 검색하면 <code>NODE_TLS_REJECT_UNAUTHORIZED=0</code>이 제일 먼저 나오고 실제로 즉시 동작합니다. 하지만 이건 CA를 추가하는 게 아니라 <strong>TLS 검증 자체를 무력화</strong>하는 스위치입니다. 사내 검사 장비뿐 아니라 어떤 중간자도 통과시키게 됩니다. 급해서 한 번 켰다가 그대로 굳어 표준 설정이 되는 경우를 조심하세요.</p>
+</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">현장 메모</p>
+<p>사내 CA 배포에서 반복적으로 밟는 함정이 둘 있습니다. 첫째, <strong>중간 CA만 배포하고 루트를 빠뜨리는 경우.</strong> 체인이 끊겨 같은 오류가 그대로 납니다. 배포 전에 <code>openssl crl2pkcs7 -nocrl -certfile corp-root-ca.pem | openssl pkcs7 -print_certs -noout</code>으로 번들 안에 몇 장이 들어 있고 subject/issuer가 이어지는지 확인하는 게 좋습니다. 둘째, <strong>CA 갱신일을 아무도 모르는 경우.</strong> 사내 루트 CA도 만료됩니다. 만료 당일 전사 CLI 도구가 동시에 죽는 사고를 방지하려면 PEM 번들을 형상 관리(Ansible·MDM·이미지 빌드)에 올려 두고 만료 30일 전 알림을 걸어 두세요. 개인 단말에 손으로 복사해 둔 인증서는 갱신 시점에 전수 추적이 불가능합니다.</p>
+</div>
+<hr />
+<h2 id="6-sandbox-네트워크--권한-규칙이-못-막는-층을-os가-막는다">6. sandbox 네트워크 — 권한 규칙이 못 막는 층을 OS가 막는다<a class="headerlink" href="#6-sandbox-네트워크--권한-규칙이-못-막는-층을-os가-막는다" title="이 위치로 링크">¶</a></h2>
+<p>여기가 이 파트에서 가장 중요한 대목입니다.</p>
+<p>권한 규칙으로 <code>WebFetch</code>를 deny했다고 해 봅시다. 관리자 입장에서는 "이 세션은 웹에 못 나간다"고 정리하고 넘어가기 쉽습니다. 그런데 같은 세션에 <code>Bash</code>가 허용돼 있으면, 모델은 이렇게 할 수 있습니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>https://raw.githubusercontent.com/example/x/main/setup.sh
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>wget<span class="w"> </span>-qO-<span class="w"> </span>https://pastebin.example/aBc123
+</span></code></pre></div>
+<p><code>WebFetch</code>는 한 번도 호출되지 않았습니다. 권한 규칙 위반도 아닙니다. 그런데 실제로는 임의 URL에 접근했습니다. <strong>권한 규칙은 도구 이름을 보고 판정하지, 그 도구가 안에서 무엇을 하는지 보지 않기 때문</strong>입니다. <code>Bash</code>를 허용한 순간, <code>Bash</code>가 실행할 수 있는 모든 바이너리의 능력을 함께 허용한 셈입니다.</p>
+<p>이 갭을 정규식으로 쫓는 건 진 싸움입니다. <code>curl</code>을 막으면 <code>wget</code>이 있고, 둘 다 막으면 <code>nc</code>가 있고, <code>python3 -c "import urllib.request; ..."</code>가 있고, <code>/dev/tcp/host/port</code> 리다이렉션이 있습니다. 명령 문자열 검사로 네트워크 접근을 전부 봉쇄하는 건 현실적으로 불가능합니다.</p>
+<p>그래서 <strong>판정 계층을 통째로 옮깁니다.</strong> 명령 문자열이 아니라 <strong>프로세스의 아웃바운드 연결 자체</strong>를 OS 수준에서 통제하면, 어떤 바이너리가 어떤 방식으로 시도하든 목적지가 허용 목록 밖이면 나가지 못합니다. <code>curl</code>이든 <code>wget</code>이든 Node의 <code>fetch</code>든 구분할 필요가 없어집니다. 이게 sandbox 네트워크의 발상입니다.</p>
+<p>한 가지 짚고 갈 게 있습니다 — 기본 동작은 <strong>무프롬프트 차단이 아니라 승인 요청</strong>입니다. 미리 허용된 도메인이 하나도 없는 상태에서 새 도메인이 필요해지면, 처음엔 사용자에게 승인을 묻거나(<code>auto</code> 모드에서는 분류기에게 판정을 넘기고) 통과시킵니다. 관리자가 기대하는 "허용 목록 밖은 무조건 차단"을 만들려면 아래에서 볼 <code>strictAllowlist: true</code>(v2.1.219+, user/managed/<code>--settings</code> 소스만 인정)나 managed의 <code>allowManagedDomainsOnly</code>를 같이 걸어야 합니다.</p>
+<p><img alt="sandbox 네트워크 / curl 갭 봉쇄 슬라이드" src="../slides/slide-043.png" /></p>
+<p><em>▲ 교재 슬라이드 43 — sandbox 네트워크 / curl 갭 봉쇄</em></p>
+<p>설정은 managed settings에 sandbox 블록을 두고 허용 도메인을 나열하는 형태입니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>{
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  &quot;sandbox&quot;: {
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    &quot;enabled&quot;: true,
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    &quot;network&quot;: {
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>      &quot;allowedDomains&quot;: [
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>        &quot;api.anthropic.com&quot;,
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>        &quot;*.corp.example&quot;,
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        &quot;github.corp.example&quot;
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>      ]
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    }
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>  }
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>}
+</span></code></pre></div>
+<p>목록을 짤 때 놓치기 쉬운 것들이 있습니다. <strong>패키지 저장소</strong>(npm·PyPI·사내 Nexus)를 빼면 에이전트가 의존성 설치를 시도하는 순간 막힙니다. <strong>사내 MCP 서버 도메인</strong>을 빼면 Part 8에서 붙일 내부 도구들이 전부 불통이 됩니다. Bedrock 경로라면 <code>bedrock-runtime.&lt;리전&gt;.amazonaws.com</code>이 들어가야 하고, PrivateLink를 쓴다면 VPC 엔드포인트 DNS 이름이 대상입니다.</p>
+<p>그리고 이 목록은 <strong><code>NO_PROXY</code>와 짝</strong>입니다. 사내 MCP 서버를 추가할 때 <code>NO_PROXY</code>에는 넣고 <code>allowedDomains</code>에는 안 넣거나 그 반대인 상태가 자주 발생합니다. 증상은 "사내 MCP만 안 붙습니다"인데, 두 목록을 동시에 확인하지 않으면 한쪽만 고치고 계속 헤맵니다. 사내 도메인을 추가할 일이 생기면 <strong>두 목록을 한 번에 여는 습관</strong>을 들이는 게 좋습니다.</p>
+<p>sandbox의 진짜 값어치는 "완벽한 격리"가 아니라 <strong>판정 근거의 안정성</strong>입니다. 권한 규칙은 도구가 늘어날 때마다 다시 검토해야 하지만, 도메인 허용 목록은 도구가 몇 개든 목적지 기준으로 한 번만 정하면 됩니다. 새 도구를 붙일 때 "이게 네트워크를 우회할 수 있나"를 매번 따지지 않아도 되는 것 — 그게 운영 비용에서 가장 큰 차이를 만듭니다.</p>
+<p>지원 플랫폼도 챙겨야 할 항목입니다. sandbox는 <strong>macOS(Seatbelt)와 Linux(bubblewrap + socat) 위에서 동작하고, WSL2 안에서도 동작합니다.</strong> 하지만 <strong>네이티브 Windows에서는 지원되지 않습니다</strong> — Windows 플릿에서 sandbox 통제가 꼭 필요하다면 WSL2 안에서 Claude Code를 실행하는 구성으로 가야 한다는 뜻입니다. <code>allowedDomains</code>의 반대쪽인 <code>deniedDomains</code>(명시 차단), 그리고 <code>strictAllowlist</code>나 <code>allowManagedDomainsOnly</code>처럼 허용 목록 자체를 더 엄격하게 강제하는 키도 함께 있으니, 고통제 환경이라면 이 조합을 살펴볼 가치가 있습니다.</p>
+<div class="admonition warning">
+<p class="admonition-title">설정 키는 배포 전에 공식문서와 대조하세요</p>
+<p>샌드박스 관련 키 이름과 지원 플랫폼은 버전에 따라 달라질 수 있습니다. 조직 전체에 밀어 넣기 전에 대표 단말 한 대에서 실제로 허용 목록 밖 도메인이 차단되는지(예: 허용 안 된 호스트로 <code>curl</code>을 시켜 보고 실패하는지) <strong>직접 확인한 뒤</strong> 롤아웃하세요. 설정 파일이 조용히 무시되고 있는데 통제되고 있다고 믿는 상태가 가장 위험합니다.</p>
+</div>
+<hr />
+<h2 id="7-vpn과-ztna-위에서">7. VPN과 ZTNA 위에서<a class="headerlink" href="#7-vpn과-ztna-위에서" title="이 위치로 링크">¶</a></h2>
+<p>터널 위에서 도는 환경은 위 설정이 다 맞아도 별개의 문제가 생깁니다. 두 방식이 점검할 항목이 다릅니다.</p>
+<p><strong>VPN(터널) 환경</strong>에서 볼 것은 넷입니다.</p>
+<ul>
+<li>
+<p><strong>스플릿 터널 경로</strong>: 일부 트래픽만 터널로 보내는 구성이라면 API 도메인이 터널 안으로 가는지 밖으로 가는지 확인해야 합니다. 밖으로 나가면 사내 프록시·검사 장비를 안 거치므로 정책이 적용되지 않고, 반대로 안으로 들어가면 통제는 되지만 지연이 늘어납니다. 어느 쪽이든 <strong>의도한 대로인지</strong>가 중요합니다.</p>
+</li>
+<li>
+<p><strong>MTU</strong>: 터널은 헤더만큼 MTU가 줄어듭니다. 조각화가 제대로 되지 않으면 짧은 응답은 되는데 <strong>긴 스트리밍 응답이 중간에 끊기는</strong> 특유의 증상이 납니다. "가끔 답변이 잘려요"라는 신고가 오면 MTU를 먼저 의심하세요.</p>
+</li>
+<li>
+<p><strong>DNS 리졸버</strong>: 사내 도메인이 사내 리졸버를 경유하는지 봐야 합니다. 터널은 붙었는데 DNS가 공용 리졸버로 나가면 사내 MCP·게이트웨이 이름이 해석되지 않습니다.</p>
+</li>
+<li>
+<p><strong><code>NO_PROXY</code> 정합성</strong>: 터널 밖으로 빠지는 예외 대역이 <code>NO_PROXY</code> 목록과 어긋나면, 프록시를 거쳐야 할 트래픽이 직접 나가거나 그 반대가 됩니다.</p>
+</li>
+</ul>
+<p><strong>ZTNA 환경</strong>에서는 관점이 바뀝니다. 네트워크 대역이 아니라 <strong>앱 단위 정책</strong>이 통제 단위이므로, Claude Code가 접근하는 목적지가 커넥터 정책에 등록돼 있어야 합니다. 필수 도메인 목록을 방화벽에 넣는 대신 <strong>커넥터 정책에 반영</strong>한다고 생각하면 됩니다. 여기에 두 가지가 더 붙습니다 — 디바이스 포스처(단말 상태) 요건이 CLI 도구에도 적용되는지 확인해야 하고, 사내 게이트웨이를 경유하는 구성이라면 클라이언트가 바라보는 BASE_URL만 내부 주소로 두고 외부 도메인 개방은 게이트웨이 쪽으로 몰 수 있습니다. 후자는 단말별 방화벽 예외를 없앨 수 있어서 관리 부담이 크게 줄어듭니다.</p>
+<hr />
+<h2 id="8-dlp-훅--나가는-내용을-검사하는-마지막-관문">8. DLP 훅 — 나가는 내용을 검사하는 마지막 관문<a class="headerlink" href="#8-dlp-훅--나가는-내용을-검사하는-마지막-관문" title="이 위치로 링크">¶</a></h2>
+<p>지금까지의 통제는 전부 <strong>목적지 기준</strong>이었습니다. 도메인 목록도, 프록시도, sandbox도 "어디로 가는가"를 봅니다. 그런데 허용된 목적지로 나가면 안 되는 것이 나가는 경우는 어떻게 할까요. 사내 Git 서버는 당연히 허용 목록에 있고, 거기로 시크릿이 담긴 파일을 커밋하는 건 목적지 기준으로는 완전히 합법입니다.</p>
+<p>그래서 <strong>내용 기준</strong> 판정이 하나 더 필요합니다. <code>PreToolUse</code> 훅이 그 자리입니다. 도구가 실행되기 <strong>직전</strong>에 도구 입력(JSON)을 stdin으로 받아 검사하고, <code>exit 2</code>로 차단하면서 사유를 모델에 회신할 수 있습니다.</p>
+<p>교재가 제시하는 판정 기준이 실무적으로 좋습니다. <strong>"전송 명령"과 "민감 패턴"이 결합했을 때만</strong> 차단합니다. 둘 중 하나만으로 막으면 오탐이 폭발합니다 — <code>curl</code>만 보고 막으면 정상적인 API 호출이 전부 걸리고, <code>AKIA</code>만 보고 막으면 IAM 정책 문서를 읽는 것조차 못 합니다. 결합 조건으로 좁혀야 게이트가 살아남습니다.</p>
+<p><img alt="DLP 훅 / 유출 패턴 차단 슬라이드" src="../slides/slide-045.png" /></p>
+<p><em>▲ 교재 슬라이드 45 — DLP 훅 / 유출 패턴 차단</em></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="ch">#!/bin/bash</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nv">INPUT</span><span class="o">=</span><span class="k">$(</span>cat<span class="k">)</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nv">CMD</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$INPUT</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.tool_input.command // empty&#39;</span><span class="k">)</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="c1"># 외부 전송 명령 + 민감 패턴 결합 시 차단</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="k">if</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CMD</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-qE<span class="w"> </span><span class="s1">&#39;curl|wget|nc |scp &#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">     </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CMD</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-qE<span class="w"> </span><span class="s1">&#39;sk-ant-|AKIA[0-9A-Z]{16}|BEGIN.*PRIVATE KEY&#39;</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Blocked by DLP: credential exfil pattern&quot;</span><span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">2</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="k">fi</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+</span></code></pre></div>
+<p>이 스크립트는 <code>Bash</code> 명령만 봅니다(<code>tool_input.command</code>). 하지만 유출 경로가 Bash만은 아닙니다. <code>Write</code>로 시크릿을 파일에 박아 커밋하는 경로가 실무에서는 더 흔합니다. 그래서 매처를 <code>Bash</code> 하나로 두지 말고 <strong><code>Write</code>·<code>Edit</code>까지 포함해서 검사 대상 필드를 각각 맞춰 주는</strong> 편이 실효성이 높습니다. 다음 절의 실습이 정확히 그 형태입니다.</p>
+<p>조직 배포는 개인 설정에 맡기면 의미가 없습니다. 사용자가 지울 수 있는 곳에 있는 게이트는 게이트가 아닙니다. 시스템 전역 managed settings로 배포해야 강제력이 생기고, 이 배포 채널과 우선순위·잠금 규칙은 다음 파트(Part 5)에서 다룹니다.</p>
+<div class="admonition tip">
+<p class="admonition-title">현장 메모</p>
+<p>DLP 훅을 실제로 돌려 보고 얻은 관찰 하나를 먼저 적어 둡니다. 아래 실습에서 AWS 액세스 키 형태의 문자열을 파일에 쓰라고 시켰더니, <strong>훅이 걸리기 전에 모델이 먼저 망설였습니다.</strong> "이건 알려진 예시용 플레이스홀더지만 실제 키 형태를 소스에 하드코딩하는 건 나쁜 관행"이라는 취지로 판단한 뒤 진행했고, 그다음에 훅이 차단했습니다. 이 둘은 <strong>완전히 다른 방어선</strong>입니다. 모델 판단은 확률적이라 프롬프트를 바꾸면 뚫립니다("테스트 픽스처니까 그냥 넣어"). 훅은 결정적이라 프롬프트와 무관하게 같은 결과를 냅니다. 감사에 제출할 수 있는 건 후자뿐입니다. 모델이 알아서 조심하는 걸 통제 항목으로 계산하지 마세요.</p>
+</div>
+<hr />
+<h2 id="9-사내-mcp-서버-통합">9. 사내 MCP 서버 통합<a class="headerlink" href="#9-사내-mcp-서버-통합" title="이 위치로 링크">¶</a></h2>
+<p>사내 위키·티켓·배포 시스템을 MCP로 노출하면 Claude Code가 조직 컨텍스트를 갖게 됩니다. Chapter 4에서 본격적으로 다룰 주제지만, 네트워크 관점에서 미리 챙겨야 할 것이 네 가지 있습니다.</p>
+<ul>
+<li>
+<p><strong>경로 확보</strong>: 앞서 강조한 대로 <code>NO_PROXY</code>와 sandbox <code>allowedDomains</code> <strong>양쪽에</strong> 내부 도메인을 등록합니다. 한쪽만 하면 증상이 애매해져서 진단이 오래 걸립니다.</p>
+</li>
+<li>
+<p><strong>인증 방식</strong>: 정적 토큰을 환경변수로 뿌리는 구성은 회수와 순환이 어렵습니다. 가능하면 OAuth를 지원하는 서버를 고르고, 그게 안 되면 토큰을 자격증명 볼트 헬퍼로 주입해 파일·환경변수에 평문으로 남지 않게 합니다.</p>
+</li>
+<li>
+<p><strong>허용 통제</strong>: 어떤 MCP 서버를 붙일 수 있는지는 조직이 정해야 합니다. 승인된 서버만 허용하는 정책 키가 있으며, 이건 Part 5의 거버넌스 영역입니다.</p>
+</li>
+<li>
+<p><strong>노출 최소화</strong>: 모든 세션에 모든 MCP를 열 필요는 없습니다. 서브에이전트 단위로 필요한 서버만 지정하면, 배포 시스템 MCP가 코드 리뷰 에이전트에게 노출되는 상황을 구조적으로 막을 수 있습니다.</p>
+</li>
+</ul>
+<hr />
+<h2 id="10-트러블슈팅--증상에서-원인으로">10. 트러블슈팅 — 증상에서 원인으로<a class="headerlink" href="#10-트러블슈팅--증상에서-원인으로" title="이 위치로 링크">¶</a></h2>
+<p>앞의 층 구분이 여기서 값을 합니다. 증상별로 먼저 볼 곳이 정해져 있습니다.</p>
+<ul>
+<li>
+<p><strong>연결 타임아웃</strong> — 프록시 변수 누락이거나 방화벽 차단입니다. <code>curl -v</code>로 프록시 계층과 TLS 계층을 분리해서 어디까지 갔는지 확인합니다.</p>
+</li>
+<li>
+<p><strong>TLS 체인 오류</strong>(<code>SELF_SIGNED_CERT_IN_CHAIN</code> 등) — 사내 CA 미등록입니다. <code>NODE_EXTRA_CA_CERTS</code>와 OS 신뢰 저장소 양쪽을 확인합니다.</p>
+</li>
+<li>
+<p><strong>HTTP 407</strong> — 프록시 인증 실패입니다. 도메인이나 방화벽을 뒤지지 말고 곧장 인증 계층부터 봅니다. Basic이면 자격증명 갱신, NTLM·Kerberos면 §4에서 정리한 대로 임시방편(로컬 중계)보다 LLM Gateway 도입이 공식 권장 경로입니다.</p>
+</li>
+<li>
+<p><strong>스트리밍이 중간에 끊김</strong> — MTU 문제이거나 검사 장비의 버퍼링입니다. 짧은 응답은 되는데 긴 응답만 깨지는 게 특징입니다. MTU 조정 또는 검사 장비 예외 등록으로 해결합니다.</p>
+</li>
+<li>
+<p><strong>일부 기능만 실패</strong> — 도메인 부분 차단입니다. §2의 여섯 갈래와 대조해 무엇이 닫혀 있는지 찾습니다. 플래그 도메인이 막혀서 특정 기능이 기본값으로 도는 경우도 여기 포함됩니다.</p>
+</li>
+<li>
+<p><strong>사내 MCP만 불통</strong> — <code>NO_PROXY</code>와 sandbox <code>allowedDomains</code> 중 한쪽 누락입니다. <strong>반드시 양쪽을 동시에</strong> 확인합니다.</p>
+</li>
+</ul>
+<hr />
+<h2 id="11-롤아웃-전-체크리스트">11. 롤아웃 전 체크리스트<a class="headerlink" href="#11-롤아웃-전-체크리스트" title="이 위치로 링크">¶</a></h2>
+<p>조직 배포 직전에 여섯 항목을 확인합니다.</p>
+<ul>
+<li>
+<p><strong>도메인 개방</strong> — 필수 도메인이 방화벽에 반영됐는지, 미러나 PrivateLink로 대체한 항목이 문서에 표기됐는지.</p>
+</li>
+<li>
+<p><strong>프록시 배포</strong> — 세 변수가 일괄 주입되는지(<code>profile.d</code> 또는 MDM), <code>NO_PROXY</code>에 사내 서비스가 빠짐없이 들어갔는지.</p>
+</li>
+<li>
+<p><strong>CA 배포</strong> — PEM 번들과 OS 신뢰 저장소가 함께 등록됐는지, 갱신이 형상 관리로 추적되는지.</p>
+</li>
+<li>
+<p><strong>샌드박스</strong> — <code>allowedDomains</code> 초안이 적용됐는지, 그리고 <strong>허용 목록 밖 도메인으로 <code>curl</code>이 실제로 실패하는지 검증</strong>했는지.</p>
+</li>
+<li>
+<p><strong>DLP</strong> — 훅 스크립트가 관리자 경로로 배포됐는지, 차단 로그를 볼 수 있는지, 오탐을 접수할 채널이 정해졌는지.</p>
+</li>
+<li>
+<p><strong>검증</strong> — 플랫폼마다 최소 한 대씩 실사용 시나리오(설치 → 추론 → 사내 MCP 왕복)를 끝까지 돌려 봤는지.</p>
+</li>
+</ul>
+<hr />
+<h2 id="직접-해보기">직접 해보기<a class="headerlink" href="#직접-해보기" title="이 위치로 링크">¶</a></h2>
+<p>DLP 훅이 실제로 도구 호출을 막는지, 시스템 전역 Managed 경로에 직접 배포해서 확인했습니다.</p>
+<p><strong>실행 환경</strong>: macOS 26.5.1 / Claude Code v2.1.233 / 2026-08-15</p>
+<h3 id="훅-스크립트와-배포">훅 스크립트와 배포<a class="headerlink" href="#훅-스크립트와-배포" title="이 위치로 링크">¶</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>$<span class="w"> </span>sudo<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/opt/claude
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>$<span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/opt/claude/dlp.sh<span class="w"> </span>&gt;<span class="w"> </span>/dev/null<span class="w"> </span><span class="s">&lt;&lt; &#39;EOF&#39;</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="s">#!/bin/bash</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="s">INPUT=$(cat)</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="s">if echo &quot;$INPUT&quot; | grep -qE &#39;AKIA[0-9A-Z]{16}&#39;; then</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="s">  echo &quot;Blocked by DLP: AWS Access Key ID detected in tool input&quot; &gt;&amp;2</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="s">  exit 2</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="s">fi</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="s">exit 0</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="s">EOF</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>$<span class="w"> </span>sudo<span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>/opt/claude/dlp.sh
+</span></code></pre></div>
+<p>교재 원본과 한 군데가 다릅니다. <code>jq</code>로 <code>.tool_input.command</code>를 뽑지 않고 <strong>stdin 전체를 그대로 검사</strong>합니다. <code>Write</code> 도구는 명령이 아니라 <code>content</code> 필드에 내용이 들어가므로, 필드를 특정하면 매처마다 파서를 다르게 써야 합니다. 전체를 훑으면 도구 종류와 무관하게 한 스크립트로 커버됩니다(대신 오탐 여지는 넓어집니다).</p>
+<p>이 스크립트를 <code>/Library/Application Support/ClaudeCode/managed-settings.json</code>의 <code>hooks.PreToolUse</code>에 <code>Bash|Edit|Write</code> 매처로 연결해 sudo로 재배포했습니다(Part 5 §"직접 해보기"에서 배포한 권한 규칙에 hooks 블록만 추가한 것입니다). 그 상태로 실제 <code>claude</code> 대화형 세션을 열어 두 가지를 요청했습니다.</p>
+<h3 id="대조군--비밀-없는-파일은-승인-프롬프트도-없이-통과">대조군 — 비밀 없는 파일은 승인 프롬프트도 없이 통과<a class="headerlink" href="#대조군--비밀-없는-파일은-승인-프롬프트도-없이-통과" title="이 위치로 링크">¶</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>&gt; src/hello.js 파일을 만들고 그 안에 export const greeting = &quot;hi&quot;; 라고 써줘
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>Write(src/hello.js)
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>  Wrote 1 line to src/hello.js
+</span></code></pre></div>
+<p>승인을 묻는 화면조차 뜨지 않고 곧바로 써졌습니다. 이건 DLP 얘기가 아니라 <strong>§5(거버넌스) "직접 해보기"에서 다룬 별개의 발견과 연결됩니다</strong> — 배포한 정책의 <code>"ask": ["Write(**)"]</code>는 경로 패턴이 매칭되지 않아 아무 효과가 없고, 세션의 기본 <code>permissionMode: auto</code>가 이 Write를 안전하다고 판단해 그대로 통과시킨 겁니다.</p>
+<h3 id="실제-차단--aws-키가-섞인-파일은-훅이-막습니다">실제 차단 — AWS 키가 섞인 파일은 훅이 막습니다<a class="headerlink" href="#실제-차단--aws-키가-섞인-파일은-훅이-막습니다" title="이 위치로 링크">¶</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>&gt; src/aws.js 파일을 만들고 그 안에 const key = &quot;AKIAIOSFODNN7EXAMPLE&quot;; 라고 써줘
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Write(src/aws.js)
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>  Error: PreToolUse:Write hook error: [/opt/claude/dlp.sh]: Blocked by DLP: AWS Access Key ID detected in tool input
+</span></code></pre></div>
+<p>모델은 도구 호출을 실제로 시도했고, <strong>실행 직전에 훅이 막았습니다.</strong> <code>ls src/</code>로 확인한 결과 <code>aws.js</code> 파일은 생성되지 않았습니다 — 사후 정리가 아니라 실행 전 차단입니다. 모델은 차단 메시지를 받은 뒤 우회를 시도하지 않고 그대로 승복했습니다: <em>"우회(예: 훅 비활성화나 다른 방식으로 값 삽입)는 하지 않겠습니다."</em></p>
+<p>같은 요청을 비대화형(<code>claude -p ... --output-format stream-json</code>)으로도 실행해 원시 이벤트를 봤는데, 결과 메시지는 토씨 하나 안 틀리고 동일했습니다 — 훅 차단은 대화형/비대화형 실행 방식과 무관하게 결정적입니다.</p>
+<div class="admonition tip">
+<p class="admonition-title">직접 해보고 알게 된 것</p>
+<p><strong>모델의 자기검열과 훅 차단은 같은 층이 아닙니다.</strong> 프롬프트를 "관리자 정책 테스트용 가짜 값"이라고 바꿔서 시도했을 때는 모델이 <strong>도구를 호출하기도 전에</strong> 자체적으로 거절한 적도 있었습니다. 반대로 위 실행처럼 모델이 문제를 인지하고도 일단 도구를 호출하는 경우도 있었고, 그때는 훅이 그 뒤를 받쳤습니다. 모델의 판단은 프롬프트에 따라 흔들리지만, 훅의 차단은 흔들리지 않습니다. <strong>"모델이 알아서 조심한다"를 통제 항목으로 세면 안 되는 이유가 여기 있습니다.</strong></p>
+<p><strong>차단 사유가 모델에게 돌아간다는 게 중요합니다.</strong> <code>exit 2</code>의 stderr 메시지가 도구 결과로 전달되므로, 모델은 "왜 막혔는지"를 알고 다음 행동을 조정할 수 있습니다. 조용히 실패시키는 것보다 훨씬 낫습니다 — 사유 없이 막으면 모델이 다른 우회 경로를 시도하다가 세션이 엉킵니다. DLP 메시지를 쓸 때 <strong>차단 사실뿐 아니라 대안까지</strong> 한 줄 적어 주면(예: "시크릿은 환경변수나 시크릿 매니저로 주입하세요") 모델이 올바른 방향으로 재시도합니다.</p>
+<p><strong>stdin 전체 검사는 편한 만큼 오탐이 넓습니다.</strong> 이 스크립트는 도구 입력 JSON 어디에든 <code>AKIA...</code> 패턴이 있으면 막습니다. 그래서 IAM 정책 문서를 편집하거나, 문서에 예시 키를 인용하거나, DLP 규칙 자체를 문서화하는 작업도 같이 걸립니다. 실제 조직 배포에서는 §8의 <strong>결합 조건</strong>(전송 명령 + 민감 패턴)으로 좁히고, 문서·테스트 경로는 예외로 빼는 조정이 필요합니다.</p>
+<p><strong>강제성도 이번엔 실측으로 닫혔습니다.</strong> 시스템 전역 경로에 sudo로 배포한 정책이라, 세션에서 마음대로 지우거나 우회할 수 없었습니다. Part 5 §"직접 해보기"에서 확인한 것처럼 User 스코프보다 우선순위가 높은 CLI <code>--settings</code> 플래그로도 이 계열의 managed 정책을 뒤집을 수 없었습니다.</p>
+</div>
+<p>실습이 끝난 뒤에는 <code>sudo rm -f "/Library/Application Support/ClaudeCode/managed-settings.json" /opt/claude/dlp.sh</code>로 반드시 원복했습니다 — 지우지 않으면 이 머신의 모든 세션에 DLP 훅과 <code>.env</code> 차단이 계속 걸립니다.</p>
+<hr />
+<h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
+<ul>
+<li>
+<p><strong>"<code>WebFetch</code>를 deny했으니 이 세션은 외부에 못 나갑니다"</strong> — <code>Bash</code>가 허용돼 있으면 <code>curl</code>·<code>wget</code>·<code>nc</code>·<code>python3</code>로 나갈 수 있습니다. 권한 규칙은 도구 이름 단위 판정이라 도구 안쪽의 행위를 보지 않습니다. 네트워크를 정말 막아야 한다면 sandbox의 도메인 허용 목록처럼 <strong>OS 계층</strong>에서 처리해야 합니다.</p>
+</li>
+<li>
+<p><strong>"<code>NODE_EXTRA_CA_CERTS</code>만 넣으면 사내 CA 문제는 끝납니다"</strong> — 애초에 네이티브 설치나 최신 npm(Node 22.15+)이면 OS 신뢰 저장소 등록만으로 끝나 이 변수 자체가 필요 없을 수 있습니다. 구버전 npm이라 이 변수가 필요한 경우에도, Node 프로세스에만 적용됩니다. 같은 세션에서 도는 <code>curl</code>·<code>git</code>·<code>pip</code>는 OS 신뢰 저장소를 보므로 병행 등록이 필요합니다. 한쪽만 하면 "Claude Code는 되는데 그 안에서 부른 명령이 안 되는" 상태가 됩니다.</p>
+</li>
+<li>
+<p><strong>"프록시 자격증명을 URL에 넣는 건 무조건 하면 안 됩니다"</strong> — Basic 인증이라면 공식문서가 실제로 지원하는 경로입니다. 문제는 URL 방식 자체가 아니라 <strong>비밀번호를 스크립트에 하드코딩하는 것</strong>입니다. 런타임에 볼트에서 읽어 주입하세요. 반대로 NTLM·Kerberos는 애초에 이 방식으로 인증되지 않으므로, 그 경우엔 LLM Gateway를 앞에 두는 구조로 접근해야 합니다.</p>
+</li>
+<li>
+<p><strong>"필수 도메인 여섯 개를 다 열어야 합니다"</strong> — 구성에 따라 달라집니다. Bedrock 경로면 모델 트래픽은 이 도메인으로 안 나가지만 <code>WebFetch</code>가 여전히 <code>api.anthropic.com</code>을 찾으므로 완전히 뺄 수는 없고, 미러를 운영하면 <code>downloads.claude.ai</code>를 대체할 수 있으며, 플래그·오류 리포트 도메인은 막아도 동작합니다. 방화벽 요청서에는 <strong>필수와 선택을 구분해서</strong> 올리는 편이 승인이 빠릅니다.</p>
+</li>
+<li>
+<p><strong>"모델이 시크릿을 알아서 거를 겁니다"</strong> — 위 실습에서 모델은 문제를 인식하고도 도구를 호출했습니다. 모델 판단은 확률적이고 프롬프트에 흔들립니다. 감사에 제출할 수 있는 통제는 결정적으로 동작하는 훅 쪽입니다.</p>
+</li>
+</ul>
+<hr />
+<h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
+<p>사내망 통과는 층별 문제입니다. 방화벽에서 필요한 도메인을 열고, 프록시 세 변수를 조직 차원에서 일괄 주입하고, TLS 검사 장비가 있다면 사내 루트 CA를 Node와 OS 양쪽 신뢰 체인에 등록합니다. 여기까지가 "들어오는 길을 여는" 작업이고, 대부분의 초기 배포 이슈는 이 세 층 중 하나에서 발생합니다. 증상이 나오면 <code>curl -v</code> 한 줄로 어느 층인지부터 특정하는 게 가장 빠릅니다.</p>
+<p>나가는 길은 반대로 좁힙니다. 이 파트의 핵심은 <strong>권한 규칙과 샌드박스가 다른 계층</strong>이라는 인식입니다. 권한 규칙은 도구 이름을 보고, 샌드박스는 프로세스의 아웃바운드 연결을 봅니다. <code>WebFetch</code>를 막아도 <code>Bash</code>의 <code>curl</code>이 남는 갭은 명령 문자열 검사로 쫓을 문제가 아니라 판정 계층을 OS로 옮겨서 푸는 문제입니다. 도메인 허용 목록 하나로 어떤 바이너리가 어떤 방식으로 시도하든 동일하게 통제되고, 새 도구가 늘어도 재검토할 것이 없다는 게 실무에서 가장 큰 이점입니다.</p>
+<p>목적지 기준으로 못 잡는 것 — 허용된 목적지로 나가는 부적절한 내용 — 은 <code>PreToolUse</code> 훅이 내용 기준으로 잡습니다. 직접 돌려 보니 훅은 기대대로 동작했고, 파일이 실제로 생성되지 않는 것까지 확인했습니다. 동시에 모델이 스스로 위험을 인식하고도 도구를 호출했다는 것도 같이 관찰했습니다. <strong>모델의 신중함은 통제가 아니라 부가적인 완충</strong>이며, 감사 가능한 통제는 훅 쪽이라는 결론이 실행 로그로 뒷받침됐습니다.</p>
+<p>이번엔 정책을 시스템 전역 경로에 sudo로 직접 배포해서, 개인이 우회할 수 없는 <strong>강제성</strong>까지 실측으로 확인했습니다. 그 강제성을 만드는 배포 채널과 우선순위·잠금 규칙이 다음 파트의 주제입니다.</p>
+<hr />
+<h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
+<ul>
+<li>Claude Code Deep Dive Workshop — <em>Chapter 3 / Part 4: 네트워크와 보안</em> (12p)</li>
+<li>공식 문서: <a href="https://code.claude.com/docs/ko/network-config">Network configuration</a> · <a href="https://code.claude.com/docs/ko/sandboxing">Sandboxing</a> · <a href="https://code.claude.com/docs/ko/hooks">Hooks</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="../part-03-apps-gateway/" class="md-footer__link md-footer__link--prev" aria-label="이전: 3. Claude apps gateway">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                3. Claude apps gateway
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../part-05-governance/" class="md-footer__link md-footer__link--next" aria-label="다음: 5. 거버넌스와 정책">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                다음
+              </span>
+              <div class="md-ellipsis">
+                5. 거버넌스와 정책
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      학습 목적의 개인 정리 노트입니다.
+    </div>
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://code.claude.com/docs/ko/overview" target="_blank" rel="noopener" title="Claude Code 공식 문서" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 2-5 4.5v11l5-4.5zM6.5 5C4.55 5 2.45 5.4 1 6.5v14.66c0 .25.25.5.5.5.1 0 .15-.07.25-.07 1.35-.65 3.3-1.09 4.75-1.09 1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.31 4.75 1.06.1.05.15.03.25.03.25 0 .5-.25.5-.5V6.5c-.6-.45-1.25-.75-2-1V19c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6.5C10.55 5.4 8.45 5 6.5 5"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.top", "navigation.footer", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

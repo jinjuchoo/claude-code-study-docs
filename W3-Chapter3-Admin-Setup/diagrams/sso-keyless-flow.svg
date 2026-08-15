@@ -1,0 +1,143 @@
+<svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="SSO 키 없는 인증 흐름 애니메이션. 개발자가 IdP에 로그인하면 권한 매핑을 거쳐 단기 자격증명이 자동 발급되고 Bedrock을 호출합니다. IdP에서 오프보딩으로 세션을 끊는 순간 그 경로 전체가 소멸합니다 — 정적 키가 처음부터 존재하지 않았기 때문입니다.">
+  <style>
+    :root{ --fg:#111; --sub:#555; --line:#c7c7cf; --card:#f4f4f7 }
+    text{ font-family:'Pretendard','Apple SD Gothic Neo',-apple-system,sans-serif }
+    .t{ font-size:13px; font-weight:700 }
+    .s{ font-size:10.5px; fill:var(--sub) }
+    .node rect{ stroke-width:2 }
+    .cx{ font-size:11px; font-weight:800; fill:#fff }
+
+    /* 연결선: 순서대로 채워짐 */
+    .lnk{ stroke-width:3; fill:none; stroke-dasharray:120; stroke-dashoffset:120; }
+    .l1{ animation:draw 9s ease-in-out infinite; animation-delay:0s }
+    .l2{ animation:draw 9s ease-in-out infinite; animation-delay:.5s }
+    .l3{ animation:draw 9s ease-in-out infinite; animation-delay:1s }
+    @keyframes draw{
+      0%{ stroke-dashoffset:120; opacity:.35 }
+      8%{ stroke-dashoffset:0; opacity:1 }
+      70%{ stroke-dashoffset:0; opacity:1 }
+      82%{ stroke-dashoffset:0; opacity:0 }
+      100%{ stroke-dashoffset:120; opacity:0 }
+    }
+
+    /* 이동하는 펄스 (단기 토큰이 흘러가는 느낌) */
+    .pulse{ animation:travel 9s ease-in-out infinite }
+    @keyframes travel{
+      0%,8%{ opacity:0; transform:translateX(0) }
+      10%{ opacity:1; transform:translateX(0) }
+      28%{ opacity:1; transform:translateX(190px) }
+      30%{ opacity:1; transform:translateX(190px) }
+      48%{ opacity:1; transform:translateX(380px) }
+      68%{ opacity:1; transform:translateX(380px) }
+      70%{ opacity:0; transform:translateX(380px) }
+      100%{ opacity:0; transform:translateX(380px) }
+    }
+
+    /* 노드 발광 (자기 순서에 도달하면 밝아짐) */
+    .glow rect{ transition:none }
+    .n1 .glow{ animation:lit 9s ease-in-out infinite; animation-delay:0s }
+    .n2 .glow{ animation:lit 9s ease-in-out infinite; animation-delay:1.6s }
+    .n3 .glow{ animation:lit 9s ease-in-out infinite; animation-delay:3.2s }
+    .n4 .glow{ animation:lit 9s ease-in-out infinite; animation-delay:4.6s }
+    @keyframes lit{
+      0%,100%{ opacity:0 }
+      6%{ opacity:0 }
+      14%{ opacity:1 }
+      68%{ opacity:1 }
+      78%{ opacity:0 }
+    }
+
+    /* 오프보딩: IdP에 X 표시, 전체 경로가 흐려짐 */
+    .cut{ animation:cutmark 9s ease-in-out infinite }
+    @keyframes cutmark{
+      0%,74%{ opacity:0 }
+      80%{ opacity:1 }
+      100%{ opacity:1 }
+    }
+    .fadeout{ animation:vanish 9s ease-in-out infinite }
+    @keyframes vanish{
+      0%,74%{ opacity:1 }
+      88%{ opacity:.12 }
+      100%{ opacity:.12 }
+    }
+    .fadelabel{ animation:labelfade 9s ease-in-out infinite }
+    @keyframes labelfade{
+      0%,76%{ opacity:0 }
+      86%{ opacity:1 }
+      100%{ opacity:1 }
+    }
+
+    @media (prefers-color-scheme: dark){
+      :root{ --fg:#e8e8ea; --sub:#a8a8b3; --line:#54545f; --card:#23232b }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .l1,.l2,.l3,.pulse,.n1 .glow,.n2 .glow,.n3 .glow,.n4 .glow,.cut,.fadeout,.fadelabel{ animation:none }
+      .l1,.l2,.l3{ stroke-dashoffset:0; opacity:1 }
+      .pulse{ opacity:0 }
+      .n1 .glow,.n2 .glow,.n3 .glow,.n4 .glow{ opacity:1 }
+      .cut{ opacity:1 }
+      .fadeout{ opacity:1 }
+      .fadelabel{ opacity:1 }
+    }
+  </style>
+
+  <text class="t" x="24" y="26" fill="var(--fg)">SSO 경로엔 정적 키가 없다 — 있는 건 끊을 수 있는 세션뿐</text>
+  <text class="s" x="24" y="44">IdP 로그인 → 권한 매핑 → 단기 자격증명 → Bedrock 호출, 오프보딩 순간 전체가 소멸</text>
+
+  <!-- 연결선 -->
+  <g class="fadeout">
+    <path class="lnk l1" d="M 118 130 L 240 130" stroke="var(--line)"/>
+    <path class="lnk l2" d="M 308 130 L 430 130" stroke="var(--line)"/>
+    <path class="lnk l3" d="M 498 130 L 620 130" stroke="var(--line)"/>
+  </g>
+
+  <!-- 이동 펄스 -->
+  <circle class="pulse" cx="130" cy="130" r="6" fill="#f9a825"/>
+
+  <!-- STEP 1: 개발자 → IdP 로그인 -->
+  <g class="node n1">
+    <rect x="24" y="98" width="94" height="64" rx="10" fill="var(--card)" stroke="var(--line)"/>
+    <rect class="glow" x="24" y="98" width="94" height="64" rx="10" fill="#1976d2" opacity="0"/>
+    <text class="t" x="71" y="126" text-anchor="middle" fill="var(--fg)">개발자</text>
+    <text class="s" x="71" y="142" text-anchor="middle">aws sso login</text>
+    <text class="s" x="71" y="155" text-anchor="middle">브라우저 인증</text>
+  </g>
+
+  <!-- STEP 2: IdP 권한 매핑 -->
+  <g class="node n2">
+    <rect x="214" y="98" width="94" height="64" rx="10" fill="var(--card)" stroke="var(--line)"/>
+    <rect class="glow" x="214" y="98" width="94" height="64" rx="10" fill="#7b1fa2" opacity="0"/>
+    <text class="t" x="261" y="120" text-anchor="middle" fill="var(--fg)">IdP</text>
+    <text class="s" x="261" y="136" text-anchor="middle">그룹 → Permission</text>
+    <text class="s" x="261" y="150" text-anchor="middle">Set 매핑</text>
+    <g class="cut">
+      <line x1="238" y1="86" x2="284" y2="72" stroke="#e53935" stroke-width="4" stroke-linecap="round"/>
+      <line x1="284" y1="86" x2="238" y2="72" stroke="#e53935" stroke-width="4" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- STEP 3: 단기 자격증명 -->
+  <g class="node n3">
+    <rect x="404" y="98" width="94" height="64" rx="10" fill="var(--card)" stroke="var(--line)"/>
+    <rect class="glow" x="404" y="98" width="94" height="64" rx="10" fill="#f57c00" opacity="0"/>
+    <text class="t" x="451" y="120" text-anchor="middle" fill="var(--fg)">STS 토큰</text>
+    <text class="s" x="451" y="136" text-anchor="middle">단기 자격증명</text>
+    <text class="s" x="451" y="150" text-anchor="middle">자동 발급·갱신</text>
+  </g>
+
+  <!-- STEP 4: Bedrock 호출 -->
+  <g class="node n4">
+    <rect x="594" y="98" width="120" height="64" rx="10" fill="var(--card)" stroke="var(--line)"/>
+    <rect class="glow" x="594" y="98" width="120" height="64" rx="10" fill="#2e7d32" opacity="0"/>
+    <text class="t" x="654" y="120" text-anchor="middle" fill="var(--fg)">Bedrock</text>
+    <text class="s" x="654" y="136" text-anchor="middle">Claude Code가</text>
+    <text class="s" x="654" y="150" text-anchor="middle">SDK 체인으로 호출</text>
+  </g>
+
+  <g class="fadelabel">
+    <text class="t" x="380" y="210" text-anchor="middle" fill="#e53935">오프보딩 — IdP에서 계정 비활성</text>
+    <text class="s" x="380" y="228" text-anchor="middle" fill="#e53935">신규 인증 즉시 불가, 남은 건 만료를 기다리는 TTL뿐</text>
+    <text class="s" x="380" y="246" text-anchor="middle">회수할 정적 키가 애초에 없었습니다</text>
+  </g>
+</svg>
