@@ -1582,18 +1582,7 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/subtask 지금까지의 파서 변경에 대한 단위 테스트 초안 작성
 </span></code></pre></div>
 <p>지시문 첫 단어들로 이름이 자동 부여되고 백그라운드로 진행됩니다. 메인의 프롬프트 캐시를 공유하므로 신규 스폰보다 저렴합니다.</p>
-<p>Named Subagent와의 결정적 차이:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a># 무엇을 물려받는가
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>          Fork              Named Subagent
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>컨텍스트  전체 대화 이력      지시문으로 새 출발
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>프롬프트  메인과 동일         정의 파일의 것
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>도구      메인과 동일         tools 필드 것
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>캐시      메인과 공유         별도 캐시
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a># 언제 쓰나
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>Fork      : 배경 설명이 긴 곁가지, 현재 맥락을 전달하고 싶을 때
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>Named     : 역할이 정형화된 작업, 깨끗한 컨텍스트에서 출발할 때
-</span></code></pre></div>
+<p>Named Subagent와의 결정적 차이는 "무엇을 물려받는가"에 있습니다. Fork는 컨텍스트·프롬프트·도구·캐시를 전부 메인과 공유한 채 출발하는 반면, Named Subagent는 정의 파일에 적은 지시문으로 새로 시작하고 캐시도 별도입니다. 그래서 배경 설명이 긴 곁가지 작업이라 현재 맥락을 그대로 넘기고 싶다면 Fork를, 역할이 정형화되어 깨끗한 컨텍스트에서 출발하는 편이 나은 작업이라면 Named Subagent를 고릅니다.</p>
 <p><img alt="Fork vs Named Subagent" src="../slides/slide-048.png" /></p>
 <p><em>▲ 교재 슬라이드 48 — Fork vs Named Subagent</em></p>
 <hr />
@@ -1607,75 +1596,35 @@
 <p><code>settings.json</code>의 수명 주기 훅 <code>SubagentStart</code> / <code>SubagentStop</code>에 에이전트명 매처를 붙이면 특정 에이전트의 시작과 종료에 자동화를 연결할 수 있습니다. 예를 들어 DB 에이전트 시작 시 연결을 준비하고, 종료 시 정리하는 스크립트를 연결할 수 있습니다.</p>
 <hr />
 <h2 id="11-선택-가이드--main-vs-subagent-vs-btw-vs-skill">11. 선택 가이드 — Main vs Subagent vs /btw vs Skill<a class="headerlink" href="#11-선택-가이드--main-vs-subagent-vs-btw-vs-skill" title="이 위치로 링크">¶</a></h2>
-<table>
-<thead>
-<tr>
-<th>상황</th>
-<th>수단</th>
-<th>이유</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>잦은 왕복, 반복 다듬기</td>
-<td>Main 대화</td>
-<td>격리가 오히려 방해</td>
-</tr>
-<tr>
-<td>계획·구현·테스트가 맥락 공유</td>
-<td>Main 대화</td>
-<td>한 흐름 유지</td>
-</tr>
-<tr>
-<td>대량 출력 작업</td>
-<td>Subagent</td>
-<td>격리의 본령</td>
-</tr>
-<tr>
-<td>도구·권한 제약 필요</td>
-<td>Subagent</td>
-<td>역할 설계</td>
-</tr>
-<tr>
-<td>대화 맥락에 대한 빠른 질문</td>
-<td>/btw</td>
-<td>이력 미기록</td>
-</tr>
-<tr>
-<td>재사용 프롬프트, 워크플로</td>
-<td>Skill</td>
-<td>메인 컨텍스트에서 실행</td>
-</tr>
-</tbody>
-</table>
+<p>넷 중 뭘 쓸지는 결국 "격리가 필요한가"로 갈립니다. 왕복이 잦거나 계획·구현·테스트가 맥락을 계속 공유해야 하는 작업은 격리가 오히려 방해가 되므로 Main 대화로 이어갑니다. 반대로 출력이 대량이거나 도구·권한을 역할별로 제약하고 싶다면 격리가 본령인 Subagent가 맞습니다. 대화 맥락에 대한 빠른 질문처럼 이력에 남기고 싶지 않은 건 <code>/btw</code>, 재사용할 프롬프트나 워크플로는 메인 컨텍스트에서 그대로 실행되는 Skill로 갑니다.</p>
 <p><img alt="선택 가이드" src="../slides/slide-051.png" /></p>
 <p><em>▲ 교재 슬라이드 51 — 선택 가이드 / Main vs Subagent vs /btw</em></p>
 <hr />
 <h2 id="직접-해보기">직접 해보기<a class="headerlink" href="#직접-해보기" title="이 위치로 링크">¶</a></h2>
 <p>실행 환경: macOS 26.5.1 / Claude Code v2.1.x</p>
 <p>핸즈온랩 Task 4의 디스패치 3패턴 실습입니다.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">cd</span><span class="w"> </span>~/claude-lab/ch1
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>claude
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>~/claude-lab/ch1
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>claude
 </span></code></pre></div>
 <p>Claude 세션 내에서 — 자동 위임 테스트:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>결제 코드 리뷰가 필요해, 가장 적절한 에이전트가 담당해줘
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>결제 코드 리뷰가 필요해, 가장 적절한 에이전트가 담당해줘
 </span></code></pre></div></p>
 <p>@멘션 명시 호출:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>@agent-code-reviewer 최근 커밋의 git diff HEAD~1을 검토해줘
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>@agent-code-reviewer 최근 커밋의 git diff HEAD~1을 검토해줘
 </span></code></pre></div></p>
 <p>병렬 디스패치:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>test-writer와 docs-writer 에이전트를 동시에 써서,
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>테스트 커버리지 현황과 README 업데이트 필요 여부를 병렬로 확인해줘
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>test-writer와 docs-writer 에이전트를 동시에 써서,
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>테스트 커버리지 현황과 README 업데이트 필요 여부를 병렬로 확인해줘
 </span></code></pre></div></p>
 <p><strong>실제 실행 메모</strong> (2026-08-09, v2.1.226, 헤드리스 + tmux 대화형 확인):</p>
 <p><strong>자동 위임은 커스텀 에이전트로 가지 않았습니다.</strong> 시점 문구를 갖춘 <code>description</code>으로 <code>code-reviewer</code>를 등록해 둔 상태에서 "이 프로젝트의 최근 변경 사항을 코드 리뷰해 주세요"라고 요청했더니, <code>code-reviewer</code>를 향한 <code>Agent</code> 호출은 0건이었습니다. 다만 완전히 손 놓고 처리한 것도 아니었습니다 — 대신 내장 <code>/code-review</code> 스킬이 가로채서 <code>general-purpose</code> 서브에이전트로 위임했습니다.</p>
 <p><strong>이름을 명시하면 확실했습니다.</strong> 같은 세 에이전트를 프롬프트에 명시해 병렬로 요청하니 셋 다 정확히 스폰됐습니다.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Agent 호출:
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>   -&gt; code-reviewer
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>   -&gt; test-writer
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>   -&gt; docs-writer
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>total_cost_usd: 0.6256 | duration_ms: 20,294 | 서브에이전트 3개 스폰 확인
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Agent 호출:
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>   -&gt; code-reviewer
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>   -&gt; test-writer
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>   -&gt; docs-writer
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>total_cost_usd: 0.6256 | duration_ms: 20,294 | 서브에이전트 3개 스폰 확인
 </span></code></pre></div>
 <p><strong>백그라운드 패널은 tmux 대화형 세션에서 직접 확인했습니다.</strong> <code>code-reviewer</code>를 지목해 위임하자 <code>Backgrounded agent</code> 표시와 함께 관리 패널에 진행 상황(경과 시간·토큰)이 실시간으로 떴고, 완료되자 <code>Agent "..." finished · 1m 21s</code> 로그와 함께 결과가 도착했습니다. <code>/cost</code>에서도 <code>Subagents % of usage</code>로 에이전트별 사용 비중이 표시되는 걸 확인했습니다.</p>
 <p><strong>비용은 단일 리뷰 대비 병렬이 약 2.5배</strong>였습니다. 랩이 말한 "최대 7배"는 상한 경고로 읽는 게 맞겠습니다.</p>
