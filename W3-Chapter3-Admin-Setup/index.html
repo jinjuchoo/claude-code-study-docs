@@ -1373,20 +1373,21 @@
 <blockquote>
 <p>개인의 도구를 조직의 플랫폼으로 바꾸는 챕터입니다. 1~2주차가 "내 노트북에서 어떻게 쓰는가"였다면, 여기서부터는 "500명에게 어떻게 배포하고, 키 없이 인증시키고, 정책을 강제하고, 쓰임을 관측할 것인가"입니다. 배포·자격증명·게이트웨이·네트워크·거버넌스·관측·컴플라이언스·트러블슈팅까지 관리자가 실제로 마주하는 아홉 갈래를 다룹니다.</p>
 </blockquote>
-<p><strong>원본</strong>: Claude Code Deep Dive Workshop / Chapter 3 — Admin Setup (9파트, 112 슬라이드)
+<p><strong>원본</strong>: Claude Code Deep Dive Workshop / Chapter 3 — Admin Setup (9파트, 112 슬라이드. 이 정리에서는 교재 Part 8·9를 파트 8 하나로 합쳐 아래 8개 파일로 구성했습니다)
 <strong>기준 버전</strong>: Claude Code v2.1.233 / 2026년 7월 교재 · 공식 문서 <code>code.claude.com/docs</code> 반영</p>
 <hr />
 <h2 id="회고">회고<a class="headerlink" href="#회고" title="이 위치로 링크">¶</a></h2>
 <p>이 챕터를 공부하고 가장 크게 바뀐 생각은 "관리자 문서는 개발자 문서의 상위 호환이 아니다"라는 것입니다. 1~2주차에서 배운 걸 더 많이 아는 게 아니라, <strong>아예 다른 질문을 던지는 법</strong>을 배우는 챕터였습니다. 개발자에게 "이 기능이 어떻게 동작하는가"가 핵심 질문이라면, 관리자에게는 "개인이 이걸 못 바꾸게 하려면 어디에 둬야 하는가"가 핵심 질문입니다. 같은 설정 파일을 두고도 완전히 다른 걸 묻고 있다는 걸 이번에 실감했습니다.</p>
-<p>managed-settings와 DLP Hook은 시스템 전역 경로에 sudo로 실제 배포해서 검증했습니다. <code>deny</code>는 기대대로 강력해서 CLI 플래그로도 못 뚫었지만, 반대로 <code>ask</code> 규칙 하나(<code>Write(**)</code>)는 경로 패턴이 안 맞아 조용히 무효화되고 있었습니다 — "배포했다"와 "의도대로 작동한다"가 다르다는 걸 보여준 지점입니다(상세는 Part 4·5).</p>
-<p>npm 미러와 <code>permission_denials</code> 필드에서도 예상과 실측이 갈렸습니다. 미러는 제대로 캐싱했지만 검증 과정 자체가 npm 자체 캐시에 오염되기 쉬웠고, managed deny로 실제 차단된 도구 호출이 <code>permission_denials</code> 배열엔 안 잡혔습니다 — 다음 주부터는 이 필드만 믿지 않고 <code>stream-json</code> 원시 이벤트로 확인하려 합니다(상세는 Part 1·5).</p>
+<p>managed-settings와 DLP Hook은 시스템 전역 경로에 sudo로 실제 배포해서 검증했습니다. <code>deny</code>는 기대대로 강력해서 CLI 플래그로도 못 뚫었지만, 반대로 <code>ask</code> 규칙 하나(<code>Write(**)</code>)는 경로 패턴이 안 맞아 조용히 무효화되고 있었습니다. "배포했다"와 "의도대로 작동한다"가 다르다는 걸 보여준 지점입니다(상세는 Part 4·5).</p>
+<p>npm 미러와 <code>permission_denials</code> 필드에서도 예상과 실측이 갈렸습니다. 미러는 제대로 캐싱했지만 검증 과정 자체가 npm 자체 캐시에 오염되기 쉬웠고, managed deny로 실제 차단된 도구 호출이 <code>permission_denials</code> 배열엔 안 잡혔습니다. 그래서 다음 주부터는 이 필드만 믿지 않고 <code>stream-json</code> 원시 이벤트로 확인하려 합니다(상세는 Part 1·5).</p>
 <p>Bedrock SSO는 개인 AWS 계정으로 처음부터 재현했습니다. IAM Identity Center 설정부터 Permission Set 권한, Model access 정책, 쿼터까지 단계마다 예상과 다른 함정이 있었고(상세는 Part 2), 이 문서를 쓰는 시점엔 마지막 실제 모델 호출만 AWS 쿼터 승인 대기로 남아 있습니다.</p>
-<p>공식문서 대조는 두 라운드를 돌렸습니다. 8/9의 1차 대조에서 🔴 6 + 🟡 6건, 이번 주 재검증에서 🔴 10 + 🟡 24건이 추가로 나왔습니다 — 특히 Part 3(apps gateway)는 클라이언트 연결 방식·모델 거부 동작·지출 한도 API가 전부 실제와 달라서 문서 절반을 다시 썼습니다. 상세는 각 파트의 🔴/🟡 콜아웃을 참고하세요.</p>
-<p>Part 2(Bedrock SSO)는 위에서 적었듯 개인 계정으로 로그인·STS 확인까지 실제로 끝냈고, 남은 건 쿼터 승인뿐이라 거의 다 채워졌습니다. 아쉬운 점은 Part 7(신원·데이터·컴플라이언스)과 Part 3(apps gateway)의 실습 공백입니다 — 이 둘은 개인 AWS 계정으로는 우회가 안 되는, <strong>진짜 조직 IdP 테넌트와 조직 CloudTrail</strong>이 있어야 재현되는 영역이라 개념 정리로 남겨뒀습니다. 미완을 미완으로 정직하게 표기하는 편이, 나중에 이 문서를 다시 볼 때 훨씬 쓸모 있다고 판단했습니다.</p>
+<p>공식문서 대조는 두 라운드를 돌렸습니다. 8/9의 1차 대조에서 🔴 6 + 🟡 6건, 이번 주 재검증에서 🔴 10 + 🟡 24건이 추가로 나왔는데, 특히 Part 3(apps gateway)는 클라이언트 연결 방식·모델 거부 동작·지출 한도 API가 전부 실제와 달라서 문서 절반을 다시 썼습니다. 상세는 각 파트의 🔴/🟡 콜아웃을 참고하세요.</p>
+<p>Part 2(Bedrock SSO)는 위에서 적었듯 개인 계정으로 로그인·STS 확인까지 실제로 끝냈고, 남은 건 쿼터 승인뿐이라 거의 다 채워졌습니다. 아쉬운 점은 Part 7(신원·데이터·컴플라이언스)과 Part 3(apps gateway)의 실습 공백입니다. Part 3은 게이트웨이 컨테이너·한도용 Postgres·사내 IdP OIDC 클라이언트 등록까지 필요해 이번 주 실습 범위 밖이었고, Part 7은 <strong>진짜 조직 IdP 테넌트와 조직 CloudTrail</strong>이 있어야 재현되는 영역이라 둘 다 개념 정리로 남겨뒀습니다. 미완을 미완으로 정직하게 표기하는 편이, 나중에 이 문서를 다시 볼 때 훨씬 쓸모 있다고 판단했습니다.</p>
 <hr />
 <h2 id="30초-요약">30초 요약<a class="headerlink" href="#30초-요약" title="이 위치로 링크">¶</a></h2>
-<p>Chapter 3의 핵심은 한 문장입니다 — <strong>"개인이 선택할 수 있는가, 조직이 강제할 수 있는가"를 아홉 갈래 각각에서 다시 묻는 것.</strong> 배포는 플랫폼별 표준 조합(Native/OS 저장소/패키지 매니저/컨테이너)과 채널·하한선 두 다이얼, 링 단위 확산으로 통제합니다. 자격증명은 사람에게 SSO, 기계에게 볼트 헬퍼, CI에게 OIDC를 맡겨 <strong>정적 키 배포를 0으로</strong> 만드는 것이 목표이고, 필요하면 apps gateway 하나로 SSO 로그인·그룹별 모델 라우팅·지출 한도·중앙 관측을 한데 묶습니다.</p>
-<p>네트워크는 프록시·사내 CA로 들어오는 길을 열고 sandbox의 <code>allowedDomains</code>와 DLP 훅으로 나가는 길을 좁히는 이중 구조이고, 권한 규칙이 못 막는 갭(예: <code>curl</code> 우회)을 OS 레벨 sandbox가 막는다는 게 핵심입니다. 거버넌스는 managed settings 4채널(기기에서 처음 발견되는 하나만 적용) + 스칼라 덮어쓰기·배열 병합이라는 비대칭 병합 규칙으로 "개인이 넓힐 수는 있어도 조직이 막은 걸 되돌릴 수는 없는" 구조를 만듭니다. 관측은 OTel을 전사 계측으로 깔아 세션·토큰·비용을 귀속시키고, 신원은 Claude 계정 레벨과 클라우드 IAM 레벨이라는 서로 다른 두 층으로 갈라진다는 걸 이해하는 게 가장 자주 헷갈리는 지점입니다.</p>
+<p>Chapter 3의 질문은 결국 하나로 모입니다. <strong>"이 설정을 개인이 바꿀 수 있는가, 조직이 못 바꾸게 막을 수 있는가."</strong> 1~2주차가 내 노트북에서 어떻게 쓰는지를 다뤘다면, 이번 주는 같은 도구를 <strong>회사 전체에 배포하고, 개인이 되돌릴 수 없게 잠그는 법</strong>을 다룹니다.</p>
+<p>핵심은 두 가지입니다. 첫째, <strong>인증</strong>입니다. 사람에게는 로그인 한 번으로 여러 서비스에 접속하는 SSO를 그대로 쓰고, 기계와 CI 파이프라인에는 파일로 저장해두는 고정 키 대신 <strong>매번 새로 발급되고 곧 만료되는 임시 자격증명</strong>을 씁니다. 배포된 노트북 어디에도 "복사되면 그대로 유출되는 키 파일"이 남지 않는 게 목표입니다. 둘째, <strong>강제</strong>입니다. 관리자가 정책 파일 하나를 시스템 폴더에 심어두면 개인 설정 파일에 뭐라고 적혀 있든 그 정책이 이깁니다. 개인은 규칙을 더 엄격하게 좁힐 수는 있어도, 조직이 막아둔 걸 되돌릴 수는 없습니다.</p>
+<p>이 두 축(임시 자격증명으로 인증하기 / 못 바꾸게 잠그기) 위에서 배포 채널, 네트워크 통제, 모니터링, 신원 관리가 같은 논리로 엮여 있습니다. SSO·OIDC·managed settings 같은 개별 개념과 약어는 아홉 갈래로 나뉜 각 파트에서 처음 등장할 때마다 그 자리에서 풀어서 설명합니다.</p>
 <hr />
 <h2 id="목차">목차<a class="headerlink" href="#목차" title="이 위치로 링크">¶</a></h2>
 <table>
@@ -1442,12 +1443,12 @@
 </table>
 <hr />
 <h2 id="시작하기-전에-확인할-것">시작하기 전에 확인할 것<a class="headerlink" href="#시작하기-전에-확인할-것" title="이 위치로 링크">¶</a></h2>
-<p>Chapter 3은 Chapter 1(기본 사용법)과 Chapter 2(서브에이전트)를 전제하지만, 관점이 다릅니다. 앞 두 챕터가 "내가 어떻게 쓰는가"였다면 이 챕터는 "다른 사람이 못 바꾸게 하려면 무엇을 어디에 둬야 하는가"입니다. 그래서 가장 먼저 확인할 건 버전이 아니라 <strong>권한</strong>입니다. 이 챕터의 실습(managed-settings, DLP Hook)은 시스템 전역 경로에 파일을 써야 하므로 sudo(또는 관리자 권한)가 필요합니다. 없다면 핸즈온랩이 제시하는 User 스코프 대체 경로(<code>~/.claude/settings.json</code>)로도 병합·차단 메커니즘 자체는 체험할 수 있지만, 진짜 Managed가 주는 강제성(사용자가 원천적으로 못 바꾼다는 성질)까지는 검증할 수 없다는 걸 감안하고 읽으세요 — 이번 정리도 그 한계 안에서 작성됐습니다.</p>
+<p>Chapter 3은 Chapter 1(기본 사용법)과 Chapter 2(서브에이전트)를 전제하지만, 관점이 다릅니다. 앞 두 챕터가 "내가 어떻게 쓰는가"였다면 이 챕터는 "다른 사람이 못 바꾸게 하려면 무엇을 어디에 둬야 하는가"입니다. 그래서 가장 먼저 확인할 건 버전이 아니라 <strong>권한</strong>입니다. 이 챕터의 실습(managed-settings, DLP Hook)은 시스템 전역 경로에 파일을 써야 하므로 sudo(또는 관리자 권한)가 필요합니다. 없다면 핸즈온랩이 제시하는 User 스코프 대체 경로(<code>~/.claude/settings.json</code>)로도 병합·차단 메커니즘 자체는 체험할 수 있지만, 진짜 Managed가 주는 강제성(사용자가 원천적으로 못 바꾼다는 성질)까지는 검증할 수 없다는 점은 감안하고 읽으세요. 이번 정리도 그 한계 안에서 작성됐습니다.</p>
 <p>두 번째로 자주 오해되는 지점은 "신원"이라는 단어입니다. Claude 계정 레벨(SSO·SCIM·좌석 배정, claude.ai 콘솔)과 클라우드 IAM 레벨(Bedrock 호출 권한, Permission Set)은 이름만 비슷할 뿐 완전히 다른 시스템입니다. <a href="part-07-identity-compliance/">Part 7</a> §1에서 이 구분을 먼저 잡고 가면 나머지 파트에서 헷갈릴 일이 줄어듭니다.</p>
 <p>세 번째는 이 챕터가 요구하는 인프라입니다. Bedrock SSO(Part 2)는 개인 AWS 계정으로도 IAM Identity Center부터 실제 재현이 가능했지만, apps gateway(Part 3)와 실제 조직 IdP·CloudTrail 연동(Part 7)은 조직 AWS 계정 관리자 권한이나 조직 IdP 없이는 끝까지 재현할 수 없습니다. 이번 정리는 어디까지 실제로 확인했고 어디부터 개념 정리인지를 각 파트 "직접 해보기" 절에 정직하게 표시해뒀습니다.</p>
 <hr />
 <h2 id="실습-기록">실습 기록<a class="headerlink" href="#실습-기록" title="이 위치로 링크">¶</a></h2>
-<p>이 정리의 실습 부분은 <strong>읽고 옮긴 게 아니라 2026-08-15에 직접 실행한 결과</strong>입니다.
+<p>이 정리의 실습 부분은 <strong>읽고 옮긴 게 아니라 직접 실행한 결과</strong>입니다. Task 0<sub>1·3</sub>5는 2026-08-15에, Task 2(Bedrock)는 후속 디버깅이 이어져 2026-08-16까지 실행했습니다.
 실행 환경: macOS 26.5.1 (Darwin 25.5.0) / Claude Code <strong>v2.1.233</strong></p>
 <table>
 <thead>
@@ -1471,7 +1472,7 @@
 <tr>
 <td>Task 2 — Bedrock + SSO</td>
 <td>🟡 부분 완료</td>
-<td>개인 AWS 계정에 IAM Identity Center·Permission Set 실배포, <code>aws sso login</code> 실 로그인과 STS 단기 자격증명 확인 완료. Bedrock 실제 모델 호출은 IAM 정책 보강(List 액션 Resource 분리, AWS Marketplace 구독 권한) 진행 중</td>
+<td>개인 AWS 계정에 IAM Identity Center·Permission Set 실배포, <code>aws sso login</code> 실 로그인과 STS 단기 자격증명 확인 완료. IAM 정책 보강과 Anthropic use case details 제출까지 마쳤고, 실제 모델 호출은 RPM/TPM 쿼터 증설 승인(AWS Support 케이스) 대기로 남음</td>
 </tr>
 <tr>
 <td>Task 3 — managed-settings</td>
@@ -1490,7 +1491,7 @@
 </tr>
 </tbody>
 </table>
-<p>전체 로그와 원본 출력은 → <strong><a href="part-08-troubleshooting-recap-labs/">Part 8 — 트러블슈팅, 정리와 실습 랩</a></strong></p>
+<p>실습 요약과 각 Task의 상세 위치 색인은 → <strong><a href="part-08-troubleshooting-recap-labs/">Part 8 — 트러블슈팅, 정리와 실습 랩</a></strong> (원본 명령·출력 전문은 각 파트의 "직접 해보기" 절에 있습니다)</p>
 <hr />
 <h2 id="학습-목표-체크리스트">학습 목표 체크리스트<a class="headerlink" href="#학습-목표-체크리스트" title="이 위치로 링크">¶</a></h2>
 <ul class="task-list">

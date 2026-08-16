@@ -1210,6 +1210,56 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="2. 필수 아웃바운드 도메인 — 방화벽 기준선">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#추론-트래픽이-나가는-곳" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        추론 트래픽이 나가는 곳
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#로그인설정-수신-경로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        로그인·설정 수신 경로
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#설치와-갱신-자산" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        설치와 갱신 자산
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#잘-안-알려진-나머지" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        잘 안 알려진 나머지
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1590,6 +1640,56 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="2. 필수 아웃바운드 도메인 — 방화벽 기준선">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#추론-트래픽이-나가는-곳" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        추론 트래픽이 나가는 곳
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#로그인설정-수신-경로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        로그인·설정 수신 경로
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#설치와-갱신-자산" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        설치와 갱신 자산
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#잘-안-알려진-나머지" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        잘 안 알려진 나머지
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1794,15 +1894,20 @@
 <h1 id="part-4--네트워크와-보안">Part 4 — 네트워크와 보안<a class="headerlink" href="#part-4--네트워크와-보안" title="이 위치로 링크">¶</a></h1>
 <hr />
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p>들어오는 길은 필수 도메인·프록시·사내 CA로 열고, 나가는 길은 sandbox 도메인 목록과 DLP 훅으로 좁힙니다. <strong>권한 규칙과 샌드박스는 서로 다른 계층이며, 권한 규칙이 못 막는 갭을 OS가 막습니다.</strong></p>
+<p>사내망에서 Claude Code를 쓰려면 두 가지를 같이 해야 합니다. 하나는 <strong>바깥으로 나가는 길을 여는 일</strong>이고, 다른 하나는 <strong>그 길로 나가면 안 되는 것을 막는 일</strong>입니다.</p>
+<p>길을 열 때 챙길 것은 방화벽 도메인, 프록시(proxy, 요청을 대신 받아 목적지로 전달해 주는 중계 서버), 사내 CA 인증서입니다. 길을 좁힐 때 쓰는 것은 샌드박스(sandbox)의 도메인 허용 목록과 DLP(Data Loss Prevention, 민감정보가 바깥으로 새 나가지 않게 막는 정책·도구) 훅입니다.</p>
+<p>그리고 이 파트에서 가장 중요한 문장이 하나 있습니다. <strong>권한 규칙과 샌드박스는 서로 다른 계층이며, 권한 규칙이 못 막는 빈틈을 OS(운영체제)가 막습니다.</strong> 왜 그런지는 §6에서 자세히 풀어 씁니다.</p>
 <hr />
 <h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
-<p>앞의 세 파트에서 설치와 인증 경로를 정리했지만, 그건 전부 "패키지가 내려오고 토큰이 발급되는" 이야기였습니다. 실제 사내망에 배포하면 그다음에 벽이 나옵니다. 설치는 됐는데 첫 프롬프트에서 타임아웃이 나고, 프록시 변수를 넣었더니 이번엔 <code>SELF_SIGNED_CERT_IN_CHAIN</code>이 뜨고, 그걸 넘겼더니 스트리밍 응답이 중간에 끊깁니다. 각각 원인이 다른 층에 있는데 증상만 보면 전부 "Claude Code가 안 됩니다"로 보고됩니다.</p>
-<p>반대 방향도 있습니다. 사내망에서 도구가 나가는 길을 열어 주면, 그 길로 나가면 안 되는 것도 같이 나갈 수 있습니다. <code>WebFetch</code>를 deny 목록에 넣어 웹 접근을 막았다고 안심하는 조직이 많은데, 같은 세션에서 <code>Bash</code>가 허용돼 있으면 <code>curl</code>로 임의 URL에 붙을 수 있습니다. 권한 규칙은 <strong>도구 이름 단위</strong>로 판정하지, 그 도구가 안에서 무엇을 하는지는 보지 않습니다.</p>
-<p>이 파트는 그 두 방향을 다룹니다. 앞쪽 절반은 "어떻게 나가게 할 것인가"(도메인·프록시·CA), 뒤쪽 절반은 "무엇을 못 나가게 할 것인가"(sandbox 네트워크·DLP 훅)입니다.</p>
+<p>앞의 세 파트에서 설치와 인증 경로를 정리했습니다. 하지만 그건 전부 "패키지가 내려오고 토큰이 발급되는" 데까지의 이야기였습니다. 실제 사내망에 배포하면 그다음에 벽이 나옵니다.</p>
+<p>전형적인 순서는 이렇습니다. 설치는 됐는데 첫 프롬프트에서 응답이 오지 않고 타임아웃이 납니다. 프록시 설정을 넣었더니 이번엔 <code>SELF_SIGNED_CERT_IN_CHAIN</code>이라는 인증서 오류가 뜹니다. 그걸 넘겼더니 이제는 답변이 길어질 때 중간에서 끊깁니다. 원인은 셋 다 다른 층에 있습니다. 그런데 사용자가 보고할 때는 전부 "Claude Code가 안 됩니다" 한 줄로 올라옵니다. 그래서 <strong>증상이 어느 층에서 난 것인지 구분하는 능력</strong>이 이 파트의 실전 가치입니다.</p>
+<p>반대 방향도 있습니다. 도구가 바깥으로 나갈 길을 열어 주면, 그 길로 나가면 안 되는 것도 같이 나갈 수 있습니다.</p>
+<p>예를 들어 웹 접근 도구인 <code>WebFetch</code>를 deny(거부) 목록에 넣고 "이제 이 세션은 웹에 못 나간다"고 정리하는 조직이 많습니다. 그런데 같은 세션에서 셸 명령 도구인 <code>Bash</code>가 허용돼 있다면, 모델은 <code>curl</code> 같은 명령어로 아무 URL에나 붙을 수 있습니다. 권한 규칙은 <strong>도구 이름 단위</strong>로만 판정하기 때문입니다. 그 도구가 안에서 무엇을 하는지까지는 보지 않습니다.</p>
+<p>이 파트는 그 두 방향을 순서대로 다룹니다. 앞쪽 절반은 "어떻게 나가게 할 것인가"(도메인·프록시·CA 인증서), 뒤쪽 절반은 "무엇을 못 나가게 할 것인가"(샌드박스 네트워크·DLP 훅)입니다.</p>
 <hr />
 <h2 id="1-전체-경로부터-그려-봅니다">1. 전체 경로부터 그려 봅니다<a class="headerlink" href="#1-전체-경로부터-그려-봅니다" title="이 위치로 링크">¶</a></h2>
-<p>층별로 들어가기 전에 요청 하나가 어디를 지나는지 먼저 봐 두면 뒤 내용이 훨씬 붙기 쉽습니다. 폐쇄망에서 Claude Code가 모델을 한 번 호출할 때, 요청은 최소 다섯 개의 통제 지점을 통과합니다. 중요한 건 <strong>이 통제 지점들이 서로 다른 주체의 관할</strong>이라는 점입니다 — 어떤 건 Claude Code 설정이, 어떤 건 OS가, 어떤 건 네트워크 팀이 소유합니다.</p>
+<p>층별로 들어가기 전에 요청 하나가 어디를 지나는지 먼저 봐 두면 뒤 내용이 훨씬 잘 붙습니다.</p>
+<p>폐쇄망(외부 인터넷과 직접 연결되지 않고 통제된 경로로만 나갈 수 있는 사내망)에서 Claude Code가 모델을 한 번 호출하면, 그 요청은 최소 다섯 개의 통제 지점을 지납니다. 여기서 중요한 건 <strong>통제 지점마다 주인이 다르다</strong>는 점입니다. 어떤 건 Claude Code 설정이 정하고, 어떤 건 OS가 강제하고, 어떤 건 네트워크 팀이 소유합니다. 그래서 문제가 생겼을 때 고치러 가야 할 사람도 층마다 달라집니다.</p>
 <pre class="mermaid"><code>flowchart TD
     M["&lt;b&gt;모델 판단&lt;/b&gt;&lt;br/&gt;어떤 도구를 부를지 결정"]
     PERM{"&lt;b&gt;권한 규칙&lt;/b&gt;&lt;br/&gt;allow / deny / ask&lt;br/&gt;&lt;i&gt;도구 이름 단위 판정&lt;/i&gt;"}
@@ -1851,112 +1956,163 @@
 <p>위에서부터 읽으면 통제의 성격이 단계마다 달라집니다.</p>
 <ul>
 <li>
-<p><strong>권한 규칙(주황)</strong> 은 Claude Code 안쪽의 판정입니다. "이 도구를 써도 되는가"를 이름으로 봅니다. 빠르고 설정이 쉽지만, 도구가 무엇을 하려는지는 모릅니다.</p>
+<p><strong>권한 규칙(주황)</strong>은 Claude Code 안쪽에서 하는 판정입니다. "이 도구를 써도 되는가"를 <strong>도구 이름만 보고</strong> 결정합니다. 빠르고 설정도 쉽지만, 그 도구가 무엇을 하려는지는 모릅니다.</p>
 </li>
 <li>
-<p><strong>PreToolUse 훅(주황)</strong> 도 Claude Code 안쪽이지만, 판정 대상이 <strong>도구 입력의 내용</strong>입니다. 여기가 DLP가 사는 층입니다.</p>
+<p><strong>PreToolUse 훅(주황)</strong> 역시 Claude Code 안쪽이지만, 판정 대상이 다릅니다. 훅(hook)은 특정 시점에 자동으로 끼어들어 실행되는 사용자 정의 스크립트입니다. <code>PreToolUse</code> 훅은 도구가 실행되기 <strong>직전</strong>에 불려 나와, 도구에 들어갈 입력 내용을 검사합니다. 앞서 말한 DLP가 사는 층이 여기입니다.</p>
 </li>
 <li>
-<p><strong>sandbox 네트워크(빨강)</strong> 는 OS가 강제합니다. Claude Code가 만든 프로세스든 그 프로세스가 띄운 <code>curl</code>이든 똑같이 적용됩니다. 이 파트의 핵심 통찰이 여기 있습니다.</p>
+<p><strong>sandbox 네트워크(빨강)</strong>는 Claude Code가 아니라 OS가 강제합니다. Claude Code가 만든 프로세스든, 그 프로세스가 다시 띄운 <code>curl</code>이든 똑같이 적용됩니다. 이 파트의 핵심이 여기 있습니다.</p>
 </li>
 <li>
-<p><strong>프록시·TLS·방화벽(파랑)</strong> 은 네트워크 팀 관할입니다. Claude Code는 환경변수로 순응할 뿐 통제권이 없습니다.</p>
+<p><strong>프록시·TLS·방화벽(파랑)</strong>은 네트워크 팀 관할입니다. TLS(Transport Layer Security)는 HTTPS 통신을 암호화하는 규약입니다. 이 층에 대해 Claude Code는 환경변수를 읽어 순응할 뿐, 통제권이 없습니다.</p>
 </li>
 <li>
-<p><strong>PrivateLink 이후(초록)</strong> 는 목적지입니다. Bedrock 경로를 쓰면 상당 부분을 인터넷 밖으로 뺄 수 있습니다.</p>
+<p><strong>PrivateLink 이후(초록)</strong>는 요청이 도착하는 목적지입니다. PrivateLink(AWS의 VPC 엔드포인트)는 인터넷을 거치지 않고 AWS 서비스에 내부 경로로 붙는 방식입니다. Bedrock(AWS가 제공하는 관리형 모델 호출 서비스로, Part 2에서 다룬 인증 경로 중 하나) 경로를 쓰면 트래픽의 상당 부분을 인터넷 밖으로 뺄 수 있습니다.</p>
 </li>
 </ul>
-<p>한 층에서 막힌 걸 다른 층 설정으로 고치려다 시간을 날리는 일이 흔합니다. 증상이 나오면 먼저 <strong>몇 번째 층인지</strong>를 특정하는 습관이 트러블슈팅 시간을 가장 크게 줄입니다.</p>
+<p>한 층에서 막힌 걸 엉뚱하게 다른 층 설정으로 고치려다 시간을 날리는 일이 흔합니다. 증상이 나오면 먼저 <strong>몇 번째 층인지</strong>부터 특정하세요. 이 습관 하나가 트러블슈팅 시간을 가장 크게 줄입니다.</p>
 <hr />
 <h2 id="2-필수-아웃바운드-도메인--방화벽-기준선">2. 필수 아웃바운드 도메인 — 방화벽 기준선<a class="headerlink" href="#2-필수-아웃바운드-도메인--방화벽-기준선" title="이 위치로 링크">¶</a></h2>
-<p>방화벽 요청서를 쓰려면 "무엇을, 왜, 안 열면 어떻게 되는지" 세 가지를 채워야 합니다. 교재 슬라이드는 이 목록을 여섯 갈래로 정리하는데, <strong>공식문서와 대조해보니 그사이 목록 자체가 꽤 바뀌어 있었습니다.</strong> 아래는 실제 공식문서(<code>network-config</code>) 기준으로 다시 정리한 목록입니다.</p>
-<p>추론 트래픽이 나가는 곳이 첫 번째입니다. Anthropic에 직결하는 구성이라면 <code>api.anthropic.com</code>이 유일한 필수 도메인입니다. Bedrock 경로로 운영하면 <strong>모델 트래픽 자체는 이 도메인으로 안 나갑니다</strong> — 요청이 <code>bedrock-runtime.&lt;리전&gt;.amazonaws.com</code>으로 나가고, 그마저도 VPC 엔드포인트(PrivateLink)로 대체하면 인터넷 구간을 타지 않습니다. 다만 "아예 필요 없다"까지는 아닙니다 — <code>WebFetch</code> 도구는 도메인 안전성 사전 점검을 위해 공급자 설정과 무관하게 여전히 <code>api.anthropic.com</code>을 호출합니다(<code>skipWebFetchPreflight: true</code>로 끄지 않는 한). Part 2에서 정리한 인증 경로 선택이 여기서 방화벽 요청서의 분량을 바꾸지만, <code>api.anthropic.com</code> 자체를 완전히 빼도 되는 건 WebFetch까지 막을 각오가 됐을 때뿐입니다.</p>
-<p>구독 계정으로 로그인하는 구성이라면 <code>claude.ai</code>가 추가되고, 여기에 <strong><code>claude.com</code>(로그인 리다이렉트)과 <code>platform.claude.com</code>도 함께 열어야 합니다.</strong> <code>platform.claude.com</code>을 빠뜨리기 쉬운데, 실제로는 OAuth 토큰 교환이 이 호스트를 거치기 때문에 <strong>구독 로그인 방식이어도 필수</strong>입니다. Teams·Enterprise 플랜의 서버 관리 설정을 내려받는 경로도 여기 물려 있어서, 이 셋 중 하나라도 막히면 로그인이나 관리 설정 수신이 조용히 죽습니다.</p>
-<p>설치와 갱신 자산은 <code>downloads.claude.ai</code>(네이티브 설치·자동 갱신·플러그인 실행 파일)에서 옵니다. npm 경로로 설치한다면 <code>registry.npmjs.org</code>가 별도로 필요하고, Homebrew로 설치한다면 <code>formulae.brew.sh</code>도 열어야 합니다. 사내 미러나 아티팩트 저장소를 운영한다면 이 도메인들 대신 미러를 열어 주는 쪽이 낫습니다.</p>
-<p>여기에 잘 알려지지 않은 도메인 몇 개가 더 필요합니다. <code>mcp-proxy.anthropic.com</code>(MCP 연결 중계), <code>storage.googleapis.com</code>(플러그인 마켓플레이스 메타데이터), <code>bridge.claudeusercontent.com</code>, <code>raw.githubusercontent.com</code>(릴리스 노트 조회), <code>code.claude.com</code>(세션 중 문서 조회 기능을 쓴다면). 기능 플래그와 원격 측정은 이제 별도 도메인이 아니라 <strong><code>api.anthropic.com</code>이 함께 처리</strong>하고, 운영 텔레메트리·오류 리포트만 Datadog 계열 호스트(<code>http-intake.logs.us5.datadoghq.com</code>, <code>browser-intake-us5-datadoghq.com</code>)로 따로 나갑니다 — 이 둘은 <code>DISABLE_TELEMETRY</code>나 <code>CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC</code>으로 끌 수 있습니다.</p>
+<p>여기서 말하는 아웃바운드(outbound)는 <strong>사내에서 바깥으로 나가는 방향의 통신</strong>을 뜻합니다. 방화벽은 기본적으로 이 방향을 막고 있으므로, 필요한 목적지만 골라서 열어 달라고 요청해야 합니다.</p>
+<p>방화벽 요청서를 쓰려면 "무엇을, 왜, 안 열면 어떻게 되는지" 세 가지를 채워야 합니다. 교재 슬라이드는 이 목록을 여섯 갈래로 정리합니다. 그런데 <strong>공식문서와 대조해보니 그사이 목록 자체가 꽤 바뀌어 있었습니다.</strong> 아래는 실제 공식문서(<code>network-config</code>) 기준으로 다시 정리한 목록입니다.</p>
+<h3 id="추론-트래픽이-나가는-곳">추론 트래픽이 나가는 곳<a class="headerlink" href="#추론-트래픽이-나가는-곳" title="이 위치로 링크">¶</a></h3>
+<p>모델에게 질문을 보내고 답을 받아 오는 통신이 첫 번째입니다. Anthropic에 직접 붙는 구성이라면 <code>api.anthropic.com</code> 하나가 유일한 필수 도메인입니다.</p>
+<p>Bedrock 경로로 운영하면 <strong>모델 트래픽 자체는 이 도메인으로 안 나갑니다.</strong> 요청이 <code>bedrock-runtime.&lt;리전&gt;.amazonaws.com</code>으로 나가기 때문입니다. 여기에 앞서 말한 VPC 엔드포인트(PrivateLink)까지 쓰면 인터넷 구간을 아예 타지 않습니다.</p>
+<p>다만 "그러니 <code>api.anthropic.com</code>은 아예 필요 없다"까지는 아닙니다. <code>WebFetch</code> 도구는 접근할 도메인이 안전한지 미리 확인하는 절차를 거치는데, 이 확인이 어떤 모델 공급자를 쓰든 상관없이 <code>api.anthropic.com</code>을 호출하기 때문입니다(<code>skipWebFetchPreflight: true</code>로 끄지 않는 한).</p>
+<p>정리하면 이렇습니다. Part 2에서 정리한 인증 경로 선택이 방화벽 요청서의 분량을 크게 바꾸긴 합니다. 하지만 <code>api.anthropic.com</code>을 완전히 빼도 되는 건 WebFetch를 포기할 각오가 됐을 때뿐입니다.</p>
+<h3 id="로그인설정-수신-경로">로그인·설정 수신 경로<a class="headerlink" href="#로그인설정-수신-경로" title="이 위치로 링크">¶</a></h3>
+<p>구독 계정으로 로그인하는 구성이라면 <code>claude.ai</code>가 추가됩니다. 여기서 끝이 아니라 <strong><code>claude.com</code>(로그인 리다이렉트)과 <code>platform.claude.com</code>도 함께 열어야 합니다.</strong></p>
+<p>특히 <code>platform.claude.com</code>을 빠뜨리기 쉽습니다. OAuth(비밀번호를 넘기지 않고 인증 토큰을 발급받는 표준 방식) 토큰 교환이 이 호스트를 거치기 때문에, <strong>구독 로그인 방식이어도 필수</strong>입니다. Teams·Enterprise 플랜에서 서버가 내려 주는 관리 설정을 받아 오는 경로도 여기 물려 있습니다. 이 셋 중 하나라도 막히면 로그인이나 관리 설정 수신이 조용히 죽습니다.</p>
+<h3 id="설치와-갱신-자산">설치와 갱신 자산<a class="headerlink" href="#설치와-갱신-자산" title="이 위치로 링크">¶</a></h3>
+<p>설치 파일과 업데이트는 <code>downloads.claude.ai</code>에서 옵니다(네이티브 설치·자동 갱신·플러그인 실행 파일). npm 경로로 설치한다면 <code>registry.npmjs.org</code>가 별도로 필요하고, Homebrew로 설치한다면 <code>formulae.brew.sh</code>도 열어야 합니다.</p>
+<p>사내 미러(외부 저장소의 사본을 사내에 두고 대신 받아 가게 하는 서버)나 아티팩트 저장소를 운영한다면, 이 도메인들을 여는 대신 미러를 열어 주는 쪽이 낫습니다.</p>
+<h3 id="잘-안-알려진-나머지">잘 안 알려진 나머지<a class="headerlink" href="#잘-안-알려진-나머지" title="이 위치로 링크">¶</a></h3>
+<p>여기에 놓치기 쉬운 도메인이 몇 개 더 있습니다.</p>
+<ul>
+<li><code>mcp-proxy.anthropic.com</code>은 MCP(Model Context Protocol, 외부 도구·데이터를 모델에 연결하는 표준 규약) 연결을 중계합니다.</li>
+<li><code>storage.googleapis.com</code>은 플러그인 마켓플레이스 메타데이터를 받아 옵니다.</li>
+<li><code>bridge.claudeusercontent.com</code></li>
+<li><code>raw.githubusercontent.com</code>은 릴리스 노트를 조회할 때 쓰입니다.</li>
+<li><code>code.claude.com</code>은 세션 중 공식문서 조회 기능을 쓴다면 필요합니다.</li>
+</ul>
+<p>기능 플래그(기능을 켜고 끄는 원격 스위치)와 텔레메트리(telemetry, 도구가 어떻게 쓰이는지 사용 지표를 수집해 보내는 것)는 이제 별도 도메인이 아니라 <strong><code>api.anthropic.com</code>이 함께 처리</strong>합니다.</p>
+<p>별도 도메인으로 나가는 건 운영 텔레메트리와 오류 리포트뿐이고, 이건 Datadog 계열 호스트(<code>http-intake.logs.us5.datadoghq.com</code>, <code>browser-intake-us5-datadoghq.com</code>)로 갑니다. 이 둘은 <code>DISABLE_TELEMETRY</code>나 <code>CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC</code>으로 끌 수 있습니다.</p>
 <p><img alt="필수 아웃바운드 도메인 슬라이드" src="../slides/slide-039.png" /></p>
 <p><em>▲ 교재 슬라이드 39 — 필수 아웃바운드 도메인</em></p>
 <blockquote>
-<p>🔴 <strong>교재 버전 드리프트 — 목록이 통째로 바뀌었습니다</strong> — 슬라이드가 든 statsig·sentry 계열 도메인은 현재 공식문서에 없습니다(기능 플래그·텔레메트리가 <code>api.anthropic.com</code>으로 흡수됨). 반대로 <code>platform.claude.com</code>, <code>claude.com</code>, <code>mcp-proxy.anthropic.com</code>, <code>storage.googleapis.com</code>, <code>raw.githubusercontent.com</code>처럼 슬라이드에 없는 필수 도메인이 여럿 새로 생겼습니다. <strong>이 목록은 릴리스마다 추가되는 경향이 있으니, 실제 방화벽 요청서를 쓸 때는 이 문서가 아니라 그 시점의 공식문서 <code>network-config</code> 페이지를 원본으로 삼으세요.</strong></p>
+<p>🔴 <strong>교재 버전 드리프트: 목록이 통째로 바뀌었습니다.</strong> 슬라이드에 있는 statsig·sentry 계열 도메인은 현재 공식문서에 없습니다. 기능 플래그와 텔레메트리가 <code>api.anthropic.com</code>으로 흡수됐기 때문입니다. 반대로 슬라이드에 없던 필수 도메인이 여럿 새로 생겼습니다. <code>platform.claude.com</code>, <code>claude.com</code>, <code>mcp-proxy.anthropic.com</code>, <code>storage.googleapis.com</code>, <code>raw.githubusercontent.com</code>이 여기에 해당합니다. 이 목록은 릴리스마다 늘어나는 경향이 있습니다. <strong>실제 방화벽 요청서를 쓸 때는 이 문서가 아니라 그 시점의 공식문서 <code>network-config</code> 페이지를 원본으로 삼으세요.</strong></p>
 </blockquote>
 <div class="admonition warning">
 <p class="admonition-title">부분 개방이 가장 나쁜 상태입니다</p>
-<p>목록 중 몇 개만 열린 상태는 "완전 차단"보다 진단이 어렵습니다. 완전 차단은 첫 요청에서 바로 실패하지만, 부분 개방은 설치도 되고 로그인도 되는데 특정 동작에서만 이상하게 실패합니다. 롤아웃 초기에는 <strong>필수 도메인 목록을 통째로 열고 시작해서, 안정화된 뒤에 하나씩 좁히는</strong> 순서를 권합니다.</p>
+<p>목록 중 몇 개만 열려 있는 상태는 아예 다 막힌 것보다 진단하기 어렵습니다. 완전히 막혀 있으면 첫 요청에서 바로 실패하니 원인이 분명합니다. 반면 일부만 열려 있으면 설치도 되고 로그인도 되는데 특정 동작에서만 이상하게 실패합니다. 그래서 롤아웃 초기에는 <strong>필수 도메인을 통째로 열고 시작해서, 안정화된 뒤에 하나씩 좁히는</strong> 순서를 권합니다.</p>
 </div>
 <hr />
 <h2 id="3-사내-프록시-통과--표준-변수-세-개">3. 사내 프록시 통과 — 표준 변수 세 개<a class="headerlink" href="#3-사내-프록시-통과--표준-변수-세-개" title="이 위치로 링크">¶</a></h2>
-<p>Claude Code는 프록시를 위한 별도 설정 체계를 두지 않습니다. Node.js 생태계의 관행을 그대로 따르므로, 이미 사내에서 다른 CLI 도구에 쓰던 환경변수가 그대로 먹습니다.</p>
+<p>많은 회사는 직원 PC가 인터넷에 직접 나가지 못하게 하고, 대신 프록시 서버를 한 번 거치게 합니다. 이렇게 하면 나가는 트래픽을 한 곳에서 기록하고 통제할 수 있기 때문입니다.</p>
+<p>Claude Code는 프록시를 위한 별도 설정 체계를 따로 두지 않습니다. Node.js 생태계의 관행을 그대로 따릅니다. 그래서 이미 사내에서 다른 CLI 도구에 쓰던 환경변수가 그대로 먹습니다.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://proxy.corp.example:8080
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">HTTP_PROXY</span><span class="o">=</span>http://proxy.corp.example:8080
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">NO_PROXY</span><span class="o">=</span>localhost,127.0.0.1,.corp.example
 </span></code></pre></div>
-<p>실질적으로 중요한 건 <code>HTTPS_PROXY</code>입니다. Claude Code의 트래픽은 사실상 전부 HTTPS이므로 <code>HTTP_PROXY</code>는 보조입니다. 그런데 실제로 사고가 나는 건 대개 세 번째 줄, <strong><code>NO_PROXY</code></strong> 입니다.</p>
-<p><code>NO_PROXY</code>는 "프록시를 거치지 않을 목적지" 목록입니다. 사내 MCP 서버, 사내 게이트웨이(Part 3에서 다룬 apps gateway 같은), 사내 아티팩트 저장소가 여기 빠져 있으면 내부 요청이 굳이 외부 프록시로 나갔다가 되돌아옵니다. 운이 좋으면 느려질 뿐이지만, 보통은 프록시가 내부 도메인을 해석하지 못해 실패합니다. 그래서 <strong><code>NO_PROXY</code>는 프록시 도입 시점이 아니라 사내 서비스를 추가할 때마다 갱신해야 하는 목록</strong>입니다.</p>
-<p>조직 배포는 개인이 셸 프로파일에 넣게 두지 말고 일괄 주입하는 편이 낫습니다. 리눅스라면 <code>/etc/profile.d/</code>에 스크립트를 하나 놓고, macOS·Windows 관리 단말이라면 MDM 프로파일로 환경변수를 밀어 넣습니다. 개인 <code>.zshrc</code>에 맡기면 신규 입사자 온보딩마다 같은 문제가 재발하고, 값이 바뀔 때 전수 갱신이 불가능합니다.</p>
-<p>동작 확인은 두 단계로 나눠서 합니다. 먼저 <code>claude</code>를 띄워 <code>/status</code>와 첫 응답이 정상인지 봅니다. 실패한다면 그때부터는 Claude Code를 붙들고 있지 말고 <code>curl</code>로 계층을 분리하세요.</p>
+<p>셋 중 실질적으로 중요한 건 <code>HTTPS_PROXY</code>입니다. Claude Code의 트래픽은 사실상 전부 HTTPS이기 때문에 <code>HTTP_PROXY</code>는 보조 역할입니다.</p>
+<p>그런데 실제로 사고가 나는 건 대개 세 번째 줄, <strong><code>NO_PROXY</code></strong> 입니다. <code>NO_PROXY</code>는 앞의 둘과 반대로 "<strong>프록시를 거치지 말고 바로 가라</strong>"고 지정하는 목적지 목록입니다.</p>
+<p>여기에 사내 서비스가 빠지면 어떻게 될까요. 사내 MCP 서버, 사내 게이트웨이(Part 3에서 다룬 apps gateway 같은), 사내 아티팩트 저장소로 가는 요청이 굳이 외부 프록시까지 나갔다가 되돌아오게 됩니다. 운이 좋으면 느려지는 데서 끝납니다. 보통은 프록시가 내부 도메인 이름을 해석하지 못해서 그냥 실패합니다.</p>
+<p>그래서 <strong><code>NO_PROXY</code>는 프록시를 처음 도입할 때 한 번 쓰고 끝내는 목록이 아닙니다.</strong> 사내 서비스를 추가할 때마다 같이 갱신해야 합니다.</p>
+<p>조직 배포에서는 이 변수들을 개인이 각자 셸 설정 파일에 넣게 두지 말고, 관리자가 일괄로 밀어 넣는 편이 낫습니다. 리눅스라면 <code>/etc/profile.d/</code>에 스크립트를 하나 두면 됩니다. macOS나 Windows 관리 단말이라면 MDM(Mobile Device Management, 회사가 직원 단말의 설정을 원격으로 배포·관리하는 시스템) 프로파일로 환경변수를 배포합니다.</p>
+<p>개인 <code>.zshrc</code>에 맡기면 두 가지가 반복됩니다. 신규 입사자가 올 때마다 같은 문제가 재발하고, 값이 바뀌었을 때 전 직원 단말을 한 번에 갱신할 방법이 없습니다.</p>
+<p>동작 확인은 두 단계로 나눠서 합니다. 먼저 <code>claude</code>를 띄워 <code>/status</code>와 첫 응답이 정상인지 봅니다. 여기서 실패한다면, Claude Code를 계속 붙들고 있지 말고 <code>curl</code>로 층을 분리해서 확인하세요.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-v<span class="w"> </span>https://api.anthropic.com/
 </span></code></pre></div>
-<p><code>-v</code> 출력에서 <strong>프록시 연결(<code>CONNECT</code> 응답)까지 갔는지</strong>, <strong>TLS 핸드셰이크에서 깨졌는지</strong>가 갈립니다. 앞에서 깨지면 프록시·방화벽 문제이고, 뒤에서 깨지면 다음 절의 CA 문제입니다. 이 한 줄이 트러블슈팅 시간의 절반을 아껴 줍니다.</p>
+<p><code>-v</code>(verbose) 옵션을 주면 연결 과정이 단계별로 출력됩니다. 여기서 볼 것은 어디까지 진행됐는가입니다.</p>
+<ul>
+<li>프록시에 연결하는 단계(<code>CONNECT</code> 응답)에서 깨졌다면 프록시나 방화벽 문제입니다.</li>
+<li>프록시는 통과했는데 그다음 TLS 핸드셰이크(서로 인증서를 확인하고 암호화 통신을 여는 절차)에서 깨졌다면, 다음 절에서 다룰 CA 인증서 문제입니다.</li>
+</ul>
+<p>이 한 줄이 트러블슈팅 시간의 절반을 아껴 줍니다.</p>
 <hr />
 <h2 id="4-인증-프록시--basic은-지원되지만-ntlmkerberos는-다른-답이-필요합니다">4. 인증 프록시 — Basic은 지원되지만, NTLM·Kerberos는 다른 답이 필요합니다<a class="headerlink" href="#4-인증-프록시--basic은-지원되지만-ntlmkerberos는-다른-답이-필요합니다" title="이 위치로 링크">¶</a></h2>
-<p>프록시가 자격증명을 요구하는 환경에서 인증 방식에 따라 답이 갈립니다. <strong>여기서 초안이 실제와 반대로 적혀 있던 부분이 있어 정정합니다.</strong></p>
-<p>Basic 인증 프록시는 공식문서가 URL 자격증명 방식을 실제로 지원합니다.</p>
+<p>프록시 중에는 "누구인지 먼저 밝히라"고 요구하는 것들이 있습니다. 이때 프록시가 어떤 인증 방식을 쓰느냐에 따라 대응이 갈립니다.</p>
+<p>이 절에 나오는 인증 방식부터 정리합니다.</p>
+<ul>
+<li><strong>Basic 인증</strong>은 아이디와 비밀번호를 그대로 실어 보내는 가장 단순한 방식입니다.</li>
+<li><strong>NTLM·Kerberos</strong>는 윈도우 도메인 환경에서 흔한 방식입니다. 단순히 값을 보내는 게 아니라 클라이언트와 서버가 여러 번 주고받으며 신원을 확인하는 <strong>협상 과정</strong>을 거칩니다.</li>
+</ul>
+<p><strong>아래 내용은 이 챕터 초안이 실제와 반대로 적어 두었던 부분이라 정정합니다.</strong></p>
+<p>Basic 인증 프록시라면, URL 안에 아이디와 비밀번호를 넣는 방식을 공식문서가 실제로 지원합니다.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://username:password@proxy.corp.example:8080
 </span></code></pre></div>
-<p>다만 이 형태를 셸 프로파일이나 스크립트에 그대로 하드코딩하면 평문 비밀번호가 셸 히스토리·프로세스 목록·CI 로그로 흘러갈 위험이 있다고 공식문서도 경고합니다. 그래서 조직 배포에서는 이 값을 정적으로 박아 넣기보다, 비밀번호 관리자나 볼트에서 런타임에 읽어와 환경변수를 채우는 스크립트로 감싸는 편이 안전합니다.</p>
+<p>다만 주의할 점이 있습니다. 이 형태를 셸 설정 파일이나 스크립트에 그대로 박아 넣으면(하드코딩), 암호화되지 않은 비밀번호가 셸 명령 기록·실행 중인 프로세스 목록·CI 로그로 흘러갈 수 있습니다. 공식문서도 이 점을 경고합니다.</p>
+<p>그래서 조직 배포에서는 값을 파일에 고정해 두지 마세요. 대신 비밀번호 관리자나 볼트(자격증명을 암호화해 보관하고 필요할 때만 꺼내 주는 저장소)에서 실행 시점에 읽어와 환경변수를 채우는 스크립트로 감싸는 편이 안전합니다.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p><strong>교재 버전 드리프트 — Basic 인증 URL 방식은 "하지 말아야 할 것"이 아니라 공식 지원 경로입니다</strong> — 이 챕터 초안은 URL에 자격증명을 넣는 걸 전면 금지 대상으로 적었는데, 공식문서를 대조해보니 Basic 인증은 이 방식 자체를 명시적으로 지원하고 있었습니다(하드코딩만 경고). "URL에 자격증명을 넣지 마세요"가 아니라 <strong>"하드코딩하지 말고 런타임에 주입하세요"</strong> 가 정확한 조언입니다.</p>
+<p><strong>교재 버전 드리프트: Basic 인증 URL 방식은 "하지 말아야 할 것"이 아니라 공식 지원 경로입니다.</strong> 이 챕터 초안은 URL에 자격증명을 넣는 것 자체를 전면 금지로 적어 두었습니다. 그런데 공식문서를 대조해보니 Basic 인증은 이 방식을 명시적으로 지원하고 있었습니다. 공식문서가 경고하는 건 하드코딩뿐입니다. 즉 "URL에 자격증명을 넣지 마세요"가 아니라 <strong>"하드코딩하지 말고 실행 시점에 주입하세요"</strong> 가 정확한 조언입니다.</p>
 </div>
-<p>NTLM이나 Kerberos처럼 협상 기반 인증을 요구하는 프록시는 애초에 URL 자격증명 방식으로 인증되지 않습니다. 이런 환경에서 공식문서가 권장하는 답은 로컬 중계 도구(Px, Cntlm 등)가 아니라 <strong><a href="../part-03-apps-gateway/">Part 3</a>에서 다룬 LLM Gateway(apps gateway 또는 호환 게이트웨이)를 앞단에 두는 것</strong>입니다. 게이트웨이가 상류 인증을 대행하면 Claude Code는 게이트웨이의 <code>BASE_URL</code>만 바라보면 되고, NTLM·Kerberos 협상은 게이트웨이와 프록시 사이의 문제로 옮겨갑니다.</p>
+<p>NTLM이나 Kerberos는 사정이 다릅니다. 앞서 말한 대로 이 둘은 협상 과정을 거치는 방식이라, 애초에 URL에 아이디·비밀번호를 적어 넣는 것만으로는 인증되지 않습니다.</p>
+<p>이런 환경에서 공식문서가 권장하는 답은 단말마다 중계 도구(Px, Cntlm 등)를 깔아 두는 게 아닙니다. <strong><a href="../part-03-apps-gateway/">Part 3</a>에서 다룬 LLM Gateway(apps gateway 또는 호환 게이트웨이)를 앞단에 두는 것</strong>입니다.</p>
+<p>게이트웨이를 두면 역할이 이렇게 나뉩니다. Claude Code는 게이트웨이 주소(<code>BASE_URL</code>)만 바라보면 됩니다. 까다로운 NTLM·Kerberos 협상은 게이트웨이와 프록시 사이의 문제로 옮겨갑니다.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_BASE_URL</span><span class="o">=</span>https://claude-gw.corp.example
 </span></code></pre></div>
-<p>구조적으로 이 편이 낫습니다. 로컬 중계 데몬을 단말마다 깔고 관리하는 비용, 비밀번호 만료 때마다 재발하는 문의, 중계가 죽었을 때의 진단 난이도가 전부 게이트웨이라는 한 지점으로 모입니다.</p>
+<p>구조적으로도 이 편이 낫습니다. 단말마다 중계 프로그램을 깔고 관리하는 비용, 비밀번호가 만료될 때마다 반복되는 문의, 중계가 죽었을 때 원인을 찾기 어려운 문제가 전부 게이트웨이라는 한 지점으로 모이기 때문입니다.</p>
 <div class="admonition tip">
 <p class="admonition-title">현장 메모</p>
-<p>NTLM·Kerberos 프록시 뒤에서 게이트웨이 도입 전까지 임시로 버텨야 한다면, 로컬 중계 자체가 틀린 접근은 아닙니다(공식문서가 명시적으로 권장하는 경로는 아니지만 흔히 쓰이는 임시방편입니다). 다만 그 경우에도 비밀번호 만료 주기를 놓치면 만료 다음 날 아침 "갑자기 아무 도구도 안 됩니다" 문의가 한꺼번에 들어오고, 심하면 잘못된 자격증명으로 반복 인증하다가 <strong>AD 계정이 잠기는</strong> 사고로 이어집니다. 임시방편으로 쓰더라도 비밀번호 변경 절차에 중계 도구의 자격증명 갱신 항목을 같이 넣어 두세요. 프록시 인증 실패는 HTTP <code>407</code>로 나타나므로, 이 코드가 보이면 도메인·방화벽 쪽을 뒤지지 말고 곧장 인증 계층부터 확인하면 됩니다.</p>
+<p>게이트웨이를 도입하기 전까지 NTLM·Kerberos 프록시 뒤에서 임시로 버텨야 한다면, 단말에 중계 도구를 쓰는 것 자체가 틀린 접근은 아닙니다. 공식문서가 권장하는 경로는 아니지만, 게이트웨이를 세울 여력이 없을 때 선택할 수 있는 임시방편으로 볼 수 있습니다.</p>
+<p>다만 그 경우 비밀번호 만료 주기를 같이 관리해야 합니다. 중계 도구는 저장해 둔 자격증명을 계속 재사용하므로, 비밀번호가 만료되면 그 단말의 모든 요청이 한꺼번에 인증 단계에서 막히게 됩니다. 더 나쁜 경우는 중계 도구가 옛 비밀번호로 계속 재시도하다가 <strong>AD(Active Directory, 윈도우 사내 계정 관리 시스템) 계정이 잠기는</strong> 상황입니다. 임시방편으로 쓰더라도 비밀번호 변경 절차에 "중계 도구 자격증명 갱신" 항목을 같이 넣어 두는 편이 안전합니다.</p>
+<p>참고로 프록시 인증 실패는 HTTP 응답 코드 <code>407</code>로 나타납니다. 이 코드가 보이면 도메인이나 방화벽을 뒤지지 말고 곧장 인증 쪽부터 확인하면 됩니다.</p>
 </div>
 <hr />
 <h2 id="5-사내-ca-인증서--tls-검사-장비-뒤에서">5. 사내 CA 인증서 — TLS 검사 장비 뒤에서<a class="headerlink" href="#5-사내-ca-인증서--tls-검사-장비-뒤에서" title="이 위치로 링크">¶</a></h2>
-<p>TLS 검사(SSL inspection) 장비가 있는 사내망은 나가는 HTTPS 연결을 중간에서 풀었다가 <strong>사내 루트 CA로 다시 서명해서</strong> 클라이언트에 돌려줍니다. Claude Code는 <strong>기본적으로 번들 Mozilla CA와 OS 인증서 저장소를 동시에</strong> 신뢰하므로, 네이티브 설치(권장 경로)나 Node 22.15 이상에서의 npm 설치라면 사내 루트 CA를 OS 신뢰 저장소에 등록하는 것만으로 CrowdStrike Falcon·Zscaler 같은 검사 장비가 추가 설정 없이 그대로 동작합니다. 문제는 <strong>그보다 오래된 npm 설치(Node 22.15 미만)</strong> 에서만 남습니다 — 이 경우엔 Node가 OS 저장소를 안 보고 자체 번들만 신뢰해서, 브라우저에서는 멀쩡한 사이트가 Claude Code에서만 깨집니다.</p>
-<p>이 구버전 npm 설치 케이스에서 증상은 대체로 이렇게 나옵니다.</p>
+<p>먼저 CA(Certificate Authority, 인증서 발급기관)가 무엇인지부터 짚습니다. HTTPS 통신에서 상대 서버가 진짜인지 확인해 주는 게 인증서이고, 그 인증서를 발급하고 보증하는 곳이 CA입니다. 브라우저와 OS에는 신뢰할 만한 CA 목록이 미리 들어 있습니다.</p>
+<p><strong>사내 CA</strong>는 회사가 직접 운영하는 CA입니다. 회사가 자기 이름으로 인증서를 발급할 수 있게 되면, 직원 PC가 나가는 HTTPS 통신을 회사가 중간에서 들여다볼 수 있습니다.</p>
+<p>TLS 검사(SSL inspection) 장비를 쓰는 사내망이 정확히 이렇게 동작합니다. 나가는 HTTPS 연결을 중간에서 한 번 풀어서 내용을 확인한 뒤, <strong>사내 루트 CA로 다시 서명해서</strong> 클라이언트에게 돌려줍니다. 그래서 클라이언트가 사내 루트 CA를 신뢰하지 않으면 "모르는 곳이 발급한 인증서"로 보여 연결이 끊깁니다.</p>
+<p>다행히 Claude Code는 <strong>기본적으로 자체 번들 Mozilla CA 목록과 OS 인증서 저장소를 동시에</strong> 신뢰합니다. 그래서 네이티브 설치(권장 경로)이거나 Node 22.15 이상에서 npm으로 설치했다면, 사내 루트 CA를 OS 신뢰 저장소에 등록하는 것만으로 끝납니다. CrowdStrike Falcon이나 Zscaler 같은 검사 장비도 추가 설정 없이 그대로 동작합니다.</p>
+<p>문제는 <strong>그보다 오래된 npm 설치(Node 22.15 미만)</strong> 에서만 남습니다. 이 경우 Node가 OS 저장소를 보지 않고 자체 번들만 신뢰합니다. 그래서 브라우저에서는 멀쩡히 열리는 사이트가 Claude Code에서만 깨지는 상황이 생깁니다.</p>
+<p>이 구버전 npm 설치에서 증상은 대체로 이렇게 나옵니다.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Error: self-signed certificate in certificate chain
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  code: &#39;SELF_SIGNED_CERT_IN_CHAIN&#39;
 </span></code></pre></div>
-<p><code>UNABLE_TO_VERIFY_LEAF_SIGNATURE</code>나 <code>unable to get local issuer certificate</code>로 나오기도 합니다. 문구가 달라도 원인은 하나 — <strong>사내 루트 CA가 Node의 신뢰 체인에 없다</strong>는 것입니다.</p>
+<p><code>UNABLE_TO_VERIFY_LEAF_SIGNATURE</code>나 <code>unable to get local issuer certificate</code>로 나오기도 합니다. 문구가 달라도 원인은 하나입니다. 바로 <strong>사내 루트 CA가 Node의 신뢰 체인에 없다</strong>는 것입니다.</p>
 <p>해법은 환경변수 하나입니다.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">NODE_EXTRA_CA_CERTS</span><span class="o">=</span>/etc/ssl/corp/corp-root-ca.pem
 </span></code></pre></div>
-<p>여기서 세 가지를 같이 챙겨야 합니다.</p>
+<p>이 변수는 "이 파일에 든 인증서도 추가로 신뢰하라"는 뜻입니다. 여기서 세 가지를 같이 챙겨야 합니다.</p>
 <ul>
 <li>
-<p><strong>형식은 PEM 번들</strong> 이어야 합니다. <code>-----BEGIN CERTIFICATE-----</code> 블록이 이어진 텍스트 파일입니다. 사내에서 배포하는 CA가 DER(<code>.crt</code> 바이너리)이나 PKCS#12(<code>.pfx</code>)면 <code>openssl x509 -inform der -in corp.crt -out corp.pem</code>처럼 변환해서 넣어야 합니다.</p>
+<p><strong>형식은 PEM 번들이어야 합니다.</strong> PEM은 인증서를 텍스트로 표현한 형식으로, <code>-----BEGIN CERTIFICATE-----</code> 블록이 이어진 파일입니다. 사내에서 배포하는 CA 파일이 DER(<code>.crt</code> 바이너리 형식)이나 PKCS#12(<code>.pfx</code>)라면 그대로 못 씁니다. <code>openssl x509 -inform der -in corp.crt -out corp.pem</code>처럼 PEM으로 변환해서 넣어야 합니다.</p>
 </li>
 <li>
-<p><strong>OS 신뢰 저장소에도 병행 등록</strong>해야 합니다. <code>NODE_EXTRA_CA_CERTS</code>는 Node 프로세스에만 적용됩니다. 같은 세션에서 <code>curl</code>, <code>git</code>, <code>pip</code>가 도는데 이들은 OS 저장소를 보므로 별도 등록이 필요합니다. Debian 계열은 <code>/usr/local/share/ca-certificates/</code>에 넣고 <code>update-ca-certificates</code>, RHEL 계열은 <code>/etc/pki/ca-trust/source/anchors/</code>에 넣고 <code>update-ca-trust</code>를 돌립니다. 한쪽만 하면 "Claude Code는 되는데 그 안에서 부른 <code>curl</code>이 안 되는" 이상한 상태가 됩니다.</p>
+<p><strong>OS 신뢰 저장소에도 같이 등록해야 합니다.</strong> <code>NODE_EXTRA_CA_CERTS</code>는 Node 프로세스에만 적용되기 때문입니다. 같은 세션 안에서 <code>curl</code>·<code>git</code>·<code>pip</code>도 함께 도는데, 이들은 Node가 아니라 OS 저장소를 봅니다. Debian 계열은 <code>/usr/local/share/ca-certificates/</code>에 파일을 넣고 <code>update-ca-certificates</code>를 실행합니다. RHEL 계열은 <code>/etc/pki/ca-trust/source/anchors/</code>에 넣고 <code>update-ca-trust</code>를 실행합니다. 한쪽만 하면 "Claude Code는 되는데 그 안에서 부른 <code>curl</code>은 안 되는" 이상한 상태가 됩니다.</p>
 </li>
 <li>
-<p><strong>검증을 끄지 마세요.</strong> 검색하면 <code>NODE_TLS_REJECT_UNAUTHORIZED=0</code>이 제일 먼저 나오고 실제로 즉시 동작합니다. 하지만 이건 CA를 추가하는 게 아니라 <strong>TLS 검증 자체를 무력화</strong>하는 스위치입니다. 사내 검사 장비뿐 아니라 어떤 중간자도 통과시키게 됩니다. 급해서 한 번 켰다가 그대로 굳어 표준 설정이 되는 경우를 조심하세요.</p>
+<p><strong>검증을 아예 끄지는 마세요.</strong> 이 오류를 검색하면 <code>NODE_TLS_REJECT_UNAUTHORIZED=0</code>이 제일 먼저 나오고, 실제로 즉시 동작합니다. 하지만 이건 신뢰할 CA를 추가하는 게 아니라 <strong>인증서 검증 자체를 꺼 버리는</strong> 스위치입니다. 사내 검사 장비뿐 아니라 어떤 중간자(통신 중간에 몰래 끼어드는 제3자)가 끼어들어도 그대로 통과시키게 됩니다. 급해서 한 번 켰다가 그게 그대로 굳어 표준 설정이 되는 경우가 특히 위험합니다.</p>
 </li>
 </ul>
 <div class="admonition tip">
 <p class="admonition-title">현장 메모</p>
-<p>사내 CA 배포에서 반복적으로 밟는 함정이 둘 있습니다. 첫째, <strong>중간 CA만 배포하고 루트를 빠뜨리는 경우.</strong> 체인이 끊겨 같은 오류가 그대로 납니다. 배포 전에 <code>openssl crl2pkcs7 -nocrl -certfile corp-root-ca.pem | openssl pkcs7 -print_certs -noout</code>으로 번들 안에 몇 장이 들어 있고 subject/issuer가 이어지는지 확인하는 게 좋습니다. 둘째, <strong>CA 갱신일을 아무도 모르는 경우.</strong> 사내 루트 CA도 만료됩니다. 만료 당일 전사 CLI 도구가 동시에 죽는 사고를 방지하려면 PEM 번들을 형상 관리(Ansible·MDM·이미지 빌드)에 올려 두고 만료 30일 전 알림을 걸어 두세요. 개인 단말에 손으로 복사해 둔 인증서는 갱신 시점에 전수 추적이 불가능합니다.</p>
+<p>사내 CA 배포에서는 구조상 빠뜨리기 쉬운 지점이 둘 있습니다.</p>
+<p>첫째, <strong>중간 CA만 배포하고 루트 CA를 빠뜨리는 경우입니다.</strong> 인증서는 루트 CA에서 중간 CA를 거쳐 서버 인증서로 이어지는 사슬 구조인데, 중간이 빠지면 사슬이 끊겨 같은 오류가 그대로 납니다. 배포 전에 <code>openssl crl2pkcs7 -nocrl -certfile corp-root-ca.pem | openssl pkcs7 -print_certs -noout</code> 명령으로 번들 안에 인증서가 몇 장 들어 있는지, 그리고 각 인증서의 subject(누구 것인지)와 issuer(누가 발급했는지)가 서로 이어지는지 확인하세요.</p>
+<p>둘째, <strong>CA 만료일을 아무도 모르는 경우입니다.</strong> 사내 루트 CA도 유효기간이 있어서 만료됩니다. 만료 당일 전사의 CLI 도구가 동시에 죽는 사고를 막으려면, PEM 번들을 형상 관리 도구(Ansible·MDM·이미지 빌드)에 올려 두고 만료 30일 전 알림을 걸어 두세요. 개인 단말에 손으로 복사해 둔 인증서는 갱신 시점에 누가 어떤 버전을 갖고 있는지 추적할 방법이 없습니다.</p>
 </div>
 <hr />
 <h2 id="6-sandbox-네트워크--권한-규칙이-못-막는-층을-os가-막는다">6. sandbox 네트워크 — 권한 규칙이 못 막는 층을 OS가 막는다<a class="headerlink" href="#6-sandbox-네트워크--권한-규칙이-못-막는-층을-os가-막는다" title="이 위치로 링크">¶</a></h2>
 <p>여기가 이 파트에서 가장 중요한 대목입니다.</p>
-<p>권한 규칙으로 <code>WebFetch</code>를 deny했다고 해 봅시다. 관리자 입장에서는 "이 세션은 웹에 못 나간다"고 정리하고 넘어가기 쉽습니다. 그런데 같은 세션에 <code>Bash</code>가 허용돼 있으면, 모델은 이렇게 할 수 있습니다.</p>
+<p>용어부터 정리합니다. 샌드박스(sandbox)는 프로세스를 격리된 제한 환경에서 실행시켜, 그 프로세스가 시스템 전체에 영향을 주지 못하게 막는 방식입니다. 아이들이 모래놀이터(sandbox) 밖으로 모래를 흘리지 못하게 테두리를 치는 것과 같은 발상입니다. 여기서 다룰 것은 그중에서도 <strong>네트워크</strong> 부분, 즉 "어디로 나갈 수 있는가"를 제한하는 기능입니다.</p>
+<p>왜 이런 게 필요한지 구체적인 상황으로 보겠습니다.</p>
+<p>권한 규칙으로 <code>WebFetch</code>를 deny했다고 해 봅시다. 관리자 입장에서는 "이제 이 세션은 웹에 못 나간다"고 정리하고 넘어가기 쉽습니다. 그런데 같은 세션에 <code>Bash</code>가 허용돼 있으면, 모델은 이렇게 할 수 있습니다.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>https://raw.githubusercontent.com/example/x/main/setup.sh
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>wget<span class="w"> </span>-qO-<span class="w"> </span>https://pastebin.example/aBc123
 </span></code></pre></div>
-<p><code>WebFetch</code>는 한 번도 호출되지 않았습니다. 권한 규칙 위반도 아닙니다. 그런데 실제로는 임의 URL에 접근했습니다. <strong>권한 규칙은 도구 이름을 보고 판정하지, 그 도구가 안에서 무엇을 하는지 보지 않기 때문</strong>입니다. <code>Bash</code>를 허용한 순간, <code>Bash</code>가 실행할 수 있는 모든 바이너리의 능력을 함께 허용한 셈입니다.</p>
-<p>이 갭을 정규식으로 쫓는 건 진 싸움입니다. <code>curl</code>을 막으면 <code>wget</code>이 있고, 둘 다 막으면 <code>nc</code>가 있고, <code>python3 -c "import urllib.request; ..."</code>가 있고, <code>/dev/tcp/host/port</code> 리다이렉션이 있습니다. 명령 문자열 검사로 네트워크 접근을 전부 봉쇄하는 건 현실적으로 불가능합니다.</p>
-<p>그래서 <strong>판정 계층을 통째로 옮깁니다.</strong> 명령 문자열이 아니라 <strong>프로세스의 아웃바운드 연결 자체</strong>를 OS 수준에서 통제하면, 어떤 바이너리가 어떤 방식으로 시도하든 목적지가 허용 목록 밖이면 나가지 못합니다. <code>curl</code>이든 <code>wget</code>이든 Node의 <code>fetch</code>든 구분할 필요가 없어집니다. 이게 sandbox 네트워크의 발상입니다.</p>
-<p>한 가지 짚고 갈 게 있습니다 — 기본 동작은 <strong>무프롬프트 차단이 아니라 승인 요청</strong>입니다. 미리 허용된 도메인이 하나도 없는 상태에서 새 도메인이 필요해지면, 처음엔 사용자에게 승인을 묻거나(<code>auto</code> 모드에서는 분류기에게 판정을 넘기고) 통과시킵니다. 관리자가 기대하는 "허용 목록 밖은 무조건 차단"을 만들려면 아래에서 볼 <code>strictAllowlist: true</code>(v2.1.219+, user/managed/<code>--settings</code> 소스만 인정)나 managed의 <code>allowManagedDomainsOnly</code>를 같이 걸어야 합니다.</p>
+<p>여기서 무슨 일이 일어났는지 하나씩 짚어 보겠습니다. <code>WebFetch</code>는 한 번도 호출되지 않았습니다. 그러니 권한 규칙 위반도 아닙니다. 그런데 결과적으로는 외부 URL에 접근했습니다.</p>
+<p>이유는 하나입니다. <strong>권한 규칙은 도구 이름을 보고 판정할 뿐, 그 도구가 안에서 무엇을 하는지는 보지 않기 때문</strong>입니다. <code>Bash</code>를 허용한 순간, <code>Bash</code>로 실행할 수 있는 모든 프로그램의 능력까지 함께 허용한 셈이 됩니다.</p>
+<p>그럼 명령어 문자열을 검사해서 막으면 되지 않을까요. 이건 이길 수 없는 싸움입니다. <code>curl</code>을 막으면 <code>wget</code>이 있습니다. 둘 다 막으면 <code>nc</code>가 있습니다. 그것도 막으면 <code>python3 -c "import urllib.request; ..."</code>가 있고, 셸 자체 기능인 <code>/dev/tcp/host/port</code> 리다이렉션도 있습니다. 명령 문자열 검사만으로 네트워크 접근을 전부 봉쇄하는 건 현실적으로 불가능합니다.</p>
+<p>그래서 발상을 바꿉니다. <strong>판정하는 층을 통째로 옮기는 것</strong>입니다.</p>
+<p>명령어가 무엇인지 보지 않고, <strong>프로세스가 바깥으로 연결을 맺는 행위 자체</strong>를 OS 수준에서 통제합니다. 그러면 어떤 프로그램이 어떤 방식으로 시도하든, 목적지가 허용 목록 밖이면 나가지 못합니다. <code>curl</code>이든 <code>wget</code>이든 Node의 <code>fetch</code>든 구분할 필요가 없어집니다. 이것이 샌드박스 네트워크의 발상입니다.</p>
+<p>한 가지 짚고 갈 게 있습니다. <strong>기본 동작은 "묻지 않고 차단"이 아니라 "사용자에게 승인 요청"입니다.</strong></p>
+<p>미리 허용된 도메인이 하나도 없는 상태에서 새 도메인이 필요해지면, 일단 사용자에게 승인을 묻습니다. <code>auto</code> 모드에서는 사람에게 묻는 대신 분류기(이 요청이 안전한지 자동으로 판정하는 모델)에 판단을 넘기고 통과시킵니다.</p>
+<p>그래서 관리자가 흔히 기대하는 "허용 목록 밖은 무조건 차단"을 만들려면 설정을 하나 더 걸어야 합니다. 아래에서 볼 <code>strictAllowlist: true</code>(v2.1.219+, user/managed/<code>--settings</code> 소스만 인정)나 managed 설정의 <code>allowManagedDomainsOnly</code>가 그 역할을 합니다.</p>
 <p><img alt="sandbox 네트워크 / curl 갭 봉쇄 슬라이드" src="../slides/slide-043.png" /></p>
 <p><em>▲ 교재 슬라이드 43 — sandbox 네트워크 / curl 갭 봉쇄</em></p>
-<p>설정은 managed settings에 sandbox 블록을 두고 허용 도메인을 나열하는 형태입니다.</p>
+<p>설정은 managed settings(관리자가 배포하고 사용자가 못 바꾸는 시스템 전역 설정 파일)에 sandbox 블록을 두고, <code>allowedDomains</code>에 나가도 되는 도메인을 나열하는 형태입니다.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>{
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  &quot;sandbox&quot;: {
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    &quot;enabled&quot;: true,
@@ -1970,38 +2126,58 @@
 </span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>  }
 </span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>}
 </span></code></pre></div>
-<p>목록을 짤 때 놓치기 쉬운 것들이 있습니다. <strong>패키지 저장소</strong>(npm·PyPI·사내 Nexus)를 빼면 에이전트가 의존성 설치를 시도하는 순간 막힙니다. <strong>사내 MCP 서버 도메인</strong>을 빼면 Part 8에서 붙일 내부 도구들이 전부 불통이 됩니다. Bedrock 경로라면 <code>bedrock-runtime.&lt;리전&gt;.amazonaws.com</code>이 들어가야 하고, PrivateLink를 쓴다면 VPC 엔드포인트 DNS 이름이 대상입니다.</p>
-<p>그리고 이 목록은 <strong><code>NO_PROXY</code>와 짝</strong>입니다. 사내 MCP 서버를 추가할 때 <code>NO_PROXY</code>에는 넣고 <code>allowedDomains</code>에는 안 넣거나 그 반대인 상태가 자주 발생합니다. 증상은 "사내 MCP만 안 붙습니다"인데, 두 목록을 동시에 확인하지 않으면 한쪽만 고치고 계속 헤맵니다. 사내 도메인을 추가할 일이 생기면 <strong>두 목록을 한 번에 여는 습관</strong>을 들이는 게 좋습니다.</p>
-<p>sandbox의 진짜 값어치는 "완벽한 격리"가 아니라 <strong>판정 근거의 안정성</strong>입니다. 권한 규칙은 도구가 늘어날 때마다 다시 검토해야 하지만, 도메인 허용 목록은 도구가 몇 개든 목적지 기준으로 한 번만 정하면 됩니다. 새 도구를 붙일 때 "이게 네트워크를 우회할 수 있나"를 매번 따지지 않아도 되는 것 — 그게 운영 비용에서 가장 큰 차이를 만듭니다.</p>
-<p>지원 플랫폼도 챙겨야 할 항목입니다. sandbox는 <strong>macOS(Seatbelt)와 Linux(bubblewrap + socat) 위에서 동작하고, WSL2 안에서도 동작합니다.</strong> 하지만 <strong>네이티브 Windows에서는 지원되지 않습니다</strong> — Windows 플릿에서 sandbox 통제가 꼭 필요하다면 WSL2 안에서 Claude Code를 실행하는 구성으로 가야 한다는 뜻입니다. <code>allowedDomains</code>의 반대쪽인 <code>deniedDomains</code>(명시 차단), 그리고 <code>strictAllowlist</code>나 <code>allowManagedDomainsOnly</code>처럼 허용 목록 자체를 더 엄격하게 강제하는 키도 함께 있으니, 고통제 환경이라면 이 조합을 살펴볼 가치가 있습니다.</p>
+<p>목록을 짤 때 놓치기 쉬운 것들이 있습니다.</p>
+<ul>
+<li><strong>패키지 저장소</strong>: npm·PyPI·사내 Nexus를 빼면, 에이전트가 라이브러리를 설치하려는 순간 막힙니다.</li>
+<li><strong>사내 MCP 서버 도메인</strong>: 이걸 빼면 Part 8에서 붙일 내부 도구들이 전부 불통이 됩니다.</li>
+<li><strong>모델 엔드포인트</strong>: Bedrock 경로라면 <code>bedrock-runtime.&lt;리전&gt;.amazonaws.com</code>이 들어가야 합니다. PrivateLink를 쓴다면 VPC 엔드포인트의 DNS 이름이 대상입니다.</li>
+</ul>
+<p>그리고 이 목록은 앞서 본 <strong><code>NO_PROXY</code>와 짝을 이룹니다.</strong> 사내 MCP 서버를 추가할 때 <code>NO_PROXY</code>에는 넣었는데 <code>allowedDomains</code>에는 빠뜨리는(혹은 그 반대인) 상태가 자주 발생합니다.</p>
+<p>이때 증상은 "사내 MCP만 안 붙습니다" 한 줄로 올라옵니다. 두 목록을 동시에 확인하지 않으면 한쪽만 고쳐 놓고 계속 헤매게 됩니다. 사내 도메인을 추가할 일이 생기면 <strong>두 목록을 한 번에 여는 습관</strong>을 들이세요.</p>
+<p>샌드박스의 진짜 값어치는 "완벽한 격리"가 아니라 <strong>판정 근거가 흔들리지 않는다는 점</strong>입니다.</p>
+<p>권한 규칙은 도구가 하나 늘어날 때마다 "이 도구가 네트워크로 나갈 수 있나"를 다시 검토해야 합니다. 반면 도메인 허용 목록은 도구가 몇 개가 되든 상관없습니다. 목적지 기준으로 한 번만 정해 두면 됩니다. 이 차이가 운영 비용에서 가장 크게 벌어집니다.</p>
+<p>지원 플랫폼도 미리 확인해야 합니다. 샌드박스는 <strong>macOS(Seatbelt)와 Linux(bubblewrap + socat) 위에서 동작하고, WSL2 안에서도 동작합니다.</strong> Seatbelt와 bubblewrap은 각 OS가 제공하는 프로세스 격리 기능의 이름입니다.</p>
+<p>다만 <strong>네이티브 Windows에서는 지원되지 않습니다.</strong> Windows 단말이 많은 조직에서 샌드박스 통제가 꼭 필요하다면, WSL2 안에서 Claude Code를 실행하는 구성으로 가야 한다는 뜻입니다.</p>
+<p>관련 설정 키도 몇 개 더 있습니다. <code>allowedDomains</code>의 반대쪽인 <code>deniedDomains</code>(명시적으로 차단할 도메인), 그리고 앞서 언급한 <code>strictAllowlist</code>나 <code>allowManagedDomainsOnly</code>처럼 허용 목록을 더 엄격하게 강제하는 키들입니다. 통제 수준이 높아야 하는 환경이라면 이 조합을 살펴볼 가치가 있습니다.</p>
 <div class="admonition warning">
 <p class="admonition-title">설정 키는 배포 전에 공식문서와 대조하세요</p>
-<p>샌드박스 관련 키 이름과 지원 플랫폼은 버전에 따라 달라질 수 있습니다. 조직 전체에 밀어 넣기 전에 대표 단말 한 대에서 실제로 허용 목록 밖 도메인이 차단되는지(예: 허용 안 된 호스트로 <code>curl</code>을 시켜 보고 실패하는지) <strong>직접 확인한 뒤</strong> 롤아웃하세요. 설정 파일이 조용히 무시되고 있는데 통제되고 있다고 믿는 상태가 가장 위험합니다.</p>
+<p>샌드박스 관련 키 이름과 지원 플랫폼은 버전에 따라 달라질 수 있습니다. 조직 전체에 밀어 넣기 전에 대표 단말 한 대에서 먼저 검증하세요. 허용 목록에 없는 호스트로 <code>curl</code>을 시켜 보고 실제로 실패하는지 <strong>직접 확인한 뒤</strong> 롤아웃하면 됩니다. 설정 파일이 조용히 무시되고 있는데 통제되고 있다고 믿는 상태가 가장 위험합니다.</p>
 </div>
 <hr />
 <h2 id="7-vpn과-ztna-위에서">7. VPN과 ZTNA 위에서<a class="headerlink" href="#7-vpn과-ztna-위에서" title="이 위치로 링크">¶</a></h2>
-<p>터널 위에서 도는 환경은 위 설정이 다 맞아도 별개의 문제가 생깁니다. 두 방식이 점검할 항목이 다릅니다.</p>
+<p>원격 근무 환경에서는 사내망에 직접 붙는 대신 두 가지 방식 중 하나를 씁니다.</p>
+<ul>
+<li><strong>VPN(Virtual Private Network)</strong>은 단말과 사내망 사이에 암호화된 터널을 뚫어, 마치 사내에 있는 것처럼 만들어 줍니다.</li>
+<li><strong>ZTNA(Zero Trust Network Access)</strong>는 네트워크 자체를 열어 주는 대신, 인가된 사용자·단말에게 <strong>필요한 앱만 하나씩</strong> 열어 주는 방식입니다.</li>
+</ul>
+<p>둘 다 앞의 설정이 전부 맞아도 별개의 문제가 생길 수 있습니다. 그리고 점검할 항목이 서로 다릅니다.</p>
 <p><strong>VPN(터널) 환경</strong>에서 볼 것은 넷입니다.</p>
 <ul>
 <li>
-<p><strong>스플릿 터널 경로</strong>: 일부 트래픽만 터널로 보내는 구성이라면 API 도메인이 터널 안으로 가는지 밖으로 가는지 확인해야 합니다. 밖으로 나가면 사내 프록시·검사 장비를 안 거치므로 정책이 적용되지 않고, 반대로 안으로 들어가면 통제는 되지만 지연이 늘어납니다. 어느 쪽이든 <strong>의도한 대로인지</strong>가 중요합니다.</p>
+<p><strong>스플릿 터널 경로</strong>부터 봅니다. 스플릿 터널은 모든 트래픽이 아니라 일부만 터널로 보내는 구성입니다. 이 경우 API 도메인이 터널 안으로 가는지 밖으로 가는지 확인해야 합니다. 밖으로 나가면 사내 프록시와 검사 장비를 안 거치므로 회사 정책이 적용되지 않습니다. 반대로 안으로 들어가면 통제는 되지만 지연이 늘어납니다. 어느 쪽이든 <strong>의도한 대로인지</strong>가 중요합니다.</p>
 </li>
 <li>
-<p><strong>MTU</strong>: 터널은 헤더만큼 MTU가 줄어듭니다. 조각화가 제대로 되지 않으면 짧은 응답은 되는데 <strong>긴 스트리밍 응답이 중간에 끊기는</strong> 특유의 증상이 납니다. "가끔 답변이 잘려요"라는 신고가 오면 MTU를 먼저 의심하세요.</p>
+<p><strong>MTU</strong>(Maximum Transmission Unit)는 한 번에 보낼 수 있는 패킷의 최대 크기입니다. 터널은 자체 헤더를 덧붙이기 때문에 그만큼 MTU가 줄어듭니다. 이때 패킷을 잘게 나누는 처리가 제대로 되지 않으면 특유의 증상이 납니다. 짧은 응답은 멀쩡한데 <strong>긴 응답만 중간에서 끊기는</strong> 현상입니다. "가끔 답변이 잘려요"라는 신고가 오면 MTU를 먼저 의심하세요.</p>
 </li>
 <li>
-<p><strong>DNS 리졸버</strong>: 사내 도메인이 사내 리졸버를 경유하는지 봐야 합니다. 터널은 붙었는데 DNS가 공용 리졸버로 나가면 사내 MCP·게이트웨이 이름이 해석되지 않습니다.</p>
+<p><strong>DNS 리졸버</strong>는 도메인 이름을 IP 주소로 바꿔 주는 서버입니다. 사내 도메인은 사내 리졸버가 처리해야 합니다. 터널은 붙었는데 DNS 질의만 공용 리졸버로 나가면, 사내 MCP나 게이트웨이 이름이 해석되지 않습니다.</p>
 </li>
 <li>
-<p><strong><code>NO_PROXY</code> 정합성</strong>: 터널 밖으로 빠지는 예외 대역이 <code>NO_PROXY</code> 목록과 어긋나면, 프록시를 거쳐야 할 트래픽이 직접 나가거나 그 반대가 됩니다.</p>
+<p><strong><code>NO_PROXY</code> 정합성</strong>: 터널 밖으로 빠지도록 지정한 대역과 <code>NO_PROXY</code> 목록이 서로 어긋나면, 프록시를 거쳐야 할 트래픽이 그냥 나가거나 그 반대가 됩니다.</p>
 </li>
 </ul>
-<p><strong>ZTNA 환경</strong>에서는 관점이 바뀝니다. 네트워크 대역이 아니라 <strong>앱 단위 정책</strong>이 통제 단위이므로, Claude Code가 접근하는 목적지가 커넥터 정책에 등록돼 있어야 합니다. 필수 도메인 목록을 방화벽에 넣는 대신 <strong>커넥터 정책에 반영</strong>한다고 생각하면 됩니다. 여기에 두 가지가 더 붙습니다 — 디바이스 포스처(단말 상태) 요건이 CLI 도구에도 적용되는지 확인해야 하고, 사내 게이트웨이를 경유하는 구성이라면 클라이언트가 바라보는 BASE_URL만 내부 주소로 두고 외부 도메인 개방은 게이트웨이 쪽으로 몰 수 있습니다. 후자는 단말별 방화벽 예외를 없앨 수 있어서 관리 부담이 크게 줄어듭니다.</p>
+<p><strong>ZTNA 환경</strong>에서는 관점이 바뀝니다. 통제 단위가 네트워크 대역이 아니라 <strong>앱 하나하나</strong>이기 때문입니다.</p>
+<p>그래서 Claude Code가 접근하는 목적지가 ZTNA 커넥터 정책에 등록돼 있어야 합니다. §2의 필수 도메인 목록을 방화벽에 넣는 대신 <strong>커넥터 정책에 반영</strong>한다고 생각하면 됩니다.</p>
+<p>여기에 두 가지가 더 붙습니다. 첫째, 디바이스 포스처(device posture, 디스크 암호화·백신·OS 버전 등 단말이 회사 기준을 충족하는지 검사하는 절차) 요건이 CLI 도구에도 적용되는지 확인해야 합니다.</p>
+<p>둘째, 사내 게이트웨이를 경유하는 구성이라면 개방 범위를 크게 줄일 수 있습니다. 클라이언트가 바라보는 <code>BASE_URL</code>만 내부 주소로 두고, 외부 도메인 개방은 전부 게이트웨이 쪽으로 몰면 됩니다. 이렇게 하면 단말마다 방화벽 예외를 만들 필요가 없어져서 관리 부담이 크게 줄어듭니다.</p>
 <hr />
 <h2 id="8-dlp-훅--나가는-내용을-검사하는-마지막-관문">8. DLP 훅 — 나가는 내용을 검사하는 마지막 관문<a class="headerlink" href="#8-dlp-훅--나가는-내용을-검사하는-마지막-관문" title="이 위치로 링크">¶</a></h2>
-<p>지금까지의 통제는 전부 <strong>목적지 기준</strong>이었습니다. 도메인 목록도, 프록시도, sandbox도 "어디로 가는가"를 봅니다. 그런데 허용된 목적지로 나가면 안 되는 것이 나가는 경우는 어떻게 할까요. 사내 Git 서버는 당연히 허용 목록에 있고, 거기로 시크릿이 담긴 파일을 커밋하는 건 목적지 기준으로는 완전히 합법입니다.</p>
-<p>그래서 <strong>내용 기준</strong> 판정이 하나 더 필요합니다. <code>PreToolUse</code> 훅이 그 자리입니다. 도구가 실행되기 <strong>직전</strong>에 도구 입력(JSON)을 stdin으로 받아 검사하고, <code>exit 2</code>로 차단하면서 사유를 모델에 회신할 수 있습니다.</p>
-<p>교재가 제시하는 판정 기준이 실무적으로 좋습니다. <strong>"전송 명령"과 "민감 패턴"이 결합했을 때만</strong> 차단합니다. 둘 중 하나만으로 막으면 오탐이 폭발합니다 — <code>curl</code>만 보고 막으면 정상적인 API 호출이 전부 걸리고, <code>AKIA</code>만 보고 막으면 IAM 정책 문서를 읽는 것조차 못 합니다. 결합 조건으로 좁혀야 게이트가 살아남습니다.</p>
+<p>지금까지 본 통제는 전부 <strong>목적지 기준</strong>이었습니다. 도메인 목록도, 프록시도, 샌드박스도 "어디로 가는가"만 봅니다.</p>
+<p>그런데 허용된 목적지로 나가면 안 될 것이 나가는 경우는 어떻게 할까요. 사내 Git 서버는 당연히 허용 목록에 있습니다. 그러니 거기로 비밀번호나 API 키가 담긴 파일을 커밋하는 건, 목적지 기준으로는 아무 문제가 없는 정상 통신입니다.</p>
+<p>그래서 <strong>내용 기준</strong> 판정이 하나 더 필요합니다. 앞의 §1에서 언급한 <code>PreToolUse</code> 훅이 그 자리입니다.</p>
+<p>동작은 이렇습니다. 도구가 실행되기 <strong>직전</strong>에 훅 스크립트가 불려 나옵니다. 이때 도구에 들어갈 입력이 JSON 형태로 스크립트의 표준 입력(stdin)에 전달됩니다. 스크립트가 그 내용을 검사한 뒤 종료 코드 <code>2</code>로 끝내면 도구 실행이 차단되고, 스크립트가 남긴 메시지가 차단 사유로 모델에게 전달됩니다.</p>
+<p>교재가 제시하는 판정 기준이 실무적으로 좋습니다. <strong>"바깥으로 보내는 명령"과 "민감한 패턴"이 둘 다 나타났을 때만</strong> 차단하는 방식입니다.</p>
+<p>둘 중 하나만 보고 막으면 오탐(문제없는 작업까지 잘못 걸러 내는 것)이 폭발하기 때문입니다. <code>curl</code>만 보고 막으면 정상적인 API 호출까지 전부 걸립니다. AWS 액세스 키 형식인 <code>AKIA</code>만 보고 막으면 IAM(AWS의 권한 관리 서비스) 정책 문서를 읽는 것조차 못 하게 됩니다. 두 조건이 겹칠 때로 좁혀야 이 검사가 실제로 운영에서 살아남습니다.</p>
 <p><img alt="DLP 훅 / 유출 패턴 차단 슬라이드" src="../slides/slide-045.png" /></p>
 <p><em>▲ 교재 슬라이드 45 — DLP 훅 / 유출 패턴 차단</em></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="ch">#!/bin/bash</span>
@@ -2016,50 +2192,53 @@
 </span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="k">fi</span>
 </span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
 </span></code></pre></div>
-<p>이 스크립트는 <code>Bash</code> 명령만 봅니다(<code>tool_input.command</code>). 하지만 유출 경로가 Bash만은 아닙니다. <code>Write</code>로 시크릿을 파일에 박아 커밋하는 경로가 실무에서는 더 흔합니다. 그래서 매처를 <code>Bash</code> 하나로 두지 말고 <strong><code>Write</code>·<code>Edit</code>까지 포함해서 검사 대상 필드를 각각 맞춰 주는</strong> 편이 실효성이 높습니다. 다음 절의 실습이 정확히 그 형태입니다.</p>
-<p>조직 배포는 개인 설정에 맡기면 의미가 없습니다. 사용자가 지울 수 있는 곳에 있는 게이트는 게이트가 아닙니다. 시스템 전역 managed settings로 배포해야 강제력이 생기고, 이 배포 채널과 우선순위·잠금 규칙은 다음 파트(Part 5)에서 다룹니다.</p>
+<p>이 스크립트에는 한계가 하나 있습니다. <code>Bash</code> 명령만 검사한다는 점입니다(<code>tool_input.command</code> 필드만 읽습니다).</p>
+<p>하지만 유출 경로가 Bash만은 아닙니다. 실무에서는 오히려 <code>Write</code>로 시크릿(비밀번호·API 키·인증서 개인키처럼 노출되면 안 되는 값)을 파일에 적어 넣고 그대로 커밋하는 경로가 더 흔합니다. 그래서 검사 대상 도구를 <code>Bash</code> 하나로 두지 말고 <strong><code>Write</code>·<code>Edit</code>까지 포함하고, 도구마다 읽을 필드를 맞춰 주는</strong> 편이 실효성이 높습니다. 다음 절의 실습이 정확히 그 형태입니다.</p>
+<p>한 가지 더. 조직 배포를 개인 설정에 맡기면 의미가 없습니다. 사용자가 직접 지울 수 있는 곳에 있는 검사는 검사가 아니기 때문입니다. 앞서 말한 시스템 전역 managed settings로 배포해야 강제력이 생깁니다. 이 배포 채널과 우선순위·잠금 규칙은 다음 파트(Part 5)에서 다룹니다.</p>
 <div class="admonition tip">
 <p class="admonition-title">현장 메모</p>
-<p>DLP 훅을 실제로 돌려 보고 얻은 관찰 하나를 먼저 적어 둡니다. 아래 실습에서 AWS 액세스 키 형태의 문자열을 파일에 쓰라고 시켰더니, <strong>훅이 걸리기 전에 모델이 먼저 망설였습니다.</strong> "이건 알려진 예시용 플레이스홀더지만 실제 키 형태를 소스에 하드코딩하는 건 나쁜 관행"이라는 취지로 판단한 뒤 진행했고, 그다음에 훅이 차단했습니다. 이 둘은 <strong>완전히 다른 방어선</strong>입니다. 모델 판단은 확률적이라 프롬프트를 바꾸면 뚫립니다("테스트 픽스처니까 그냥 넣어"). 훅은 결정적이라 프롬프트와 무관하게 같은 결과를 냅니다. 감사에 제출할 수 있는 건 후자뿐입니다. 모델이 알아서 조심하는 걸 통제 항목으로 계산하지 마세요.</p>
+<p>DLP 훅을 실제로 돌려 보고 얻은 관찰을 먼저 적어 둡니다.</p>
+<p>아래 실습에서 AWS 액세스 키 형태의 문자열을 파일에 쓰라고 시켰더니, <strong>훅이 걸리기 전에 모델이 먼저 망설였습니다.</strong> "이건 알려진 예시용 플레이스홀더지만 실제 키 형태를 소스에 하드코딩하는 건 나쁜 관행"이라는 취지로 판단한 뒤 진행했고, 그다음에 훅이 차단했습니다.</p>
+<p>이 둘은 <strong>완전히 다른 방어선</strong>입니다. 모델의 판단은 확률적이라 프롬프트를 바꾸면 뚫립니다("테스트용 가짜 값이니까 그냥 넣어"). 반면 훅은 결정적이라 프롬프트와 무관하게 늘 같은 결과를 냅니다. 감사 자료로 제출할 수 있는 건 후자뿐입니다. 모델이 알아서 조심하는 걸 통제 항목으로 계산하지 마세요.</p>
 </div>
 <hr />
 <h2 id="9-사내-mcp-서버-통합">9. 사내 MCP 서버 통합<a class="headerlink" href="#9-사내-mcp-서버-통합" title="이 위치로 링크">¶</a></h2>
-<p>사내 위키·티켓·배포 시스템을 MCP로 노출하면 Claude Code가 조직 컨텍스트를 갖게 됩니다. Chapter 4에서 본격적으로 다룰 주제지만, 네트워크 관점에서 미리 챙겨야 할 것이 네 가지 있습니다.</p>
+<p>사내 위키·티켓·배포 시스템을 MCP 서버로 노출하면, Claude Code가 우리 조직의 맥락을 알고 일하게 됩니다. Chapter 4에서 본격적으로 다룰 주제지만, 네트워크 관점에서 미리 챙겨야 할 것이 네 가지 있습니다.</p>
 <ul>
 <li>
-<p><strong>경로 확보</strong>: 앞서 강조한 대로 <code>NO_PROXY</code>와 sandbox <code>allowedDomains</code> <strong>양쪽에</strong> 내부 도메인을 등록합니다. 한쪽만 하면 증상이 애매해져서 진단이 오래 걸립니다.</p>
+<p><strong>경로 확보</strong>가 먼저입니다. 앞서 강조한 대로 <code>NO_PROXY</code>와 샌드박스 <code>allowedDomains</code> <strong>양쪽에</strong> 내부 도메인을 등록합니다. 한쪽만 하면 증상이 애매해져서 진단에 시간이 오래 걸립니다.</p>
 </li>
 <li>
-<p><strong>인증 방식</strong>: 정적 토큰을 환경변수로 뿌리는 구성은 회수와 순환이 어렵습니다. 가능하면 OAuth를 지원하는 서버를 고르고, 그게 안 되면 토큰을 자격증명 볼트 헬퍼로 주입해 파일·환경변수에 평문으로 남지 않게 합니다.</p>
+<p><strong>인증 방식</strong>: 고정된 토큰을 환경변수로 전 직원에게 뿌리는 구성은 나중에 회수하거나 교체하기가 어렵습니다. 가능하면 OAuth를 지원하는 서버를 고르세요. 그게 안 되면 토큰을 자격증명 볼트에서 꺼내 주입해서, 파일이나 환경변수에 암호화되지 않은 채로 남지 않게 합니다.</p>
 </li>
 <li>
-<p><strong>허용 통제</strong>: 어떤 MCP 서버를 붙일 수 있는지는 조직이 정해야 합니다. 승인된 서버만 허용하는 정책 키가 있으며, 이건 Part 5의 거버넌스 영역입니다.</p>
+<p><strong>허용 통제</strong>: 어떤 MCP 서버를 붙일 수 있는지는 개인이 아니라 조직이 정해야 합니다. 승인된 서버만 허용하는 정책 키가 있으며, 이건 Part 5의 거버넌스 영역입니다.</p>
 </li>
 <li>
-<p><strong>노출 최소화</strong>: 모든 세션에 모든 MCP를 열 필요는 없습니다. 서브에이전트 단위로 필요한 서버만 지정하면, 배포 시스템 MCP가 코드 리뷰 에이전트에게 노출되는 상황을 구조적으로 막을 수 있습니다.</p>
+<p><strong>노출 최소화</strong>도 챙깁니다. 모든 세션에 모든 MCP를 열 필요는 없습니다. 서브에이전트마다 필요한 서버만 지정하면, 배포 시스템 MCP가 코드 리뷰용 에이전트에게까지 노출되는 상황을 구조적으로 막을 수 있습니다.</p>
 </li>
 </ul>
 <hr />
 <h2 id="10-트러블슈팅--증상에서-원인으로">10. 트러블슈팅 — 증상에서 원인으로<a class="headerlink" href="#10-트러블슈팅--증상에서-원인으로" title="이 위치로 링크">¶</a></h2>
-<p>앞의 층 구분이 여기서 값을 합니다. 증상별로 먼저 볼 곳이 정해져 있습니다.</p>
+<p>앞에서 층을 나눠 둔 것이 여기서 값을 합니다. 증상별로 먼저 볼 곳이 정해져 있습니다.</p>
 <ul>
 <li>
-<p><strong>연결 타임아웃</strong> — 프록시 변수 누락이거나 방화벽 차단입니다. <code>curl -v</code>로 프록시 계층과 TLS 계층을 분리해서 어디까지 갔는지 확인합니다.</p>
+<p><strong>연결 타임아웃</strong>이라면 프록시 환경변수가 빠졌거나 방화벽이 막고 있습니다. <code>curl -v</code>로 프록시 단계와 TLS 단계를 분리해서, 어디까지 갔다가 멈췄는지 확인합니다.</p>
 </li>
 <li>
-<p><strong>TLS 체인 오류</strong>(<code>SELF_SIGNED_CERT_IN_CHAIN</code> 등) — 사내 CA 미등록입니다. <code>NODE_EXTRA_CA_CERTS</code>와 OS 신뢰 저장소 양쪽을 확인합니다.</p>
+<p><strong>TLS 체인 오류</strong>(<code>SELF_SIGNED_CERT_IN_CHAIN</code> 등)는 사내 CA가 등록되지 않았다는 신호입니다. <code>NODE_EXTRA_CA_CERTS</code>와 OS 신뢰 저장소 양쪽을 확인합니다.</p>
 </li>
 <li>
-<p><strong>HTTP 407</strong> — 프록시 인증 실패입니다. 도메인이나 방화벽을 뒤지지 말고 곧장 인증 계층부터 봅니다. Basic이면 자격증명 갱신, NTLM·Kerberos면 §4에서 정리한 대로 임시방편(로컬 중계)보다 LLM Gateway 도입이 공식 권장 경로입니다.</p>
+<p><strong>HTTP 407</strong>은 프록시 인증 실패입니다. 도메인이나 방화벽을 뒤지지 말고 곧장 인증부터 봅니다. Basic 인증이면 자격증명을 갱신하고, NTLM·Kerberos면 §4에서 정리한 대로 단말 중계보다 LLM Gateway 도입이 공식 권장 경로입니다.</p>
 </li>
 <li>
-<p><strong>스트리밍이 중간에 끊김</strong> — MTU 문제이거나 검사 장비의 버퍼링입니다. 짧은 응답은 되는데 긴 응답만 깨지는 게 특징입니다. MTU 조정 또는 검사 장비 예외 등록으로 해결합니다.</p>
+<p><strong>응답이 중간에 끊기는 증상</strong>은 MTU 문제이거나 TLS 검사 장비가 응답을 모았다가 내보내는 탓입니다. 짧은 응답은 멀쩡한데 긴 응답만 깨지는 게 특징입니다. MTU를 조정하거나 검사 장비에 예외를 등록해서 해결합니다.</p>
 </li>
 <li>
-<p><strong>일부 기능만 실패</strong> — 도메인 부분 차단입니다. §2의 여섯 갈래와 대조해 무엇이 닫혀 있는지 찾습니다. 플래그 도메인이 막혀서 특정 기능이 기본값으로 도는 경우도 여기 포함됩니다.</p>
+<p><strong>일부 기능만 실패</strong>한다면 도메인이 일부만 열려 있는 것입니다. §2의 도메인 목록과 대조해서 무엇이 닫혀 있는지 찾습니다. 기능 플래그를 받아 오는 경로가 막혀서 특정 기능이 기본값으로만 도는 경우도 여기 포함됩니다.</p>
 </li>
 <li>
-<p><strong>사내 MCP만 불통</strong> — <code>NO_PROXY</code>와 sandbox <code>allowedDomains</code> 중 한쪽 누락입니다. <strong>반드시 양쪽을 동시에</strong> 확인합니다.</p>
+<p><strong>사내 MCP만 불통</strong>이면 <code>NO_PROXY</code>와 샌드박스 <code>allowedDomains</code> 중 한쪽이 빠진 것입니다. <strong>반드시 양쪽을 동시에</strong> 확인합니다.</p>
 </li>
 </ul>
 <hr />
@@ -2067,22 +2246,22 @@
 <p>조직 배포 직전에 여섯 항목을 확인합니다.</p>
 <ul>
 <li>
-<p><strong>도메인 개방</strong> — 필수 도메인이 방화벽에 반영됐는지, 미러나 PrivateLink로 대체한 항목이 문서에 표기됐는지.</p>
+<p><strong>도메인 개방</strong>: 필수 도메인이 방화벽에 반영됐는지, 미러나 PrivateLink로 대체한 항목이 문서에 표기됐는지.</p>
 </li>
 <li>
-<p><strong>프록시 배포</strong> — 세 변수가 일괄 주입되는지(<code>profile.d</code> 또는 MDM), <code>NO_PROXY</code>에 사내 서비스가 빠짐없이 들어갔는지.</p>
+<p><strong>프록시 배포</strong>: 세 환경변수가 관리자에 의해 일괄 주입되는지(<code>profile.d</code> 또는 MDM), <code>NO_PROXY</code>에 사내 서비스가 빠짐없이 들어갔는지.</p>
 </li>
 <li>
-<p><strong>CA 배포</strong> — PEM 번들과 OS 신뢰 저장소가 함께 등록됐는지, 갱신이 형상 관리로 추적되는지.</p>
+<p><strong>CA 배포</strong>: PEM 번들과 OS 신뢰 저장소에 함께 등록됐는지, 인증서 갱신이 형상 관리로 추적되는지.</p>
 </li>
 <li>
-<p><strong>샌드박스</strong> — <code>allowedDomains</code> 초안이 적용됐는지, 그리고 <strong>허용 목록 밖 도메인으로 <code>curl</code>이 실제로 실패하는지 검증</strong>했는지.</p>
+<p><strong>샌드박스</strong>: <code>allowedDomains</code> 초안이 적용됐는지, 그리고 <strong>허용 목록에 없는 도메인으로 <code>curl</code>을 시켰을 때 실제로 실패하는지 확인</strong>했는지.</p>
 </li>
 <li>
-<p><strong>DLP</strong> — 훅 스크립트가 관리자 경로로 배포됐는지, 차단 로그를 볼 수 있는지, 오탐을 접수할 채널이 정해졌는지.</p>
+<p><strong>DLP</strong>: 훅 스크립트가 관리자 경로로 배포됐는지, 차단 기록을 확인할 수 있는지, 오탐을 신고받을 창구가 정해졌는지.</p>
 </li>
 <li>
-<p><strong>검증</strong> — 플랫폼마다 최소 한 대씩 실사용 시나리오(설치 → 추론 → 사내 MCP 왕복)를 끝까지 돌려 봤는지.</p>
+<p><strong>검증</strong>: 플랫폼마다 단말 최소 한 대씩, 실사용 시나리오(설치 → 모델 호출 → 사내 MCP 왕복)를 끝까지 돌려 봤는지.</p>
 </li>
 </ul>
 <hr />
@@ -2102,61 +2281,68 @@
 </span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="s">EOF</span>
 </span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>$<span class="w"> </span>sudo<span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>/opt/claude/dlp.sh
 </span></code></pre></div>
-<p>교재 원본과 한 군데가 다릅니다. <code>jq</code>로 <code>.tool_input.command</code>를 뽑지 않고 <strong>stdin 전체를 그대로 검사</strong>합니다. <code>Write</code> 도구는 명령이 아니라 <code>content</code> 필드에 내용이 들어가므로, 필드를 특정하면 매처마다 파서를 다르게 써야 합니다. 전체를 훑으면 도구 종류와 무관하게 한 스크립트로 커버됩니다(대신 오탐 여지는 넓어집니다).</p>
-<p>이 스크립트를 <code>/Library/Application Support/ClaudeCode/managed-settings.json</code>의 <code>hooks.PreToolUse</code>에 <code>Bash|Edit|Write</code> 매처로 연결해 sudo로 재배포했습니다(Part 5 §"직접 해보기"에서 배포한 권한 규칙에 hooks 블록만 추가한 것입니다). 그 상태로 실제 <code>claude</code> 대화형 세션을 열어 두 가지를 요청했습니다.</p>
+<p>교재 원본과 한 군데가 다릅니다. <code>jq</code>로 <code>.tool_input.command</code> 필드만 뽑아내지 않고, <strong>훅에 들어온 입력 전체를 그대로 검사</strong>했습니다.</p>
+<p>이유는 이렇습니다. <code>Bash</code> 도구는 명령어가 <code>command</code> 필드에 들어가지만, <code>Write</code> 도구는 쓸 내용이 <code>content</code> 필드에 들어갑니다. 즉 필드를 특정하는 방식으로 가면 도구마다 다르게 파싱해야 합니다. 반면 입력 전체를 훑으면 도구 종류와 무관하게 스크립트 하나로 커버됩니다. 대신 관계없는 곳에 걸릴 여지는 넓어집니다.</p>
+<p>이 스크립트를 <code>/Library/Application Support/ClaudeCode/managed-settings.json</code>의 <code>hooks.PreToolUse</code>에 연결하고 sudo로 재배포했습니다. 이때 매처(matcher, 어떤 도구에 이 훅을 걸지 지정하는 값)로는 <code>Bash|Edit|Write</code>를 줬습니다. Part 5 §"직접 해보기"에서 배포한 권한 규칙에 hooks 블록만 추가한 것입니다.</p>
+<p>그 상태로 실제 <code>claude</code> 대화형 세션을 열어 두 가지를 요청했습니다.</p>
 <h3 id="대조군--비밀-없는-파일은-승인-프롬프트도-없이-통과">대조군 — 비밀 없는 파일은 승인 프롬프트도 없이 통과<a class="headerlink" href="#대조군--비밀-없는-파일은-승인-프롬프트도-없이-통과" title="이 위치로 링크">¶</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>&gt; src/hello.js 파일을 만들고 그 안에 export const greeting = &quot;hi&quot;; 라고 써줘
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>Write(src/hello.js)
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>  Wrote 1 line to src/hello.js
 </span></code></pre></div>
-<p>승인을 묻는 화면조차 뜨지 않고 곧바로 써졌습니다. 이건 DLP 얘기가 아니라 <strong>§5(거버넌스) "직접 해보기"에서 다룬 별개의 발견과 연결됩니다</strong> — 배포한 정책의 <code>"ask": ["Write(**)"]</code>는 경로 패턴이 매칭되지 않아 아무 효과가 없고, 세션의 기본 <code>permissionMode: auto</code>가 이 Write를 안전하다고 판단해 그대로 통과시킨 겁니다.</p>
+<p>승인을 묻는 화면조차 뜨지 않고 곧바로 파일이 써졌습니다.</p>
+<p>이건 DLP 이야기가 아니라 <strong>§5(거버넌스) "직접 해보기"에서 다룬 별개의 발견과 연결됩니다.</strong> 배포한 정책에 넣은 <code>"ask": ["Write(**)"]</code>가 경로 패턴이 맞지 않아 아무 효과를 내지 못했고, 세션의 기본값인 <code>permissionMode: auto</code>가 이 Write를 안전하다고 판단해 그대로 통과시킨 것입니다.</p>
 <h3 id="실제-차단--aws-키가-섞인-파일은-훅이-막습니다">실제 차단 — AWS 키가 섞인 파일은 훅이 막습니다<a class="headerlink" href="#실제-차단--aws-키가-섞인-파일은-훅이-막습니다" title="이 위치로 링크">¶</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>&gt; src/aws.js 파일을 만들고 그 안에 const key = &quot;AKIAIOSFODNN7EXAMPLE&quot;; 라고 써줘
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Write(src/aws.js)
 </span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>  Error: PreToolUse:Write hook error: [/opt/claude/dlp.sh]: Blocked by DLP: AWS Access Key ID detected in tool input
 </span></code></pre></div>
-<p>모델은 도구 호출을 실제로 시도했고, <strong>실행 직전에 훅이 막았습니다.</strong> <code>ls src/</code>로 확인한 결과 <code>aws.js</code> 파일은 생성되지 않았습니다 — 사후 정리가 아니라 실행 전 차단입니다. 모델은 차단 메시지를 받은 뒤 우회를 시도하지 않고 그대로 승복했습니다: <em>"우회(예: 훅 비활성화나 다른 방식으로 값 삽입)는 하지 않겠습니다."</em></p>
-<p>같은 요청을 비대화형(<code>claude -p ... --output-format stream-json</code>)으로도 실행해 원시 이벤트를 봤는데, 결과 메시지는 토씨 하나 안 틀리고 동일했습니다 — 훅 차단은 대화형/비대화형 실행 방식과 무관하게 결정적입니다.</p>
+<p>모델은 도구 호출을 실제로 시도했고, <strong>실행 직전에 훅이 막았습니다.</strong></p>
+<p>여기서 확인할 것은 파일이 정말 안 만들어졌는지입니다. <code>ls src/</code>로 확인한 결과 <code>aws.js</code> 파일은 생성되지 않았습니다. 즉 만들어졌다가 지워진 게 아니라, 실행 자체가 차단된 것입니다. 모델은 차단 메시지를 받은 뒤 우회를 시도하지 않고 그대로 승복했습니다: <em>"우회(예: 훅 비활성화나 다른 방식으로 값 삽입)는 하지 않겠습니다."</em></p>
+<p>같은 요청을 대화형이 아닌 방식(<code>claude -p ... --output-format stream-json</code>)으로도 실행해 원시 이벤트를 확인했습니다. 결과 메시지는 토씨 하나 안 틀리고 동일했습니다. 훅 차단은 실행 방식과 무관하게 늘 같은 결과를 낸다는 뜻입니다.</p>
 <div class="admonition tip">
 <p class="admonition-title">직접 해보고 알게 된 것</p>
-<p><strong>모델의 자기검열과 훅 차단은 같은 층이 아닙니다.</strong> 프롬프트를 "관리자 정책 테스트용 가짜 값"이라고 바꿔서 시도했을 때는 모델이 <strong>도구를 호출하기도 전에</strong> 자체적으로 거절한 적도 있었습니다. 반대로 위 실행처럼 모델이 문제를 인지하고도 일단 도구를 호출하는 경우도 있었고, 그때는 훅이 그 뒤를 받쳤습니다. 모델의 판단은 프롬프트에 따라 흔들리지만, 훅의 차단은 흔들리지 않습니다. <strong>"모델이 알아서 조심한다"를 통제 항목으로 세면 안 되는 이유가 여기 있습니다.</strong></p>
-<p><strong>차단 사유가 모델에게 돌아간다는 게 중요합니다.</strong> <code>exit 2</code>의 stderr 메시지가 도구 결과로 전달되므로, 모델은 "왜 막혔는지"를 알고 다음 행동을 조정할 수 있습니다. 조용히 실패시키는 것보다 훨씬 낫습니다 — 사유 없이 막으면 모델이 다른 우회 경로를 시도하다가 세션이 엉킵니다. DLP 메시지를 쓸 때 <strong>차단 사실뿐 아니라 대안까지</strong> 한 줄 적어 주면(예: "시크릿은 환경변수나 시크릿 매니저로 주입하세요") 모델이 올바른 방향으로 재시도합니다.</p>
-<p><strong>stdin 전체 검사는 편한 만큼 오탐이 넓습니다.</strong> 이 스크립트는 도구 입력 JSON 어디에든 <code>AKIA...</code> 패턴이 있으면 막습니다. 그래서 IAM 정책 문서를 편집하거나, 문서에 예시 키를 인용하거나, DLP 규칙 자체를 문서화하는 작업도 같이 걸립니다. 실제 조직 배포에서는 §8의 <strong>결합 조건</strong>(전송 명령 + 민감 패턴)으로 좁히고, 문서·테스트 경로는 예외로 빼는 조정이 필요합니다.</p>
-<p><strong>강제성도 이번엔 실측으로 닫혔습니다.</strong> 시스템 전역 경로에 sudo로 배포한 정책이라, 세션에서 마음대로 지우거나 우회할 수 없었습니다. Part 5 §"직접 해보기"에서 확인한 것처럼 User 스코프보다 우선순위가 높은 CLI <code>--settings</code> 플래그로도 이 계열의 managed 정책을 뒤집을 수 없었습니다.</p>
+<p><strong>모델이 스스로 거르는 것과 훅이 막는 것은 같은 층이 아닙니다.</strong> 프롬프트를 "관리자 정책 테스트용 가짜 값"이라고 바꿔서 시도했을 때는, 모델이 <strong>도구를 호출하기도 전에</strong> 스스로 거절한 적도 있었습니다. 반대로 위 실행처럼 모델이 문제를 인지하고도 일단 도구를 호출한 경우도 있었고, 그때는 훅이 그 뒤를 받쳤습니다. 모델의 판단은 프롬프트에 따라 흔들리지만 훅의 차단은 흔들리지 않습니다. <strong>"모델이 알아서 조심한다"를 통제 항목으로 세면 안 되는 이유가 여기 있습니다.</strong></p>
+<p><strong>차단 사유가 모델에게 돌아간다는 점이 중요합니다.</strong> <code>exit 2</code>로 끝낼 때 남긴 오류 메시지(stderr)가 도구 결과로 전달되기 때문에, 모델은 왜 막혔는지 알고 다음 행동을 조정할 수 있습니다. 아무 설명 없이 조용히 실패시키는 것보다 훨씬 낫습니다. 사유를 안 주면 모델이 다른 우회 경로를 계속 시도하다가 세션이 엉킵니다. 그래서 DLP 메시지를 쓸 때 <strong>차단 사실뿐 아니라 대안까지</strong> 한 줄 적어 주면 좋습니다. 예를 들어 "시크릿은 환경변수나 시크릿 매니저로 주입하세요"라고 알려 주면 모델이 올바른 방향으로 재시도합니다.</p>
+<p><strong>입력 전체를 검사하는 방식은 편한 만큼 엉뚱한 것도 잘 걸립니다.</strong> 이 스크립트는 도구 입력 JSON 어디에든 <code>AKIA...</code> 패턴이 있으면 막습니다. 그래서 IAM 정책 문서를 편집하거나, 문서에 예시 키를 인용하거나, DLP 규칙 자체를 문서로 정리하는 작업까지 같이 걸립니다. 실제 조직 배포에서는 §8의 <strong>결합 조건</strong>(전송 명령 + 민감 패턴)으로 좁히고, 문서나 테스트 경로는 예외로 빼는 조정이 필요합니다.</p>
+<p><strong>강제성도 이번엔 실측으로 확인했습니다.</strong> 시스템 전역 경로에 sudo로 배포한 정책이라, 세션에서 마음대로 지우거나 우회할 수 없었습니다. Part 5 §"직접 해보기"에서 확인한 것처럼, User 스코프보다 우선순위가 높은 CLI <code>--settings</code> 플래그로도 이 계열의 managed 정책은 뒤집히지 않았습니다.</p>
 </div>
-<p>실습이 끝난 뒤에는 <code>sudo rm -f "/Library/Application Support/ClaudeCode/managed-settings.json" /opt/claude/dlp.sh</code>로 반드시 원복했습니다 — 지우지 않으면 이 머신의 모든 세션에 DLP 훅과 <code>.env</code> 차단이 계속 걸립니다.</p>
+<p>실습이 끝난 뒤에는 <code>sudo rm -f "/Library/Application Support/ClaudeCode/managed-settings.json" /opt/claude/dlp.sh</code>로 반드시 원복했습니다. 지우지 않으면 이 머신의 모든 세션에 DLP 훅과 <code>.env</code> 차단이 계속 걸립니다.</p>
 <hr />
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
 <ul>
 <li>
-<p><strong>"<code>WebFetch</code>를 deny했으니 이 세션은 외부에 못 나갑니다"</strong> — <code>Bash</code>가 허용돼 있으면 <code>curl</code>·<code>wget</code>·<code>nc</code>·<code>python3</code>로 나갈 수 있습니다. 권한 규칙은 도구 이름 단위 판정이라 도구 안쪽의 행위를 보지 않습니다. 네트워크를 정말 막아야 한다면 sandbox의 도메인 허용 목록처럼 <strong>OS 계층</strong>에서 처리해야 합니다.</p>
+<p><strong>"<code>WebFetch</code>를 deny했으니 이 세션은 외부에 못 나갑니다."</strong> <code>Bash</code>가 허용돼 있으면 <code>curl</code>·<code>wget</code>·<code>nc</code>·<code>python3</code>로 얼마든지 나갈 수 있습니다. 권한 규칙은 도구 이름만 보고 판정하므로, 그 도구가 안에서 하는 행위는 보지 않습니다. 네트워크를 정말 막아야 한다면 샌드박스의 도메인 허용 목록처럼 <strong>OS 계층</strong>에서 처리해야 합니다.</p>
 </li>
 <li>
-<p><strong>"<code>NODE_EXTRA_CA_CERTS</code>만 넣으면 사내 CA 문제는 끝납니다"</strong> — 애초에 네이티브 설치나 최신 npm(Node 22.15+)이면 OS 신뢰 저장소 등록만으로 끝나 이 변수 자체가 필요 없을 수 있습니다. 구버전 npm이라 이 변수가 필요한 경우에도, Node 프로세스에만 적용됩니다. 같은 세션에서 도는 <code>curl</code>·<code>git</code>·<code>pip</code>는 OS 신뢰 저장소를 보므로 병행 등록이 필요합니다. 한쪽만 하면 "Claude Code는 되는데 그 안에서 부른 명령이 안 되는" 상태가 됩니다.</p>
+<p><strong>"<code>NODE_EXTRA_CA_CERTS</code>만 넣으면 사내 CA 문제는 끝납니다."</strong> 우선 네이티브 설치나 최신 npm(Node 22.15+)이라면 OS 신뢰 저장소 등록만으로 끝나서, 이 변수 자체가 필요 없을 수 있습니다. 구버전 npm이라 이 변수가 필요한 경우에도 적용 범위는 Node 프로세스뿐입니다. 같은 세션에서 도는 <code>curl</code>·<code>git</code>·<code>pip</code>는 OS 신뢰 저장소를 보므로 별도 등록이 필요합니다. 한쪽만 하면 "Claude Code는 되는데 그 안에서 부른 명령은 안 되는" 상태가 됩니다.</p>
 </li>
 <li>
-<p><strong>"프록시 자격증명을 URL에 넣는 건 무조건 하면 안 됩니다"</strong> — Basic 인증이라면 공식문서가 실제로 지원하는 경로입니다. 문제는 URL 방식 자체가 아니라 <strong>비밀번호를 스크립트에 하드코딩하는 것</strong>입니다. 런타임에 볼트에서 읽어 주입하세요. 반대로 NTLM·Kerberos는 애초에 이 방식으로 인증되지 않으므로, 그 경우엔 LLM Gateway를 앞에 두는 구조로 접근해야 합니다.</p>
+<p><strong>"프록시 자격증명을 URL에 넣는 건 무조건 하면 안 됩니다."</strong> Basic 인증이라면 공식문서가 실제로 지원하는 경로입니다. 문제는 URL 방식 자체가 아니라 <strong>비밀번호를 스크립트에 그대로 박아 넣는 것</strong>입니다. 실행 시점에 볼트에서 읽어 주입하세요. 반대로 NTLM·Kerberos는 애초에 이 방식으로 인증되지 않으므로, 그때는 LLM Gateway를 앞에 두는 구조로 접근해야 합니다.</p>
 </li>
 <li>
-<p><strong>"필수 도메인 여섯 개를 다 열어야 합니다"</strong> — 구성에 따라 달라집니다. Bedrock 경로면 모델 트래픽은 이 도메인으로 안 나가지만 <code>WebFetch</code>가 여전히 <code>api.anthropic.com</code>을 찾으므로 완전히 뺄 수는 없고, 미러를 운영하면 <code>downloads.claude.ai</code>를 대체할 수 있으며, 플래그·오류 리포트 도메인은 막아도 동작합니다. 방화벽 요청서에는 <strong>필수와 선택을 구분해서</strong> 올리는 편이 승인이 빠릅니다.</p>
+<p><strong>"필수 도메인 여섯 개를 다 열어야 합니다."</strong> 구성에 따라 달라집니다. Bedrock 경로라면 모델 트래픽은 <code>api.anthropic.com</code>으로 안 나가지만, <code>WebFetch</code>가 여전히 이 도메인을 찾으므로 완전히 뺄 수는 없습니다. 사내 미러를 운영하면 <code>downloads.claude.ai</code>를 대체할 수 있고, 기능 플래그·오류 리포트 도메인은 막아도 동작합니다. 방화벽 요청서에는 <strong>필수와 선택을 구분해서</strong> 올리는 편이 승인이 빠릅니다.</p>
 </li>
 <li>
-<p><strong>"모델이 시크릿을 알아서 거를 겁니다"</strong> — 위 실습에서 모델은 문제를 인식하고도 도구를 호출했습니다. 모델 판단은 확률적이고 프롬프트에 흔들립니다. 감사에 제출할 수 있는 통제는 결정적으로 동작하는 훅 쪽입니다.</p>
+<p><strong>"모델이 시크릿을 알아서 거를 겁니다."</strong> 위 실습에서 모델은 문제를 인식하고도 도구를 호출했습니다. 모델의 판단은 확률적이고 프롬프트에 따라 흔들립니다. 감사 자료로 제출할 수 있는 통제는 늘 같은 결과를 내는 훅 쪽입니다.</p>
 </li>
 </ul>
 <hr />
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
-<p>사내망 통과는 층별 문제입니다. 방화벽에서 필요한 도메인을 열고, 프록시 세 변수를 조직 차원에서 일괄 주입하고, TLS 검사 장비가 있다면 사내 루트 CA를 Node와 OS 양쪽 신뢰 체인에 등록합니다. 여기까지가 "들어오는 길을 여는" 작업이고, 대부분의 초기 배포 이슈는 이 세 층 중 하나에서 발생합니다. 증상이 나오면 <code>curl -v</code> 한 줄로 어느 층인지부터 특정하는 게 가장 빠릅니다.</p>
-<p>나가는 길은 반대로 좁힙니다. 이 파트의 핵심은 <strong>권한 규칙과 샌드박스가 다른 계층</strong>이라는 인식입니다. 권한 규칙은 도구 이름을 보고, 샌드박스는 프로세스의 아웃바운드 연결을 봅니다. <code>WebFetch</code>를 막아도 <code>Bash</code>의 <code>curl</code>이 남는 갭은 명령 문자열 검사로 쫓을 문제가 아니라 판정 계층을 OS로 옮겨서 푸는 문제입니다. 도메인 허용 목록 하나로 어떤 바이너리가 어떤 방식으로 시도하든 동일하게 통제되고, 새 도구가 늘어도 재검토할 것이 없다는 게 실무에서 가장 큰 이점입니다.</p>
-<p>목적지 기준으로 못 잡는 것 — 허용된 목적지로 나가는 부적절한 내용 — 은 <code>PreToolUse</code> 훅이 내용 기준으로 잡습니다. 직접 돌려 보니 훅은 기대대로 동작했고, 파일이 실제로 생성되지 않는 것까지 확인했습니다. 동시에 모델이 스스로 위험을 인식하고도 도구를 호출했다는 것도 같이 관찰했습니다. <strong>모델의 신중함은 통제가 아니라 부가적인 완충</strong>이며, 감사 가능한 통제는 훅 쪽이라는 결론이 실행 로그로 뒷받침됐습니다.</p>
+<p>사내망 통과는 층별 문제입니다. 방화벽에서 필요한 도메인을 열고, 프록시 환경변수 세 개를 조직 차원에서 일괄 주입하고, TLS 검사 장비가 있다면 사내 루트 CA를 Node와 OS 양쪽 신뢰 목록에 등록합니다.</p>
+<p>여기까지가 "들어오는 길을 여는" 작업입니다. 초기 배포에서 터지는 이슈는 대부분 이 세 층 중 하나에서 나옵니다. 증상이 보이면 <code>curl -v</code> 한 줄로 어느 층인지부터 특정하는 게 가장 빠릅니다.</p>
+<p>나가는 길은 반대로 좁힙니다. 이 파트의 핵심은 <strong>권한 규칙과 샌드박스가 다른 계층</strong>이라는 인식입니다. 권한 규칙은 도구 이름을 보고, 샌드박스는 프로세스가 바깥으로 연결하는 행위를 봅니다.</p>
+<p>그래서 <code>WebFetch</code>를 막아도 <code>Bash</code>의 <code>curl</code>이 남는 빈틈은, 명령 문자열을 뒤져서 쫓을 문제가 아니라 판정하는 층을 OS로 옮겨서 푸는 문제입니다. 도메인 허용 목록 하나면 어떤 프로그램이 어떤 방식으로 시도하든 똑같이 통제됩니다. 새 도구가 늘어나도 다시 검토할 것이 없다는 점이 실무에서 가장 큰 이점입니다.</p>
+<p>목적지 기준으로 못 잡는 것도 있습니다. 허용된 목적지로 나가는 부적절한 내용이 그렇고, 이건 <code>PreToolUse</code> 훅이 내용 기준으로 잡습니다. 직접 돌려 보니 훅은 기대대로 동작했고, 파일이 실제로 생성되지 않는 것까지 확인했습니다.</p>
+<p>동시에 모델이 스스로 위험을 인식하고도 도구를 호출했다는 것도 함께 관찰했습니다. <strong>모델의 신중함은 통제가 아니라 덤으로 얻는 완충 장치</strong>이며, 감사 가능한 통제는 훅 쪽이라는 결론이 실행 로그로 뒷받침됐습니다.</p>
 <p>이번엔 정책을 시스템 전역 경로에 sudo로 직접 배포해서, 개인이 우회할 수 없는 <strong>강제성</strong>까지 실측으로 확인했습니다. 그 강제성을 만드는 배포 채널과 우선순위·잠금 규칙이 다음 파트의 주제입니다.</p>
 <hr />
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>
-<li>Claude Code Deep Dive Workshop — <em>Chapter 3 / Part 4: 네트워크와 보안</em> (12p)</li>
-<li>공식 문서: <a href="https://code.claude.com/docs/ko/network-config">Network configuration</a> · <a href="https://code.claude.com/docs/ko/sandboxing">Sandboxing</a> · <a href="https://code.claude.com/docs/ko/hooks">Hooks</a></li>
+<li><strong>1차</strong>: Claude Code Deep Dive Workshop — <em>Chapter 3 / Admin Setup / Part 4: 네트워크와 보안</em> (12p)</li>
+<li><strong>2차</strong>: 공식 문서 — <a href="https://code.claude.com/docs/ko/network-config">Network configuration</a> · <a href="https://code.claude.com/docs/ko/sandboxing">Sandboxing</a> · <a href="https://code.claude.com/docs/ko/hooks">Hooks</a></li>
 </ul>
 
 
