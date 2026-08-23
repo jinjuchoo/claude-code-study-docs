@@ -1,0 +1,90 @@
+<svg viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="훅 발화 빈도 대비 애니메이션. 3턴 동안 세션당 이벤트(SessionStart/SessionEnd)는 시작과 끝 딱 2번만 발화하고, 턴당 이벤트(UserPromptSubmit/Stop)는 턴마다 3번, 도구 호출당 이벤트(PreToolUse/PostToolUse)는 턴 안에서 도구를 부를 때마다 7번으로 가장 자주 발화합니다.">
+  <style>
+    :root{ --fg:#111; --sub:#555; --line:#9575cd; --sep:#c9c9d2; }
+    text{ font-family:'Pretendard','Apple SD Gothic Neo',-apple-system,sans-serif; }
+    .t{ font-size:13px; font-weight:700; fill:var(--fg); }
+    .s{ font-size:10.5px; fill:var(--sub); }
+    .turn{ font-size:11px; font-weight:700; fill:var(--sub); }
+    .cap{ font-size:12px; fill:var(--fg); }
+
+    .track{ stroke:var(--sep); stroke-width:1.5; }
+    .sepline{ stroke:var(--sep); stroke-width:1.5; stroke-dasharray:4,3; }
+
+    .mark{ transform-box:fill-box; transform-origin:center; opacity:.22; }
+
+    @keyframes mkA1{ 0%,2.5%{opacity:.22;transform:scale(1)} 4%{opacity:1;transform:scale(1.35)} 6%{opacity:1;transform:scale(1)} 100%{opacity:1;transform:scale(1)} }
+    @keyframes mkB1{ 0%,6.25%{opacity:.22;transform:scale(1)} 8%{opacity:1;transform:scale(1.35)} 10%{opacity:1;transform:scale(1)} 100%{opacity:1;transform:scale(1)} }
+    @keyframes mkC1{ 0%,13.75%{opacity:.22;transform:scale(1)} 15.5%{opacity:1;transform:scale(1.35)} 17.5%{opacity:1;transform:scale(1)} 100%{opacity:1;transform:scale(1)} }
+    @keyframes mkC2{ 0%,21.25%{opacity:.22;transform:scale(1)} 23%{opacity:1;transform:scale(1.35)} 25%{opacity:1;transform:scale(1)} 100%{opacity:1;transform:scale(1)} }
+    @keyframes mkB2{ 0%,35%{opacity:.22;transform:scale(1)} 36.75%{opacity:1;transform:scale(1.35)} 38.75%{opacity:1;transform:scale(1)} 100%{opacity:1;transform:scale(1)} }
+    @keyframes mkC3{ 0%,41.25%{opacity:.22;transform:scale(1)} 43%{opacity:1;transform:scale(1.35)} 45%{opacity:1;transform:scale(1)} 100%{opacity:1;transform:scale(1)} }
+    @keyframes mkC4{ 0%,47.5%{opacity:.22;transform:scale(1)} 49.25%{opacity:1;transform:scale(1.35)} 51.25%{opacity:1;transform:scale(1)} 100%{opacity:1;transform:scale(1)} }
+    @keyframes mkC5{ 0%,53.75%{opacity:.22;transform:scale(1)} 55.5%{opacity:1;transform:scale(1.35)} 57.5%{opacity:1;transform:scale(1)} 100%{opacity:1;transform:scale(1)} }
+    @keyframes mkB3{ 0%,65%{opacity:.22;transform:scale(1)} 66.75%{opacity:1;transform:scale(1.35)} 68.75%{opacity:1;transform:scale(1)} 100%{opacity:1;transform:scale(1)} }
+    @keyframes mkC6{ 0%,71.25%{opacity:.22;transform:scale(1)} 73%{opacity:1;transform:scale(1.35)} 75%{opacity:1;transform:scale(1)} 100%{opacity:1;transform:scale(1)} }
+    @keyframes mkC7{ 0%,77.5%{opacity:.22;transform:scale(1)} 79.25%{opacity:1;transform:scale(1.35)} 81.25%{opacity:1;transform:scale(1)} 100%{opacity:1;transform:scale(1)} }
+    @keyframes mkA2{ 0%,97.5%{opacity:.22;transform:scale(1)} 98.5%{opacity:1;transform:scale(1.35)} 99.5%{opacity:1;transform:scale(1)} 100%{opacity:1;transform:scale(1)} }
+
+    .a1{ animation:mkA1 14s linear infinite }  .a2{ animation:mkA2 14s linear infinite }
+    .b1{ animation:mkB1 14s linear infinite }  .b2{ animation:mkB2 14s linear infinite }  .b3{ animation:mkB3 14s linear infinite }
+    .c1{ animation:mkC1 14s linear infinite }  .c2{ animation:mkC2 14s linear infinite }  .c3{ animation:mkC3 14s linear infinite }
+    .c4{ animation:mkC4 14s linear infinite }  .c5{ animation:mkC5 14s linear infinite }  .c6{ animation:mkC6 14s linear infinite }
+    .c7{ animation:mkC7 14s linear infinite }
+
+    .playhead{ animation:sweep 14s linear infinite, sweepop 14s linear infinite; }
+    @keyframes sweep{ 0%{ transform:translateX(0px) } 100%{ transform:translateX(800px) } }
+    @keyframes sweepop{ 0%{opacity:0} 1%{opacity:1} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+
+    @media (prefers-color-scheme: dark){
+      :root{ --fg:#e8e8ea; --sub:#a8a8b3; --sep:#4a4a55; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .mark{ animation:none; opacity:1; transform:scale(1) }
+      .playhead{ display:none }
+    }
+  </style>
+
+  <!-- 턴 구분선 + 라벨 -->
+  <line class="sepline" x1="305" y1="35" x2="305" y2="228"/>
+  <line class="sepline" x1="555" y1="35" x2="555" y2="228"/>
+  <text class="turn" x="180" y="26" text-anchor="middle">턴 1</text>
+  <text class="turn" x="430" y="26" text-anchor="middle">턴 2</text>
+  <text class="turn" x="695" y="26" text-anchor="middle">턴 3</text>
+
+  <!-- 행 라벨 -->
+  <text class="t" x="20" y="55">세션당</text>
+  <text class="s" x="20" y="68">SessionStart · End</text>
+  <text class="t" x="20" y="125">턴당</text>
+  <text class="s" x="20" y="138">UserPromptSubmit · Stop</text>
+  <text class="t" x="20" y="195">도구 호출당</text>
+  <text class="s" x="20" y="208">PreToolUse · PostToolUse</text>
+
+  <!-- 트랙 -->
+  <line class="track" x1="60" y1="60" x2="860" y2="60"/>
+  <line class="track" x1="60" y1="130" x2="860" y2="130"/>
+  <line class="track" x1="60" y1="200" x2="860" y2="200"/>
+
+  <!-- 마커: 세션당(보라) 2개 -->
+  <circle class="mark a1" cx="80" cy="60" r="8" fill="#673ab7"/>
+  <circle class="mark a2" cx="840" cy="60" r="8" fill="#673ab7"/>
+
+  <!-- 마커: 턴당(주황) 3개 -->
+  <circle class="mark b1" cx="110" cy="130" r="8" fill="#ef6c00"/>
+  <circle class="mark b2" cx="340" cy="130" r="8" fill="#ef6c00"/>
+  <circle class="mark b3" cx="580" cy="130" r="8" fill="#ef6c00"/>
+
+  <!-- 마커: 도구 호출당(초록) 7개 -->
+  <circle class="mark c1" cx="170" cy="200" r="8" fill="#388e3c"/>
+  <circle class="mark c2" cx="230" cy="200" r="8" fill="#388e3c"/>
+  <circle class="mark c3" cx="390" cy="200" r="8" fill="#388e3c"/>
+  <circle class="mark c4" cx="440" cy="200" r="8" fill="#388e3c"/>
+  <circle class="mark c5" cx="490" cy="200" r="8" fill="#388e3c"/>
+  <circle class="mark c6" cx="630" cy="200" r="8" fill="#388e3c"/>
+  <circle class="mark c7" cx="680" cy="200" r="8" fill="#388e3c"/>
+
+  <!-- 스윕 재생헤드 -->
+  <line class="playhead" x1="60" y1="35" x2="60" y2="228" stroke="var(--line)" stroke-width="2"/>
+
+  <text class="cap" x="450" y="252" text-anchor="middle">같은 3턴 동안 — 세션당 2회 · 턴당 3회 · 도구 호출당 7회. 발화 빈도가 이만큼 다릅니다.</text>
+</svg>
