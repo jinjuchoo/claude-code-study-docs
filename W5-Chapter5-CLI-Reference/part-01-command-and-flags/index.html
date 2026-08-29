@@ -2167,15 +2167,15 @@
 
 <h1 id="part-1--claude-명령과-플래그">Part 1 — claude 명령과 플래그<a class="headerlink" href="#part-1--claude-명령과-플래그" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p>지금 설치된 버전에서 어떤 플래그가 실제로 동작하는지는 교재나 기억이 아니라 그 자리에서 친 <code>--help</code>가 정한다. 자동화는 이 실측 결과를 기준으로 짠다.</p>
+<p>지금 설치된 버전에서 어떤 플래그가 실제로 동작하는지는 교재나 기억이 아니라 그 자리에서 친 <code>--help</code>가 정합니다. 자동화는 이 실측 결과를 기준으로 짭니다.</p>
 <hr />
 <h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
-<p>어제의 플래그를 오늘의 CI에 넣으면 조용히 실패하거나, 더 나쁘게는 전혀 다른 권한으로 실행될 수 있다. 교재의 2026년 7월 설명을 출발점으로 삼되, 실행 당일 그 자리에서 <code>--help</code>를 다시 쳐서 지금 이 버전이 실제로 뭘 지원하는지부터 확인해야 하는 이유다.</p>
+<p>어제의 플래그를 오늘의 CI에 넣으면 조용히 실패하거나, 더 나쁘게는 전혀 다른 권한으로 실행될 수 있습니다. 교재의 2026년 7월 설명을 출발점으로 삼되, 실행 당일 그 자리에서 <code>--help</code>를 다시 쳐서 지금 이 버전이 실제로 뭘 지원하는지부터 확인해야 하는 이유입니다.</p>
 <h2 id="1-명령은-세-층으로-읽는다">1. 명령은 세 층으로 읽는다<a class="headerlink" href="#1-명령은-세-층으로-읽는다" title="이 위치로 링크">¶</a></h2>
-<p>터미널에서 <code>claude</code>를 치기 직전에 먼저 정해야 하는 게 하나 있다. <strong>지금 답만 받고 끝낼 것인가, 아니면 세션을 열어두고 계속 주고받을 것인가.</strong> 이 대답에 따라 명령의 모양 자체가 달라진다.</p>
-<p>"이 함수가 왜 느린지 봐줘"처럼 답을 보고 되물을 게 뻔한 작업이면 인자 없이 <code>claude</code>만 친다. 대화형 세션이 시작되고 맥락이 계속 쌓인다. 반대로 커밋 메시지 한 줄을 뽑아 그대로 다음 명령에 넘길 생각이라면 <code>-p</code>(<code>--print</code>)를 붙인다. 답을 출력하고 끝나는 비대화 실행이라 셸 스크립트가 기대하는 모양은 언제나 이쪽이다.</p>
-<p>여기에 층이 하나 더 있다. <code>mcp</code>, <code>auth</code>, <code>agents</code>, <code>logs</code>, <code>attach</code> 같은 서브커맨드는 애초에 질문을 던지는 자리가 아니라 <strong>세션 주변의 운영 표면</strong>이다. <code>claude mcp add ...</code>는 Claude에게 던지는 질문이 아니다. 설정을 바꾸는 명령이다.</p>
-<p>이 세 층을 먼저 갈라두는 게 중요하다. 그래야 프롬프트·옵션·서브커맨드를 한 문장에 섞지 않는다.</p>
+<p>터미널에서 <code>claude</code>를 치기 직전에 먼저 정해야 하는 게 하나 있습니다. <strong>지금 답만 받고 끝낼 것인가, 아니면 세션을 열어두고 계속 주고받을 것인가.</strong> 이 대답에 따라 명령의 모양 자체가 달라집니다.</p>
+<p>"이 함수가 왜 느린지 봐줘"처럼 답을 보고 되물을 게 뻔한 작업이면 인자 없이 <code>claude</code>만 칩니다. 대화형 세션이 시작되고 맥락이 계속 쌓입니다. 반대로 커밋 메시지 한 줄을 뽑아 그대로 다음 명령에 넘길 생각이라면 <code>-p</code>(<code>--print</code>)를 붙입니다. 답을 출력하고 끝나는 비대화 실행이라 셸 스크립트가 기대하는 모양은 언제나 이쪽입니다.</p>
+<p>여기에 층이 하나 더 있습니다. <code>mcp</code>, <code>auth</code>, <code>agents</code>, <code>logs</code>, <code>attach</code> 같은 서브커맨드는 애초에 질문을 던지는 자리가 아니라 <strong>세션 주변의 운영 표면</strong>입니다. <code>claude mcp add ...</code>는 Claude에게 던지는 질문이 아닙니다. 설정을 바꾸는 명령입니다.</p>
+<p>이 세 층을 먼저 갈라두는 게 중요합니다. 그래야 프롬프트·옵션·서브커맨드를 한 문장에 섞지 않습니다.</p>
 <pre class="mermaid"><code>flowchart TD
   A["claude"] --&gt; B["대화형 세션"]
   A --&gt; C["-p / --print\n단발 실행"]
@@ -2187,36 +2187,36 @@
 <p><img alt="플래그 분류 지도" src="../slides/slide-007.png" /></p>
 <p><em>▲ 교재 슬라이드 07 — 플래그 6분류 지도</em></p>
 <h2 id="2-플래그는-의도로-묶는다">2. 플래그는 의도로 묶는다<a class="headerlink" href="#2-플래그는-의도로-묶는다" title="이 위치로 링크">¶</a></h2>
-<p><code>claude --help</code>를 처음 열면 플래그가 화면을 가득 채운다. 전부 외울 필요는 없고 <strong>"내가 지금 무엇을 바꾸려는 건가"</strong>를 기준으로 묶어두면 필요한 순간에 찾아갈 수 있다. 실측 도움말에서는 출력·세션·권한·컨텍스트·운영·문제해결 여섯 갈래로 나누어 읽는 편이 안전했다.</p>
+<p><code>claude --help</code>를 처음 열면 플래그가 화면을 가득 채웁니다. 전부 외울 필요는 없고 <strong>"내가 지금 무엇을 바꾸려는 건가"</strong>를 기준으로 묶어두면 필요한 순간에 찾아갈 수 있습니다. 실측 도움말에서는 출력·세션·권한·컨텍스트·운영·문제해결 여섯 갈래로 나누어 읽는 편이 안전했습니다.</p>
 <ul>
-<li><strong>출력의 모양을 바꾸고 싶다</strong> — <code>--output-format</code>, <code>--json-schema</code>, <code>--input-format</code>. 사람이 읽을 텍스트로 받을지, 다음 단계가 파싱할 JSON으로 받을지를 정하는 자리다.</li>
-<li><strong>이전 대화를 이어가고 싶다</strong> — <code>-c</code>, <code>-r</code>, <code>--fork-session</code>, <code>--session-id</code>. 세션을 다시 불러오거나 가지를 쳐서 갈라놓는다.</li>
-<li><strong>도구와 권한을 좁히고 싶다</strong> — <code>--tools</code>, <code>--allowed-tools</code>, <code>--disallowed-tools</code>, <code>--permission-mode</code>. 넷이 서로 겹쳐 쌓이므로 바로 아래에서 따로 본다.</li>
+<li><strong>출력의 모양을 바꾸고 싶다</strong> — <code>--output-format</code>, <code>--json-schema</code>, <code>--input-format</code>. 사람이 읽을 텍스트로 받을지, 다음 단계가 파싱할 JSON으로 받을지를 정하는 자리입니다.</li>
+<li><strong>이전 대화를 이어가고 싶다</strong> — <code>-c</code>, <code>-r</code>, <code>--fork-session</code>, <code>--session-id</code>. 세션을 다시 불러오거나 가지를 쳐서 갈라놓습니다.</li>
+<li><strong>도구와 권한을 좁히고 싶다</strong> — <code>--tools</code>, <code>--allowed-tools</code>, <code>--disallowed-tools</code>, <code>--permission-mode</code>. 넷이 서로 겹쳐 쌓이므로 바로 아래에서 따로 봅니다.</li>
 <li><strong>실행 환경 자체를 바꾸고 싶다</strong> — <code>--add-dir</code>, <code>--settings</code>, <code>--mcp-config</code>, <code>--debug</code>, <code>--safe-mode</code>.</li>
 </ul>
-<p>권한과 도구 쪽 넷은 구체적인 상황에서 출발하면 빠르다. 자동화 스크립트가 파일을 지워버리는 사고를 막고 싶어서 <code>--disallowed-tools</code>에 <code>Bash(rm *)</code>를 걸었다고 하자. 이러면 <code>rm -rf build</code>는 막히지만 <code>npm run build</code>는 그대로 돌아간다. 반면 지정자 없이 <code>Bash</code>라고만 적으면 셸 도구 자체가 통째로 사라져서 <code>ls</code> 한 줄도 못 돌린다. <strong>도구 이름만 적으면 그 도구 전체가 사라지고, <code>Bash(rm *)</code>처럼 범위를 좁혀 적으면 도구는 살아 있고 해당 패턴만 막힌다.</strong></p>
-<p>그런데 이 규칙들 바깥에 한 겹이 더 있다. 공식 문서의 "Tool Access Precedence" 절이 이 우선순위를 명시한다. <code>--tools</code>가 가장 바깥쪽 울타리로, <strong>여기 없는 도구는 아예 존재하지 않는 것처럼 취급된다.</strong> 그래서 <code>--tools</code> 목록에 Bash를 넣지 않은 채로 <code>--allowed-tools</code>에 Bash 규칙을 아무리 정성껏 써 봐야 소용이 없다. 울타리 밖의 도구라 처음부터 없는 것과 같기 때문이다.</p>
-<p>그 울타리 안에서 나머지 둘이 규칙을 더한다. <code>--allowed-tools</code>는 확인 없이 실행할 규칙을, <code>--disallowed-tools</code>는 거부할 규칙을 추가한다. 순서로 정리하면 <strong>먼저 <code>--tools</code>로 무대에 올릴 도구를 정하고, 그 안에서 allow와 deny로 세부 규칙을 그리는</strong> 두 단계다.</p>
+<p>권한과 도구 쪽 넷은 구체적인 상황에서 출발하면 빠릅니다. 자동화 스크립트가 파일을 지워버리는 사고를 막고 싶어서 <code>--disallowed-tools</code>에 <code>Bash(rm *)</code>를 걸었다고 합시다. 이러면 <code>rm -rf build</code>는 막히지만 <code>npm run build</code>는 그대로 돌아갑니다. 반면 지정자 없이 <code>Bash</code>라고만 적으면 셸 도구 자체가 통째로 사라져서 <code>ls</code> 한 줄도 못 돌립니다. <strong>도구 이름만 적으면 그 도구 전체가 사라지고, <code>Bash(rm *)</code>처럼 범위를 좁혀 적으면 도구는 살아 있고 해당 패턴만 막힙니다.</strong></p>
+<p>그런데 이 규칙들 바깥에 한 겹이 더 있습니다. 공식 문서의 "Tool Access Precedence" 절이 이 우선순위를 명시합니다. <code>--tools</code>가 가장 바깥쪽 울타리로, <strong>여기 없는 도구는 아예 존재하지 않는 것처럼 취급됩니다.</strong> 그래서 <code>--tools</code> 목록에 Bash를 넣지 않은 채로 <code>--allowed-tools</code>에 Bash 규칙을 아무리 정성껏 써 봐야 소용이 없습니다. 울타리 밖의 도구라 처음부터 없는 것과 같기 때문입니다.</p>
+<p>그 울타리 안에서 나머지 둘이 규칙을 더합니다. <code>--allowed-tools</code>는 확인 없이 실행할 규칙을, <code>--disallowed-tools</code>는 거부할 규칙을 추가합니다. 순서로 정리하면 <strong>먼저 <code>--tools</code>로 무대에 올릴 도구를 정하고, 그 안에서 allow와 deny로 세부 규칙을 그리는</strong> 두 단계입니다.</p>
 <p><img alt="권한과 도구 플래그" src="../slides/slide-010.png" /></p>
 <p><em>▲ 교재 슬라이드 10 — 권한과 도구 플래그</em></p>
 <h2 id="3-bare와-safe-mode는-같은-스위치가-아니다">3. bare와 safe mode는 같은 스위치가 아니다<a class="headerlink" href="#3-bare와-safe-mode는-같은-스위치가-아니다" title="이 위치로 링크">¶</a></h2>
-<p>이름만 보면 둘 다 가볍고 안전하게 돌리는 모드 같아서 헷갈린다. 고를 때는 이름 대신 <strong>지금 내 목적이 무엇인지</strong>를 먼저 묻는 게 빠르다.</p>
+<p>이름만 보면 둘 다 가볍고 안전하게 돌리는 모드 같아서 헷갈립니다. 고를 때는 이름 대신 <strong>지금 내 목적이 무엇인지</strong>를 먼저 묻는 게 빠릅니다.</p>
 <ul>
 <li><strong>"설정 자체가 고장의 원인인지 가르고 싶다"</strong> → <code>--safe-mode</code></li>
 <li><strong>"CI에서 최소한만 켜고 매번 똑같이 돌리고 싶다"</strong> → <code>--bare</code></li>
 </ul>
-<p><code>--safe-mode</code>는 문제 해결용이다. 훅이 이상하게 걸리거나 플러그인 하나가 세션을 망가뜨리는 것 같을 때 내가 얹은 것들만 걷어내고 "그래도 재현되는가"를 본다. 사용자 정의(스킬·플러그인·hooks·MCP·사용자 명령 등)를 끄되 인증·모델 선택·내장 도구·권한은 계속 작동하는 모드라서 평소와 거의 같은 환경에서 변수 하나만 제거하는 셈이다.</p>
-<p><code>--bare</code>는 성격이 다르다. 실측 설명은 hooks·LSP·플러그인 동기화·자동 메모리·CLAUDE.md 자동 탐색 등을 건너뛰는 minimal mode라고 말한다. 특히 눈여겨볼 건 인증 쪽이다. OAuth와 keychain을 읽지 않고 — 내 로컬 머신에 로그인해 둔 자격증명에 기대지 않고 — 인증은 <code>ANTHROPIC_API_KEY</code> 또는 settings의 <code>apiKeyHelper</code>만 사용한다고 명시한다. 로컬에서만 통하고 CI에서는 조용히 실패하는 의존성이 여기서 걸러진다.</p>
-<p>따라서 성능과 반복 호출의 단순화가 목적이면 bare를, “내 설정이 고장의 원인인가?”를 가르는 목적이면 safe mode를 고른다. 여기서 오해하기 쉬운 게 하나 있다. <strong>bare가 safe mode보다 더 안전하다는 뜻은 아니다.</strong> 이름이 주는 인상과 달리 둘은 안전 등급의 상하 관계가 아니라 목적이 다른 별개의 스위치다.</p>
-<p>공식 문서는 <code>--bare</code>의 도구 범위를 Bash와 파일 읽기·편집으로 한정하고 <strong>스크립트·SDK 호출에 권장하는 모드이며 향후 <code>-p</code>의 기본값이 될 예정</strong>이라고 못 박는다 — 지금 습관을 들여 둘 가치가 있다는 뜻이다.</p>
+<p><code>--safe-mode</code>는 문제 해결용입니다. 훅이 이상하게 걸리거나 플러그인 하나가 세션을 망가뜨리는 것 같을 때 내가 얹은 것들만 걷어내고 "그래도 재현되는가"를 봅니다. 사용자 정의(스킬·플러그인·hooks·MCP·사용자 명령 등)를 끄되 인증·모델 선택·내장 도구·권한은 계속 작동하는 모드라서 평소와 거의 같은 환경에서 변수 하나만 제거하는 셈입니다.</p>
+<p><code>--bare</code>는 성격이 다릅니다. 실측 설명은 hooks·LSP·플러그인 동기화·자동 메모리·CLAUDE.md 자동 탐색 등을 건너뛰는 minimal mode라고 말합니다. 특히 눈여겨볼 건 인증 쪽입니다. OAuth와 keychain을 읽지 않고 — 내 로컬 머신에 로그인해 둔 자격증명에 기대지 않고 — 인증은 <code>ANTHROPIC_API_KEY</code> 또는 settings의 <code>apiKeyHelper</code>만 사용한다고 명시합니다. 로컬에서만 통하고 CI에서는 조용히 실패하는 의존성이 여기서 걸러집니다.</p>
+<p>따라서 성능과 반복 호출의 단순화가 목적이면 bare를, “내 설정이 고장의 원인인가?”를 가르는 목적이면 safe mode를 고릅니다. 여기서 오해하기 쉬운 게 하나 있습니다. <strong>bare가 safe mode보다 더 안전하다는 뜻은 아닙니다.</strong> 이름이 주는 인상과 달리 둘은 안전 등급의 상하 관계가 아니라 목적이 다른 별개의 스위치입니다.</p>
+<p>공식 문서는 <code>--bare</code>의 도구 범위를 Bash와 파일 읽기·편집으로 한정하고 <strong>스크립트·SDK 호출에 권장하는 모드이며 향후 <code>-p</code>의 기본값이 될 예정</strong>이라고 못 박습니다 — 지금 습관을 들여 둘 가치가 있다는 뜻입니다.</p>
 <p><img alt="--bare와 --safe-mode" src="../slides/slide-014.png" /></p>
 <p><em>▲ 교재 슬라이드 14 — --bare vs --safe-mode</em></p>
 <div class="admonition tip">
 <p class="admonition-title">현장 메모</p>
-<p>CI에서 <code>--bare</code>를 쓰면 사람의 로컬 설정에 기대지 않게 된다. 대신 인증과 필요한 컨텍스트를 명시해야 하므로, 숨은 의존성을 드러내는 장점이 있다.</p>
+<p>CI에서 <code>--bare</code>를 쓰면 사람의 로컬 설정에 기대지 않게 됩니다. 대신 인증과 필요한 컨텍스트를 명시해야 하므로, 숨은 의존성을 드러내는 장점이 있습니다.</p>
 </div>
 <h2 id="직접-해보기">직접 해보기<a class="headerlink" href="#직접-해보기" title="이 위치로 링크">¶</a></h2>
-<p>다음은 2026-08-29에 실제 실행한 원본 일부다. <code>--help</code>는 교재 목록과 비교할 때 기준이 됐다.</p>
+<p>다음은 2026-08-29에 실제 실행한 원본 일부입니다. <code>--help</code>는 교재 목록과 비교할 때 기준이 됐습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">$ </span>claude<span class="w"> </span>--version
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="go">2.1.251 (Claude Code)</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
@@ -2237,16 +2237,16 @@
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="go">  reset-project-choices</span>
 </span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="go">  serve [options]</span>
 </span></code></pre></div>
-<p>교재 슬라이드 7~16과 실측을 비교하면 <code>--bare</code>, <code>--safe-mode</code>, <code>--from-pr</code>는 이름·동작 모두 그대로다. 다만 <code>--remote</code>는 이번 도움말에 보이지 않았는데, 없어진 게 아니라 <strong><code>--cloud</code>의 폐기된(deprecated) 숨은 별칭</strong>이었다 — 실제로 <code>claude --remote</code>를 쳐 보면 파서가 이를 받아들이고 "<code>--cloud</code>는 대화형 터미널이 필요하다"는 오류를 낸다. 교재가 이 슬라이드에서 함께 소개하는 "웹으로 위임 후 되찾기" 표면은 오히려 <code>--remote-control</code>(별칭 <code>--rc</code>)이라는 별개의 명령이다. 즉 <code>--remote → --remote-control</code> 개명은 애초에 없었다. <code>--remote</code>는 <code>--cloud</code>의 그림자이고 <code>--remote-control</code>은 처음부터 다른 기능이다.</p>
+<p>교재 슬라이드 7~16과 실측을 비교하면 <code>--bare</code>, <code>--safe-mode</code>, <code>--from-pr</code>는 이름·동작 모두 그대로입니다. 다만 <code>--remote</code>는 이번 도움말에 보이지 않았는데, 없어진 게 아니라 <strong><code>--cloud</code>의 폐기된(deprecated) 숨은 별칭</strong>이었습니다 — 실제로 <code>claude --remote</code>를 쳐 보면 파서가 이를 받아들이고 "<code>--cloud</code>는 대화형 터미널이 필요하다"는 오류를 냅니다. 교재가 이 슬라이드에서 함께 소개하는 "웹으로 위임 후 되찾기" 표면은 오히려 <code>--remote-control</code>(별칭 <code>--rc</code>)이라는 별개의 명령입니다. 즉 <code>--remote → --remote-control</code> 개명은 애초에 없었습니다. <code>--remote</code>는 <code>--cloud</code>의 그림자이고 <code>--remote-control</code>은 처음부터 다른 기능입니다.</p>
 <div class="admonition warning">
 <p class="admonition-title">실측에서 달랐던 점</p>
-<p>교재의 축약 표현을 그대로 스크립트에 옮기지 않았다. "이름이 바뀌었겠지"라고 짐작하지 말고 짧은 플래그가 안 보이면 먼저 그 플래그를 직접 쳐서 어떤 오류·안내가 나오는지 확인하는 편이 안전하다.</p>
+<p>교재의 축약 표현을 그대로 스크립트에 옮기지 않았습니다. "이름이 바뀌었겠지"라고 짐작하지 말고 짧은 플래그가 안 보이면 먼저 그 플래그를 직접 쳐서 어떤 오류·안내가 나오는지 확인하는 편이 안전합니다.</p>
 </div>
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
-<p><strong>"<code>-p</code>면 권한과 설정이 자동으로 안전해진다"</strong> — 아니다. print 모드는 작업공간 신뢰 대화상자를 건너뛴다. 신뢰할 수 있는 디렉터리에서만 실행하고 도구·권한을 명시한다.</p>
+<p><strong>"<code>-p</code>면 권한과 설정이 자동으로 안전해진다"</strong> — 아닙니다. print 모드는 작업공간 신뢰 대화상자를 건너뜁니다. 신뢰할 수 있는 디렉터리에서만 실행하고 도구·권한을 명시합니다.</p>
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
-<p>CLI는 옵션을 많이 아는 사람보다 옵션의 책임을 분리하는 사람이 덜 실수한다. 먼저 실행 형태를 고르고, 다음으로 세션과 도구 범위를 정하고, 마지막으로 출력 형식을 미리 정해 둔 대로 고정한다.</p>
-<p>이후 파트의 모든 명령은 이 순서를 따른다. 교재의 설명은 방향을 주고 실행 당일의 도움말은 실제 배포 기준을 준다.</p>
+<p>CLI는 옵션을 많이 아는 사람보다 옵션의 책임을 분리하는 사람이 덜 실수합니다. 먼저 실행 형태를 고르고, 다음으로 세션과 도구 범위를 정하고, 마지막으로 출력 형식을 미리 정해 둔 대로 고정합니다.</p>
+<p>이후 파트의 모든 명령은 이 순서를 따릅니다. 교재의 설명은 방향을 주고 실행 당일의 도움말은 실제 배포 기준을 줍니다.</p>
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>
 <li>Claude Code Deep Dive Workshop — <em>Chapter 5 / Part 1: CLI Reference</em> (슬라이드 4~16)</li>

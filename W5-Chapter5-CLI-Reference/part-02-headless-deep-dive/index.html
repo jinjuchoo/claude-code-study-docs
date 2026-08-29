@@ -2167,60 +2167,60 @@
 
 <h1 id="part-2--headless-심화">Part 2 — Headless 심화<a class="headerlink" href="#part-2--headless-심화" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p><code>-p</code>는 사람이 읽을 답을 한 번 받는 명령이 아니라, 표준 입력을 받아 JSON으로 결과를 돌려주고 성공·실패를 종료 코드로 알려주는 단발 실행이다. 스크립트가 이어받아 쓸 수 있게 설계됐다.</p>
+<p><code>-p</code>는 사람이 읽을 답을 한 번 받는 명령이 아니라, 표준 입력을 받아 JSON으로 결과를 돌려주고 성공·실패를 종료 코드로 알려주는 단발 실행입니다. 스크립트가 이어받아 쓸 수 있게 설계됐습니다.</p>
 <hr />
 <h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
-<p>사람에게는 그럴듯한 문장 한 줄이면 충분하지만 셸은 성공·실패·비용을 판정해야 한다. <code>-p</code>의 결과를 텍스트로만 붙이면 인증 실패나 모델 오류를 성공처럼 다음 단계에 넘기기 쉽다.</p>
-<p>CI 스크립트를 하나 떠올리면 감이 빨리 온다. <code>claude -p "리뷰해줘" &gt; review.md</code> 한 줄로 리뷰를 받아 다음 잡에 넘긴다고 하자. 이 파이프는 리뷰가 제대로 나온 경우와 인증이 만료돼 아무것도 못 한 경우를 구분하지 못한다. 스크립트 입장에서는 둘 다 "파일이 생겼다"로 끝나기 때문이다. 이 구분을 하려면 위 스크립트가 실제로 봐야 할 세 가지 — <strong>무엇을 넣었는지(입력), 뭐가 나왔는지(출력), 성공했는지(종료 상태)</strong> — 를 따로따로 확인해야 한다. <code>-p</code>가 답을 한 줄 뱉는 명령이 아니라 이 세 가지를 갖춘 실행이라고 보면 리뷰 성공과 인증 실패를 가를 수 있다. 이 파트도 입력 → 출력 → 실패 판정 순서로 본다.</p>
+<p>사람에게는 그럴듯한 문장 한 줄이면 충분하지만 셸은 성공·실패·비용을 판정해야 합니다. <code>-p</code>의 결과를 텍스트로만 붙이면 인증 실패나 모델 오류를 성공처럼 다음 단계에 넘기기 쉽습니다.</p>
+<p>CI 스크립트를 하나 떠올리면 감이 빨리 옵니다. <code>claude -p "리뷰해줘" &gt; review.md</code> 한 줄로 리뷰를 받아 다음 잡에 넘긴다고 합시다. 이 파이프는 리뷰가 제대로 나온 경우와 인증이 만료돼 아무것도 못 한 경우를 구분하지 못합니다. 스크립트 입장에서는 둘 다 "파일이 생겼다"로 끝나기 때문입니다. 이 구분을 하려면 위 스크립트가 실제로 봐야 할 세 가지 — <strong>무엇을 넣었는지(입력), 뭐가 나왔는지(출력), 성공했는지(종료 상태)</strong> — 를 따로따로 확인해야 합니다. <code>-p</code>가 답을 한 줄 뱉는 명령이 아니라 이 세 가지를 갖춘 실행이라고 보면 리뷰 성공과 인증 실패를 가를 수 있습니다. 이 파트도 입력 → 출력 → 실패 판정 순서로 봅니다.</p>
 <h2 id="1-입력은-셸의-여섯-표면을-쓴다">1. 입력은 셸의 여섯 표면을 쓴다<a class="headerlink" href="#1-입력은-셸의-여섯-표면을-쓴다" title="이 위치로 링크">¶</a></h2>
-<p>가장 익숙한 형태는 프롬프트를 인자에 그대로 적는 것이다.</p>
+<p>가장 익숙한 형태는 프롬프트를 인자에 그대로 적는 것입니다.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;charge 함수의 문제를 한 줄로&quot;</span>
 </span></code></pre></div>
-<p>문제는 검토 대상이 파일일 때다. 파일 내용을 프롬프트로 넣는 방법은 크게 두 갈래인데, 한쪽은 조용히 깨지고 다른 한쪽은 안 깨진다.</p>
-<p><strong>깨지는 쪽 — 명령 치환으로 인자를 만든다.</strong> 명령 치환(command substitution)은 <code>$( )</code> 안의 명령을 셸이 먼저 실행한 뒤 그 출력을 그 자리에 문자열로 끼워 넣는 문법이다.</p>
+<p>문제는 검토 대상이 파일일 때입니다. 파일 내용을 프롬프트로 넣는 방법은 크게 두 갈래인데, 한쪽은 조용히 깨지고 다른 한쪽은 안 깨집니다.</p>
+<p><strong>깨지는 쪽 — 명령 치환으로 인자를 만듭니다.</strong> 명령 치환(command substitution)은 <code>$( )</code> 안의 명령을 셸이 먼저 실행한 뒤 그 출력을 그 자리에 문자열로 끼워 넣는 문법입니다.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>cat<span class="w"> </span>notes.md<span class="k">)</span><span class="s2"> 위 내용을 검토해줘&quot;</span>
 </span></code></pre></div>
-<p>큰따옴표 안에서도 셸은 <code>$</code>와 백틱을 계속 해석한다. <code>notes.md</code>에 <code>$HOME</code>이나 백틱으로 감싼 조각이 들어 있으면 셸이 그걸 먼저 확장해 버리므로 Claude가 실제로 받는 텍스트는 파일 원문과 다르다. 따옴표를 아예 빼면(<code>claude -p $(cat notes.md)</code>) 더 나쁘다. 출력이 공백마다 잘려 여러 개의 인자로 쪼개진다. 의도한 프롬프트는 온전히 전달되지 않는다.</p>
-<p><strong>안 깨지는 쪽 — 파이프로 표준 입력에 흘린다.</strong></p>
+<p>큰따옴표 안에서도 셸은 <code>$</code>와 백틱을 계속 해석합니다. <code>notes.md</code>에 <code>$HOME</code>이나 백틱으로 감싼 조각이 들어 있으면 셸이 그걸 먼저 확장해 버리므로 Claude가 실제로 받는 텍스트는 파일 원문과 다릅니다. 따옴표를 아예 빼면(<code>claude -p $(cat notes.md)</code>) 더 나쁩니다. 출력이 공백마다 잘려 여러 개의 인자로 쪼개집니다. 의도한 프롬프트는 온전히 전달되지 않습니다.</p>
+<p><strong>안 깨지는 쪽 — 파이프로 표준 입력에 흘립니다.</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cat<span class="w"> </span>package.json<span class="w"> </span><span class="p">|</span><span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;검토해줘&quot;</span>
 </span></code></pre></div>
-<p>파일 내용이 인자가 아니라 표준 입력으로 들어가므로 셸이 중간에서 손댈 것이 없다. 이 형태는 아래 "직접 해보기"에서 실제 출력과 함께 확인한다.</p>
-<p>여기서 한 걸음씩 넓히면 나머지 입력 표면이 보인다.</p>
+<p>파일 내용이 인자가 아니라 표준 입력으로 들어가므로 셸이 중간에서 손댈 것이 없습니다. 이 형태는 아래 "직접 해보기"에서 실제 출력과 함께 확인합니다.</p>
+<p>여기서 한 걸음씩 넓히면 나머지 입력 표면이 보입니다.</p>
 <ul>
-<li><strong>표준 입력 리다이렉트</strong> — <code>&lt; package.json</code>처럼 파일을 곧바로 표준 입력에 연결한다. 파이프와 같은 자리로 들어간다.</li>
-<li><strong>heredoc</strong> — <code>&lt;&lt;'EOF'</code>로 시작해 <code>EOF</code>로 끝나는 구간의 여러 줄 텍스트를 셸이 표준 입력으로 넘겨 주는 문법이다. 구분자에 따옴표를 씌우면(<code>'EOF'</code>) 그 안에서 확장이 일어나지 않아 긴 지시를 원문 그대로 보낼 수 있다.</li>
-<li><strong><code>--input-format stream-json</code></strong> — 사람이 아니라 프로그램이 메시지를 한 줄에 하나씩 JSON으로 밀어 넣는 표면이다.</li>
-<li><strong><code>--resume</code> 뒤의 새 prompt</strong> — 기존 세션을 이어받으면서 새 지시만 붙이는 형태로, 이것도 대화창 없이 들어가는 입력이다.</li>
+<li><strong>표준 입력 리다이렉트</strong> — <code>&lt; package.json</code>처럼 파일을 곧바로 표준 입력에 연결합니다. 파이프와 같은 자리로 들어갑니다.</li>
+<li><strong>heredoc</strong> — <code>&lt;&lt;'EOF'</code>로 시작해 <code>EOF</code>로 끝나는 구간의 여러 줄 텍스트를 셸이 표준 입력으로 넘겨 주는 문법입니다. 구분자에 따옴표를 씌우면(<code>'EOF'</code>) 그 안에서 확장이 일어나지 않아 긴 지시를 원문 그대로 보낼 수 있습니다.</li>
+<li><strong><code>--input-format stream-json</code></strong> — 사람이 아니라 프로그램이 메시지를 한 줄에 하나씩 JSON으로 밀어 넣는 표면입니다.</li>
+<li><strong><code>--resume</code> 뒤의 새 prompt</strong> — 기존 세션을 이어받으면서 새 지시만 붙이는 형태로, 이것도 대화창 없이 들어가는 입력입니다.</li>
 </ul>
-<p>입력이 커질수록 인용·길이·민감 데이터 경계를 먼저 점검한다. 특히 셸을 거치는 표면일수록 인용 규칙이 결과를 조용히 바꿔 놓는다. 앞에서 본 그대로다.</p>
+<p>입력이 커질수록 인용·길이·민감 데이터 경계를 먼저 점검합니다. 특히 셸을 거치는 표면일수록 인용 규칙이 결과를 조용히 바꿔 놓습니다. 앞에서 본 그대로입니다.</p>
 <h2 id="2-json-봉투를-결과와-함께-읽는다">2. JSON 봉투를 결과와 함께 읽는다<a class="headerlink" href="#2-json-봉투를-결과와-함께-읽는다" title="이 위치로 링크">¶</a></h2>
-<p>자동화에서 가장 흔한 실수부터 보자. 답변만 필요하니 <code>--output-format json</code>으로 받아 <code>jq -r '.result'</code>로 본문만 꺼내 다음 단계에 넘기는 파이프다. 평소에는 잘 돌지만 실행이 <code>--max-turns</code> 상한에 걸려 중단되면 이 파이프는 조용히 통과한다. 상한에 걸린 결과에는 <code>result</code>가 <code>null</code>로 들어가고 <code>jq -r</code>은 그걸 빈 문자열로 찍기 때문이다. 다음 단계가 받아 드는 것은 "리뷰가 실패했다"가 아니라 <strong>"성공했는데 할 말이 없었다"</strong>다.</p>
-<p>이걸 막으려면 <code>result</code> 옆에 있는 필드를 같이 읽어야 한다. <code>--output-format json</code>이 돌려주는 것은 답변 문자열 하나가 아니라 답변을 감싼 JSON 객체 하나다. 이 객체를 <strong>봉투</strong>라고 부른다. 봉투에는 이런 것들이 들어 있다.</p>
+<p>자동화에서 가장 흔한 실수부터 봅시다. 답변만 필요하니 <code>--output-format json</code>으로 받아 <code>jq -r '.result'</code>로 본문만 꺼내 다음 단계에 넘기는 파이프입니다. 평소에는 잘 돌지만 실행이 <code>--max-turns</code> 상한에 걸려 중단되면 이 파이프는 조용히 통과합니다. 상한에 걸린 결과에는 <code>result</code>가 <code>null</code>로 들어가고 <code>jq -r</code>은 그걸 빈 문자열로 찍기 때문입니다. 다음 단계가 받아 드는 것은 "리뷰가 실패했다"가 아니라 <strong>"성공했는데 할 말이 없었다"</strong>입니다.</p>
+<p>이걸 막으려면 <code>result</code> 옆에 있는 필드를 같이 읽어야 합니다. <code>--output-format json</code>이 돌려주는 것은 답변 문자열 하나가 아니라 답변을 감싼 JSON 객체 하나입니다. 이 객체를 <strong>봉투</strong>라고 부릅니다. 봉투에는 이런 것들이 들어 있습니다.</p>
 <ul>
-<li><strong><code>result</code></strong> — 답변 본문. 실행이 중간에 끊기면 <code>null</code>이 될 수 있다.</li>
+<li><strong><code>result</code></strong> — 답변 본문. 실행이 중간에 끊기면 <code>null</code>이 될 수 있습니다.</li>
 <li><strong><code>is_error</code></strong> — 이 실행이 실패로 끝났는지 여부.</li>
-<li><strong><code>terminal_reason</code></strong> — 어떻게 끝났는지. 정상 종료면 <code>"completed"</code>다.</li>
+<li><strong><code>terminal_reason</code></strong> — 어떻게 끝났는지. 정상 종료면 <code>"completed"</code>입니다.</li>
 <li><strong><code>subtype</code></strong> — 실패의 종류를 좁혀 주는 값.</li>
 <li><strong><code>usage</code>·<code>total_cost_usd</code></strong> — 토큰 사용량과 비용.</li>
 <li><strong><code>num_turns</code></strong> — 실제로 몇 턴을 돌았는지.</li>
 </ul>
-<p>아래 실측에서 성공 봉투는 <code>is_error: false</code>에 <code>terminal_reason: "completed"</code>였고 <code>--max-turns</code> 상한에 걸린 봉투는 <code>is_error: true</code>에 <code>subtype: "error_max_turns"</code>, 그리고 <code>result</code>가 아예 <code>null</code>이었다.</p>
+<p>아래 실측에서 성공 봉투는 <code>is_error: false</code>에 <code>terminal_reason: "completed"</code>였고 <code>--max-turns</code> 상한에 걸린 봉투는 <code>is_error: true</code>에 <code>subtype: "error_max_turns"</code>, 그리고 <code>result</code>가 아예 <code>null</code>이었습니다.</p>
 <p><img alt="단발 실행의 본질" src="../slides/slide-017.png" /></p>
 <p><em>▲ 교재 슬라이드 17 — -p의 본질 — SDK를 경유하는 단발 실행</em></p>
 <p><img alt="Exit Code 계약" src="../slides/slide-019.png" /></p>
 <p><em>▲ 교재 슬라이드 19 — Exit Code 계약</em></p>
-<p>여기까지는 실행이 다 끝난 뒤 봉투를 한 번에 받는 방식이었다. <code>stream-json</code>은 같은 내용을 실행 도중에 조금씩 흘려보낼 때 쓴다. 형식은 JSON Lines, 즉 한 줄이 완결된 JSON 객체 하나이고 줄이 쌓이는 대로 읽으면 된다.</p>
-<p>한 번의 호출을 실제로 흘려보내 보니 <code>system</code>(init·thinking_tokens), <code>assistant</code>, 도구 결과를 담은 <code>user</code>, <code>rate_limit_event</code>가 순서대로 나오고 마지막 한 줄이 <code>type: "result"</code>였다. 그 마지막 줄이 <code>--output-format json</code>의 봉투와 같은 내용이므로 스트림을 끝까지 읽은 뒤 <code>tail -1</code>만 파싱해도 동일한 판정을 할 수 있다. 진행 상황은 사람에게 흘려 보여 주면서 성공·실패 판정 로직은 앞 절 그대로 재사용할 수 있다는 뜻이다.</p>
-<p>다만 개별 이벤트 필드명은 버전에 따라 달라질 수 있으니 진행률 표시처럼 중간 이벤트에 의존하는 코드는 현행 CLI reference를 함께 본다.</p>
+<p>여기까지는 실행이 다 끝난 뒤 봉투를 한 번에 받는 방식이었습니다. <code>stream-json</code>은 같은 내용을 실행 도중에 조금씩 흘려보낼 때 씁니다. 형식은 JSON Lines, 즉 한 줄이 완결된 JSON 객체 하나이고 줄이 쌓이는 대로 읽으면 됩니다.</p>
+<p>한 번의 호출을 실제로 흘려보내 보니 <code>system</code>(init·thinking_tokens), <code>assistant</code>, 도구 결과를 담은 <code>user</code>, <code>rate_limit_event</code>가 순서대로 나오고 마지막 한 줄이 <code>type: "result"</code>였습니다. 그 마지막 줄이 <code>--output-format json</code>의 봉투와 같은 내용이므로 스트림을 끝까지 읽은 뒤 <code>tail -1</code>만 파싱해도 동일한 판정을 할 수 있습니다. 진행 상황은 사람에게 흘려 보여 주면서 성공·실패 판정 로직은 앞 절 그대로 재사용할 수 있다는 뜻입니다.</p>
+<p>다만 개별 이벤트 필드명은 버전에 따라 달라질 수 있으니 진행률 표시처럼 중간 이벤트에 의존하는 코드는 현행 CLI reference를 함께 봅니다.</p>
 <h2 id="3-스키마재시도게이트를-한-덩어리로-둔다">3. 스키마·재시도·게이트를 한 덩어리로 둔다<a class="headerlink" href="#3-스키마재시도게이트를-한-덩어리로-둔다" title="이 위치로 링크">¶</a></h2>
-<p>봉투가 <code>is_error: false</code>라고 말해도 아직 두 가지를 모른다. 그 답이 다음 도구가 파싱할 수 있는 모양인지, 그리고 그 내용을 통과시켜도 되는지다. 여기에 쓰는 장치가 넷 있는데, 이름이 낯설 뿐 역할은 한 줄씩이면 정리된다.</p>
+<p>봉투가 <code>is_error: false</code>라고 말해도 아직 두 가지를 모릅니다. 그 답이 다음 도구가 파싱할 수 있는 모양인지, 그리고 그 내용을 통과시켜도 되는지입니다. 여기에 쓰는 장치가 넷 있는데, 이름이 낯설 뿐 역할은 한 줄씩이면 정리됩니다.</p>
 <ul>
-<li><strong><code>--json-schema</code> — 형식을 강제하는 것</strong>: 출력이 지정한 JSON 구조를 따르도록 요구한다. “JSON처럼 보이는 텍스트” 대신 다음 도구가 검증할 출력 구조를 받아 내는 표면이다.</li>
-<li><strong><code>jq -e</code> — 통과 기준을 정하는 것</strong>: <code>jq</code>의 <code>-e</code>는 마지막 출력이 <code>false</code>나 <code>null</code>이거나 출력이 아예 없으면 종료 상태를 0이 아닌 값으로 돌려준다. 덕분에 “심각도가 MAJOR면 멈춘다” 같은 정책을 셸 조건문에 그대로 얹을 수 있다.</li>
-<li><strong><code>--max-turns</code>·<code>--max-budget-usd</code> — 폭주를 막는 것</strong>: 턴 수와 비용에 상한을 걸어 한 번의 실행이 무한정 길어지지 않게 한다.</li>
-<li><strong>지수 백오프와 지터 — 일시적 실패를 기다리는 것</strong>: 재시도 간격을 회차마다 배로 늘리는 것이 지수 백오프고, 거기에 임의의 흔들림을 더해 여러 러너가 같은 순간에 몰려 재시도하지 않게 하는 것이 지터다.</li>
+<li><strong><code>--json-schema</code> — 형식을 강제하는 것</strong>: 출력이 지정한 JSON 구조를 따르도록 요구합니다. “JSON처럼 보이는 텍스트” 대신 다음 도구가 검증할 출력 구조를 받아 내는 표면입니다.</li>
+<li><strong><code>jq -e</code> — 통과 기준을 정하는 것</strong>: <code>jq</code>의 <code>-e</code>는 마지막 출력이 <code>false</code>나 <code>null</code>이거나 출력이 아예 없으면 종료 상태를 0이 아닌 값으로 돌려줍니다. 덕분에 “심각도가 MAJOR면 멈춘다” 같은 정책을 셸 조건문에 그대로 얹을 수 있습니다.</li>
+<li><strong><code>--max-turns</code>·<code>--max-budget-usd</code> — 폭주를 막는 것</strong>: 턴 수와 비용에 상한을 걸어 한 번의 실행이 무한정 길어지지 않게 합니다.</li>
+<li><strong>지수 백오프와 지터 — 일시적 실패를 기다리는 것</strong>: 재시도 간격을 회차마다 배로 늘리는 것이 지수 백오프고, 거기에 임의의 흔들림을 더해 여러 러너가 같은 순간에 몰려 재시도하지 않게 하는 것이 지터입니다.</li>
 </ul>
-<p>이 넷을 한 번의 호출에 순서대로 놓으면 아래 흐름이 된다. 먼저 봉투로 실행 자체가 성공했는지 보고, 성공했으면 정책 게이트로 내용을 판정하고, 실패했으면 그것이 기다려서 될 실패인지부터 가른다. 형식 검증이 내용의 진실성을 보증하지는 않으므로 스키마 하나만 걸어 두는 것으로는 부족하다는 점이 이 흐름의 전제다.</p>
+<p>이 넷을 한 번의 호출에 순서대로 놓으면 아래 흐름이 됩니다. 먼저 봉투로 실행 자체가 성공했는지 보고, 성공했으면 정책 게이트로 내용을 판정하고, 실패했으면 그것이 기다려서 될 실패인지부터 가릅니다. 형식 검증이 내용의 진실성을 보증하지는 않으므로 스키마 하나만 걸어 두는 것으로는 부족하다는 점이 이 흐름의 전제입니다.</p>
 <pre class="mermaid"><code>flowchart TD
   A["실행"] --&gt; B{"is_error=false?"}
   B --&gt;|예| C{"정책 게이트 통과?"}
@@ -2237,24 +2237,24 @@
 <p><em>▲ 교재 슬라이드 22 — --json-schema 구조화 출력</em></p>
 <div class="admonition tip">
 <p class="admonition-title">현장 메모</p>
-<p>재시도는 모든 오류에 하는 친절이 아니다. 인증·스키마·정책 실패는 즉시 멈추고, 과부하·rate limit처럼 일시적인 경우만 제한 횟수와 지터를 둔다.</p>
+<p>재시도는 모든 오류에 하는 친절이 아닙니다. 인증·스키마·정책 실패는 즉시 멈추고, 과부하·rate limit처럼 일시적인 경우만 제한 횟수와 지터를 둡니다.</p>
 </div>
 <h2 id="직접-해보기">직접 해보기<a class="headerlink" href="#직접-해보기" title="이 위치로 링크">¶</a></h2>
-<p><strong>실행 환경</strong>: macOS 26.6.2 / Claude Code 2.1.251 / jq 1.7.1-apple / 2026-08-29. 격리한 스크래치 저장소(<code>package.json</code>과 검증이 없는 <code>src/pay.js</code> 한 벌)에서 실행했다. 개인 설정이 결과를 흔들지 않도록 모든 호출에 <code>--safe-mode</code>를 붙였다.</p>
-<p>먼저 같은 질문을 세 형식으로 받아 봤다.</p>
+<p><strong>실행 환경</strong>: macOS 26.6.2 / Claude Code 2.1.251 / jq 1.7.1-apple / 2026-08-29. 격리한 스크래치 저장소(<code>package.json</code>과 검증이 없는 <code>src/pay.js</code> 한 벌)에서 실행했습니다. 개인 설정이 결과를 흔들지 않도록 모든 호출에 <code>--safe-mode</code>를 붙였습니다.</p>
+<p>먼저 같은 질문을 세 형식으로 받아 봤습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;charge 함수의 문제를 한 줄로&#39;</span><span class="w"> </span>--output-format<span class="w"> </span>text<span class="w"> </span>--safe-mode
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="go">`amount`에 대한 입력 검증(음수, 0, NaN, 타입 등)이 전혀 없이 그대로 청구 처리됩니다.</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;charge 함수의 문제를 한 줄로&#39;</span><span class="w"> </span>--output-format<span class="w"> </span>json<span class="w"> </span>--safe-mode<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;{is_error,subtype,num_turns,total_cost_usd,result}&#39;</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="go">{&quot;is_error&quot;:false,&quot;subtype&quot;:&quot;success&quot;,&quot;num_turns&quot;:3,&quot;total_cost_usd&quot;:0.020391,&quot;result&quot;:&quot;amount에 대한 입력 검증(음수·NaN·비숫자 등)이 전혀 없어 잘못된 값도 그대로 청구됩니다.&quot;}</span>
 </span></code></pre></div>
-<p>세 번째 형식에서 바로 걸렸다.</p>
+<p>세 번째 형식에서 바로 걸렸습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;charge 함수의 문제를 한 줄로&#39;</span><span class="w"> </span>--output-format<span class="w"> </span>stream-json<span class="w"> </span>--safe-mode
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="go">Error: When using --print, --output-format=stream-json requires --verbose</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="gp">$ </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$?</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="go">1</span>
 </span></code></pre></div>
-<p><code>--verbose</code>를 붙이니 JSON Lines 15줄이 흘러나왔고 이벤트 종류는 다음과 같았다.</p>
+<p><code>--verbose</code>를 붙이니 JSON Lines 15줄이 흘러나왔고 이벤트 종류는 다음과 같았습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;charge 함수의 문제를 한 줄로&#39;</span><span class="w"> </span>--output-format<span class="w"> </span>stream-json<span class="w"> </span>--verbose<span class="w"> </span>--safe-mode<span class="w"> </span>&gt;<span class="w"> </span>stream.jsonl
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="gp">$ </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;[.type, (.subtype//&quot;-&quot;)] | @tsv&#39;</span><span class="w"> </span>stream.jsonl
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="go">system  init</span>
@@ -2276,14 +2276,14 @@
 </span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="gp">$ </span>tail<span class="w"> </span>-1<span class="w"> </span>stream.jsonl<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;{type,is_error,num_turns,total_cost_usd}&#39;</span>
 </span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="go">{&quot;type&quot;:&quot;result&quot;,&quot;is_error&quot;:false,&quot;num_turns&quot;:4,&quot;total_cost_usd&quot;:0.027135000000000003}</span>
 </span></code></pre></div>
-<p>§1에서 "안 깨지는 쪽"이라고 한 파이프 입력도 두 가지 형태로 확인했다. 프롬프트 인자를 아예 생략하고 지시 자체를 파이프로 주는 형태와, 파일 내용은 파이프로 넘기고 지시는 인자로 주는 형태다. 둘 다 셸이 내용을 건드리지 않고 그대로 흘려보냈다.</p>
+<p>§1에서 "안 깨지는 쪽"이라고 한 파이프 입력도 두 가지 형태로 확인했습니다. 프롬프트 인자를 아예 생략하고 지시 자체를 파이프로 주는 형태와, 파일 내용은 파이프로 넘기고 지시는 인자로 주는 형태입니다. 둘 다 셸이 내용을 건드리지 않고 그대로 흘려보냈습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="gp">$ </span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;package.json의 dependencies 중 오래된 버전 하나만 이름과 이유를 한 줄로&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span>--safe-mode
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="go">lodash 4.17.20 — 프로토타입 오염 등 취약점이 패치된 4.17.21 이전 버전입니다.</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="gp">$ </span>cat<span class="w"> </span>package.json<span class="w"> </span><span class="p">|</span><span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;표준입력으로 들어온 JSON의 dependencies 개수만 숫자로&#39;</span><span class="w"> </span>--safe-mode
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="go">2</span>
 </span></code></pre></div>
-<p>구조화 출력은 스키마를 파일로 넘기려다 실패했다. <code>--json-schema</code>는 경로가 아니라 JSON 문자열 자체를 받는다.</p>
+<p>구조화 출력은 스키마를 파일로 넘기려다 실패했습니다. <code>--json-schema</code>는 경로가 아니라 JSON 문자열 자체를 받습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;src/pay.js를 리뷰해 스키마대로 답해&#39;</span><span class="w"> </span>--json-schema<span class="w"> </span>review.schema.json<span class="w"> </span>--output-format<span class="w"> </span>json<span class="w"> </span>--safe-mode
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="go">Error: --json-schema is not valid JSON: JSON Parse error: Unexpected token &#39;.&#39;</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
@@ -2292,7 +2292,7 @@
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span>--output-format<span class="w"> </span>json<span class="w"> </span>--safe-mode<span class="w"> </span>--allowed-tools<span class="w"> </span>Read<span class="w"> </span>Grep<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.result&#39;</span>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="go">{&quot;severity&quot;:&quot;MAJOR&quot;,&quot;file&quot;:&quot;src/pay.js&quot;,&quot;summary&quot;:&quot;charge(amount)가 입력 검증 없이 그대로 청구 객체를 반환합니다 (주석에도 명시됨). amount가 음수, 0, NaN, Infinity, 문자열, undefined여도 그대로 통과되어 { ok: true, amount, currency: \&quot;KRW\&quot; }가 반환되므로 잘못된 금액으로 결제가 성사된 것처럼 처리될 위험이 있습니다. amount가 숫자이고 유한하며 0보다 큰지 검증하는 로직을 추가해야 합니다.&quot;}</span>
 </span></code></pre></div>
-<p><code>.result</code>는 이렇게 스키마를 걸어도 여전히 문자열이라 <code>jq</code>로 한 번 더 파싱해야 했다. 그런데 같은 봉투를 통째로 열어 보니 이미 파싱된 형태로 같은 내용이 한 번 더 들어 있었다.</p>
+<p><code>.result</code>는 이렇게 스키마를 걸어도 여전히 문자열이라 <code>jq</code>로 한 번 더 파싱해야 했습니다. 그런데 같은 봉투를 통째로 열어 보니 이미 파싱된 형태로 같은 내용이 한 번 더 들어 있었습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;src/pay.js를 리뷰해 스키마대로 답해&#39;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span>--json-schema<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>cat<span class="w"> </span>review.schema.json<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span>--output-format<span class="w"> </span>json<span class="w"> </span>--safe-mode<span class="w"> </span>--allowed-tools<span class="w"> </span>Read<span class="w"> </span>Grep<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;{result, structured_output}&#39;</span>
@@ -2305,8 +2305,8 @@
 </span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="go">  }</span>
 </span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="go">}</span>
 </span></code></pre></div>
-<p><code>structured_output</code>은 문자열이 아니라 스키마 그대로의 JSON 객체다. 정책 게이트는 <code>jq -r '.result' | jq -e '...'</code>로 두 번 파싱할 필요 없이 <code>jq -e '.structured_output.severity != "CRITICAL"'</code>처럼 한 번에 값을 꺼내 쓰면 된다.</p>
-<p>마지막으로 상한을 일부러 넘겨 종료 값을 봤다. 파일 두 개를 읽고 <code>git log</code>까지 확인해야 하는 작업에 <code>--max-turns 1</code>을 걸었다.</p>
+<p><code>structured_output</code>은 문자열이 아니라 스키마 그대로의 JSON 객체입니다. 정책 게이트는 <code>jq -r '.result' | jq -e '...'</code>로 두 번 파싱할 필요 없이 <code>jq -e '.structured_output.severity != "CRITICAL"'</code>처럼 한 번에 값을 꺼내 쓰면 됩니다.</p>
+<p>마지막으로 상한을 일부러 넘겨 종료 값을 봤습니다. 파일 두 개를 읽고 <code>git log</code>까지 확인해야 하는 작업에 <code>--max-turns 1</code>을 걸었습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;src/pay.js와 package.json을 각각 읽고 git log도 확인한 다음 종합 리뷰를 작성해줘&#39;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span>--max-turns<span class="w"> </span><span class="m">1</span><span class="w"> </span>--output-format<span class="w"> </span>json<span class="w"> </span>--safe-mode<span class="w"> </span>&gt;<span class="w"> </span>maxturns.json
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="gp">$ </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$?</span>
@@ -2316,18 +2316,18 @@
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">직접 해보고 알게 된 것</p>
-<p>세 가지가 예상과 달랐다.</p>
+<p>세 가지가 예상과 달랐습니다.</p>
 <ul>
-<li><strong><code>.result</code>는 스키마를 걸어도 여전히 문자열이다.</strong> 처음엔 이걸 몰라서 <code>jq -r '.result' | jq -e '.severity'</code>처럼 두 번 파싱했는데, 봉투를 다시 열어 보니 같은 값이 <code>.structured_output</code>에 이미 파싱된 객체로 들어 있었다. 게이트는 이쪽을 바로 쓰면 된다.</li>
-<li><strong><code>--max-turns 1</code>을 걸었는데 <code>num_turns</code>는 <code>2</code>로 기록됐다.</strong> 상한과 집계 기준이 정확히 같지 않다는 뜻이다. “이 작업에 몇 턴이면 되는지”는 상한값이 아니라 실제 로그로 재야 한다.</li>
-<li><strong>상한에 걸린 봉투는 <code>is_error: true</code>인데도 <code>subtype</code>이 아니라 <code>terminal_reason</code>을 봐야 원인이 드러난다.</strong> 게다가 <code>result</code>가 <code>null</code>이라 <code>.result</code>만 뽑는 파이프에는 빈 문자열이 흘러 들어간다. §2 첫머리에서 말한 “성공했는데 할 말이 없었다”가 실제로 재현된 지점이다.</li>
+<li><strong><code>.result</code>는 스키마를 걸어도 여전히 문자열입니다.</strong> 처음엔 이걸 몰라서 <code>jq -r '.result' | jq -e '.severity'</code>처럼 두 번 파싱했는데, 봉투를 다시 열어 보니 같은 값이 <code>.structured_output</code>에 이미 파싱된 객체로 들어 있었습니다. 게이트는 이쪽을 바로 쓰면 됩니다.</li>
+<li><strong><code>--max-turns 1</code>을 걸었는데 <code>num_turns</code>는 <code>2</code>로 기록됐습니다.</strong> 상한과 집계 기준이 정확히 같지 않다는 뜻입니다. “이 작업에 몇 턴이면 되는지”는 상한값이 아니라 실제 로그로 재야 합니다.</li>
+<li><strong>상한에 걸린 봉투는 <code>is_error: true</code>인데도 <code>subtype</code>이 아니라 <code>terminal_reason</code>을 봐야 원인이 드러난다.</strong> 게다가 <code>result</code>가 <code>null</code>이라 <code>.result</code>만 뽑는 파이프에는 빈 문자열이 흘러 들어갑니다. §2 첫머리에서 말한 “성공했는데 할 말이 없었다”가 실제로 재현된 지점입니다.</li>
 </ul>
 </div>
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
-<p><strong>"JSON 출력이면 exit code만 보면 된다"</strong> — 아니다. 이번 실행에서 측정한 종료 값은 성공이 <code>0</code>, <code>--max-turns</code> 초과가 <code>1</code>, <code>--verbose</code> 없는 <code>stream-json</code>처럼 사용법이 틀린 경우도 <code>1</code>이었다. 상한 초과와 오타가 같은 값으로 돌아오므로 셸 종료 상태는 “실패했다”까지만 알려 주고 “왜 실패했나”는 봉투의 <code>terminal_reason</code>과 <code>subtype</code>이 알려 준다. 둘을 함께 읽어야 재시도할 실패와 즉시 멈출 실패를 가른다.</p>
+<p><strong>"JSON 출력이면 exit code만 보면 된다"</strong> — 아닙니다. 이번 실행에서 측정한 종료 값은 성공이 <code>0</code>, <code>--max-turns</code> 초과가 <code>1</code>, <code>--verbose</code> 없는 <code>stream-json</code>처럼 사용법이 틀린 경우도 <code>1</code>이었습니다. 상한 초과와 오타가 같은 값으로 돌아오므로 셸 종료 상태는 “실패했다”까지만 알려 주고 “왜 실패했나”는 봉투의 <code>terminal_reason</code>과 <code>subtype</code>이 알려 줍니다. 둘을 함께 읽어야 재시도할 실패와 즉시 멈출 실패를 가릅니다.</p>
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
-<p>headless는 결국 사람이 지켜보지 않는 환경에서 돌린다는 뜻이다. 그래서 입력은 명확히 주고, 출력은 기계가 읽게 만들고, 비용과 턴은 상한으로 막고, 실패는 미리 정한 규칙으로 판정하게 해 둬야 한다.</p>
-<p>이 파트를 한 줄씩 되짚으면 이렇게 된다. 입력은 셸을 반드시 한 번 거치므로 파일 내용은 인자에 끼워 넣기보다 표준 입력으로 흘리는 편이 안전하다. 출력은 <code>.result</code> 하나가 아니라 <code>is_error</code>·<code>terminal_reason</code>·<code>subtype</code>을 같이 읽어야 "빈 성공"에 속지 않는다. 그리고 형식(<code>--json-schema</code>, 값은 <code>.structured_output</code>으로 바로 꺼낸다)·기준(<code>jq -e</code>)·상한(<code>--max-turns</code> 등)·재시도(지수 백오프와 지터)는 넷 다 있어야 한 번의 호출이 자동화 안에서 판정 가능한 단계가 된다.</p>
+<p>headless는 결국 사람이 지켜보지 않는 환경에서 돌린다는 뜻입니다. 그래서 입력은 명확히 주고, 출력은 기계가 읽게 만들고, 비용과 턴은 상한으로 막고, 실패는 미리 정한 규칙으로 판정하게 해 둬야 합니다.</p>
+<p>이 파트를 한 줄씩 되짚으면 이렇게 됩니다. 입력은 셸을 반드시 한 번 거치므로 파일 내용은 인자에 끼워 넣기보다 표준 입력으로 흘리는 편이 안전합니다. 출력은 <code>.result</code> 하나가 아니라 <code>is_error</code>·<code>terminal_reason</code>·<code>subtype</code>을 같이 읽어야 "빈 성공"에 속지 않습니다. 그리고 형식(<code>--json-schema</code>, 값은 <code>.structured_output</code>으로 바로 꺼낸다)·기준(<code>jq -e</code>)·상한(<code>--max-turns</code> 등)·재시도(지수 백오프와 지터)는 넷 다 있어야 한 번의 호출이 자동화 안에서 판정 가능한 단계가 됩니다.</p>
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>
 <li>Claude Code Deep Dive Workshop — <em>Chapter 5 / Part 2: Headless</em> (슬라이드 17~29)</li>

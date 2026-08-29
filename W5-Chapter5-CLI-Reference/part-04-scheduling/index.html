@@ -2223,20 +2223,20 @@
 
 <h1 id="part-4--스케줄과-자동-실행">Part 4 — 스케줄과 자동 실행<a class="headerlink" href="#part-4--스케줄과-자동-실행" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p>자동화에서 먼저 정할 것은 명령이 아니라 <strong>무엇이 이 작업을 깨우고, 어디서 돌고, 어떻게 들여다보고 멈추는가</strong>다. 이 셋이 정해지면 <code>/loop</code>·<code>/goal</code>·cron·Routines·CI·<code>--bg</code> 중 무엇을 쓸지는 저절로 좁혀진다.</p>
+<p>자동화에서 먼저 정할 것은 명령이 아니라 <strong>무엇이 이 작업을 깨우고, 어디서 돌고, 어떻게 들여다보고 멈추는가</strong>입니다. 이 셋이 정해지면 <code>/loop</code>·<code>/goal</code>·cron·Routines·CI·<code>--bg</code> 중 무엇을 쓸지는 저절로 좁혀집니다.</p>
 <hr />
 <h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
-<p>매일 아침 9시에 어제 머지된 PR을 요약해 주는 작업을 만든다고 해 보자. 손에 가장 익은 도구는 cron이다. 노트북 crontab에 <code>0 9 * * *</code> 한 줄을 걸면 끝날 것 같다.</p>
-<p>그런데 실제로 걸어 두면 이런 일이 순서대로 일어난다. 첫날 9시에는 노트북 뚜껑이 닫힌 채 잠들어 있어서 아무것도 안 돌았다. 다음 날에는 이전 실행이 아직 안 끝났는데 새 실행이 겹쳐 들어가 같은 요약이 두 번 올라왔다. 출장을 가서 시스템 시간대가 바뀌자 이번엔 새벽 3시에 돌았다. 그리고 한 달쯤 지나 인증이 만료되자 아무 알림 없이 조용히 실패하기 시작했다.</p>
-<p>이 넷은 전부 cron 문법을 몰라서 생긴 문제가 아니다. <strong>"이 작업을 누가 깨워야 하는가"를 정하지 않은 채 손에 익은 도구부터 집었기 때문에</strong> 생긴 문제다. 자동화 표면은 같은 명령을 부르는 여러 별칭이 아니라, 서로 다른 운영 책임을 지는 선택지다. 무엇을 고르느냐에 따라 "노트북이 꺼져 있으면 어떻게 되나", "겹치면 어떻게 되나", "실패를 누가 알아채나"의 답이 통째로 달라진다.</p>
+<p>매일 아침 9시에 어제 머지된 PR을 요약해 주는 작업을 만든다고 해 봅시다. 손에 가장 익은 도구는 cron입니다. 노트북 crontab에 <code>0 9 * * *</code> 한 줄을 걸면 끝날 것 같습니다.</p>
+<p>그런데 실제로 걸어 두면 이런 일이 순서대로 일어납니다. 첫날 9시에는 노트북 뚜껑이 닫힌 채 잠들어 있어서 아무것도 안 돌았습니다. 다음 날에는 이전 실행이 아직 안 끝났는데 새 실행이 겹쳐 들어가 같은 요약이 두 번 올라왔습니다. 출장을 가서 시스템 시간대가 바뀌자 이번엔 새벽 3시에 돌았습니다. 그리고 한 달쯤 지나 인증이 만료되자 아무 알림 없이 조용히 실패하기 시작했습니다.</p>
+<p>이 넷은 전부 cron 문법을 몰라서 생긴 문제가 아닙니다. <strong>"이 작업을 누가 깨워야 하는가"를 정하지 않은 채 손에 익은 도구부터 집었기 때문에</strong> 생긴 문제입니다. 자동화 표면은 같은 명령을 부르는 여러 별칭이 아니라, 서로 다른 운영 책임을 지는 선택지입니다. 무엇을 고르느냐에 따라 "노트북이 꺼져 있으면 어떻게 되나", "겹치면 어떻게 되나", "실패를 누가 알아채나"의 답이 통째로 달라집니다.</p>
 <h2 id="1-먼저-실행-주체를-고른다">1. 먼저 실행 주체를 고른다<a class="headerlink" href="#1-먼저-실행-주체를-고른다" title="이 위치로 링크">¶</a></h2>
-<p>그래서 명령을 고르기 전에 답해야 할 질문은 하나다. <strong>무엇이 이 작업을 깨우는가?</strong> 답에 따라 쓸 수 있는 표면이 다섯 갈래로 갈린다. 하나씩 보자.</p>
+<p>그래서 명령을 고르기 전에 답해야 할 질문은 하나입니다. <strong>무엇이 이 작업을 깨우는가?</strong> 답에 따라 쓸 수 있는 표면이 다섯 갈래로 갈립니다. 하나씩 봅시다.</p>
 <ul>
-<li><strong>내가 지금 이 대화에서 깨운다 → <code>/loop</code>, <code>/goal</code></strong> — 터미널 앞에 앉아 있는 동안, "될 때까지 계속" 또는 "이 조건을 만족할 때까지"를 걸어 두는 방식이다. 세션이 살아 있는 동안만 유효하므로 엄밀히는 스케줄이 아니라 <strong>지금 이 대화를 목표까지 밀어붙이는 장치</strong>에 가깝다. 둘의 차이는 뒤의 실습에서 직접 확인했다.</li>
-<li><strong>내 머신의 시계가 깨운다 → cron</strong> — 운영체제 스케줄러에 맡기는 가장 익숙한 방법이다. 대신 위에서 본 네 가지 문제(꺼진 머신, 겹침, 시간대, 조용한 실패)를 전부 내가 직접 막아야 한다.</li>
-<li><strong>클라우드의 시계가 깨운다 → Routines</strong> — 여기서 말하는 <strong>Routines는 내 컴퓨터가 아니라 Anthropic이 관리하는 클라우드 쪽에서 정해진 일정에 따라 실행되는 방식</strong>이다. 노트북이 꺼져 있든 뚜껑이 닫혀 있든 일정은 지켜지므로 cron이 안고 있던 "내 머신이 깨어 있어야 한다"는 전제 자체가 사라진다.</li>
-<li><strong>코드 변경이나 PR 같은 사건이 깨운다 → CI</strong> — 진짜 조건이 "매일"이 아니라 "푸시될 때마다"라면 시계가 아니라 사건이 트리거여야 한다. 시계로 흉내 내면 늦게 돌거나 헛돌게 된다.</li>
-<li><strong>내가 지금 시작하되 터미널을 붙잡지 않는다 → <code>--bg</code></strong> — 실측 도움말의 <code>--bg</code>는 세션을 background로 시작하고 ID를 즉시 출력하며 <code>attach</code>, <code>logs</code>, <code>stop</code>, <code>rm</code>이 그 ID를 받는다고 설명한다. 깨우는 주체는 여전히 나이므로 이건 스케줄러가 아니라 <strong>실행 위치를 옮기는 선택</strong>이다.</li>
+<li><strong>내가 지금 이 대화에서 깨운다 → <code>/loop</code>, <code>/goal</code></strong> — 터미널 앞에 앉아 있는 동안, "될 때까지 계속" 또는 "이 조건을 만족할 때까지"를 걸어 두는 방식입니다. 세션이 살아 있는 동안만 유효하므로 엄밀히는 스케줄이 아니라 <strong>지금 이 대화를 목표까지 밀어붙이는 장치</strong>에 가깝습니다. 둘의 차이는 뒤의 실습에서 직접 확인했습니다.</li>
+<li><strong>내 머신의 시계가 깨운다 → cron</strong> — 운영체제 스케줄러에 맡기는 가장 익숙한 방법입니다. 대신 위에서 본 네 가지 문제(꺼진 머신, 겹침, 시간대, 조용한 실패)를 전부 내가 직접 막아야 합니다.</li>
+<li><strong>클라우드의 시계가 깨운다 → Routines</strong> — 여기서 말하는 <strong>Routines는 내 컴퓨터가 아니라 Anthropic이 관리하는 클라우드 쪽에서 정해진 일정에 따라 실행되는 방식</strong>입니다. 노트북이 꺼져 있든 뚜껑이 닫혀 있든 일정은 지켜지므로 cron이 안고 있던 "내 머신이 깨어 있어야 한다"는 전제 자체가 사라집니다.</li>
+<li><strong>코드 변경이나 PR 같은 사건이 깨운다 → CI</strong> — 진짜 조건이 "매일"이 아니라 "푸시될 때마다"라면 시계가 아니라 사건이 트리거여야 합니다. 시계로 흉내 내면 늦게 돌거나 헛돌게 됩니다.</li>
+<li><strong>내가 지금 시작하되 터미널을 붙잡지 않는다 → <code>--bg</code></strong> — 실측 도움말의 <code>--bg</code>는 세션을 background로 시작하고 ID를 즉시 출력하며 <code>attach</code>, <code>logs</code>, <code>stop</code>, <code>rm</code>이 그 ID를 받는다고 설명합니다. 깨우는 주체는 여전히 나이므로 이건 스케줄러가 아니라 <strong>실행 위치를 옮기는 선택</strong>입니다.</li>
 </ul>
 <pre class="mermaid"><code>flowchart TD
   A{"무엇이 실행을 깨우나?"} --&gt;|"코드/PR 이벤트"| B["CI"]
@@ -2253,25 +2253,25 @@
 <p><img alt="자동화 표면" src="../slides/slide-039.png" /></p>
 <p><em>▲ 교재 슬라이드 39 — 자동화 표면 5종</em></p>
 <h2 id="2-background는-관측-가능해야-한다">2. background는 관측 가능해야 한다<a class="headerlink" href="#2-background는-관측-가능해야-한다" title="이 위치로 링크">¶</a></h2>
-<p>셸에서 명령 뒤에 <code>&amp;</code>를 붙여 본 적이 있다면 그 뒤의 답답함도 안다. 프로세스는 떨어져 나가지만 그게 지금 뭘 하고 있는지 물어볼 창구가 없다. 잘 됐는지 확인하려면 결국 출력 파일을 뒤지거나 <code>ps</code>로 살아 있는지만 확인하게 된다.</p>
-<p><code>--bg</code>가 다른 지점이 바로 여기다. <strong><code>--bg</code>는 "비동기로 던져 놓는" 선택이 아니라, 나중에 다시 말을 걸 수 있는 작업 ID를 만드는 선택</strong>이다. ID가 있으면 왕복이 성립한다. <code>claude agents</code>가 지금 살아 있는 작업 목록을 보여 주고, <code>claude logs &lt;id&gt;</code>가 그 작업의 출력을, <code>claude attach &lt;id&gt;</code>가 그 작업과의 대화를, <code>claude stop &lt;id&gt;</code>가 중지를 맡는다. 아래 실습에서 이 왕복을 띄우기부터 멈추기까지 끝까지 돌려 봤다.</p>
-<p>교재도 이 대목에서 Routines와 <code>--bg</code>를 나란히 놓고 설명한다. 하나는 내 컴퓨터 없이 도는 것, 다른 하나는 내 컴퓨터에서 돌되 터미널을 붙잡지 않는 것이라 짝으로 놓고 보면 차이가 선명해진다.</p>
+<p>셸에서 명령 뒤에 <code>&amp;</code>를 붙여 본 적이 있다면 그 뒤의 답답함도 압니다. 프로세스는 떨어져 나가지만 그게 지금 뭘 하고 있는지 물어볼 창구가 없습니다. 잘 됐는지 확인하려면 결국 출력 파일을 뒤지거나 <code>ps</code>로 살아 있는지만 확인하게 됩니다.</p>
+<p><code>--bg</code>가 다른 지점이 바로 여기입니다. <strong><code>--bg</code>는 "비동기로 던져 놓는" 선택이 아니라, 나중에 다시 말을 걸 수 있는 작업 ID를 만드는 선택</strong>입니다. ID가 있으면 왕복이 성립합니다. <code>claude agents</code>가 지금 살아 있는 작업 목록을 보여 주고, <code>claude logs &lt;id&gt;</code>가 그 작업의 출력을, <code>claude attach &lt;id&gt;</code>가 그 작업과의 대화를, <code>claude stop &lt;id&gt;</code>가 중지를 맡습니다. 아래 실습에서 이 왕복을 띄우기부터 멈추기까지 끝까지 돌려 봤습니다.</p>
+<p>교재도 이 대목에서 Routines와 <code>--bg</code>를 나란히 놓고 설명합니다. 하나는 내 컴퓨터 없이 도는 것, 다른 하나는 내 컴퓨터에서 돌되 터미널을 붙잡지 않는 것이라 짝으로 놓고 보면 차이가 선명해집니다.</p>
 <p><img alt="Routines" src="../slides/slide-042.png" /></p>
 <p><em>▲ 교재 슬라이드 42 — Routines</em></p>
 <p><img alt="background와 exec" src="../slides/slide-045.png" /></p>
 <p><em>▲ 교재 슬라이드 45 — --bg와 --exec</em></p>
 <div class="admonition tip">
 <p class="admonition-title">현장 메모</p>
-<p>cron에는 겹침 방지 락, 절대 경로, 고정된 PATH, UTC 또는 명시한 시간대, 실패 알림이 필요하다. “매일 7시”만 적으면 운영 계약이 아니다.</p>
+<p>cron에는 겹침 방지 락, 절대 경로, 고정된 PATH, UTC 또는 명시한 시간대, 실패 알림이 필요합니다. “매일 7시”만 적으면 운영 계약이 아닙니다.</p>
 </div>
 <h2 id="직접-해보기">직접 해보기<a class="headerlink" href="#직접-해보기" title="이 위치로 링크">¶</a></h2>
-<p><strong>실행 환경</strong>: macOS 26.6.2 / Claude Code 2.1.251 / 2026-08-29. 격리한 스크래치 저장소에서 <code>--safe-mode</code>로 실행했다.</p>
+<p><strong>실행 환경</strong>: macOS 26.6.2 / Claude Code 2.1.251 / 2026-08-29. 격리한 스크래치 저장소에서 <code>--safe-mode</code>로 실행했습니다.</p>
 <h3 id="--bg로-띄우고-목록에서-찾고-멈추기"><code>--bg</code>로 띄우고, 목록에서 찾고, 멈추기<a class="headerlink" href="#--bg로-띄우고-목록에서-찾고-멈추기" title="이 위치로 링크">¶</a></h3>
-<p>먼저 습관대로 <code>-p</code>를 붙였다가 거절당했다.</p>
+<p>먼저 습관대로 <code>-p</code>를 붙였다가 거절당했습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">$ </span>claude<span class="w"> </span>--bg<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;src/pay.js 개선점 세 가지&#39;</span><span class="w"> </span>--safe-mode
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="go">--bg and --print conflict: --print never starts the interactive session that `claude agents` attaches to, so the job would be unattachable. The prompt is the positional — drop --print: `claude --bg &#39;&lt;task&gt;&#39;`.</span>
 </span></code></pre></div>
-<p>거절 메시지 자체가 앞 절의 이야기를 그대로 반복한다. <code>-p</code>는 답만 출력하고 끝나므로 나중에 붙을 세션이 애초에 남지 않는다. 그러면 <code>--bg</code>가 ID를 줘 봐야 쓸 데가 없다. 프롬프트를 위치 인자로 옮기니 곧바로 ID와 후속 명령 네 줄을 돌려줬다.</p>
+<p>거절 메시지 자체가 앞 절의 이야기를 그대로 반복합니다. <code>-p</code>는 답만 출력하고 끝나므로 나중에 붙을 세션이 애초에 남지 않습니다. 그러면 <code>--bg</code>가 ID를 줘 봐야 쓸 데가 없습니다. 프롬프트를 위치 인자로 옮기니 곧바로 ID와 후속 명령 네 줄을 돌려줬습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gp">$ </span>claude<span class="w"> </span>--bg<span class="w"> </span><span class="s1">&#39;src/pay.js를 읽고 개선점 세 가지를 번호 매겨 정리해줘&#39;</span><span class="w"> </span>--safe-mode
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="go">backgrounded · cd44ce18</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="go">  claude agents             list sessions</span>
@@ -2279,8 +2279,8 @@
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="go">  claude logs cd44ce18      show recent output</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="go">  claude stop cd44ce18      stop this session</span>
 </span></code></pre></div>
-<p>다음은 이 작업을 목록에서 찾는 차례다. <code>claude agents</code>를 그냥 치면 TTY, 즉 사람이 보고 있는 대화형 터미널을 요구한다. 스크립트에서 쓰려면 <code>--json</code>을 붙여야 하고 <code>--cwd</code>를 함께 주면 특정 경로에서 시작한 작업만 추릴 수 있다.</p>
-<p>스크립트를 짤 때 실제로 봐야 하는 필드는 사실 두 개뿐이다. 후속 명령에 넘길 <strong><code>id</code></strong>, 그리고 작업이 끝났는지 알려 주는 <strong><code>state</code></strong>. 아래는 그 둘을 포함해 식별에 쓰는 필드만 추린 것이다.</p>
+<p>다음은 이 작업을 목록에서 찾는 차례입니다. <code>claude agents</code>를 그냥 치면 TTY, 즉 사람이 보고 있는 대화형 터미널을 요구합니다. 스크립트에서 쓰려면 <code>--json</code>을 붙여야 하고 <code>--cwd</code>를 함께 주면 특정 경로에서 시작한 작업만 추릴 수 있습니다.</p>
+<p>스크립트를 짤 때 실제로 봐야 하는 필드는 사실 두 개뿐입니다. 후속 명령에 넘길 <strong><code>id</code></strong>, 그리고 작업이 끝났는지 알려 주는 <strong><code>state</code></strong>. 아래는 그 둘을 포함해 식별에 쓰는 필드만 추린 것입니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="gp">$ </span>claude<span class="w"> </span>agents<span class="w"> </span>--json<span class="w"> </span>--cwd<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;[.[] | select(.kind==&quot;background&quot;) | {id, name, status, state, sessionId}]&#39;</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="go">[</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="go">  {</span>
@@ -2292,12 +2292,12 @@
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="go">  }</span>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="go">]</span>
 </span></code></pre></div>
-<p>여기서 한 번쯤 헷갈리는 게 <code>id</code>와 <code>sessionId</code>가 따로 있다는 점이다. <code>id</code>는 <code>cd44ce18</code> 같은 짧은 형태이고 <code>sessionId</code>는 같은 작업의 전체 UUID인데 <strong><code>attach</code>·<code>logs</code>·<code>stop</code>이 받는 것은 짧은 <code>id</code> 쪽</strong>이다. <code>jq</code> 안에 붙은 <code>select(.kind=="background")</code>도 장식이 아니라 꼭 필요한 조건인데 그 이유는 조금 뒤 메모에 적었다.</p>
+<p>여기서 한 번쯤 헷갈리는 게 <code>id</code>와 <code>sessionId</code>가 따로 있다는 점입니다. <code>id</code>는 <code>cd44ce18</code> 같은 짧은 형태이고 <code>sessionId</code>는 같은 작업의 전체 UUID인데 <strong><code>attach</code>·<code>logs</code>·<code>stop</code>이 받는 것은 짧은 <code>id</code> 쪽</strong>입니다. <code>jq</code> 안에 붙은 <code>select(.kind=="background")</code>도 장식이 아니라 꼭 필요한 조건인데 그 이유는 조금 뒤 메모에 적었습니다.</p>
 <div class="admonition note">
 <p class="admonition-title">참고 — 나머지 필드</p>
-<p>항목에는 이 밖에도 <code>name</code>, <code>pid</code>, <code>cwd</code>, <code>startedAt</code>이 함께 실려 온다. <code>name</code>은 지시하지 않았는데도 CLI가 프롬프트를 요약해 붙여 준 것이고 나머지는 프로세스나 시작 시점을 추적할 때 쓴다. 처음 스크립트를 짤 때는 몰라도 되는 값들이다.</p>
+<p>항목에는 이 밖에도 <code>name</code>, <code>pid</code>, <code>cwd</code>, <code>startedAt</code>이 함께 실려 옵니다. <code>name</code>은 지시하지 않았는데도 CLI가 프롬프트를 요약해 붙여 준 것이고 나머지는 프로세스나 시작 시점을 추적할 때 씁니다. 처음 스크립트를 짤 때는 몰라도 되는 값들입니다.</p>
 </div>
-<p>출력을 확인하려고 <code>claude logs</code>를 붙였는데, 여기서 예상이 어긋났다. 사람이 읽을 문장이 아니라 터미널 화면 자체가 이스케이프 시퀀스째로 쏟아졌다.</p>
+<p>출력을 확인하려고 <code>claude logs</code>를 붙였는데, 여기서 예상이 어긋났습니다. 사람이 읽을 문장이 아니라 터미널 화면 자체가 이스케이프 시퀀스째로 쏟아졌습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="gp">$ </span>claude<span class="w"> </span>logs<span class="w"> </span>cd44ce18<span class="w"> </span>&gt;<span class="w"> </span>logs.txt
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="gp">$ </span>wc<span class="w"> </span>-c<span class="w"> </span>&lt;<span class="w"> </span>logs.txt
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="go">    9890</span>
@@ -2306,8 +2306,8 @@
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="gp">$ </span>tr<span class="w"> </span>-cd<span class="w"> </span><span class="s1">&#39;\033&#39;</span><span class="w"> </span>&lt;<span class="w"> </span>logs.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-c
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="go">     777</span>
 </span></code></pre></div>
-<p>9,890바이트 안에 줄바꿈은 한 번도 없고 ESC 문자만 777개다. 화면을 지우고 커서를 옮겨 가며 그린 TUI 프레임을 그대로 받아 적은 결과다.</p>
-<p>작업이 끝난 뒤 중지하면 목록이 비워진다. 띄우기 → 조회 → 출력 확인 → 중지까지 왕복이 닫힌다.</p>
+<p>9,890바이트 안에 줄바꿈은 한 번도 없고 ESC 문자만 777개입니다. 화면을 지우고 커서를 옮겨 가며 그린 TUI 프레임을 그대로 받아 적은 결과입니다.</p>
+<p>작업이 끝난 뒤 중지하면 목록이 비워집니다. 띄우기 → 조회 → 출력 확인 → 중지까지 왕복이 닫힙니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gp">$ </span>claude<span class="w"> </span>stop<span class="w"> </span>cd44ce18
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="go">stopped cd44ce18</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="gp">$ </span>claude<span class="w"> </span>agents<span class="w"> </span>--json<span class="w"> </span>--cwd<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>
@@ -2315,15 +2315,15 @@
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">직접 해보고 알게 된 것</p>
-<p><code>claude logs &lt;id&gt;</code>가 돌려주는 것은 “로그 파일”이 아니라 <strong>터미널 화면을 그대로 뜬 덤프</strong>였다. ANSI를 벗겨 내도 커서 위치 지정 때문에 글자 순서가 뒤엉켜 문장으로 복원되지 않는다. 그러니 <code>logs</code>와 <code>attach</code>는 사람이 눈으로 확인할 때 쓰고, <strong>기계가 읽을 결과가 필요하면 애초에 <code>-p --output-format json</code>으로 돌리는 쪽</strong>을 골라야 한다. 이름이 <code>logs</code>라서 <code>grep</code>에 넘길 만한 무언가를 기대했다가 방향을 바꾼 지점이다.</p>
+<p><code>claude logs &lt;id&gt;</code>가 돌려주는 것은 “로그 파일”이 아니라 <strong>터미널 화면을 그대로 뜬 덤프</strong>였습니다. ANSI를 벗겨 내도 커서 위치 지정 때문에 글자 순서가 뒤엉켜 문장으로 복원되지 않습니다. 그러니 <code>logs</code>와 <code>attach</code>는 사람이 눈으로 확인할 때 쓰고, <strong>기계가 읽을 결과가 필요하면 애초에 <code>-p --output-format json</code>으로 돌리는 쪽</strong>을 골라야 합니다. 이름이 <code>logs</code>라서 <code>grep</code>에 넘길 만한 무언가를 기대했다가 방향을 바꾼 지점입니다.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">직접 해보고 알게 된 것</p>
-<p><code>claude agents --json</code>이 배열로 돌려주는 항목에는 background 작업뿐 아니라 <strong>지금 이 터미널에서 돌고 있는 대화형 세션</strong>(<code>"kind": "interactive"</code>)도 섞여 나온다. 스크립트에서 “내가 띄운 백그라운드 작업”만 세려면 <code>jq '[.[] | select(.kind=="background")]'</code>처럼 걸러야 하고 그러지 않으면 자기 자신을 세어 버린다.</p>
+<p><code>claude agents --json</code>이 배열로 돌려주는 항목에는 background 작업뿐 아니라 <strong>지금 이 터미널에서 돌고 있는 대화형 세션</strong>(<code>"kind": "interactive"</code>)도 섞여 나옵니다. 스크립트에서 “내가 띄운 백그라운드 작업”만 세려면 <code>jq '[.[] | select(.kind=="background")]'</code>처럼 걸러야 하고 그러지 않으면 자기 자신을 세어 버립니다.</p>
 </div>
 <h3 id="loop와-goal--나란히-놓고-보니-역할이-달랐다"><code>/loop</code>와 <code>/goal</code> — 나란히 놓고 보니 역할이 달랐다<a class="headerlink" href="#loop와-goal--나란히-놓고-보니-역할이-달랐다" title="이 위치로 링크">¶</a></h3>
-<p>교재는 <code>/loop</code>와 <code>/goal</code>을 나란히 소개한다. 이름만 보면 "반복"과 "목표"라서 같은 기능의 다른 표현처럼 읽히는데, 정말 그런지 확인하고 싶었다.</p>
-<p><code>/loop</code>는 세션이 열려 있는 동안 같은 프롬프트를 일정한 간격(직접 정한 시간이든 Claude가 알아서 고르는 시간이든)으로 다시 실행하는 쪽이다. 세션이 계속 떠 있어야 다음 차례가 돌아오는 구조라 <code>-p</code>처럼 한 번 답하고 끝나는 실행에는 애초에 안 맞는다. 그래서 이번엔 tmux로 진짜 대화형 세션을 하나 열고 그 안에 직접 쳐서 확인했다. 대상은 eslint 경고 두 개(<code>no-unused-vars</code>, <code>eqeqeq</code>)가 남아 있는 <code>app.js</code>다.</p>
+<p>교재는 <code>/loop</code>와 <code>/goal</code>을 나란히 소개합니다. 이름만 보면 "반복"과 "목표"라서 같은 기능의 다른 표현처럼 읽히는데, 정말 그런지 확인하고 싶었습니다.</p>
+<p><code>/loop</code>는 세션이 열려 있는 동안 같은 프롬프트를 일정한 간격(직접 정한 시간이든 Claude가 알아서 고르는 시간이든)으로 다시 실행하는 쪽입니다. 세션이 계속 떠 있어야 다음 차례가 돌아오는 구조라 <code>-p</code>처럼 한 번 답하고 끝나는 실행에는 애초에 안 맞습니다. 그래서 이번엔 tmux로 진짜 대화형 세션을 하나 열고 그 안에 직접 쳐서 확인했습니다. 대상은 eslint 경고 두 개(<code>no-unused-vars</code>, <code>eqeqeq</code>)가 남아 있는 <code>app.js</code>입니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">❯ /loop npx eslint@8.57.0 app.js 경고가 0이 될 때까지 app.js를 고쳐줘</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="go">  Read 3 files, listed 1 directory, ran 1 shell command</span>
@@ -2345,8 +2345,8 @@
 </span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
 </span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="go">✻ Churned for 23s · done</span>
 </span></code></pre></div>
-<p>한 번 만에 목표를 채우고 스스로 멈췄다. <code>/loop</code>는 원래 정해 둔 간격마다 프롬프트를 다시 실행하며 도는 구조인데, 첫 실행에서 바로 고쳐졌기 때문에 다음 간격까지 기다릴 필요가 없어져 Claude 스스로 다음 예약을 걸지 않고 끝낸 것이다. 그래서 "언제 다음 차례가 도나"를 지켜볼 기회는 이번엔 없었다.</p>
-<p>같은 파일에 <code>/goal</code>도 걸어 봤다. 슬래시 자동완성에 <code>Set a goal Claude checks before stopping</code>이라는 설명으로 따로 등록되어 있는 것부터가 힌트였다.</p>
+<p>한 번 만에 목표를 채우고 스스로 멈췄습니다. <code>/loop</code>는 원래 정해 둔 간격마다 프롬프트를 다시 실행하며 도는 구조인데, 첫 실행에서 바로 고쳐졌기 때문에 다음 간격까지 기다릴 필요가 없어져 Claude 스스로 다음 예약을 걸지 않고 끝낸 것입니다. 그래서 "언제 다음 차례가 도나"를 지켜볼 기회는 이번엔 없었습니다.</p>
+<p>같은 파일에 <code>/goal</code>도 걸어 봤습니다. 슬래시 자동완성에 <code>Set a goal Claude checks before stopping</code>이라는 설명으로 따로 등록되어 있는 것부터가 힌트였습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="go">❯ /goal npx eslint@8.57.0 app.js 경고 0개</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="go">  ⎿  Goal set: npx eslint@8.57.0 app.js 경고 0개</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
@@ -2355,7 +2355,7 @@
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="go">✔ Goal achieved (8s · 1 turn · 288 tokens)</span>
 </span></code></pre></div>
-<p><code>/goal</code>을 걸면 매 턴이 끝날 때마다 별도의 작고 빠른 모델이 조건 충족 여부를 판정하고, 안 됐으면 새 턴을 또 시작한다 — "충족될 때까지 스스로 턴을 반복하는" 쪽은 오히려 <code>/goal</code>이었다. 그리고 <code>-p</code>와도 아예 무관한 게 아니었다. 공식 문서가 <code>claude -p "/goal ..."</code> 예시를 직접 들고 있길래 같은 조건으로 재현해 봤다.</p>
+<p><code>/goal</code>을 걸면 매 턴이 끝날 때마다 별도의 작고 빠른 모델이 조건 충족 여부를 판정하고, 안 됐으면 새 턴을 또 시작합니다 — "충족될 때까지 스스로 턴을 반복하는" 쪽은 오히려 <code>/goal</code>이었습니다. 그리고 <code>-p</code>와도 아예 무관한 게 아니었습니다. 공식 문서가 <code>claude -p "/goal ..."</code> 예시를 직접 들고 있길래 같은 조건으로 재현해 봤습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;/goal npx eslint@8.57.0 app.js 경고 0개&quot;</span><span class="w"> </span>--safe-mode<span class="w"> </span>--output-format<span class="w"> </span>json<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;{result,num_turns,total_cost_usd}&#39;</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="go">{</span>
@@ -2364,38 +2364,38 @@
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="go">  &quot;total_cost_usd&quot;: 0.0457716</span>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="go">}</span>
 </span></code></pre></div>
-<p>정말로 됐다. <code>-p</code> 한 번으로 목표 판정까지 끝까지 돌아갔고, 비용 집계(<code>modelUsage</code>)에는 실제 작업을 한 <code>claude-sonnet-5</code>와 별도로 조건을 판정한 <code>claude-haiku-4-5</code>가 함께 찍혀 있었다 — 조건 판정이 진짜로 별도 모델이 맡는 일이라는 뜻이다.</p>
+<p>정말로 됐습니다. <code>-p</code> 한 번으로 목표 판정까지 끝까지 돌아갔고, 비용 집계(<code>modelUsage</code>)에는 실제 작업을 한 <code>claude-sonnet-5</code>와 별도로 조건을 판정한 <code>claude-haiku-4-5</code>가 함께 찍혀 있었습니다 — 조건 판정이 진짜로 별도 모델이 맡는 일이라는 뜻입니다.</p>
 <div class="admonition warning">
 <p class="admonition-title">직접 해보고 알게 된 것</p>
-<p>처음엔 "<code>/loop</code>가 능동적으로 반복하는 쪽, <code>/goal</code>은 한 번 확인만 하는 쪽"이라고 짐작했는데 반대에 가까웠다. <strong>턴을 계속 새로 시작해 가며 조건을 채우는 건 <code>/goal</code>이고, <code>/loop</code>는 세션이 열려 있는 동안 같은 프롬프트를 시간 간격으로 재실행하는 스케줄러</strong>다. 그리고 세션이 계속 떠 있어야 하는 <code>/loop</code>와 달리 <code>/goal</code>은 <code>-p</code> 한 번으로 조건 판정까지 끝까지 돌아간다 — 그래서 이번 실습에서 <code>/loop</code>는 tmux가 꼭 필요했지만, <code>/goal</code>은 사실 tmux 없이 <code>-p</code>만으로도 확인할 수 있었다.</p>
+<p>처음엔 "<code>/loop</code>가 능동적으로 반복하는 쪽, <code>/goal</code>은 한 번 확인만 하는 쪽"이라고 짐작했는데 반대에 가까웠습니다. <strong>턴을 계속 새로 시작해 가며 조건을 채우는 건 <code>/goal</code>이고, <code>/loop</code>는 세션이 열려 있는 동안 같은 프롬프트를 시간 간격으로 재실행하는 스케줄러</strong>입니다. 그리고 세션이 계속 떠 있어야 하는 <code>/loop</code>와 달리 <code>/goal</code>은 <code>-p</code> 한 번으로 조건 판정까지 끝까지 돌아갑니다 — 그래서 이번 실습에서 <code>/loop</code>는 tmux가 꼭 필요했지만, <code>/goal</code>은 사실 tmux 없이 <code>-p</code>만으로도 확인할 수 있었습니다.</p>
 </div>
 <h3 id="이번엔-터미널이-아니라-웹에서-이어가-보려다-막혔다--remote-control">이번엔 터미널이 아니라 웹에서 이어가 보려다 막혔다 — Remote Control<a class="headerlink" href="#이번엔-터미널이-아니라-웹에서-이어가-보려다-막혔다--remote-control" title="이 위치로 링크">¶</a></h3>
-<p>여기까지는 전부 터미널 안에서 끝나는 이야기였다. 방향을 반대로 돌려서 터미널에서 시작한 세션을 자리를 뜬 뒤 브라우저에서 이어 받는 것도 해 보고 싶었다. 그게 Remote Control이다.</p>
-<p>이름 그대로 상대(웹·모바일 쪽 화면)가 있어야 성립하는 기능이라, 처음엔 한쪽인 터미널만으로 재현해 보려다 막혔다. <code>claude --remote-control</code>을 켰는데 이어 받을 때 필요한 페어링 코드가 아무것도 뜨지 않았다.</p>
+<p>여기까지는 전부 터미널 안에서 끝나는 이야기였습니다. 방향을 반대로 돌려서 터미널에서 시작한 세션을 자리를 뜬 뒤 브라우저에서 이어 받는 것도 해 보고 싶었습니다. 그게 Remote Control입니다.</p>
+<p>이름 그대로 상대(웹·모바일 쪽 화면)가 있어야 성립하는 기능이라, 처음엔 한쪽인 터미널만으로 재현해 보려다 막혔습니다. <code>claude --remote-control</code>을 켰는데 이어 받을 때 필요한 페어링 코드가 아무것도 뜨지 않았습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="gp">$ </span>claude<span class="w"> </span>--remote-control<span class="w"> </span>w5-doc-test
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="gp"># </span>트러스트<span class="w"> </span>확인<span class="w"> </span>→<span class="w"> </span>정상<span class="w"> </span>진행되지만,<span class="w"> </span>세션이<span class="w"> </span>떠도<span class="w"> </span>페어링<span class="w"> </span>URL/QR이<span class="w"> </span>전혀<span class="w"> </span>안<span class="w"> </span>보인다
 </span></code></pre></div>
-<p>세션은 정상으로 떴는데 페어링만 안 되니 처음엔 "붙을 상대가 없어서 그런가" 싶었다. 원인은 다른 데 있었다. 이 환경은 <code>CLAUDE_CODE_OAUTH_TOKEN_FILE</code>(= <code>claude setup-token</code>으로 받은 장기 토큰)로 로그인돼 있었는데, 공식 문서는 이 경우를 정확히 짚는다.</p>
+<p>세션은 정상으로 떴는데 페어링만 안 되니 처음엔 "붙을 상대가 없어서 그런가" 싶었습니다. 원인은 다른 데 있었습니다. 이 환경은 <code>CLAUDE_CODE_OAUTH_TOKEN_FILE</code>(= <code>claude setup-token</code>으로 받은 장기 토큰)로 로그인돼 있었는데, 공식 문서는 이 경우를 정확히 짚습니다.</p>
 <blockquote>
-<p>"Remote Control requires a full-scope login token" — <code>claude setup-token</code>이나 <code>CLAUDE_CODE_OAUTH_TOKEN</code>으로 인증된 세션은 <strong>모델 호출 전용 토큰</strong>이라 Remote Control 세션 자체를 만들 수 없다.</p>
+<p>"Remote Control requires a full-scope login token" — <code>claude setup-token</code>이나 <code>CLAUDE_CODE_OAUTH_TOKEN</code>으로 인증된 세션은 <strong>모델 호출 전용 토큰</strong>이라 Remote Control 세션 자체를 만들 수 없습니다.</p>
 </blockquote>
-<p><code>unset CLAUDE_CODE_OAUTH_TOKEN_FILE</code> 후 <code>/login</code>으로 계정에 다시 로그인하고 나서야 세션이 정상적으로 페어링 URL을 냈다.</p>
+<p><code>unset CLAUDE_CODE_OAUTH_TOKEN_FILE</code> 후 <code>/login</code>으로 계정에 다시 로그인하고 나서야 세션이 정상적으로 페어링 URL을 냈습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="gp">$ </span><span class="nb">unset</span><span class="w"> </span>CLAUDE_CODE_OAUTH_TOKEN_FILE<span class="w"> </span>CLAUDE_CODE_OAUTH_TOKEN
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="gp">$ </span>claude<span class="w"> </span>--remote-control
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="go">/remote-control is active · Continue here, on your phone, or at</span>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="go">https://claude.ai/code/session_01XHhhRDNgjELZnsnqkBMY1k</span>
 </span></code></pre></div>
-<p>이 URL을 다른 브라우저에서 열어 "지금 몇 시야?"라고 보내자, <strong>로컬 머신이 실제로 도구를 호출</strong>(<code>Got current system time</code>)해 응답했고 세션 이름도 대화 내용에 맞춰 자동으로 바뀌었다(공식 문서가 말하는 "명시적 이름이 없으면 첫 프롬프트로 제목을 갱신한다"는 규칙 그대로).</p>
+<p>이 URL을 다른 브라우저에서 열어 "지금 몇 시야?"라고 보내자, <strong>로컬 머신이 실제로 도구를 호출</strong>(<code>Got current system time</code>)해 응답했고 세션 이름도 대화 내용에 맞춰 자동으로 바뀌었습니다(공식 문서가 말하는 "명시적 이름이 없으면 첫 프롬프트로 제목을 갱신한다"는 규칙 그대로).</p>
 <div class="admonition warning">
 <p class="admonition-title">직접 해보고 알게 된 것</p>
-<p>Remote Control이 안 되는 것과 "연결 상대가 없어서 안 되는 것"은 다른 문제였다. 이번 실패의 진짜 원인은 상대가 아니라 <strong>이 환경의 인증 방식 자체</strong>였다 — CI·자동화용으로 흔히 쓰는 <code>setup-token</code>/<code>CLAUDE_CODE_OAUTH_TOKEN</code> 인증이 Remote Control과는 애초에 호환되지 않는다. 자동화 스크립트와 사람이 직접 켜는 대화형 세션은 같은 CLI라도 쓸 수 있는 기능의 경계가 다르다는 걸 이번에 명확히 알게 됐다.</p>
+<p>Remote Control이 안 되는 것과 "연결 상대가 없어서 안 되는 것"은 다른 문제였습니다. 이번 실패의 진짜 원인은 상대가 아니라 <strong>이 환경의 인증 방식 자체</strong>였습니다 — CI·자동화용으로 흔히 쓰는 <code>setup-token</code>/<code>CLAUDE_CODE_OAUTH_TOKEN</code> 인증이 Remote Control과는 애초에 호환되지 않습니다. 자동화 스크립트와 사람이 직접 켜는 대화형 세션은 같은 CLI라도 쓸 수 있는 기능의 경계가 다르다는 걸 이번에 명확히 알게 됐습니다.</p>
 </div>
-<p>페어링이 한 번 성립하고 나면 반대 방향도 자연스럽게 따라온다. <code>--teleport</code>는 이렇게 페어링된 세션을 로컬로 다시 불러오는 동작이라 같은 메커니즘의 반대편으로 이해하면 된다.</p>
+<p>페어링이 한 번 성립하고 나면 반대 방향도 자연스럽게 따라옵니다. <code>--teleport</code>는 이렇게 페어링된 세션을 로컬로 다시 불러오는 동작이라 같은 메커니즘의 반대편으로 이해하면 됩니다.</p>
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
-<p><strong>"background면 스케줄러가 필요 없다"</strong> — 아니다. background는 지금 시작한 작업을 떼어 놓는 방식이고 언제 다시 시작할지는 cron·Routine·CI 같은 스케줄/이벤트 주체가 결정한다.</p>
-<p><strong>"<code>/loop</code>와 <code>/goal</code>은 이름만 다른 같은 기능이다"</strong> — 위 실습에서 갈렸다. <code>/goal</code>은 조건이 채워질 때까지 턴을 새로 시작해 가며 스스로 반복하고 <code>-p</code>로도 그대로 돌아간다. <code>/loop</code>는 세션이 떠 있는 동안 같은 프롬프트를 시간 간격으로 다시 실행하는 스케줄러라 <code>-p</code>와는 맞지 않는다.</p>
+<p><strong>"background면 스케줄러가 필요 없다"</strong> — 아닙니다. background는 지금 시작한 작업을 떼어 놓는 방식이고 언제 다시 시작할지는 cron·Routine·CI 같은 스케줄/이벤트 주체가 결정합니다.</p>
+<p><strong>"<code>/loop</code>와 <code>/goal</code>은 이름만 다른 같은 기능이다"</strong> — 위 실습에서 갈렸습니다. <code>/goal</code>은 조건이 채워질 때까지 턴을 새로 시작해 가며 스스로 반복하고 <code>-p</code>로도 그대로 돌아갑니다. <code>/loop</code>는 세션이 떠 있는 동안 같은 프롬프트를 시간 간격으로 다시 실행하는 스케줄러라 <code>-p</code>와는 맞지 않습니다.</p>
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
-<p>맨 앞의 cron 실패 네 가지는 전부 같은 곳에서 출발했다. "언제 돌릴까"를 먼저 정하고 "누가 깨우는가"를 나중에 생각한 것이다. 순서를 뒤집으면 답이 훨씬 빨리 나온다. <strong>누가 깨우고</strong>(내 대화인지, 내 머신의 시계인지, 클라우드의 시계인지, 코드 이벤트인지), <strong>어디서 돌며</strong>(내 노트북인지 클라우드인지), <strong>어떻게 관측하고 멈출 것인가</strong>(ID가 있는지, 실패를 누가 알아채는지). 이 셋에 답하고 나면 <code>/loop</code>든 cron이든 Routines든 CI든 <code>--bg</code>든, 명령은 뒤따라온다.</p>
+<p>맨 앞의 cron 실패 네 가지는 전부 같은 곳에서 출발했습니다. "언제 돌릴까"를 먼저 정하고 "누가 깨우는가"를 나중에 생각한 것입니다. 순서를 뒤집으면 답이 훨씬 빨리 나옵니다. <strong>누가 깨우고</strong>(내 대화인지, 내 머신의 시계인지, 클라우드의 시계인지, 코드 이벤트인지), <strong>어디서 돌며</strong>(내 노트북인지 클라우드인지), <strong>어떻게 관측하고 멈출 것인가</strong>(ID가 있는지, 실패를 누가 알아채는지). 이 셋에 답하고 나면 <code>/loop</code>든 cron이든 Routines든 CI든 <code>--bg</code>든, 명령은 뒤따라옵니다.</p>
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>
 <li>Claude Code Deep Dive Workshop — <em>Chapter 5 / Part 4: 스케줄과 자동 실행</em> (슬라이드 39~47)</li>

@@ -1998,7 +1998,7 @@
 
 
 <h1 id="5주차--chapter-5-cli-reference">5주차 — Chapter 5: CLI Reference<a class="headerlink" href="#5주차--chapter-5-cli-reference" title="이 위치로 링크">¶</a></h1>
-<p>명령 하나를 잘 외우는 것보다, 실패와 비용까지 자동화가 판정하게 만드는 방법에 초점을 맞춘 주차다. Claude Code를 대화창으로만 쓰지 않고, 셸 스크립트·세션·CI가 그대로 받아 쓸 수 있는 입력과 출력의 형태로 다뤄 봤다.</p>
+<p>명령 하나를 잘 외우는 것보다, 실패와 비용까지 자동화가 판정하게 만드는 방법에 초점을 맞춘 주차입니다. Claude Code를 대화창으로만 쓰지 않고, 셸 스크립트·세션·CI가 그대로 받아 쓸 수 있는 입력과 출력의 형태로 다뤄 봤습니다.</p>
 <p><strong>원본</strong>: Claude Code Deep Dive Workshop / Chapter 5 — CLI Reference (9파트, 약 95 슬라이드)
 <strong>기준 버전</strong>: Claude Code v2.1.251 / 2026-08-29 · 교재는 2026년 7월판</p>
 <hr />
@@ -2012,8 +2012,8 @@
 <p><code>/loop</code>와 <code>/goal</code>도 tmux로 실제 대화형 세션을 열어 직접 쳐 봤습니다. 이름만 보고 둘이 같은 기능의 다른 이름인 줄 알았는데, 짐작했던 것과는 반대에 가까웠습니다. 턴을 계속 새로 시작해 가며 조건이 채워질 때까지 스스로 반복하는 쪽은 <code>/goal</code>이었고, <code>/loop</code>는 세션이 열려 있는 동안 같은 프롬프트를 시간 간격으로 다시 실행하는 스케줄러였습니다. 그리고 <code>/goal</code>은 <code>-p</code> 한 번으로도 조건 판정까지 끝까지 돌아갔는데, 이건 나중에 공식 문서 예시를 보고 재현해서야 알았습니다.</p>
 <p>Remote Control도 처음엔 페어링 URL이 아예 뜨지 않아 막혔는데, 알고 보니 이 환경이 <code>setup-token</code>(모델 호출 전용 인증)으로 로그인돼 있어서 애초에 될 수 없는 구조였습니다. 계정 로그인으로 바꾸자 바로 됐고 웹에서 보낸 메시지가 로컬 컴퓨터에서 실제로 실행되는 것까지 확인했습니다. 이번 주는 결국 "재현 불가능"으로 남긴 항목이 없었습니다.</p>
 <h2 id="30초-요약">30초 요약<a class="headerlink" href="#30초-요약" title="이 위치로 링크">¶</a></h2>
-<p>CLI Reference의 핵심은 “Claude에게 무엇을 물을까”보다 “자동화가 무엇을 입력으로 주고 어떤 신호로 다음 행동을 고를까”다.</p>
-<p>Part 1~3은 플래그와 세션을 정리한다. Part 4~6은 그 위에서 스케줄과 CI, 반복 패턴을 다룬다. Part 7~8은 환경 차이를 분리해 진단하고 실제 랩의 성공·미완 경계를 남긴다.</p>
+<p>CLI Reference의 핵심은 “Claude에게 무엇을 물을까”보다 “자동화가 무엇을 입력으로 주고 어떤 신호로 다음 행동을 고를까”입니다.</p>
+<p>Part 1~3은 플래그와 세션을 정리합니다. Part 4~6은 그 위에서 스케줄과 CI, 반복 패턴을 다룹니다. Part 7~8은 환경 차이를 분리해 진단하고 실제 랩의 성공·미완 경계를 남깁니다.</p>
 <h2 id="목차">목차<a class="headerlink" href="#목차" title="이 위치로 링크">¶</a></h2>
 <table>
 <thead>
@@ -2027,54 +2027,54 @@
 <tr>
 <td>1</td>
 <td><a href="part-01-command-and-flags/">명령과 플래그</a></td>
-<td>도움말 실측을 기준으로 CLI의 지도를 만든다.</td>
+<td>도움말 실측을 기준으로 CLI의 지도를 만듭니다.</td>
 </tr>
 <tr>
 <td>2</td>
 <td><a href="part-02-headless-deep-dive/">Headless 심화</a></td>
-<td><code>-p</code>의 JSON 계약과 재시도 게이트를 다룬다.</td>
+<td><code>-p</code>의 JSON 계약과 재시도 게이트를 다룹니다.</td>
 </tr>
 <tr>
 <td>3</td>
 <td><a href="part-03-session-control/">세션 제어</a></td>
-<td>이어가기·재개·분기를 구분한다.</td>
+<td>이어가기·재개·분기를 구분합니다.</td>
 </tr>
 <tr>
 <td>4</td>
 <td><a href="part-04-scheduling/">스케줄과 자동 실행</a></td>
-<td>자동화 표면을 선택한다.</td>
+<td>자동화 표면을 선택합니다.</td>
 </tr>
 <tr>
 <td>5</td>
 <td><a href="part-05-cicd/">CI/CD 통합</a></td>
-<td>비대화 원칙과 안전한 게이트를 만든다.</td>
+<td>비대화 원칙과 안전한 게이트를 만듭니다.</td>
 </tr>
 <tr>
 <td>6</td>
 <td><a href="part-06-automation-patterns/">자동화 패턴</a></td>
-<td>반복 호출을 운영 가능한 형태로 묶는다.</td>
+<td>반복 호출을 운영 가능한 형태로 묶습니다.</td>
 </tr>
 <tr>
 <td>7</td>
 <td><a href="part-07-env-vars-debugging/">환경변수와 디버깅</a></td>
-<td>설정 문제를 분리·진단한다.</td>
+<td>설정 문제를 분리·진단합니다.</td>
 </tr>
 <tr>
 <td>8</td>
 <td><a href="part-08-recap-and-labs/">정리와 Labs</a></td>
-<td>실습 결과와 다음 재현 계획을 모은다.</td>
+<td>실습 결과와 다음 재현 계획을 모읍니다.</td>
 </tr>
 </tbody>
 </table>
 <h2 id="시작하기-전에-확인할-것">시작하기 전에 확인할 것<a class="headerlink" href="#시작하기-전에-확인할-것" title="이 위치로 링크">¶</a></h2>
-<p><code>-p</code>는 신뢰할 수 있는 현재 디렉터리에서 실행돼야 한다. 가장 자주 놓치는 전제다. 대화형으로 프로젝트를 처음 열 때 뜨는 작업공간 신뢰 대화상자가 이 모드에서는 생략되기 때문이다. 사람이 “이 디렉터리를 믿습니까”를 한 번 걸러 주던 자리가 통째로 비는 셈이라, 스크립트가 어느 경로에서 도는지를 스스로 챙기지 않으면 의도하지 않은 곳에서 그대로 실행된다.</p>
-<p>그래서 비대화 실행을 붙이기 전에 다음 셋을 명시해 두는 편이 안전하다.</p>
+<p><code>-p</code>는 신뢰할 수 있는 현재 디렉터리에서 실행돼야 합니다. 가장 자주 놓치는 전제입니다. 대화형으로 프로젝트를 처음 열 때 뜨는 작업공간 신뢰 대화상자가 이 모드에서는 생략되기 때문입니다. 사람이 “이 디렉터리를 믿습니까”를 한 번 걸러 주던 자리가 통째로 비는 셈이라, 스크립트가 어느 경로에서 도는지를 스스로 챙기지 않으면 의도하지 않은 곳에서 그대로 실행됩니다.</p>
+<p>그래서 비대화 실행을 붙이기 전에 다음 셋을 명시해 두는 편이 안전합니다.</p>
 <ul>
-<li><strong>실행 디렉터리</strong> — 사람이 확인해 주는 단계가 없으므로 스크립트가 어디에서 도는지를 코드로 고정해 둔다. CI 러너처럼 매번 새 작업 디렉터리를 만드는 환경에서는 특히 그렇다.</li>
-<li><strong>도구 권한</strong> — 대화형이라면 승인 프롬프트에서 한 번 멈췄을 동작도 비대화 실행에서는 물어볼 상대가 없다. 허용 범위를 미리 정해 두지 않으면 그 자리에서 어떻게 처리될지가 실행마다 달라진다.</li>
-<li><strong>비용 상한</strong> — 한 번의 호출이 몇 턴까지 갈지는 내가 쓴 프롬프트가 아니라 상황이 정한다. 상한이 없으면 잘못 걸린 실행 하나가 조용히 오래 돌 수 있다.</li>
+<li><strong>실행 디렉터리</strong> — 사람이 확인해 주는 단계가 없으므로 스크립트가 어디에서 도는지를 코드로 고정해 둡니다. CI 러너처럼 매번 새 작업 디렉터리를 만드는 환경에서는 특히 그렇습니다.</li>
+<li><strong>도구 권한</strong> — 대화형이라면 승인 프롬프트에서 한 번 멈췄을 동작도 비대화 실행에서는 물어볼 상대가 없습니다. 허용 범위를 미리 정해 두지 않으면 그 자리에서 어떻게 처리될지가 실행마다 달라집니다.</li>
+<li><strong>비용 상한</strong> — 한 번의 호출이 몇 턴까지 갈지는 내가 쓴 프롬프트가 아니라 상황이 정합니다. 상한이 없으면 잘못 걸린 실행 하나가 조용히 오래 돌 수 있습니다.</li>
 </ul>
-<p>마지막으로, 인증 상태 명령이 성공했다고 해서 API 호출까지 된다고 추론하지 않는다. 확인하는 대상이 서로 다르기 때문이다. 실제로 <code>-p</code>를 한 번 돌려 JSON 결과를 눈으로 보는 것이 가장 확실한 사전 점검이다.</p>
+<p>마지막으로, 인증 상태 명령이 성공했다고 해서 API 호출까지 된다고 추론하지 않습니다. 확인하는 대상이 서로 다르기 때문입니다. 실제로 <code>-p</code>를 한 번 돌려 JSON 결과를 눈으로 보는 것이 가장 확실한 사전 점검입니다.</p>
 <h2 id="실습-기록">실습 기록<a class="headerlink" href="#실습-기록" title="이 위치로 링크">¶</a></h2>
 <p>이 정리의 실습 부분은 <strong>2026-08-29에 직접 실행한 결과</strong>입니다. 실행 환경: macOS 26.6.2 / Claude Code <strong>2.1.251</strong> / jq 1.7.1-apple.</p>
 <table>
@@ -2089,12 +2089,12 @@
 <tr>
 <td>Lab 1 — headless 출력</td>
 <td>✅ 완료</td>
-<td><code>stream-json</code>은 <code>--verbose</code>를, <code>--json-schema</code>는 경로 아닌 JSON 문자열을 요구했다.</td>
+<td><code>stream-json</code>은 <code>--verbose</code>를, <code>--json-schema</code>는 경로 아닌 JSON 문자열을 요구했습니다.</td>
 </tr>
 <tr>
 <td>Lab 2 — 리뷰 봇</td>
 <td>✅ 완료</td>
-<td>스키마로 고정한 <code>severity</code>를 <code>jq -e</code> 게이트가 그대로 판정했다. CRITICAL 차단 분기는 미실행.</td>
+<td>스키마로 고정한 <code>severity</code>를 <code>jq -e</code> 게이트가 그대로 판정했습니다. CRITICAL 차단 분기는 미실행.</td>
 </tr>
 <tr>
 <td>Lab 3 — CI</td>
@@ -2111,10 +2111,10 @@
 <p>전체 로그와 원본 출력은 → <strong><a href="part-08-recap-and-labs/">Part 8 — 정리와 실습 랩</a></strong></p>
 <h2 id="학습-목표-체크리스트">학습 목표 체크리스트<a class="headerlink" href="#학습-목표-체크리스트" title="이 위치로 링크">¶</a></h2>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <code>-p</code>의 입력·출력·실패 계약을 설명한다.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 세션을 이어갈 때 <code>-c</code>, <code>-r</code>, <code>--fork-session</code>을 구분한다.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> CI에서 권한·비용·결과 형식을 제한한다.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 문제가 나면 safe mode로 사용자 정의를 분리한다.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <code>-p</code>의 입력·출력·실패 계약을 설명합니다.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 세션을 이어갈 때 <code>-c</code>, <code>-r</code>, <code>--fork-session</code>을 구분합니다.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> CI에서 권한·비용·결과 형식을 제한합니다.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 문제가 나면 safe mode로 사용자 정의를 분리합니다.</li>
 </ul>
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>
