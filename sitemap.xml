@@ -2,190 +2,226 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W1-Chapter1-Overview/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W1-Chapter1-Overview/part-01-what-is-claude-code/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W1-Chapter1-Overview/part-02-architecture/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W1-Chapter1-Overview/part-03-installation/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W1-Chapter1-Overview/part-04-authentication/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W1-Chapter1-Overview/part-05-quick-start/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W1-Chapter1-Overview/part-06-core-capabilities/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W1-Chapter1-Overview/part-07-interfaces/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W1-Chapter1-Overview/part-08-claude-md-and-memory/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W1-Chapter1-Overview/part-09-workflow-patterns/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W1-Chapter1-Overview/part-10-recap-and-labs/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W2-Chapter2-Agents/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W2-Chapter2-Agents/part-01-subagent-concepts/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W2-Chapter2-Agents/part-02-defining-subagents/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W2-Chapter2-Agents/part-03-dispatch/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W2-Chapter2-Agents/part-04-patterns-quality/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W2-Chapter2-Agents/part-05-pattern-security-scanner/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W2-Chapter2-Agents/part-06-patterns-docs-migration/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W2-Chapter2-Agents/part-07-recap-and-labs/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W3-Chapter3-Admin-Setup/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W3-Chapter3-Admin-Setup/part-01-deployment/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W3-Chapter3-Admin-Setup/part-02-providers-credentials/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W3-Chapter3-Admin-Setup/part-03-apps-gateway/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W3-Chapter3-Admin-Setup/part-04-network-security/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W3-Chapter3-Admin-Setup/part-05-governance/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W3-Chapter3-Admin-Setup/part-06-monitoring-cost/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W3-Chapter3-Admin-Setup/part-07-identity-compliance/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W3-Chapter3-Admin-Setup/part-08-troubleshooting-recap-labs/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W4-Chapter4-Settings/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W4-Chapter4-Settings/part-01-settings-system/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W4-Chapter4-Settings/part-02-permissions/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W4-Chapter4-Settings/part-03-hooks-architecture/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W4-Chapter4-Settings/part-04-hooks-in-practice/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W4-Chapter4-Settings/part-05-mcp-configuration/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W4-Chapter4-Settings/part-06-mcp-operations/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W4-Chapter4-Settings/part-07-commands-skills/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W4-Chapter4-Settings/part-08-integration-recap-labs/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W5-Chapter5-CLI-Reference/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W5-Chapter5-CLI-Reference/part-01-command-and-flags/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W5-Chapter5-CLI-Reference/part-02-headless-deep-dive/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W5-Chapter5-CLI-Reference/part-03-session-control/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W5-Chapter5-CLI-Reference/part-04-scheduling/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W5-Chapter5-CLI-Reference/part-05-cicd/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W5-Chapter5-CLI-Reference/part-06-automation-patterns/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W5-Chapter5-CLI-Reference/part-07-env-vars-debugging/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://jinjuchoo.github.io/claude-code-study-docs/W5-Chapter5-CLI-Reference/part-08-recap-and-labs/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-04</lastmod>
+    </url>
+    <url>
+         <loc>https://jinjuchoo.github.io/claude-code-study-docs/W6-Chapter6-Agent-SDK/</loc>
+         <lastmod>2026-09-04</lastmod>
+    </url>
+    <url>
+         <loc>https://jinjuchoo.github.io/claude-code-study-docs/W6-Chapter6-Agent-SDK/part-01-sdk-basics/</loc>
+         <lastmod>2026-09-04</lastmod>
+    </url>
+    <url>
+         <loc>https://jinjuchoo.github.io/claude-code-study-docs/W6-Chapter6-Agent-SDK/part-02-query-multiturn/</loc>
+         <lastmod>2026-09-04</lastmod>
+    </url>
+    <url>
+         <loc>https://jinjuchoo.github.io/claude-code-study-docs/W6-Chapter6-Agent-SDK/part-03-custom-tools/</loc>
+         <lastmod>2026-09-04</lastmod>
+    </url>
+    <url>
+         <loc>https://jinjuchoo.github.io/claude-code-study-docs/W6-Chapter6-Agent-SDK/part-04-structured-output/</loc>
+         <lastmod>2026-09-04</lastmod>
+    </url>
+    <url>
+         <loc>https://jinjuchoo.github.io/claude-code-study-docs/W6-Chapter6-Agent-SDK/part-05-permissions-hooks/</loc>
+         <lastmod>2026-09-04</lastmod>
+    </url>
+    <url>
+         <loc>https://jinjuchoo.github.io/claude-code-study-docs/W6-Chapter6-Agent-SDK/part-06-sessions-state/</loc>
+         <lastmod>2026-09-04</lastmod>
+    </url>
+    <url>
+         <loc>https://jinjuchoo.github.io/claude-code-study-docs/W6-Chapter6-Agent-SDK/part-07-hosting-production/</loc>
+         <lastmod>2026-09-04</lastmod>
+    </url>
+    <url>
+         <loc>https://jinjuchoo.github.io/claude-code-study-docs/W6-Chapter6-Agent-SDK/part-08-capstone-recap-labs/</loc>
+         <lastmod>2026-09-04</lastmod>
     </url>
 </urlset>
