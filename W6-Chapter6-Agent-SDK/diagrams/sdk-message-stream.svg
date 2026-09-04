@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="250" viewBox="0 0 900 250" role="img" aria-label="query 호출 뒤 system, text, tool use, tool result, result 메시지가 순서대로 도착하는 흐름">
   <style>
-    .bg{fill:#fff}.line{stroke:#607d8b;stroke-width:3}.card{fill:#e3f2fd;stroke:#1976d2;stroke-width:2}.result{fill:#e8f5e9;stroke:#388e3c;stroke-width:2}.t{font:16px sans-serif;fill:#111}.sub{font:13px sans-serif;fill:#37474f}.dot{fill:#ef6c00}.anim{animation:move 8s linear infinite}@keyframes move{0%,8%{transform:translate(86px,180px);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translate(804px,180px);opacity:0}}@media (prefers-reduced-motion: reduce){.anim{display:none}.static{display:inline}}@media (prefers-color-scheme: dark){.bg{fill:#1b1f23}.t{fill:#f5f5f5}.sub{fill:#cfd8dc}}
+    .bg{fill:#fff}.line{stroke:#607d8b;stroke-width:3}.card{fill:#e3f2fd;stroke:#1976d2;stroke-width:2}.result{fill:#e8f5e9;stroke:#388e3c;stroke-width:2}.t{font:16px sans-serif;fill:#111;stroke:none}.sub{font:13px sans-serif;fill:#37474f;stroke:none}.dot{fill:#ef6c00}.anim{animation:move 8s linear infinite}@keyframes move{0%,8%{transform:translate(86px,180px);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translate(804px,180px);opacity:0}}@media (prefers-reduced-motion: reduce){.anim{display:none}.static{display:inline}}@media (prefers-color-scheme: dark){.bg{fill:#1b1f23}.t{fill:#f5f5f5}.sub{fill:#cfd8dc}}
   </style>
   <rect class="bg" width="900" height="250" rx="12"/>
   <text x="36" y="42" class="t">query()가 돌려주는 메시지 스트림</text>
