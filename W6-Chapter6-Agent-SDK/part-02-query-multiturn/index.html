@@ -2485,10 +2485,9 @@
 </span></code></pre></div>
 <p>두 번째 질문이 첫 대화에서 말한 이름을 정확히 기억했습니다. <code>sessionId</code>를 갱신해 <code>resume</code>에 넘기는 세 줄이 실제로 대화를 이어준다는 뜻입니다.</p>
 <h2 id="2-메시지-네-종류가-순서대로-옵니다">2. 메시지 네 종류가 순서대로 옵니다<a class="headerlink" href="#2-메시지-네-종류가-순서대로-옵니다" title="이 위치로 링크">¶</a></h2>
-<p>Part 1에서는 <code>assistant</code>(모델 문장)와 <code>result</code>(마무리 요약) 두 종류만 봤습니다. 대화가 길어지거나 도구를 쓰면 두 종류가 더 나옵니다 — 우리가 보낸 말을 담는 <code>user</code>, 대화 시작을 알리는 <code>system</code>입니다. <code>for await</code> 루프는 이 넷을 순서대로 흘려보내는데, 화면에 답을 그릴 때는 <code>assistant</code>의 <code>message.content</code> 안에서 <code>text</code> 블록을 읽고, 실행이 끝났는지 판정할 때는 마지막 <code>result</code>를 읽으면 됩니다.</p>
+<p>Part 1에서는 <code>assistant</code>(모델 문장)와 <code>result</code>(마무리 요약) 두 종류만 봤습니다. 대화가 길어지거나 도구를 쓰면 두 종류가 더 나옵니다 — 우리가 보낸 말을 담는 <code>user</code>, 대화 시작을 알리는 <code>system</code>입니다. 도구를 쓸 때는 모델의 도구 호출(<code>tool_use</code>)이 <code>assistant</code> 메시지 안에 담기고, 그 실행 결과(<code>tool_result</code>)는 <code>user</code> 메시지 안에 담겨 돌아옵니다 — 이름은 <code>user</code>지만 사람이 보낸 말이 아니라 도구 응답인 경우입니다. <code>for await</code> 루프는 이 넷을 순서대로 흘려보내는데, 화면에 답을 그릴 때는 <code>assistant</code>의 <code>message.content</code> 안에서 <code>text</code> 블록을 읽고, 실행이 끝났는지 판정할 때는 마지막 <code>result</code>를 읽으면 됩니다.</p>
 <p><img alt="멀티턴 / 세션 이어가기" src="../slides/slide-017.png" /></p>
 <p><em>▲ 교재 슬라이드 17 — 멀티턴 / 세션 이어가기</em></p>
-<p><img alt="메시지 흐름" src="../diagrams/sdk-message-stream.svg" /></p>
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
 <p><strong>"<code>resume</code>으로 대화를 이으면 이전에 준 도구 권한도 같이 이어진다"</strong> — 아닙니다. <code>resume</code>이 이어받는 건 대화 기록뿐입니다. <code>allowedTools</code>는 호출마다 새로 넘겨야 하는 값이라 재개했다고 이전 호출의 도구 허용 범위가 자동으로 따라오지 않습니다.</p>
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
