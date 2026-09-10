@@ -2559,7 +2559,7 @@
 <p><strong>"<code>allowedTools</code>에 없는 도구는 모델에게 아예 안 보인다"</strong> — 아닙니다. 위에서 확인했듯 Bash는 여전히 모델 눈에 보이고 모델이 호출을 시도하면 승인 콜백이 없어 그 자리에서 거부됩니다. 도구 자체를 감추고 싶다면 <code>tools</code>나 <code>disallowedTools</code>로 따로 제한해야 합니다.</p>
 <p><strong>"SDK 실습이 잘 됐으니 이 인증(구독 로그인 상속)을 그대로 서비스에 써도 된다"</strong> — 아닙니다. 로컬 개발 환경에서는 통하지만 공식 문서는 claude.ai 로그인을 제품·서비스에 얹는 걸 사전 승인 없이는 금지합니다. 실제로 배포한다면 <code>ANTHROPIC_API_KEY</code>나 Bedrock·Vertex·Foundry로 인증 경로를 바꿔야 합니다(Part 7에서 이어집니다).</p>
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
-<p>정리하면 셋입니다. ① SDK는 <code>claude</code>를 대신할 새 엔진이 아니라 코드 뒤에서 그 프로그램을 그대로 부르고 메시지를 받아쓰는 방식입니다. ② 이미 로그인돼 있으면 별도 자격증명 없이 동작하지만 이건 로컬 개발용 지름길이고 실제 서비스에는 API 키나 Bedrock 같은 다른 인증 경로가 필요합니다. ③ <code>options</code>는 장식이 아니라 "무엇을 허락하고 어디서 멈출지"를 코드로 못 박는 자리입니다. 다음 파트부터는 이 자리에 도구·출력·권한·세션이 하나씩 추가됩니다.</p>
+<p>① SDK는 <code>claude</code>를 대신할 새 엔진이 아니라 코드 뒤에서 그 프로그램을 그대로 부르고 메시지를 받아쓰는 방식입니다. ② 이미 로그인돼 있으면 별도 자격증명 없이 동작하지만 이건 로컬 개발용 지름길이고 실제 서비스에는 API 키나 Bedrock 같은 다른 인증 경로가 필요합니다. ③ <code>options</code>는 장식이 아니라 "무엇을 허락하고 어디서 멈출지"를 코드로 못 박는 자리입니다. 다음 파트부터는 이 자리에 도구·출력·권한·세션이 하나씩 추가됩니다.</p>
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>
 <li>Claude Code Deep Dive Workshop — <em>Chapter 6 / Part 1: Agent SDK</em> (슬라이드 4~13)</li>

@@ -2491,7 +2491,7 @@
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
 <p><strong>"<code>resume</code>으로 대화를 이으면 이전에 준 도구 권한도 같이 이어진다"</strong> — 아닙니다. <code>resume</code>이 이어받는 건 대화 기록뿐입니다. <code>allowedTools</code>는 호출마다 새로 넘겨야 하는 값이라 재개했다고 이전 호출의 도구 허용 범위가 자동으로 따라오지 않습니다.</p>
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
-<p>정리하면 둘입니다. ① <code>resume</code>에 이전 <code>session_id</code>를 넣는 것만으로 대화가 이어집니다 — 대화 내용을 우리 코드가 따로 기억할 필요가 없습니다. ② <code>assistant</code>의 문장과 <code>result</code>의 session ID·턴 수·비용은 서로 다른 메시지에 담겨 오므로 최종 문자열만 저장하면 나머지는 사라진다는 걸 Part 1에 이어 다시 확인했습니다.</p>
+<p>① <code>resume</code>에 이전 <code>session_id</code>를 넣는 것만으로 대화가 이어집니다 — 대화 내용을 우리 코드가 따로 기억할 필요가 없습니다. ② <code>assistant</code>의 문장과 <code>result</code>의 session ID·턴 수·비용은 서로 다른 메시지에 담겨 오므로 최종 문자열만 저장하면 나머지는 사라진다는 걸 Part 1에 이어 다시 확인했습니다.</p>
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>
 <li>Claude Code Deep Dive Workshop — <em>Chapter 6 / Part 2: query와 멀티턴</em> (슬라이드 14~22)</li>

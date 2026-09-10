@@ -2444,7 +2444,7 @@
 <p><img alt="tool의 4요소" src="../slides/slide-024.png" /></p>
 <p><em>▲ 교재 슬라이드 24 — tool의 4요소</em></p>
 <h2 id="1-입력-스키마부터-적습니다">1. 입력 스키마부터 적습니다<a class="headerlink" href="#1-입력-스키마부터-적습니다" title="이 위치로 링크">¶</a></h2>
-<p>Zod는 JavaScript 값의 모양을 검사하는 라이브러리입니다. <code>keyword: z.string()</code>은 <code>search_note</code>가 문자열 키워드 하나만 받는다는 계약입니다. 아래 코드의 <code>async ({ keyword }) =&gt; ({ ... })</code>는 Part 1에서 본 화살표 함수(<code>입력 =&gt; 결과</code> 형태로 이름 없이 짧게 쓰는 함수)이고, <code>{ keyword }</code>는 입력 봉투에서 <code>keyword</code> 항목만 꺼내 쓰겠다는 뜻입니다.</p>
+<p>Zod는 JavaScript 값의 모양을 검사하는 라이브러리입니다. <code>keyword: z.string()</code>은 <code>search_note</code>가 문자열 키워드 하나만 받는다는 계약입니다. 아래 코드의 <code>async ({ keyword }) =&gt; ({ ... })</code>는 화살표 함수입니다 — <code>입력 =&gt; 결과</code> 형태로 이름 없이 짧게 쓰는 함수라고 보면 됩니다. <code>{ keyword }</code>는 입력 봉투에서 <code>keyword</code> 항목만 꺼내 쓰겠다는 뜻입니다.</p>
 <div class="language-js highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">searchNote</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tool</span><span class="p">(</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="s2">&quot;search_note&quot;</span><span class="p">,</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="s2">&quot;사내 노트에서 키워드가 포함된 문장을 찾는다&quot;</span><span class="p">,</span>

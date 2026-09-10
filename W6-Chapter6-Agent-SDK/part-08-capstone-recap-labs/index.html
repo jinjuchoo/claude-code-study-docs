@@ -2254,10 +2254,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-task-04-실행-결과" class="md-nav__link">
+  <a href="#2-직접-해보기--task-04-실행-결과" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Task 0~4 실행 결과
+        2. 직접 해보기 — Task 0~4 실행 결과
       
     </span>
   </a>
@@ -2384,10 +2384,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-task-04-실행-결과" class="md-nav__link">
+  <a href="#2-직접-해보기--task-04-실행-결과" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Task 0~4 실행 결과
+        2. 직접 해보기 — Task 0~4 실행 결과
       
     </span>
   </a>
@@ -2477,8 +2477,8 @@
 <p>구현 순서로 풀면 이렇습니다. HTTP 핸들러가 사용자 ID로 이전 <code>session_id</code>를 <strong>우리 앱의 자체 DB</strong>에서 조회합니다 → <code>query({ prompt, options: { resume, sessionStore, outputFormat, permissionMode: 'dontAsk', allowedTools: ['mcp__wiki__search_wiki'] } })</code>를 부릅니다 — 여기서 <code>sessionStore</code>는 세션 ID를 조회하는 테이블이 아니라, SDK가 대화 트랜스크립트 자체를 S3·Redis 같은 외부 저장소로 미러링하도록 넘기는 어댑터입니다(Part 7) → result의 <code>structured_output</code>(<code>answer</code>/<code>citations</code>/<code>confidence</code>)을 그대로 API 응답으로 돌려줍니다 → 받은 <code>session_id</code>는 <strong>우리 앱의 자체 DB</strong>에 다시 써서, 같은 사용자의 다음 요청이 이어받게 합니다. 사람이 승인 버튼을 눌러 줄 수 없는 서비스 계정이니 권한 모드는 <code>dontAsk</code>로 두고 허용 도구는 <code>search_wiki</code> 하나로 좁혀 사고 범위를 줄입니다.</p>
 <p><img alt="핵심 요약" src="../slides/slide-075.png" /></p>
 <p><em>▲ 교재 슬라이드 75 — 핵심 요약</em></p>
-<h2 id="2-task-04-실행-결과">2. Task 0~4 실행 결과<a class="headerlink" href="#2-task-04-실행-결과" title="이 위치로 링크">¶</a></h2>
-<p><strong>Task 0</strong>은 SDK 0.3.260과 Zod 4.5.4 설치에 성공했습니다. 기본 npm 캐시는 root 소유 파일 때문에 실패했고 <code>--cache ./npm-cache</code>로 우회했습니다. <code>/status</code>는 미지원이었지만 Task 1 query가 기존 인증으로 성공했습니다.</p>
+<h2 id="2-직접-해보기--task-04-실행-결과">2. 직접 해보기 — Task 0~4 실행 결과<a class="headerlink" href="#2-직접-해보기--task-04-실행-결과" title="이 위치로 링크">¶</a></h2>
+<p><strong>Task 0</strong>은 부분 완료입니다. SDK 0.3.260과 Zod 4.5.4 설치는 성공했지만, 기본 npm 캐시가 root 소유 파일 때문에 실패해 <code>--cache ./npm-cache</code>로 우회해야 했고 <code>/status</code>도 이 환경에서는 미지원이었습니다. 인증 자체는 문제없었다는 게 Task 1 query가 기존 인증으로 성공한 것으로 확인됩니다.</p>
 <p><strong>Task 1</strong>은 성공했습니다. <code>hello.mjs</code>는 2턴, <code>$0.1208436</code>으로 이 작업 폴더를 읽고 답했습니다. assistant의 text와 result의 비용·session ID를 분리해 읽는 흐름을 확인했습니다.</p>
 <p><strong>Task 2</strong>도 성공했습니다. TTY에서 실행하자 두 번째 질문이 첫 대화의 이름을 정확히 기억했습니다 — <code>sessionId</code>를 갱신해 <code>resume</code>에 넘기는 세 줄이 실제로 대화를 이어줬습니다. 다만 대화형 stdin을 파이프로 밀어 넣었을 때는 <code>ERR_USE_AFTER_CLOSE</code>가 발생해 랩이 전제한 TTY 환경이 왜 필요한지도 함께 확인했습니다.</p>
 <p><strong>Task 3</strong> 역시 성공했습니다. <code>mcp__shelf__search_note</code>만 허용해 회식과 금요일 배포 규칙을 노트에서 조회했습니다. 반환된 근거에 과거 일정이 들어 있어 도구 응답 자체와 "다음"이라는 질문의 시간 전제는 분리해서 읽어야 함도 확인했습니다.</p>
@@ -2499,7 +2499,7 @@
 <p><strong>"실습 범위에서 뺀 항목은 이 챕터가 실패했다는 뜻이다"</strong> — 아닙니다. 컨테이너 빌드(Docker 미설치)와 Kubernetes 배포는 처음부터 범위 밖으로 정한 것이고, Bedrock 실배포는 W3부터 이어진 AWS 쿼터 승인 대기 때문에 여전히 확인하지 못한 것입니다 — 어느 쪽이든 시도했다가 실패한 게 아닙니다. 반대로 Task 4처럼 원인이 확인된 실패(<code>maxTurns</code> 부족)는 값을 올려 재실행해서 실제로 해결했습니다.</p>
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
 <p>6주차의 마지막 코드는 짧았지만, 그 코드 주위의 계약은 짧지 않았습니다. SDK는 라이브러리 호출 하나로 시작합니다. 그러나 실제 서비스가 되려면 반환 메시지의 의미, 도구의 권한, 스키마의 draft, 세션의 위치, 실행 환경의 쿼터까지 함께 확인해야 합니다.</p>
-<p>이번 챕터에서 범위 밖으로 남긴 건 컨테이너 빌드(Docker 미설치)뿐입니다. 실패를 감춘 빈칸은 아닙니다. 이번 정리에서 다루지 않기로 정한 경계입니다.</p>
+<p>이번 챕터에서 다루지 않은 건 셋입니다. 컨테이너 빌드(Docker 미설치)와 Kubernetes 배포는 처음부터 범위 밖으로 정했고, Bedrock 실배포는 W3부터 이어진 AWS 쿼터 승인 대기로 여전히 확인하지 못했습니다. 셋 다 실패를 감춘 빈칸이 아니라 각자 다른 이유로 이번 정리 범위를 벗어난 것입니다.</p>
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>
 <li>Claude Code Deep Dive Workshop — <em>Chapter 6 / Part 8~9: 실전 프로젝트와 Recap &amp; Labs</em> (슬라이드 68~84)</li>
