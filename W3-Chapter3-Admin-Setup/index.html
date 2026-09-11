@@ -2218,10 +2218,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#회고" class="md-nav__link">
+  <a href="#먼저-내-역할과-실습-경로" class="md-nav__link">
     <span class="md-ellipsis">
       
-        회고
+        먼저: 내 역할과 실습 경로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#회고와-검증-범위" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        회고와 검증 범위
       
     </span>
   </a>
@@ -2294,6 +2305,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#다음-주차w4로-넘길-네-개의-다리" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        다음 주차(W4)로 넘길 네 개의 다리
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2313,23 +2335,59 @@
 
 <h1 id="3주차--chapter-3-admin-setup">3주차 — Chapter 3: Admin Setup<a class="headerlink" href="#3주차--chapter-3-admin-setup" title="이 위치로 링크">¶</a></h1>
 <blockquote>
-<p>개인의 도구를 조직의 플랫폼으로 바꾸는 챕터입니다. 1~2주차가 "내 노트북에서 어떻게 쓰는가"였다면, 여기서부터는 "500명에게 어떻게 배포하고, 키 없이 인증시키고, 정책을 강제하고, 쓰임을 관측할 것인가"입니다. 배포·자격증명·게이트웨이·네트워크·거버넌스·관측·컴플라이언스·트러블슈팅까지 관리자가 실제로 마주하는 아홉 갈래를 다룹니다.</p>
+<p>이 챕터는 개인 개발자에게 조직 관리자가 되라고 요구하지 않습니다. W1의 <strong>개인 설치·로그인·권한 확인</strong>과 W2의 <strong>Subagent 권한 경계·Hook</strong>을 바탕으로, 팀과 조직에서 누가 무엇을 책임지는지 살펴봅니다. 개인 개발자, 팀 리드, 플랫폼 관리자라는 역할에 따라 배포·자격증명·게이트웨이·네트워크·거버넌스·관측·컴플라이언스·트러블슈팅을 다룹니다.</p>
 </blockquote>
 <p><strong>원본</strong>: Claude Code Deep Dive Workshop / Chapter 3 — Admin Setup (9파트, 112 슬라이드. 이 정리에서는 교재 Part 8·9를 파트 8 하나로 합쳐 아래 8개 파일로 구성했습니다)
 <strong>기준 버전</strong>: Claude Code v2.1.233 / 2026년 7월 교재 · 공식 문서 <code>code.claude.com/docs</code> 반영</p>
 <hr />
-<h2 id="회고">회고<a class="headerlink" href="#회고" title="이 위치로 링크">¶</a></h2>
-<p>이 챕터를 공부하고 가장 크게 바뀐 생각은 "관리자 문서는 개발자 문서의 상위 호환이 아니다"라는 것입니다. 1~2주차에서 배운 걸 더 많이 아는 게 아니라, <strong>아예 다른 질문을 던지는 법</strong>을 배우는 챕터였습니다. 개발자에게 "이 기능이 어떻게 동작하는가"가 핵심 질문이라면, 관리자에게는 "개인이 이걸 못 바꾸게 하려면 어디에 둬야 하는가"가 핵심 질문입니다. 같은 설정 파일을 두고도 완전히 다른 걸 묻고 있다는 걸 이번에 실감했습니다.</p>
+<h2 id="먼저-내-역할과-실습-경로">먼저: 내 역할과 실습 경로<a class="headerlink" href="#먼저-내-역할과-실습-경로" title="이 위치로 링크">¶</a></h2>
+<p>같은 내용을 읽어도 지금 할 일은 역할에 따라 다릅니다.</p>
+<table>
+<thead>
+<tr>
+<th>역할</th>
+<th>이 챕터에서 가져갈 판단</th>
+<th>지금 직접 하지 않을 것</th>
+<th>실습 경로</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>개인 개발자</td>
+<td>개인 설정과 조직 정책은 다른 책임이라는 점, 무엇을 플랫폼팀에 요청해야 하는지</td>
+<td>회사 방화벽·IdP·전사 정책을 임의로 바꾸기</td>
+<td><strong>로컬 관찰 가능</strong>: Task 1에서 미러의 tarball 캐시와 격리 재설치를 확인합니다. Task 4의 시스템 Managed 스코프 배포와 강제성 검증에는 <code>sudo</code>가 필요합니다. 권한이 없으면 User 스코프에서 가짜 키 패턴 차단과 대조군 통과라는 <strong>차단 메커니즘만 관찰</strong>하고, 조직 강제성을 검증했다고 판단하지 않습니다. 플랫폼팀에는 "우리 조직의 미러·DLP 정책은 어디에 배포되고 어떤 로그로 검증하는가?"를 남깁니다.</td>
+</tr>
+<tr>
+<td>팀 리드</td>
+<td>팀의 위험·비용·도입 기준을 정책 요구사항으로 바꾸기</td>
+<td>조직 인증·감사 체계를 혼자 구축하기</td>
+<td><strong>개인 클라우드 필요</strong>: Task 2의 AWS 계정 실습</td>
+</tr>
+<tr>
+<td>플랫폼 관리자</td>
+<td>배포·인증·정책·관측을 조직 책임으로 설계하고 검증하기</td>
+<td>검증 없이 전사에 강제 정책 배포하기</td>
+<td><strong>조직 관리자 전용</strong>: IdP, CloudTrail, gateway, 전사 managed settings</td>
+</tr>
+</tbody>
+</table>
+<p>각 파트는 최소 개념, 조직 구성, 실제 장애·검증 사례 순서로 읽으면 됩니다. 역할과 권한이 갖춰졌을 때 볼 내용은 <code>선택 심화</code>로 표시했습니다.</p>
+<p>W1의 개인 <code>/login</code>, 설정 파일, 권한 확인은 여기서 "개인이 고르는 설정"으로 이어집니다. W2의 허용 목록과 <code>PreToolUse</code> Hook은 "조직이 추가로 강제·감사하는 통제"의 출발점입니다. 개인 설정을 알아야 조직 정책도 안전하게 읽을 수 있습니다.</p>
+<p>처음 보는 용어는 이렇게만 잡고 시작해도 충분합니다. <strong>AWS</strong>는 서버·권한·비용을 빌려 쓰는 Amazon의 클라우드이고, <strong>IAM</strong>은 그 안에서 "누가 무엇을 할 수 있는가"를 정하는 권한 체계입니다. <strong>SSO</strong>는 한 번 로그인으로 여러 서비스에 들어가는 방식, <strong>OIDC</strong>는 그 로그인 신원을 서비스에 전달하는 표준입니다. <strong>DLP</strong>는 민감 정보의 외부 유출을 막는 통제이며, <strong>OTel(OpenTelemetry)</strong>은 사용량·성능 같은 관측 데이터를 표준 형식으로 내보내는 도구입니다.</p>
+<hr />
+<h2 id="회고와-검증-범위">회고와 검증 범위<a class="headerlink" href="#회고와-검증-범위" title="이 위치로 링크">¶</a></h2>
+<p>이 챕터를 공부하며 "관리자 문서는 개발자 문서의 상위 호환이 아니다"라는 점을 실감했습니다. 1~2주차의 내용을 더 많이 아는 것이 아니라, 다른 질문을 하는 법을 배우는 챕터였습니다. 개발자는 "이 기능이 어떻게 동작하는가"를 묻고, 관리자는 "개인이 바꾸지 못하게 하려면 어디에 둬야 하는가"를 묻습니다. 같은 설정 파일도 역할에 따라 보는 지점이 달랐습니다.</p>
 <p>managed-settings와 DLP Hook은 시스템 전역 경로에 sudo로 실제 배포해서 검증했습니다. <code>deny</code>는 기대대로 강력해서 CLI 플래그로도 못 뚫었지만, 반대로 <code>ask</code> 규칙 하나(<code>Write(**)</code>)는 경로 패턴이 안 맞아 조용히 무효화되고 있었습니다. "배포했다"와 "의도대로 작동한다"가 다르다는 걸 보여준 지점입니다(상세는 Part 4·5).</p>
-<p>npm 미러와 <code>permission_denials</code> 필드에서도 예상과 실측이 갈렸습니다. 미러는 제대로 캐싱했지만 검증 과정 자체가 npm 자체 캐시에 오염되기 쉬웠고, managed deny로 실제 차단된 도구 호출이 <code>permission_denials</code> 배열엔 안 잡혔습니다. 그래서 다음 주부터는 이 필드만 믿지 않고 <code>stream-json</code> 원시 이벤트로 확인하려 합니다(상세는 Part 1·5).</p>
+<p>npm 미러와 <code>permission_denials</code> 필드에서도 예상과 실측이 달랐습니다. 미러는 제대로 캐싱했지만 검증 과정은 npm 자체 캐시의 영향을 받기 쉬웠고, managed deny로 차단된 도구 호출은 <code>permission_denials</code> 배열에 잡히지 않았습니다. 그래서 다음 주부터는 이 필드만 보지 않고 <code>stream-json</code> 원시 이벤트도 확인하려 합니다(상세는 Part 1·5).</p>
 <p>Bedrock SSO는 개인 AWS 계정으로 처음부터 재현했습니다. IAM Identity Center 설정부터 Permission Set 권한, Model access 정책, 쿼터까지 단계마다 예상과 다른 함정이 있었고(상세는 Part 2), 이 문서를 쓰는 시점엔 마지막 실제 모델 호출만 AWS 쿼터 승인 대기로 남아 있습니다.</p>
-<p>공식문서 대조는 두 라운드를 돌렸습니다. 8/9의 1차 대조에서 🔴 6 + 🟡 6건, 이번 주 재검증에서 🔴 10 + 🟡 24건이 추가로 나왔는데, 특히 Part 3(apps gateway)는 클라이언트 연결 방식·모델 거부 동작·지출 한도 API가 전부 실제와 달라서 문서 절반을 다시 썼습니다. 상세는 각 파트의 🔴/🟡 콜아웃을 참고하세요.</p>
+<p>공식문서는 두 차례 대조했습니다. 8/9의 1차 대조에서 🔴 6 + 🟡 6건, 이번 주 재검증에서 🔴 10 + 🟡 24건을 추가로 찾았습니다. 특히 Part 3(apps gateway)는 클라이언트 연결 방식·모델 거부 동작·지출 한도 API가 실제와 달라 문서 절반을 다시 썼습니다. 자세한 내용은 각 파트의 🔴/🟡 콜아웃에 남겼습니다.</p>
 <p>Part 2(Bedrock SSO)는 위에서 적었듯 개인 계정으로 로그인·STS 확인까지 실제로 끝냈고, 남은 건 쿼터 승인뿐이라 거의 다 채워졌습니다. 아쉬운 점은 Part 7(신원·데이터·컴플라이언스)과 Part 3(apps gateway)의 실습 공백입니다. Part 3은 게이트웨이 컨테이너·한도용 Postgres·사내 IdP OIDC 클라이언트 등록까지 필요해 이번 주 실습 범위 밖이었고, Part 7은 <strong>진짜 조직 IdP 테넌트와 조직 CloudTrail</strong>이 있어야 재현되는 영역이라 둘 다 개념 정리로 남겨뒀습니다. 미완을 미완으로 정직하게 표기하는 편이, 나중에 이 문서를 다시 볼 때 훨씬 쓸모 있다고 판단했습니다.</p>
 <hr />
 <h2 id="30초-요약">30초 요약<a class="headerlink" href="#30초-요약" title="이 위치로 링크">¶</a></h2>
-<p>Chapter 3의 질문은 결국 하나로 모입니다. <strong>"이 설정을 개인이 바꿀 수 있는가, 조직이 못 바꾸게 막을 수 있는가."</strong> 1~2주차가 내 노트북에서 어떻게 쓰는지를 다뤘다면, 이번 주는 같은 도구를 <strong>회사 전체에 배포하고, 개인이 되돌릴 수 없게 잠그는 법</strong>을 다룹니다.</p>
-<p>핵심은 두 가지입니다. 첫째, <strong>인증</strong>입니다. 사람에게는 로그인 한 번으로 여러 서비스에 접속하는 SSO를 그대로 쓰고, 기계와 CI 파이프라인에는 파일로 저장해두는 고정 키 대신 <strong>매번 새로 발급되고 곧 만료되는 임시 자격증명</strong>을 씁니다. 배포된 노트북 어디에도 "복사되면 그대로 유출되는 키 파일"이 남지 않는 게 목표입니다. 둘째, <strong>강제</strong>입니다. 관리자가 정책 파일 하나를 시스템 폴더에 심어두면 개인 설정 파일에 뭐라고 적혀 있든 그 정책이 이깁니다. 개인은 규칙을 더 엄격하게 좁힐 수는 있어도, 조직이 막아둔 걸 되돌릴 수는 없습니다.</p>
-<p>이 두 축(임시 자격증명으로 인증하기 / 못 바꾸게 잠그기) 위에서 배포 채널, 네트워크 통제, 모니터링, 신원 관리가 같은 논리로 엮여 있습니다. SSO·OIDC·managed settings 같은 개별 개념과 약어는 아홉 갈래로 나뉜 각 파트에서 처음 등장할 때마다 그 자리에서 풀어서 설명합니다.</p>
+<p>Chapter 3은 "이 설정을 개인이 바꿀 수 있는가, 조직이 막을 수 있는가"를 묻습니다. 1~2주차가 내 노트북에서의 사용법이었다면, 이번 주는 같은 도구를 회사 전체에 배포하고 개인이 되돌리지 못하게 하는 방법을 다룹니다.</p>
+<p>사람에게는 로그인 한 번으로 여러 서비스에 접속하는 SSO를 쓰고, 기계와 CI 파이프라인에는 고정 키 대신 매번 발급되고 곧 만료되는 임시 자격증명을 쓰는 것을 이 문서의 권장 아키텍처로 삼습니다. 제품은 <code>apiKeyHelper</code>·API 키 경로도 지원하므로, 예외가 필요하면 그 경로의 보관·회전 책임을 따로 문서화합니다. 노트북에 복사되면 그대로 유출될 수 있는 키 파일을 남기지 않는 것이 목표입니다. 또 관리자가 정책 파일을 시스템 폴더에 배포하면 개인 설정과 관계없이 그 정책이 적용됩니다. 개인은 규칙을 더 엄격하게 만들 수 있어도, 조직이 막은 항목을 되돌릴 수는 없습니다.</p>
+<p>이 두 가지를 바탕으로 배포 채널, 네트워크 통제, 모니터링, 신원 관리가 연결됩니다. SSO·OIDC·managed settings 같은 용어는 각 파트에서 처음 나올 때 설명합니다.</p>
 <hr />
 <h2 id="목차">목차<a class="headerlink" href="#목차" title="이 위치로 링크">¶</a></h2>
 <table>
@@ -2385,12 +2443,12 @@
 </table>
 <hr />
 <h2 id="시작하기-전에-확인할-것">시작하기 전에 확인할 것<a class="headerlink" href="#시작하기-전에-확인할-것" title="이 위치로 링크">¶</a></h2>
-<p>Chapter 3은 Chapter 1(기본 사용법)과 Chapter 2(서브에이전트)를 전제하지만, 관점이 다릅니다. 앞 두 챕터가 "내가 어떻게 쓰는가"였다면 이 챕터는 "다른 사람이 못 바꾸게 하려면 무엇을 어디에 둬야 하는가"입니다. 그래서 가장 먼저 확인할 건 버전이 아니라 <strong>권한</strong>입니다. 이 챕터의 실습(managed-settings, DLP Hook)은 시스템 전역 경로에 파일을 써야 하므로 sudo(또는 관리자 권한)가 필요합니다. 없다면 핸즈온랩이 제시하는 User 스코프 대체 경로(<code>~/.claude/settings.json</code>)로도 병합·차단 메커니즘 자체는 체험할 수 있지만, 진짜 Managed가 주는 강제성(사용자가 원천적으로 못 바꾼다는 성질)까지는 검증할 수 없다는 점은 감안하고 읽으세요. 이번 정리도 그 한계 안에서 작성됐습니다.</p>
-<p>두 번째로 자주 오해되는 지점은 "신원"이라는 단어입니다. Claude 계정 레벨(SSO·SCIM·좌석 배정, claude.ai 콘솔)과 클라우드 IAM 레벨(Bedrock 호출 권한, Permission Set)은 이름만 비슷할 뿐 완전히 다른 시스템입니다. <a href="part-07-identity-compliance/">Part 7</a> §1에서 이 구분을 먼저 잡고 가면 나머지 파트에서 헷갈릴 일이 줄어듭니다.</p>
-<p>세 번째는 이 챕터가 요구하는 인프라입니다. Bedrock SSO(Part 2)는 개인 AWS 계정으로도 IAM Identity Center부터 실제 재현이 가능했지만, apps gateway(Part 3)와 실제 조직 IdP·CloudTrail 연동(Part 7)은 조직 AWS 계정 관리자 권한이나 조직 IdP 없이는 끝까지 재현할 수 없습니다. 이번 정리는 어디까지 실제로 확인했고 어디부터 개념 정리인지를 각 파트 "직접 해보기" 절에 정직하게 표시해뒀습니다.</p>
+<p>Chapter 3은 Chapter 1(기본 사용법)과 Chapter 2(서브에이전트)를 전제로 하지만, 관점은 다릅니다. 앞 두 챕터가 "내가 어떻게 쓰는가"였다면 이 챕터는 "다른 사람이 바꾸지 못하게 하려면 무엇을 어디에 둬야 하는가"를 다룹니다. 그래서 버전보다 먼저 확인할 것은 <strong>권한</strong>입니다. 이번 Task 3·4에서는 sudo로 시스템 전역 경로에 managed settings와 DLP Hook을 실제 배포해 Managed의 강제성을 검증했습니다. 관리자 권한이 없는 독자는 User 스코프 대체 경로(<code>~/.claude/settings.json</code>)에서 병합·차단 메커니즘까지 확인할 수 있지만, 사용자가 바꿀 수 없는 Managed의 강제성은 그 대체 실습으로 검증할 수 없습니다.</p>
+<p>두 번째로 자주 혼동하는 것은 "신원"입니다. Claude 계정 레벨(SSO·SCIM·좌석 배정, claude.ai 콘솔)과 클라우드 IAM 레벨(Bedrock 호출 권한, Permission Set)은 이름만 비슷한 별도 시스템입니다. <a href="part-07-identity-compliance/">Part 7</a> §1의 구분을 먼저 보면 나머지 파트도 덜 헷갈립니다.</p>
+<p>세 번째는 필요한 인프라입니다. Bedrock SSO(Part 2)는 개인 AWS 계정에서 IAM Identity Center부터 재현할 수 있었지만, apps gateway(Part 3)와 조직 IdP·CloudTrail 연동(Part 7)은 조직 AWS 계정 관리자 권한이나 조직 IdP 없이는 끝까지 재현할 수 없습니다. 각 파트의 "직접 해보기" 절에 실제 확인 범위와 개념 정리 범위를 표시했습니다.</p>
 <hr />
 <h2 id="실습-기록">실습 기록<a class="headerlink" href="#실습-기록" title="이 위치로 링크">¶</a></h2>
-<p>이 정리의 실습 부분은 <strong>읽고 옮긴 게 아니라 직접 실행한 결과</strong>입니다. Task 0<sub>1·3</sub>5는 2026-08-15에, Task 2(Bedrock)는 후속 디버깅이 이어져 2026-08-16까지 실행했습니다.
+<p>실습 기록은 직접 실행한 결과입니다. Task 0<sub>1·3</sub>5는 2026-08-15에, Task 2(Bedrock)는 후속 디버깅까지 2026-08-16에 실행했습니다.
 실행 환경: macOS 26.5.1 (Darwin 25.5.0) / Claude Code <strong>v2.1.233</strong></p>
 <table>
 <thead>
@@ -2437,9 +2495,9 @@
 <hr />
 <h2 id="학습-목표-체크리스트">학습 목표 체크리스트<a class="headerlink" href="#학습-목표-체크리스트" title="이 위치로 링크">¶</a></h2>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 설치 채널·버전 통제·링 롤아웃으로 대량 배포를 설계할 수 있습니다</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 공급자 선택과 SSO, 자격증명 회전 체계를 구축할 수 있습니다</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> managed settings 4채널과 잠금 키로 거버넌스를 강제하는 방법을 설명할 수 있습니다</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 설치 채널·버전 통제·링 롤아웃의 설계·검증 절차를 설명할 수 있습니다 (실제 조직 플릿 구축은 미실행)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 공급자 선택과 SSO, 자격증명 회전 체계의 설계·검증 절차를 설명할 수 있습니다 (개인 AWS SSO 실습 완료, 조직 자격증명 체계 구축은 미실행)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> managed settings 4채널과 잠금 키로 거버넌스를 강제하는 방법을 설명할 수 있습니다 (Task 3·4에서 sudo Managed 배포 검증 완료)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> OTel·비용 귀속·감사 로그로 운영을 실제 조직 규모에서 가시화합니다 (개념·로컬 실습 완료, 조직 규모 배포는 미실행)</li>
 </ul>
 <hr />
@@ -2463,6 +2521,15 @@
 <li><a href="https://code.claude.com/docs/ko/monitoring-usage">Monitoring usage</a> · <a href="https://code.claude.com/docs/ko/analytics">Analytics</a> · <a href="https://code.claude.com/docs/ko/costs">Costs</a></li>
 <li><a href="https://code.claude.com/docs/ko/security">Security</a> · <a href="https://code.claude.com/docs/ko/data-usage">Data usage</a></li>
 </ul>
+<hr />
+<h2 id="다음-주차w4로-넘길-네-개의-다리">다음 주차(W4)로 넘길 네 개의 다리<a class="headerlink" href="#다음-주차w4로-넘길-네-개의-다리" title="이 위치로 링크">¶</a></h2>
+<ol>
+<li><strong>Settings</strong> — W3에서 본 managed settings는 "누가 값을 강제하는가"였습니다. W4에서는 설정 소스와 우선순위를 직접 확인합니다.</li>
+<li><strong>Permissions</strong> — W3의 allow·ask·deny와 잠금 키는 조직 경계였습니다. W4에서는 프로젝트에서 권한 규칙과 예외를 설계합니다.</li>
+<li><strong>Hooks</strong> — W3의 DLP·감사 Hook은 조직 통제 사례였습니다. W4에서는 이벤트가 언제 발생하고 Hook을 어떻게 안전하게 운영하는지 다룹니다.</li>
+<li><strong>MCP</strong> — W3의 허용 목록과 네트워크 경로는 확장 지점의 통제였습니다. W4에서는 MCP를 구성하고, 권한·장애를 점검합니다.</li>
+</ol>
+<p>W4에서는 조직 관리자 권한이 없어도 프로젝트 범위에서 이 네 가지를 재현할 수 있습니다. 여기서 배운 질문—"이 값은 누가 바꾸는가?", "이 도구는 누가 호출할 수 있는가?", "실행 전후에 무엇을 검사하는가?", "외부 서버와 어디까지 연결하는가?"—을 그대로 가져가면 됩니다.</p>
 
 
 

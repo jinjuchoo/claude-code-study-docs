@@ -743,10 +743,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#8-chrome--라이브-웹앱-직접-조작-beta" class="md-nav__link">
+  <a href="#8-chrome--라이브-웹앱-직접-조작" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8. Chrome — 라이브 웹앱 직접 조작 (Beta)
+        8. Chrome — 라이브 웹앱 직접 조작
       
     </span>
   </a>
@@ -754,15 +754,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#9-터미널을-쓴다면-이건-꼭-설정하세요" class="md-nav__link">
+  <a href="#9-터미널-입력과-편의-설정" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9. 터미널을 쓴다면 이건 꼭 설정하세요
+        9. 터미널 입력과 편의 설정
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="9. 터미널을 쓴다면 이건 꼭 설정하세요">
+    <nav class="md-nav" aria-label="9. 터미널 입력과 편의 설정">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2625,10 +2625,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#8-chrome--라이브-웹앱-직접-조작-beta" class="md-nav__link">
+  <a href="#8-chrome--라이브-웹앱-직접-조작" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8. Chrome — 라이브 웹앱 직접 조작 (Beta)
+        8. Chrome — 라이브 웹앱 직접 조작
       
     </span>
   </a>
@@ -2636,15 +2636,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#9-터미널을-쓴다면-이건-꼭-설정하세요" class="md-nav__link">
+  <a href="#9-터미널-입력과-편의-설정" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9. 터미널을 쓴다면 이건 꼭 설정하세요
+        9. 터미널 입력과 편의 설정
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="9. 터미널을 쓴다면 이건 꼭 설정하세요">
+    <nav class="md-nav" aria-label="9. 터미널 입력과 편의 설정">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2715,20 +2715,23 @@
 
 <h1 id="part-7--인터페이스">Part 7 — 인터페이스<a class="headerlink" href="#part-7--인터페이스" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p><strong>표면은 달라도 엔진과 설정은 하나</strong>입니다. "무엇을 하고 싶은가"에서 출발해 표면을 고르고, 세션은 <code>teleport</code>와 <code>remote</code>로 환경 사이를 자유롭게 옮깁니다.</p>
+<p><strong>사용하는 화면은 달라도 엔진과 설정은 하나</strong>입니다. 하고 싶은 작업에서 출발해 적절한 인터페이스를 고르고, <code>teleport</code>와 <code>remote</code>로 세션을 환경 사이에서 옮길 수 있습니다.</p>
 <hr />
 <h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
-<p>Claude Code를 CLI 도구로만 알고 있으면 이런 상황에서 막힙니다.</p>
+<p>Claude Code를 CLI 도구로만 생각하면 다음과 같은 상황에서 선택지가 좁아집니다.</p>
 <ul>
 <li>빌드가 40분 걸리는데 그동안 노트북을 못 닫는다</li>
 <li>출근길에 어제 작업이 어디까지 갔는지만 확인하고 싶다</li>
 <li>슬랙에 올라온 버그 리포트를 그대로 작업으로 넘기고 싶다</li>
 <li>프론트엔드를 고쳤는데 실제 브라우저에서 되는지 확인시키고 싶다</li>
 </ul>
-<p>이 문제들은 전부 <strong>다른 표면을 쓰면</strong> 풀립니다. 그리고 표면을 바꿔도 설정과 <code>CLAUDE.md</code>는 그대로 따라옵니다. Part 7은 그 지도입니다.</p>
+<p>이 문제는 <strong>다른 인터페이스를 선택하면</strong> 해결할 수 있습니다. 인터페이스를 바꿔도 설정과 <code>CLAUDE.md</code>는 유지됩니다. Part 7에서는 이 선택지를 정리합니다.</p>
+<blockquote>
+<p><strong>개인 기본 경로</strong>: 이 주차에서는 터미널 하나만 사용하면 됩니다. 같은 프로젝트 폴더에서 <code>claude</code>를 실행할 수 있으면 충분합니다. VS Code·Desktop·Web·Slack·Chrome은 이미 사용하는 작업 환경이 있을 때 선택해 읽으세요.</p>
+</blockquote>
 <hr />
 <h2 id="1-무엇을-하고-싶은가에서-출발하기">1. 무엇을 하고 싶은가에서 출발하기<a class="headerlink" href="#1-무엇을-하고-싶은가에서-출발하기" title="이 위치로 링크">¶</a></h2>
-<p>인터페이스를 하나씩 훑는 것보다, <strong>원하는 결과에서 거꾸로 찾는 게</strong> 빠릅니다.</p>
+<p>인터페이스를 하나씩 나열하기보다, <strong>원하는 결과를 기준으로 선택하는 편이</strong> 빠릅니다.</p>
 <pre class="mermaid"><code>flowchart TD
     Q{"무엇을&lt;br/&gt;하고 싶은가?"}
 
@@ -2777,7 +2780,7 @@
 <p>여러 세션을 동시에 굴리는데, 각 세션이 <strong>git으로 격리</strong>됩니다. 세션마다 별도 워크트리를 쓰기 때문에 서로의 변경이 섞이지 않습니다. 패널은 드래그 앤 드롭으로 배치합니다.</p>
 <p>시각적으로도 충실합니다. diff 검토, 앱 프리뷰, 통합 터미널, 파일 에디터가 다 들어 있습니다.</p>
 <p><strong>Dispatch</strong>라는 기능도 있습니다. 휴대폰에서 작업을 보내면 데스크톱 세션으로 생성됩니다. 그리고 로컬 세션과 클라우드 세션을 <strong>한 화면에서 함께</strong> 운영할 수 있습니다.</p>
-<p>macOS와 Windows를 지원하고 Linux는 베타입니다. CLI 세션을 데스크톱으로 넘기려면 <code>/desktop</code> 명령을 씁니다. PR 모니터링 기능도 내장되어 있습니다.</p>
+<p>Desktop은 macOS와 <strong>x64 Windows</strong>에서 사용할 수 있으며, <code>/desktop</code> handoff에는 Claude 구독이 필요합니다. Linux 상태와 PR 모니터링 등 세부 가용성은 버전별로 확인하세요. (<a href="https://code.claude.com/docs/en/overview">Overview</a>)</p>
 <h3 id="예약-실행--두-갈래">예약 실행 — 두 갈래<a class="headerlink" href="#예약-실행--두-갈래" title="이 위치로 링크">¶</a></h3>
 <p>작업을 정해진 시각에 자동으로 돌리는 방법이 두 가지인데, <strong>선택 기준이 명확합니다.</strong></p>
 <blockquote>
@@ -2802,7 +2805,7 @@
     B["&lt;b&gt;브라우저 / 폰&lt;/b&gt;&lt;br/&gt;(조작 화면)"]
 
     C --&gt;|"claude --teleport&lt;br/&gt;&lt;i&gt;클라우드 → 로컬&lt;/i&gt;"| L
-    L --&gt;|"claude --remote&lt;br/&gt;&lt;i&gt;로컬 → 클라우드&lt;/i&gt;"| C
+    L --&gt;|"claude --cloud&lt;br/&gt;&lt;i&gt;로컬 → 클라우드&lt;/i&gt;"| C
     L &lt;-.-&gt;|"/remote-control&lt;br/&gt;&lt;i&gt;실행은 로컬, 조작만 원격&lt;/i&gt;"| B
 
     style L fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
@@ -2813,13 +2816,13 @@
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># 목록에서 클라우드 세션을 선택해 로컬에서 이어서 작업</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># 터미널 세션을 클라우드로 보내기 (로컬 → 클라우드)</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>claude<span class="w"> </span>--remote<span class="w"> </span><span class="s2">&quot;이 작업 계속 진행해줘&quot;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>claude<span class="w"> </span>--cloud<span class="w"> </span><span class="s2">&quot;이 작업 계속 진행해줘&quot;</span>
 </span></code></pre></div>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a># 로컬 세션을 폰·브라우저에서 조종 (실행은 로컬 유지)
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>&gt; /remote-control
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a># claude.ai/code 또는 모바일 앱에서 접속
 </span></code></pre></div>
-<p>기억법은 간단합니다. <code>teleport</code>는 <strong>가져오는 것</strong>, <code>remote</code>는 <strong>보내는 것</strong>, <code>remote-control</code>은 <strong>원격에서 조종만</strong> 하는 것입니다. 셋 다 claude.ai 연동 기능이라 구독이 필요합니다.</p>
+<p>기억법은 간단합니다. <code>teleport</code>는 <strong>가져오는 것</strong>, <code>cloud</code>는 <strong>보내는 것</strong>, <code>remote-control</code>은 <strong>원격에서 조종만</strong> 하는 것입니다. <code>--remote</code>는 <code>--cloud</code>의 deprecated 호환 alias입니다. (<a href="https://code.claude.com/docs/en/cli-usage">CLI reference</a>)</p>
 <hr />
 <h2 id="7-slack--팀-채팅에서-pr까지">7. Slack — 팀 채팅에서 PR까지<a class="headerlink" href="#7-slack--팀-채팅에서-pr까지" title="이 위치로 링크">¶</a></h2>
 <p>채널에서 <code>@Claude</code>를 멘션하면 작업이 시작됩니다. 여기서 진짜 가치는 <strong>컨텍스트가 공짜</strong>라는 데 있습니다.</p>
@@ -2827,24 +2830,20 @@
 <p>대표적인 활용은 버그 트리아지, 온콜 보조, 반복 질문 응대 자동화입니다.</p>
 <div class="admonition tip">
 <p class="admonition-title">현장 메모</p>
-<p>운영 관점에서 가장 실용적인 건 <strong>온콜 보조</strong>입니다.
-장애 스레드에서 바로 로그 분석을 위임할 수 있고, 스레드 맥락이 컨텍스트로 넘어가므로 "지금 상황이 이러이러한데"를 다시 타이핑할 필요가 없습니다.
-<a href="../part-10-recap-and-labs/">Part 10의 실습 기록</a>에서 로그 분석을 실제로 돌려봤는데, 원인 후보만 나열하는 게 아니라 감별 진단 방법까지 제시했습니다. 그게 스레드 안에서 나온다고 생각하면 됩니다.</p>
+<p>온콜 보조에도 활용할 수 있습니다. 장애 스레드에서 로그 분석을 위임하면 스레드 맥락이 함께 전달되어 상황을 처음부터 다시 설명하는 수고를 줄일 수 있습니다. <a href="../part-10-recap-and-labs/">Part 10의 실습 기록</a>에서는 로그 분석 한 건을 실행했고, 원인 후보와 감별 방법을 함께 제시하는 결과를 확인했습니다. 실제 온콜에서의 효용은 조직의 로그 접근 권한과 운영 절차에 맞춰 따로 검증해야 합니다.</p>
 </div>
 <hr />
-<h2 id="8-chrome--라이브-웹앱-직접-조작-beta">8. Chrome — 라이브 웹앱 직접 조작 (Beta)<a class="headerlink" href="#8-chrome--라이브-웹앱-직접-조작-beta" title="이 위치로 링크">¶</a></h2>
+<h2 id="8-chrome--라이브-웹앱-직접-조작">8. Chrome — 라이브 웹앱 직접 조작<a class="headerlink" href="#8-chrome--라이브-웹앱-직접-조작" title="이 위치로 링크">¶</a></h2>
 <p>Chrome 브라우저에 연결해 <strong>실제 페이지를 조작</strong>합니다. 확장을 설치한 뒤 <code>/chrome</code>으로 연결을 설정합니다.</p>
 <p>콘솔 에러와 네트워크 요청을 읽어 원인을 추적하고, 구현한 UI를 실제로 클릭하고 입력해서 동작을 확인합니다. 반복 입력이나 데이터 추출 같은 자동화도 됩니다.</p>
 <p>프론트엔드 작업에서 "구현했으니 이제 확인해봐"까지 한 세션 안에서 끝난다는 게 핵심입니다. <a href="../part-09-workflow-patterns/">Part 9의 Visual Workflow 패턴</a>과 짝을 이룹니다.</p>
 <hr />
-<h2 id="9-터미널을-쓴다면-이건-꼭-설정하세요">9. 터미널을 쓴다면 이건 꼭 설정하세요<a class="headerlink" href="#9-터미널을-쓴다면-이건-꼭-설정하세요" title="이 위치로 링크">¶</a></h2>
-<p>CLI 사용감을 크게 바꾸는 설정이 몇 개 있습니다. 특히 첫 번째는 <strong>선택이 아니라 필수</strong>에 가깝습니다.</p>
-<p><strong><code>Shift+Enter</code> 줄바꿈</strong>을 먼저 매핑하세요. <code>terminal-config</code> 절차를 따라 키를 매핑합니다.</p>
+<h2 id="9-터미널-입력과-편의-설정">9. 터미널 입력과 편의 설정<a class="headerlink" href="#9-터미널-입력과-편의-설정" title="이 위치로 링크">¶</a></h2>
+<p>CLI에서 여러 줄 프롬프트를 입력하고 작업 상태를 확인할 때 쓸 수 있는 설정입니다.</p>
+<p><code>terminal-config</code> 절차로 <strong><code>Shift+Enter</code> 줄바꿈</strong>을 매핑할 수 있습니다. 설정하지 않아도 모든 터미널에서 <code>Ctrl+J</code> 또는 <code>\</code>를 입력한 뒤 Enter를 눌러 줄을 바꿀 수 있습니다.</p>
 <div class="admonition tip">
-<p class="admonition-title">왜 이게 가장 중요한가</p>
-<p>이 매핑이 없으면 여러 줄 프롬프트를 아예 쓸 수 없습니다. Enter를 누르는 순간 전송되니까요.
-그러면 지시가 계속 한 줄로 짧아지고, 결국 <a href="../part-05-quick-start/">Part 5</a>에서 강조한 "범위 + 금지 조건 + 완료 기준"을 담을 수가 없습니다.
-<strong>구체적 지시의 물리적 전제조건</strong>이라고 보면 됩니다.</p>
+<p class="admonition-title">Tip</p>
+<p><code>Shift+Enter</code> 매핑은 여러 줄 프롬프트를 자주 쓸 때 편리합니다. 매핑이 어려운 터미널에서는 <code>Ctrl+J</code>나 <code>\</code>+Enter를 사용해 <a href="../part-05-quick-start/">Part 5</a>의 "범위 + 금지 조건 + 완료 기준"을 여러 줄로 나눠 입력하면 됩니다.</p>
 </div>
 <p><strong>완료 알림 벨</strong>을 켜두면 장시간 작업을 백그라운드로 돌릴 수 있습니다. 작업이 끝나면 터미널이 알려주니 다른 일을 하다 돌아오면 됩니다.</p>
 <p><strong>Vim 모드</strong>는 <code>/config</code>에서 편집 키 바인딩을 전환합니다. Vim 사용자라면 이질감이 사라집니다.</p>
@@ -2875,11 +2874,11 @@
 </span></code></pre></div>
 <hr />
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
-<p>표면은 <strong>CLI / VS Code·Cursor / JetBrains / Desktop / Web·iOS / Slack / Chrome</strong> 으로 여럿이지만 <strong>엔진과 설정은 하나</strong>입니다.</p>
+<p>인터페이스는 <strong>CLI / VS Code·Cursor / JetBrains / Desktop / Web·iOS / Slack / Chrome</strong>으로 나뉘지만 <strong>엔진과 설정은 하나</strong>입니다.</p>
 <p>에디터 확장의 차별점은 <strong>인라인 diff의 부분 수락</strong>과 <strong>@-mention 컨텍스트 지목</strong>입니다.</p>
-<p>Desktop 앱의 핵심은 <strong>병렬 세션 + git 격리</strong>이고, 예약 작업은 로컬(Desktop)과 관리형(Routines)으로 갈립니다. 기준은 "머신이 꺼져도 돌아야 하는가"입니다.</p>
-<p>세션 이동 세 명령의 방향을 구분하세요. <code>--teleport</code>는 가져오기, <code>--remote</code>는 보내기, <code>/remote-control</code>은 조작만 원격입니다.</p>
-<p>터미널을 쓴다면 <strong><code>Shift+Enter</code> 줄바꿈 매핑</strong>을 가장 먼저 하세요. 구체적인 지시를 쓸 수 있느냐가 여기 달려 있습니다.</p>
+<p>Desktop 앱은 <strong>병렬 세션과 git 격리</strong>에 강점이 있습니다. 예약 작업은 로컬(Desktop)과 관리형(Routines)으로 나뉘며, 머신이 꺼져도 실행해야 하는지가 선택 기준입니다.</p>
+<p>세션 이동 세 명령의 방향을 구분하세요. <code>--teleport</code>는 가져오기, <code>--cloud</code>는 보내기, <code>/remote-control</code>은 조작만 원격입니다. <code>--remote</code>는 deprecated 호환 alias입니다.</p>
+<p>터미널을 사용한다면 <strong><code>Shift+Enter</code> 줄바꿈 매핑</strong>을 먼저 확인하세요. 여러 줄로 작업 조건을 적을 때 필요합니다.</p>
 <hr />
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>

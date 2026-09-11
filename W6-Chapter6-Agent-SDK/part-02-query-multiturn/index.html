@@ -2077,10 +2077,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-resume은-코드-세-줄입니다" class="md-nav__link">
+  <a href="#1-두-번째-query에-대화만-이어-붙입니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. resume은 코드 세 줄입니다
+        1. 두 번째 query에 대화만 이어 붙입니다
       
     </span>
   </a>
@@ -2099,10 +2099,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-메시지-네-종류가-순서대로-옵니다" class="md-nav__link">
+  <a href="#2-메시지-종류는-필요할-때만-늘어납니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. 메시지 네 종류가 순서대로 옵니다
+        2. 메시지 종류는 필요할 때만 늘어납니다
       
     </span>
   </a>
@@ -2375,10 +2375,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-resume은-코드-세-줄입니다" class="md-nav__link">
+  <a href="#1-두-번째-query에-대화만-이어-붙입니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. resume은 코드 세 줄입니다
+        1. 두 번째 query에 대화만 이어 붙입니다
       
     </span>
   </a>
@@ -2397,10 +2397,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-메시지-네-종류가-순서대로-옵니다" class="md-nav__link">
+  <a href="#2-메시지-종류는-필요할-때만-늘어납니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. 메시지 네 종류가 순서대로 옵니다
+        2. 메시지 종류는 필요할 때만 늘어납니다
       
     </span>
   </a>
@@ -2459,23 +2459,31 @@
 
 <h1 id="part-2--query와-멀티턴">Part 2 — query와 멀티턴<a class="headerlink" href="#part-2--query와-멀티턴" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p><code>query()</code>는 매번 새 대화로 시작합니다. 대화를 잇고 싶다면 직전 result의 <code>session_id</code>를 다음 호출의 <code>resume</code>에 넘깁니다.</p>
+<p>점검 대화를 이어야 할 때, 스트림 끝까지 읽은 뒤 성공한 <code>result</code>의 <code>session_id</code>만 다음 <code>query()</code>의 <code>resume</code>에 넘깁니다.</p>
 <h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
-<p>"내 이름은 진주야" 다음에 "내 이름이 뭐라고 했지?"라고 물으면, <code>session_id</code> 없이는 두 번째 질문이 완전히 새 대화 취급됩니다. <code>query()</code>는 매번 새 대화로 시작하는데, 대화의 문장을 통째로 다시 붙여 보내는 대신 result의 <code>session_id</code>를 다음 호출의 <code>resume</code>에 넘기면 이어집니다 — CLI의 <code>--resume</code>과 같은 원리입니다. 다만 재개는 대화 기록만 이어받을 뿐 도구 허용 목록은 같이 안 따라온다는 것도 이 파트에서 확인합니다.</p>
+<p>Part 1의 최소 프로그램은 한 번 묻고 <code>result</code>를 포착한 뒤 스트림을 끝까지 읽었습니다. 사내 배포 점검 도우미가 다음 실행에서 이전 점검을 비교하려면 result가 준 <code>session_id</code>를 보관했다가 다음 <code>query()</code>에 넣어야 합니다. W5의 <code>--resume</code>과 같은 역할입니다. 재개가 이어받는 것은 대화 기록뿐이며, 도구 허용 목록·권한·턴 상한은 다음 호출에서 다시 정합니다.</p>
 <p><img alt="스트리밍 vs 단일 수집" src="../slides/slide-014.png" /></p>
 <p><em>▲ 교재 슬라이드 14 — 스트리밍 vs 단일 수집</em></p>
-<h2 id="1-resume은-코드-세-줄입니다">1. resume은 코드 세 줄입니다<a class="headerlink" href="#1-resume은-코드-세-줄입니다" title="이 위치로 링크">¶</a></h2>
-<p>랩의 <code>chat.mjs</code>는 사람이 한 줄씩 입력하면 그때마다 <code>query()</code>를 새로 호출하는 반복 대화 스크립트입니다. 핵심은 이 세 줄입니다.</p>
-<div class="language-js highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">q</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">query</span><span class="p">({</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nx">prompt</span><span class="o">:</span><span class="w"> </span><span class="nx">line</span><span class="p">,</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nx">options</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">resume</span><span class="o">:</span><span class="w"> </span><span class="nx">sessionId</span><span class="p">,</span><span class="w"> </span><span class="nx">allowedTools</span><span class="o">:</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="nx">maxTurns</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="w"> </span><span class="p">},</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">});</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">for</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">m</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">q</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">type</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;result&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">sessionId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">m</span><span class="p">.</span><span class="nx">session_id</span><span class="p">;</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span>
+<h2 id="1-두-번째-query에-대화만-이어-붙입니다">1. 두 번째 query에 대화만 이어 붙입니다<a class="headerlink" href="#1-두-번째-query에-대화만-이어-붙입니다" title="이 위치로 링크">¶</a></h2>
+<p>랩의 <code>chat.mjs</code>는 사람이 한 줄씩 입력하면 그때마다 <code>query()</code>를 새로 호출하는 반복 대화 스크립트입니다. 새 ID는 스트림 안에서 바로 저장하지 않습니다. result를 임시 변수에 담고 스트림이 끝난 뒤 성공 여부를 확인합니다.</p>
+<div class="language-js highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">let</span><span class="w"> </span><span class="nx">result</span><span class="p">;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">q</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">query</span><span class="p">({</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nx">prompt</span><span class="o">:</span><span class="w"> </span><span class="nx">line</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nx">options</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">resume</span><span class="o">:</span><span class="w"> </span><span class="nx">sessionId</span><span class="p">,</span><span class="w"> </span><span class="nx">allowedTools</span><span class="o">:</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="nx">maxTurns</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">});</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">for</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">m</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">q</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">type</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;result&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">m</span><span class="p">;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">}</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">result</span><span class="o">?</span><span class="p">.</span><span class="nx">subtype</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="nx">sessionId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">result</span><span class="p">.</span><span class="nx">session_id</span><span class="p">;</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&quot;대화가 완료되지 않아 기존 sessionId를 유지합니다.&quot;</span><span class="p">);</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">}</span>
 </span></code></pre></div>
-<p>처음엔 <code>sessionId</code>가 <code>undefined</code>(아직 값이 안 들어간 빈칸이라는 뜻)라 새 대화로 시작합니다. <code>result</code> 메시지가 오면 그 안의 <code>session_id</code>로 변수를 갱신하고 다음 질문 때 그 값을 <code>resume</code>에 그대로 다시 넣습니다. 이게 전부입니다. 대화 내용을 기억하는 건 우리 코드가 아니라 Claude Code 쪽이고, 우리 코드는 "몇 번 대화인지"를 가리키는 번호표만 들고 있는 셈입니다.</p>
-<p><code>allowedTools: []</code>는 대화만 확인하려는 랩의 범위를 드러냅니다. 실무에서는 이전 맥락(세션)을 잇는 것과 그 세션에 어떤 도구를 다시 쥐여줄지를 별개로 정해야 합니다 — <code>resume</code>은 대화 기록만 이어받을 뿐, 도구 허용 목록은 호출마다 새로 넘겨야 하는 값입니다.</p>
+<p>처음에는 <code>sessionId</code>가 <code>undefined</code>입니다. 아직 값이 없는 상태라 새 대화로 시작합니다. 한 번의 <code>query()</code>가 여러 메시지를 보내며, result 뒤에도 event가 올 수 있습니다. 따라서 루프 안에서는 result만 포착하고 trailing event까지 모두 읽습니다. 루프가 정상 종료된 뒤 <code>subtype</code>이 <code>success</code>일 때만 <code>sessionId</code>를 갱신합니다. 실패하거나 result가 없으면 기존 ID를 그대로 두므로 다음 질문이 실패한 세션으로 덮어쓰이지 않습니다. 우리 코드가 대화 내용을 다시 붙이는 것이 아니라, 어느 대화를 계속할지 가리키는 번호표만 보관하는 셈입니다. 이 재개는 세션 트랜스크립트가 남아 있는 같은 호스트에서만 성립합니다.</p>
+<p><code>allowedTools: []</code>는 대화만 확인하려는 랩의 범위를 보여 줍니다. 실무에서는 이전 맥락을 잇는 일과 그 세션에 어떤 도구를 다시 줄지 따로 정해야 합니다. <code>resume</code>은 대화 기록만 이어받고, 도구 허용 목록은 호출마다 새로 넘깁니다.</p>
 <h2 id="직접-해보기">직접 해보기<a class="headerlink" href="#직접-해보기" title="이 위치로 링크">¶</a></h2>
 <p>랩의 <code>chat.mjs</code>를 TTY(사람이 직접 입력하는 대화형 터미널)에서 실행했습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="go">나&gt; 내 이름은 진주야</span>
@@ -2483,19 +2491,19 @@
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="go">나&gt; 내 이름이 뭐라고 했지?</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="go">진주님이라고 하셨어요.</span>
 </span></code></pre></div>
-<p>두 번째 질문이 첫 대화에서 말한 이름을 정확히 기억했습니다. <code>sessionId</code>를 갱신해 <code>resume</code>에 넘기는 세 줄이 실제로 대화를 이어준다는 뜻입니다.</p>
-<h2 id="2-메시지-네-종류가-순서대로-옵니다">2. 메시지 네 종류가 순서대로 옵니다<a class="headerlink" href="#2-메시지-네-종류가-순서대로-옵니다" title="이 위치로 링크">¶</a></h2>
-<p>Part 1에서는 <code>assistant</code>(모델 문장)와 <code>result</code>(마무리 요약) 두 종류만 봤습니다. 대화가 길어지거나 도구를 쓰면 두 종류가 더 나옵니다 — 우리가 보낸 말을 담는 <code>user</code>, 대화 시작을 알리는 <code>system</code>입니다. 도구를 쓸 때는 모델의 도구 호출(<code>tool_use</code>)이 <code>assistant</code> 메시지 안에 담기고, 그 실행 결과(<code>tool_result</code>)는 <code>user</code> 메시지 안에 담겨 돌아옵니다 — 이름은 <code>user</code>지만 사람이 보낸 말이 아니라 도구 응답인 경우입니다. <code>for await</code> 루프는 이 넷을 순서대로 흘려보내는데, 화면에 답을 그릴 때는 <code>assistant</code>의 <code>message.content</code> 안에서 <code>text</code> 블록을 읽고, 실행이 끝났는지 판정할 때는 마지막 <code>result</code>를 읽으면 됩니다.</p>
+<p>두 번째 질문이 첫 대화에서 말한 이름을 정확히 기억했습니다. 성공한 result의 <code>sessionId</code>를 다음 <code>resume</code>에 넘겨 대화가 이어졌다는 관측입니다.</p>
+<h2 id="2-메시지-종류는-필요할-때만-늘어납니다">2. 메시지 종류는 필요할 때만 늘어납니다<a class="headerlink" href="#2-메시지-종류는-필요할-때만-늘어납니다" title="이 위치로 링크">¶</a></h2>
+<p>Part 1에서는 <code>assistant</code>(모델 문장)와 <code>result</code>(에이전트 루프 요약)만 봤습니다. 이 예제에서 주로 보는 core type은 여기에 우리가 보낸 말을 담는 <code>user</code>, 대화 시작을 알리는 <code>system</code>을 더한 넷입니다. 도구를 쓰면 모델의 도구 호출(<code>tool_use</code>)은 <code>assistant</code> 메시지에, 실행 결과(<code>tool_result</code>)는 <code>user</code> 메시지에 담겨 돌아옵니다. 이름은 <code>user</code>지만 사람이 보낸 말이 아니라 도구 응답일 수 있습니다. 실제 스트림에는 stream·rate-limit·task 알림 같은 관측 event와 result 뒤 trailing system event도 올 수 있습니다. 화면에는 <code>assistant</code>의 <code>message.content</code> 안 <code>text</code> 블록을 그리고, <code>result</code>는 포착하되 <code>for await</code>를 끝까지 소비한 후 정상 완료를 판정합니다.</p>
 <p><img alt="멀티턴 / 세션 이어가기" src="../slides/slide-017.png" /></p>
 <p><em>▲ 교재 슬라이드 17 — 멀티턴 / 세션 이어가기</em></p>
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
 <p><strong>"<code>resume</code>으로 대화를 이으면 이전에 준 도구 권한도 같이 이어진다"</strong> — 아닙니다. <code>resume</code>이 이어받는 건 대화 기록뿐입니다. <code>allowedTools</code>는 호출마다 새로 넘겨야 하는 값이라 재개했다고 이전 호출의 도구 허용 범위가 자동으로 따라오지 않습니다.</p>
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
-<p>① <code>resume</code>에 이전 <code>session_id</code>를 넣는 것만으로 대화가 이어집니다 — 대화 내용을 우리 코드가 따로 기억할 필요가 없습니다. ② <code>assistant</code>의 문장과 <code>result</code>의 session ID·턴 수·비용은 서로 다른 메시지에 담겨 오므로 최종 문자열만 저장하면 나머지는 사라진다는 걸 Part 1에 이어 다시 확인했습니다.</p>
+<p><code>resume</code>에 이전 <code>session_id</code>를 넣으면 같은 호스트에 남은 트랜스크립트를 바탕으로 대화가 이어집니다. 다른 호스트에서는 ID만으로 재개할 수 없고 <code>sessionStore</code> 또는 트랜스크립트 복원이 필요합니다. <code>resume</code>은 대화 기록만 잇고, 도구·권한·상한은 호출마다 다시 정합니다. <code>assistant</code> 문장과 <code>result</code>의 session ID·턴 수·비용은 다른 메시지에 담겨 오므로 result 뒤 event까지 읽은 후 완료를 판정합니다. 다음 파트에서는 이 대화에 배포 규정 조회용 읽기 도구 하나를 더합니다.</p>
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>
 <li>Claude Code Deep Dive Workshop — <em>Chapter 6 / Part 2: query와 멀티턴</em> (슬라이드 14~22)</li>
-<li>공식 문서: <a href="https://code.claude.com/docs/en/agent-sdk/typescript">TypeScript SDK</a></li>
+<li>공식 문서: <a href="https://code.claude.com/docs/en/agent-sdk/typescript">TypeScript SDK</a>, <a href="https://code.claude.com/docs/en/agent-sdk/agent-loop">Agent loop</a>, <a href="https://code.claude.com/docs/en/agent-sdk/sessions">Sessions</a></li>
 </ul>
 
 

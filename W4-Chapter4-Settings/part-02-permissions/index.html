@@ -1446,6 +1446,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="왜 알아야 하나">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#초급자-기준선--적용-대상실행-시점실패-결과" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        초급자 기준선 — 적용 대상·실행 시점·실패 결과
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2427,6 +2444,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="왜 알아야 하나">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#초급자-기준선--적용-대상실행-시점실패-결과" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        초급자 기준선 — 적용 대상·실행 시점·실패 결과
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2569,18 +2603,21 @@
 
 <h1 id="part-2--permissions">Part 2 — Permissions<a class="headerlink" href="#part-2--permissions" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p>권한 규칙은 <code>Tool(specifier)</code>라는 단 하나의 문법을 쓰고 deny·ask·allow 세 목록 중 <strong>deny가 항상 먼저 적용됩니다</strong>. 어느 목록에도 안 걸리면 그때야 현재 권한 모드(6종 중 하나)가 기본 거동을 정합니다.</p>
+<p>권한 규칙은 <code>Tool(specifier)</code> 형식을 쓰며 deny·ask·allow 세 목록 중 <strong>deny를 가장 먼저 적용합니다</strong>. 어느 목록에도 일치하지 않을 때 현재 권한 모드(6종 중 하나)가 기본 동작을 정합니다.</p>
 <hr />
 <h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
-<p>1주차에서 권한 모드를 실전 운용 관점으로 다뤘고 그때 이미 "권한 모드가 몇 종인가"라는 질문에 6종이라는 결론을 냈습니다. 이번 파트는 그 결론을 다시 확인하면서 한 단계 더 들어가 <strong>모드가 아무것도 정하지 못했을 때(=일치하는 규칙이 없을 때)만 모드가 개입한다</strong>는 평가 순서 자체를 다룹니다. 실무에서 "허용 규칙을 분명히 넣었는데 왜 계속 물어보지", "deny를 걸었는데 왜 뚫리지" 같은 문제는 거의 항상 이 평가 순서나 규칙 문법을 잘못 이해한 데서 나옵니다.</p>
+<p>1주차에서는 권한 모드를 실전 운용 관점에서 다뤘고, 권한 모드는 6종이라고 정리했습니다. 이번 파트에서는 그 결론을 다시 확인하고 평가 순서를 살펴봅니다. <strong>일치하는 규칙이 없을 때만 권한 모드가 개입합니다.</strong> 허용 규칙을 넣었는데도 계속 묻거나 deny 규칙이 적용되지 않는 문제는 평가 순서나 규칙 문법을 잘못 이해했을 때 자주 생깁니다.</p>
+<h3 id="초급자-기준선--적용-대상실행-시점실패-결과">초급자 기준선 — 적용 대상·실행 시점·실패 결과<a class="headerlink" href="#초급자-기준선--적용-대상실행-시점실패-결과" title="이 위치로 링크">¶</a></h3>
+<p>Permission은 <strong>Claude의 도구 호출</strong>에 적용되고, 호출 <strong>직전</strong> <code>deny → ask → allow</code> 순으로 평가됩니다. <code>deny</code>면 호출은 실행되지 않습니다. <code>ask</code>인데 사람이 없는 <code>-p</code> 실행이면 승인 요청을 처리하지 못해 실패할 수 있습니다. 규칙이 하나도 맞지 않을 때에만 현재 권한 모드가 기본 동작을 정합니다.</p>
+<p>개인 개발자는 <code>.env*</code>, <code>secrets/**</code>, 파괴적 명령처럼 명확한 위험부터 Project/Local 설정에 최소 규칙으로 둡니다. 조직 관리자는 W3에서 다룬 managed <code>deny</code>로 모든 사용자에게 강제하고, 개인의 <code>allow</code>로 풀리지 않게 운영합니다. Hook은 다음 파트에서 다루는 보조 검증이며 이 강제 경계를 대신하지 않습니다.</p>
 <hr />
 <h2 id="1-3동사와-평가-순서--deny가-항상-먼저-확인된다">1. 3동사와 평가 순서 — deny가 항상 먼저 확인된다<a class="headerlink" href="#1-3동사와-평가-순서--deny가-항상-먼저-확인된다" title="이 위치로 링크">¶</a></h2>
-<p>Part 1 끝에서 "deny가 무조건 이긴다"고 했었는데, 정확히는 규칙이 3개 목록으로 나뉘어 있고 확인하는 순서가 정해져 있습니다.</p>
+<p>규칙은 세 목록으로 나뉘며 확인 순서가 정해져 있습니다.</p>
 <ol>
-<li><strong>deny</strong>부터 봅니다. 걸리면 다른 목록이 뭐라고 하든 즉시 거부되고 끝입니다.</li>
-<li>deny를 통과하면 <strong>ask</strong>를 봅니다. 걸리면 반드시 확인 프롬프트를 띄웁니다.</li>
-<li>그것도 아니면 <strong>allow</strong>를 봅니다. 걸리면 프롬프트 없이 실행됩니다.</li>
-<li>셋 다 해당 없으면 그제서야 현재 권한 모드의 기본 거동으로 넘어갑니다.</li>
+<li><strong>deny</strong>부터 확인합니다. 일치하면 다른 목록과 관계없이 즉시 거부합니다.</li>
+<li>deny에 일치하지 않으면 <strong>ask</strong>를 확인합니다. 일치하면 확인 프롬프트를 띄웁니다.</li>
+<li>ask에도 일치하지 않으면 <strong>allow</strong>를 확인합니다. 일치하면 프롬프트 없이 실행합니다.</li>
+<li>세 목록에 모두 일치하지 않으면 현재 권한 모드의 기본 동작을 따릅니다.</li>
 </ol>
 <pre class="mermaid"><code>flowchart TD
     Q["도구 호출 발생"]
@@ -2596,27 +2633,27 @@
     style AB fill:#fff3e0,stroke:#ef6c00,color:#000
     style ALB fill:#e8f5e9,stroke:#388e3c,color:#000
     style M fill:#e3f2fd,stroke:#1976d2,color:#000</code></pre>
-<p>여기서 놓치기 쉬운 규칙 하나. <strong>더 구체적인 규칙이라고 우선순위가 올라가지 않습니다.</strong> <code>Bash(aws *)</code>를 deny로 걸어두면 <code>Bash(aws s3 ls)</code>라는 더 좁고 구체적인 allow가 있어도 여전히 거부됩니다. ask와 allow 사이도 마찬가지입니다.</p>
+<p><strong>규칙이 더 구체적이라고 우선순위가 높아지지는 않습니다.</strong> <code>Bash(aws *)</code>를 deny에 넣으면 더 좁은 <code>Bash(aws s3 ls)</code>가 allow에 있어도 거부됩니다. ask와 allow 사이에도 같은 원칙이 적용됩니다.</p>
 <p><img alt="3동사와 평가 순서 슬라이드" src="../slides/slide-017.png" /></p>
 <p><em>▲ 교재 슬라이드 17 — 3동사와 평가 순서</em></p>
 <h2 id="2-규칙-문법--toolspecifier-하나로-전부">2. 규칙 문법 — <code>Tool(specifier)</code> 하나로 전부<a class="headerlink" href="#2-규칙-문법--toolspecifier-하나로-전부" title="이 위치로 링크">¶</a></h2>
-<p>규칙은 딱 한 가지 형식만 씁니다: <code>Tool</code> 단독(그 도구의 모든 호출) 또는 <code>Tool(specifier)</code>(지정자로 범위를 좁힘). 가장 자주 쓰는 두 가지부터 봅니다.</p>
+<p>규칙 형식은 <code>Tool</code> 단독(그 도구의 모든 호출) 또는 <code>Tool(specifier)</code>(지정자로 범위를 좁힘)입니다. 자주 쓰는 두 가지는 다음과 같습니다.</p>
 <ul>
 <li><strong>Bash</strong> — 지정자가 명령 패턴입니다. <code>Bash(npm run lint)</code>처럼 정확히 이 명령만 매칭하거나, <code>Bash(npm run test *)</code>처럼 접두사 뒤에 <code>*</code>로 임의 인자를 허용합니다.</li>
 <li><strong>Read, Edit</strong> — 지정자가 파일 경로 패턴입니다. <code>.gitignore</code> 스타일 글롭을 쓰고, <code>Edit(./secrets/**)</code>처럼 씁니다.</li>
 </ul>
 <div class="admonition warning">
-<p class="admonition-title">경로 규칙은 도구를 가린다 — Part 1 Lab 1에서 실제로 걸린 함정</p>
-<p>위 목록에 <code>Write</code>가 없다는 걸 눈치챘다면 정확합니다. 공식문서는 <strong>파일 경로 지정자를 실제로 참조하는 도구가 <code>Read</code>와 <code>Edit</code> 둘뿐</strong>이라고 명시합니다. <code>Write(path)</code>, <code>NotebookEdit(path)</code>, <code>Glob(path)</code>, 레거시 <code>MultiEdit(path)</code>처럼 써도 Claude Code는 "규칙을 받아들이기는 하지만 절대 참조하지 않습니다." Part 1의 Lab 1에서 <code>deny: ["Write(secret.txt)"]</code>를 걸었는데 파일이 그대로 만들어진 게 바로 이 문제였고 <code>Edit(secret.txt)</code>로 바꾸자 정확히 차단됐습니다. 새 파일을 만드는 상황이라도 <strong>경로 기반 deny/allow는 항상 <code>Edit(...)</code>로 쓰는 게 안전</strong>합니다.</p>
+<p class="admonition-title">경로 규칙은 도구마다 다르다 — Part 1 Lab 1에서 확인한 함정</p>
+<p>위 두 예시에 <code>Write</code>가 없는 이유가 있습니다. 공식문서는 <strong>파일 경로 지정자를 참조하는 도구가 <code>Read</code>와 <code>Edit</code> 둘뿐</strong>이라고 명시합니다. <code>Write(path)</code>, <code>NotebookEdit(path)</code>, <code>Glob(path)</code>, 레거시 <code>MultiEdit(path)</code>처럼 써도 Claude Code는 "규칙을 받아들이기는 하지만 절대 참조하지 않습니다." Part 1의 Lab 1에서 <code>deny: ["Write(secret.txt)"]</code>를 넣어도 파일이 만들어졌고, <code>Edit(secret.txt)</code>로 바꾸자 차단됐습니다. 새 파일을 만드는 경우에도 <strong>경로 기반 deny/allow는 <code>Edit(...)</code>로 써야 합니다.</strong></p>
 </div>
 <p>나머지 지정자는 필요할 때 참고하면 됩니다.</p>
 <ul>
 <li><strong>Agent</strong> — 서브에이전트 타입을 통제합니다(2주차 복습). <code>Agent(Explore)</code>처럼 특정 타입만 겨냥하거나, 지정자 없이 <code>Agent</code>만 쓰면 위임 자체를 통제합니다.</li>
 <li><strong><code>mcp__server(__tool)</code></strong> — MCP 도구를 통제합니다. <code>mcp__github</code>은 서버 전체, <code>mcp__github__get_issue</code>는 그 서버의 특정 도구만 겨냥합니다(Part 5·6에서 다룸).</li>
 </ul>
-<p>Bash 규칙에는 실전 주의사항이 하나 더 있습니다. 셸 체이닝이나 치환으로 패턴을 우회할 여지가 있기 때문에 권한 규칙은 어디까지나 <strong>1차 방어</strong>이고 진짜 강한 봉쇄는 3주차에서 다룬 sandbox가 맡습니다.</p>
+<p>Bash 규칙은 셸 체이닝이나 치환으로 패턴을 우회할 여지가 있습니다. 권한 규칙은 <strong>1차 방어</strong>로 두고, 강한 격리는 3주차에서 다룬 sandbox로 구현합니다.</p>
 <h2 id="3-권한-모드-6종--복습">3. 권한 모드 6종 — 복습<a class="headerlink" href="#3-권한-모드-6종--복습" title="이 위치로 링크">¶</a></h2>
-<p>3동사 중 아무것도 안 걸리면 그때 현재 권한 모드가 기본 동작을 정합니다. <strong>1주차에서 이미 다룬 대로 6종</strong>이고 이 챕터 슬라이드도 정확히 6종을 나열하고 있어 그대로 일치합니다.</p>
+<p>deny·ask·allow 어디에도 일치하지 않으면 현재 권한 모드가 기본 동작을 정합니다. 권한 모드는 <strong>1주차에서 다룬 대로 6종</strong>이며 이 챕터 슬라이드도 같은 6종을 나열합니다.</p>
 <ul>
 <li><strong><code>default</code></strong> — 위험한 작업마다 확인. CLI에서는 "Manual"로 표시됩니다.</li>
 <li><strong><code>acceptEdits</code></strong> — 파일 편집과 <code>mkdir</code>/<code>touch</code>/<code>mv</code>/<code>cp</code>/<code>sed</code> 같은 일반 파일시스템 명령을 자동 승인.</li>
@@ -2632,10 +2669,10 @@
 <p>교재가 챕터마다 4종(1주차)/6종(이 챕터)/5종(6주차)으로 다르게 말하는데, 공식문서(<code>code.claude.com/docs/en/permission-modes</code>, 2026-08-22 확인)와 이 챕터 슬라이드 모두 6종으로 일치합니다. 1주차는 자주 쓰는 것만 추린 축약 설명이었던 것으로 보입니다.</p>
 </div>
 <h2 id="4-실무에서-바로-쓰는-두-시나리오">4. 실무에서 바로 쓰는 두 시나리오<a class="headerlink" href="#4-실무에서-바로-쓰는-두-시나리오" title="이 위치로 링크">¶</a></h2>
-<p><strong>시나리오 1 — CI나 무인 자동화</strong>: <code>dontAsk</code> 모드를 씁니다. 확인이 필요한 상황이면 무조건 자동으로 거부해버려서 미리 허용해둔 것만 실행됩니다. 물어볼 사람이 없는 환경에 딱 맞습니다. <code>bypassPermissions</code>와 헷갈리기 쉬운데 방향이 정반대입니다 — bypass는 확인을 생략(위험한 방향)하고 dontAsk는 확인이 필요하면 거부(안전한 방향)합니다.</p>
-<p><strong>시나리오 2 — 조직이 뭔가를 못 쓰게 막고 싶을 때</strong>: managed 설정의 <code>deny</code>를 씁니다. 개발자가 자기 User나 Project 설정에 아무리 넓은 allow를 넣어도 managed의 deny는 못 뚫습니다. Part 1에서 배운 "권한 규칙은 합쳐진다"는 원칙 그대로입니다 — managed의 deny도 다른 모든 규칙과 합쳐지고 deny는 항상 먼저 확인되니 결과적으로 절대 못 뚫습니다. 조직은 여기에 더해 <code>allowManagedPermissionRulesOnly</code>(개인 규칙 자체를 봉쇄), <code>disableBypassPermissionsMode</code>, <code>disableAutoMode</code> 같은 managed 전용 키로 특정 모드 자체를 못 쓰게 강제할 수도 있습니다.</p>
+<p><strong>시나리오 1 — CI나 무인 자동화</strong>: <code>dontAsk</code> 모드를 씁니다. 확인이 필요한 호출을 자동으로 거부하므로 미리 허용한 작업만 실행됩니다. <code>bypassPermissions</code>는 확인을 생략하고, <code>dontAsk</code>는 확인이 필요하면 거부한다는 점에서 방향이 반대입니다.</p>
+<p><strong>시나리오 2 — 조직에서 특정 작업을 막을 때</strong>: managed 설정의 <code>deny</code>를 씁니다. 개발자가 User나 Project 설정에 넓은 allow를 넣어도 managed deny를 풀 수 없습니다. Part 1에서 본 것처럼 권한 규칙은 모든 스코프에서 합쳐지고 deny를 가장 먼저 확인하기 때문입니다. 조직은 <code>allowManagedPermissionRulesOnly</code>(개인 규칙 자체를 봉쇄), <code>disableBypassPermissionsMode</code>, <code>disableAutoMode</code> 같은 managed 전용 키로 특정 모드의 사용도 막을 수 있습니다.</p>
 <h2 id="5-auto-모드-커스텀--분류기에-힌트-주기">5. auto 모드 커스텀 — 분류기에 힌트 주기<a class="headerlink" href="#5-auto-모드-커스텀--분류기에-힌트-주기" title="이 위치로 링크">¶</a></h2>
-<p><code>auto</code> 모드는 분류기 모델이 "이 행동이 위험한가"를 대신 판단해준다고 했는데, 분류기가 우리 회사 인프라를 모르니까 정상적인 작업도 위험하다고 오판할 수 있습니다. <code>autoMode</code> 설정으로 힌트를 주면 됩니다.</p>
+<p><code>auto</code> 모드의 분류기 모델은 회사 인프라를 모르기 때문에 정상적인 작업도 위험하다고 판단할 수 있습니다. <code>autoMode</code> 설정으로 환경과 규칙에 대한 힌트를 줄 수 있습니다.</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;autoMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="nt">&quot;environment&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;사내 k8s 스테이징은 접근 가능&quot;</span><span class="p">],</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">&quot;allow&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;kubectl get, describe 계열&quot;</span><span class="p">],</span>
@@ -2644,20 +2681,20 @@
 </span></code></pre></div>
 <p><code>environment</code>에 신뢰하는 인프라를 자연어 문장으로 적고 <code>allow</code>/<code>soft_deny</code>/<code>hard_deny</code> 세 강도로 규칙을 나눠 씁니다. <code>$defaults</code> 마커를 넣으면 내장 기본 규칙을 그 자리에서 상속받고 <code>classifyAllShell: true</code>(v2.1.193 이상)를 켜면 모든 셸 명령을 분류기에 넘길 수 있습니다.</p>
 <div class="admonition tip">
-<p class="admonition-title">이 설정은 왜 Project 공유 설정에서는 안 통할까</p>
-<p><code>.claude/settings.json</code>은 저장소에 커밋되는 파일이라 다른 사람도 고칠 수 있습니다. 만약 여기서 <code>autoMode</code>가 통했다면, 누군가 이 파일을 슬쩍 고쳐서 "이 위험해 보이는 행동은 사실 안전하니 통과시켜"라고 분류기를 속일 수 있습니다. 그럼 그 프로젝트를 쓰는 팀원 전체의 안전장치가 조용히 느슨해집니다. 그래서 이 설정은 본인만 고칠 수 있는 User 스코프나 조직 관리자만 고칠 수 있는 Managed 스코프에서만 유효합니다.</p>
+<p class="admonition-title"><code>autoMode</code>가 Project 공유 설정에서 동작하지 않는 이유</p>
+<p><code>.claude/settings.json</code>은 저장소에 커밋되므로 다른 사람도 수정할 수 있습니다. 여기서 <code>autoMode</code>를 허용하면 누군가 파일을 고쳐 위험한 행동을 안전하다고 분류하도록 유도할 수 있고, 프로젝트를 쓰는 팀원 모두의 안전장치가 느슨해집니다. 이 설정은 본인만 수정하는 User 스코프나 조직 관리자가 수정하는 Managed 스코프에서만 유효합니다.</p>
 </div>
 <h2 id="6-additionaldirectories--규칙이-아니라-범위-확장">6. additionalDirectories — 규칙이 아니라 범위 확장<a class="headerlink" href="#6-additionaldirectories--규칙이-아니라-범위-확장" title="이 위치로 링크">¶</a></h2>
 <p><code>permissions.additionalDirectories</code>는 deny·ask·allow와 다른 종류의 키입니다. 규칙을 추가하는 게 아니라 <strong>작업 디렉터리 자체의 범위를 넓히는</strong> 키로, 여기 적은 경로는 작업 디렉터리처럼 접근 가능해지고 <code>acceptEdits</code>의 자동 승인 범위에도 포함됩니다. CLI에서는 <code>--add-dir ../shared-lib</code>가 같은 효과를 냅니다.</p>
 <h2 id="7-permissions와-설계-예시">7. <code>/permissions</code>와 설계 예시<a class="headerlink" href="#7-permissions와-설계-예시" title="이 위치로 링크">¶</a></h2>
-<p><code>/permissions</code>를 열면 현재 유효한 규칙 전체를 스코프별로 볼 수 있고 각 규칙이 <strong>어느 파일에서 왔는지</strong>까지 표시됩니다. 확인 프롬프트에서 "항상 허용"을 고르면 그 규칙은 자동으로 <code>settings.local.json</code>에 기록됩니다. 이렇게 로컬에 쌓인 규칙을 검증한 뒤 Project 공유 설정으로 승격하는 흐름이 팀 표준을 굳히는 정석입니다.</p>
-<p>교재가 예시로 든 웹 서비스 저장소의 권한 설계는 실무 감각을 잘 보여줍니다. lint·test·build·git 조회류는 <code>allow</code>로 전면 개방하고 <code>git push</code>나 <code>npm publish</code>처럼 되돌리기 어려운 건 <code>ask</code>로 확인을 남기며 <code>.env</code>·<code>secrets/</code>·<code>curl</code>·<code>rm -rf</code>는 <code>deny</code>로 원천 차단합니다.</p>
+<p><code>/permissions</code>에서는 현재 유효한 규칙을 스코프별로 보고, 각 규칙이 <strong>어느 파일에서 왔는지</strong> 확인할 수 있습니다. 확인 프롬프트에서 "항상 허용"을 고르면 규칙이 <code>settings.local.json</code>에 자동으로 기록됩니다. 로컬에서 규칙을 검증한 뒤 Project 공유 설정으로 옮기면 팀 표준으로 사용할 수 있습니다.</p>
+<p>교재의 웹 서비스 저장소 예시는 lint·test·build·git 조회류를 <code>allow</code>로 열고, <code>git push</code>나 <code>npm publish</code>처럼 되돌리기 어려운 작업은 <code>ask</code>로 확인합니다. <code>.env</code>·<code>secrets/</code>·<code>curl</code>·<code>rm -rf</code>는 <code>deny</code>로 차단합니다.</p>
 <p><img alt="설계 예시 슬라이드" src="../slides/slide-028.png" /></p>
 <p><em>▲ 교재 슬라이드 28 — 설계 예시 / 팀 표준</em></p>
-<p>교재가 정리한 흔한 실수도 실무에 바로 옮길 만합니다. <code>Bash(npm run test)</code>처럼 인자 없는 정확 일치만 써두면 인자가 붙는 순간 규칙이 안 먹으니 <code>Bash(npm run test *)</code>처럼 접두 뒤에 별표를 붙여야 합니다. <code>.env</code>만 deny에 넣고 <code>.env.local</code> 같은 변형을 빠뜨리는 실수도 흔합니다(<code>Read(./.env*)</code>처럼 패턴화해야 함). allow를 과하게 넣으면 ask의 존재 의미가 사라지므로 회색 지대에만 ask를 쓰고 명확히 위험한 건 deny로 못 박아야 합니다.</p>
+<p><code>Bash(npm run test)</code>처럼 인자 없는 정확 일치만 쓰면 인자가 붙는 순간 규칙이 적용되지 않습니다. 임의 인자를 허용하려면 <code>Bash(npm run test *)</code>처럼 접두사 뒤에 별표를 붙입니다. <code>.env</code>만 deny에 넣으면 <code>.env.local</code> 같은 변형이 빠지므로 <code>Read(./.env*)</code>처럼 패턴으로 지정합니다. allow가 너무 넓으면 ask가 적용될 범위가 줄어듭니다. 판단이 필요한 작업은 ask에, 명확히 위험한 작업은 deny에 둡니다.</p>
 <hr />
 <h2 id="직접-해보기--lab-1-후속-permission_denials가-실제로-채워지는-조건">직접 해보기 — Lab 1 후속: <code>permission_denials</code>가 실제로 채워지는 조건<a class="headerlink" href="#직접-해보기--lab-1-후속-permission_denials가-실제로-채워지는-조건" title="이 위치로 링크">¶</a></h2>
-<p>Part 1의 Lab 1에서 deny 규칙으로 차단된 두 사례(<code>Write(secret.txt)</code> 무시, <code>Edit(secret2.txt)</code> 차단) 모두 <code>permission_denials</code> 필드가 비어 있었습니다. 이 필드가 정확히 언제 채워지는지 확인하려고 한 가지 시나리오를 더 실행했습니다: <strong><code>default</code>(수동) 모드에서 특정 명령에 <code>ask</code> 규칙을 걸고 헤드리스라 프롬프트를 띄울 수 없는 상황을 만들었습니다.</strong></p>
+<p>Part 1의 Lab 1에서 확인한 두 사례(<code>Write(secret.txt)</code> 무시, <code>Edit(secret2.txt)</code> 차단) 모두 <code>permission_denials</code> 필드가 비어 있었습니다. 기록 조건을 확인하려고 <strong><code>default</code>(수동) 모드에서 특정 명령에 <code>ask</code> 규칙을 넣고, 헤드리스 실행이라 프롬프트를 띄울 수 없는 상황</strong>을 만들었습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;rm testdir 명령을 실행해서 폴더를 지워줘.&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>json
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="go">{..., &quot;permission_denials&quot;:[</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="go">  {&quot;tool_name&quot;:&quot;Bash&quot;,&quot;tool_use_id&quot;:&quot;toolu_019hJcrCWUW4hj5Y25nrpHas&quot;,</span>
@@ -2666,17 +2703,17 @@
 </span></code></pre></div>
 <p>이번에는 <code>permission_denials</code>에 정확히 기록됐습니다.</p>
 <div class="admonition tip">
-<p class="admonition-title">직접 해보고 알게 된 것 — <code>permission_denials</code>는 차단 주체에 따라 기록 여부가 갈린다</p>
-<p>처음엔 "확인이 필요한데 헤드리스라 확인을 못 받은 경우만 기록되는구나"라고 결론 내렸는데, Part 3의 Lab 2에서 PreToolUse 훅이 <code>permissionDecision: "deny"</code> JSON으로 같은 <code>Write</code> 호출을 막아본 결과 이번에는 <strong><code>permission_denials</code>에 정확히 기록됐습니다.</strong> 정리하면 <strong>settings.json의 <code>permissions.deny</code> 규칙이 막은 정적 차단은 기록되지 않지만 훅이 내린 차단 결정과 모드 기본 거동(프롬프트가 필요한데 헤드리스라 자동 거부)은 기록됩니다.</strong> 이 세 가지 차단 경로가 최종 사용자 입장에서는 모두 "거부됐다"로 똑같이 보이지만 검증 로그로는 서로 다른 흔적을 남긴다는 뜻입니다. <code>permission_denials</code>만 보고 "차단이 없었으니 통과했겠지"라고 단정하면 안 되고 <strong>정적 deny 규칙을 검증할 때는 반드시 작업 결과 자체(파일이 생겼는지)를 함께 확인</strong>해야 합니다.</p>
+<p class="admonition-title">v2.1.239 실측 — <code>permission_denials</code>의 기록 차이</p>
+<p>이 실습에서는 PreToolUse 훅의 <code>permissionDecision: "deny"</code> 차단은 <code>permission_denials</code>에 기록됐고, <code>settings.json</code>의 <code>permissions.deny</code> 차단은 기록되지 않았습니다. 이는 해당 버전·구성의 관찰일 뿐 차단 주체별 기록 규칙은 공식 계약으로 확인되지 않았습니다. 따라서 <code>permission_denials</code>만으로 판정하지 말고 <strong>종료 상태, 실제 작업 결과(파일이 생겼는지), 훅 로그</strong>를 함께 확인합니다.</p>
 </div>
 <hr />
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
 <p><strong>"더 구체적인 규칙이 이긴다"</strong> — 아닙니다. 순서는 항상 deny → ask → allow이고 같은 목록 안에서 구체성은 순서에 영향을 주지 않습니다. 넓은 deny가 좁은 allow보다 항상 먼저 적용됩니다.</p>
 <p><strong>"파일 쓰기를 막으려면 <code>Write(경로)</code>를 쓰면 된다"</strong> — Claude Code는 <code>Write</code> 도구의 경로 지정자를 참조하지 않습니다. 파일 경로 기반 deny/allow는 <code>Edit(경로)</code>로 써야 합니다.</p>
-<p><strong>"헤드리스에서 거부된 건 전부 <code>permission_denials</code>에 남는다"</strong> — settings.json의 정적 <code>deny</code> 규칙이 즉시 차단한 건 이 필드에 남지 않습니다. 훅의 deny 결정과 모드가 프롬프트를 띄웠어야 하는데 못 띄워 자동 거부한 경우만 기록됩니다(Part 3 Lab 2에서 재확인).</p>
+<p><strong>"헤드리스에서 거부된 건 전부 <code>permission_denials</code>에 남는다"</strong> — 아닙니다. v2.1.239 실습에서는 정적 deny와 훅 deny의 기록 결과가 달랐지만, 이 필드의 기록 규칙은 공식 계약으로 확인되지 않았습니다. 종료 상태·실제 산출물·훅 로그를 함께 봅니다.</p>
 <hr />
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
-<p>권한 시스템은 <code>Tool(specifier)</code>라는 하나의 문법과 deny → ask → allow라는 고정된 평가 순서 위에서 돌아가고 이 셋 중 아무것도 걸리지 않을 때만 6종 권한 모드 중 현재 모드의 기본 거동이 개입합니다. 무인 자동화는 <code>dontAsk</code>로, 조직 차단은 managed <code>deny</code>로 대응하는 게 실무에서 가장 자주 쓰는 패턴입니다. <code>auto</code> 모드는 분류기와 <code>autoMode</code> 설정으로 세밀하게 조율할 수 있습니다. Lab 1에서 확인했듯 규칙 문법(<code>Write</code> vs <code>Edit</code>)과 검증 방법(<code>permission_denials</code>의 한계)은 문서만 읽어서는 놓치기 쉬운 디테일이라 실측이 값집니다. 다음 파트는 이 권한 판단을 도구 호출 이전·이후 시점에 가로채 커스텀 로직을 끼워 넣는 Hooks를 다룹니다.</p>
+<p>권한 시스템은 <code>Tool(specifier)</code> 문법과 deny → ask → allow의 평가 순서를 따릅니다. 세 목록에 일치하는 규칙이 없을 때만 현재 권한 모드의 기본 동작을 적용합니다. 무인 자동화에는 <code>dontAsk</code>, 조직 차단에는 managed <code>deny</code>를 주로 사용합니다. <code>auto</code> 모드는 분류기와 <code>autoMode</code> 설정으로 조정할 수 있습니다. Lab 1에서는 규칙 문법(<code>Write</code>와 <code>Edit</code>)에 따라 결과가 달라졌고, <code>permission_denials</code>만으로 차단 여부를 판단할 수 없다는 점도 확인했습니다. 다음 파트에서는 도구 호출 전후에 검사 로직을 넣는 Hooks를 다룹니다.</p>
 <hr />
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>

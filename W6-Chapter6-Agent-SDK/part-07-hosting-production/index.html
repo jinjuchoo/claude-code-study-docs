@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#part-7--호스팅과-프로덕션" class="md-skip">
+        <a href="#part-7--호스팅과-프로덕션-선택-심화" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -2217,10 +2217,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-로컬-빌드가-첫-배포-게이트입니다" class="md-nav__link">
+  <a href="#1-선택-심화-로컬-빌드가-첫-배포-게이트입니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. 로컬 빌드가 첫 배포 게이트입니다
+        1. 선택 심화: 로컬 빌드가 첫 배포 게이트입니다
       
     </span>
   </a>
@@ -2228,10 +2228,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-동시성은-쿼터와-함께-계산합니다" class="md-nav__link">
+  <a href="#2-선택-심화-동시성은-쿼터와-함께-계산합니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. 동시성은 쿼터와 함께 계산합니다
+        2. 선택 심화: 동시성은 쿼터와 함께 계산합니다
       
     </span>
   </a>
@@ -2239,10 +2239,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-관측은-요청-id부터-연결합니다" class="md-nav__link">
+  <a href="#3-선택-심화-관측은-요청-id부터-연결합니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. 관측은 요청 ID부터 연결합니다
+        3. 선택 심화: 관측은 요청 ID부터 연결합니다
       
     </span>
   </a>
@@ -2375,10 +2375,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-로컬-빌드가-첫-배포-게이트입니다" class="md-nav__link">
+  <a href="#1-선택-심화-로컬-빌드가-첫-배포-게이트입니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. 로컬 빌드가 첫 배포 게이트입니다
+        1. 선택 심화: 로컬 빌드가 첫 배포 게이트입니다
       
     </span>
   </a>
@@ -2386,10 +2386,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-동시성은-쿼터와-함께-계산합니다" class="md-nav__link">
+  <a href="#2-선택-심화-동시성은-쿼터와-함께-계산합니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. 동시성은 쿼터와 함께 계산합니다
+        2. 선택 심화: 동시성은 쿼터와 함께 계산합니다
       
     </span>
   </a>
@@ -2397,10 +2397,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-관측은-요청-id부터-연결합니다" class="md-nav__link">
+  <a href="#3-선택-심화-관측은-요청-id부터-연결합니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. 관측은 요청 ID부터 연결합니다
+        3. 선택 심화: 관측은 요청 ID부터 연결합니다
       
     </span>
   </a>
@@ -2457,15 +2457,15 @@
 
 
 
-<h1 id="part-7--호스팅과-프로덕션">Part 7 — 호스팅과 프로덕션<a class="headerlink" href="#part-7--호스팅과-프로덕션" title="이 위치로 링크">¶</a></h1>
+<h1 id="part-7--호스팅과-프로덕션-선택-심화">Part 7 — 호스팅과 프로덕션 (선택 심화)<a class="headerlink" href="#part-7--호스팅과-프로덕션-선택-심화" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p>SDK 앱을 운영한다는 건 모델 호출만 배포하는 일이 아닙니다. Claude Code 자식 프로세스, 세션 저장소, 동시성 한도, 관측 신호를 함께 운영하는 일입니다.</p>
+<p>로컬 최소 <code>query()</code> 프로그램을 마친 뒤 SDK 앱을 운영하려면 모델 호출뿐 아니라 Claude Code 자식 프로세스, 세션 저장소, 동시성 한도, 관측 신호도 함께 운영해야 합니다.</p>
 <h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
-<p>웹 요청 하나가 query를 호출하면 앱 프로세스는 Claude Code 자식 프로세스를 띄웁니다. 그런데 대화 기록(세션 트랜스크립트)은 그 컨테이너의 로컬 디스크(<code>~/.claude/projects/</code> 아래)에만 쓰입니다. 컨테이너를 여러 개로 늘리면 다음 요청이 다른 컨테이너로 갈 수 있습니다. 그 컨테이너에는 이전 트랜스크립트가 없으니 <code>resume</code>이 실패합니다. 세션 ID만 어딘가에 잘 저장해 둬도 트랜스크립트 자체가 없으면 소용없다는 뜻입니다. 스케일링은 CPU 복제만의 문제가 아닙니다.</p>
+<p>이 파트는 필수 완료선이 아닙니다. Part 6까지의 로컬 점검 도우미가 한 프로세스에서 동작하는 것을 먼저 확인한 뒤 읽습니다. 웹 요청 하나가 query를 호출하면 앱 프로세스는 Claude Code 자식 프로세스를 띄웁니다. 대화 기록(세션 트랜스크립트)은 그 컨테이너의 로컬 디스크(<code>~/.claude/projects/</code> 아래)에만 쓰입니다. 컨테이너를 여러 개로 늘리면 다음 요청이 다른 컨테이너로 갈 수 있습니다. 그 컨테이너에 이전 트랜스크립트가 없다면 <code>resume</code>은 실패합니다. 세션 ID만 저장해도 트랜스크립트 자체가 없으면 재개할 수 없습니다. 스케일링은 CPU 복제만의 문제가 아닙니다.</p>
 <p><img alt="서브프로세스 아키텍처" src="../slides/slide-059.png" /></p>
 <p><em>▲ 교재 슬라이드 59 — 서브프로세스 아키텍처</em></p>
-<h2 id="1-로컬-빌드가-첫-배포-게이트입니다">1. 로컬 빌드가 첫 배포 게이트입니다<a class="headerlink" href="#1-로컬-빌드가-첫-배포-게이트입니다" title="이 위치로 링크">¶</a></h2>
-<p>SDK 패키지는 플랫폼별 Claude Code 바이너리를 optional dependency로 함께 받아옵니다(예: <code>@anthropic-ai/claude-agent-sdk-linux-x64</code>). 이미지 안에 CLI를 따로 설치할 필요는 없습니다. <code>npm ci --omit=optional</code>처럼 optional 패키지를 건너뛰는 설치만 피하면 됩니다. 컨테이너는 root로 실행하지 않고 로그는 표준 출력으로 보내며, API 키·OAuth 토큰·Bedrock 자격증명을 이미지에 복사하지 않습니다.</p>
+<h2 id="1-선택-심화-로컬-빌드가-첫-배포-게이트입니다">1. 선택 심화: 로컬 빌드가 첫 배포 게이트입니다<a class="headerlink" href="#1-선택-심화-로컬-빌드가-첫-배포-게이트입니다" title="이 위치로 링크">¶</a></h2>
+<p>SDK 패키지는 플랫폼별 Claude Code 바이너리를 optional dependency로 함께 받습니다(예: <code>@anthropic-ai/claude-agent-sdk-linux-x64</code>). 이미지에 CLI를 따로 설치할 필요는 없습니다. <code>npm ci --omit=optional</code>처럼 optional 패키지를 건너뛰는 설치만 피하면 됩니다. 컨테이너는 root로 실행하지 않고 로그는 표준 출력으로 보냅니다. API 키·OAuth 토큰·Bedrock 자격증명은 이미지에 복사하지 않습니다.</p>
 <div class="language-dockerfile highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">node:22-slim</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">COPY</span><span class="w"> </span>package*.json<span class="w"> </span>./
@@ -2474,33 +2474,33 @@
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">USER</span><span class="w"> </span><span class="s">node</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;node&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;medic-lite.mjs&quot;</span><span class="p">]</span>
 </span></code></pre></div>
-<p>이 Dockerfile은 구조를 보여 주는 스케치입니다. SDK의 Claude Code 배포 방식과 운영 인증은 실제 이미지에서 확인한 뒤 고정해야 합니다.</p>
+<p>이 Dockerfile은 구조를 보여 주는 스케치입니다. SDK의 Claude Code 배포 방식과 운영 인증은 실제 이미지에서 확인한 뒤 정해야 합니다.</p>
 <div class="admonition warning">
 <p class="admonition-title">실습 범위 밖 — 로컬 빌드 단계</p>
-<p>이 환경에는 Docker CLI 자체가 없습니다(<code>zsh: command not found: docker</code>). 이번 정리에서는 Docker 설치를 새로 하지 않고 실제 빌드·컨테이너 실행을 범위 밖으로 남겨두기로 했습니다. Kubernetes 배포는 처음부터 이 챕터의 필수선 밖이고, Bedrock 실배포는 W3부터 이어진 AWS 쿼터 승인 대기로 여전히 확인하지 못했습니다(아래 §2 참고) — 둘은 성격이 다릅니다. Dockerfile 스케치와 그 안에 담긴 원칙(비루트 실행, optional dependency로 바이너리 동봉, 자격증명 미포함)은 실제 환경에서 이미지를 빌드할 때 그대로 적용하면 됩니다.</p>
+<p>이 환경에는 Docker CLI 자체가 없습니다(<code>zsh: command not found: docker</code>). 이번 정리에서는 Docker를 새로 설치하지 않고 실제 빌드·컨테이너 실행을 범위 밖으로 남겼습니다. Kubernetes 배포는 처음부터 이 챕터의 필수선 밖입니다. Bedrock 실배포는 W3부터 이어진 AWS 쿼터 승인 대기 때문에 여전히 확인하지 못했습니다(아래 §2 참고). 둘은 성격이 다릅니다. Dockerfile 스케치의 원칙(비루트 실행, optional dependency로 바이너리 동봉, 자격증명 미포함)은 실제 환경에서 이미지를 빌드할 때 적용하면 됩니다.</p>
 </div>
-<h2 id="2-동시성은-쿼터와-함께-계산합니다">2. 동시성은 쿼터와 함께 계산합니다<a class="headerlink" href="#2-동시성은-쿼터와-함께-계산합니다" title="이 위치로 링크">¶</a></h2>
-<p>에이전트 한 요청은 여러 턴과 도구 호출을 만들 수 있습니다. 워커 수를 올려도 Bedrock의 RPM·TPM 또는 API 공급자의 rate limit가 그대로면 지연과 throttling만 늘어납니다. 공식 문서는 호스트 한 대가 감당할 동시 실행 수를 CPU가 아니라 <strong>메모리</strong>로 잡습니다 — 세션 하나당 RAM 상한을 정하고 <code>(호스트 RAM − 오버헤드) ÷ 세션당 RAM 상한</code>으로 계산하며, 시작 기준으로 세션당 1GiB RAM·5GiB 디스크·CPU 1개를 제시합니다. 상주 점검원처럼 오래 도는 워크로드는 같은 <code>session_id</code>가 항상 같은 컨테이너로 가도록 컨시스턴트 해싱을 걸어 두는 편이 안전합니다. 요청 큐, 요청별 <code>maxTurns</code>·예산, 공급자별 동시성 제한은 이 위에 얹습니다.</p>
+<h2 id="2-선택-심화-동시성은-쿼터와-함께-계산합니다">2. 선택 심화: 동시성은 쿼터와 함께 계산합니다<a class="headerlink" href="#2-선택-심화-동시성은-쿼터와-함께-계산합니다" title="이 위치로 링크">¶</a></h2>
+<p>에이전트 요청 하나는 여러 턴과 도구 호출을 만들 수 있습니다. 워커 수를 올려도 Bedrock의 RPM·TPM 또는 API 공급자의 rate limit가 그대로라면 지연과 throttling만 늘어납니다. 공식 문서는 호스트 한 대의 동시 실행 수를 CPU가 아니라 메모리로 잡습니다. 세션 하나당 RAM 상한을 정하고 <code>(호스트 RAM − 오버헤드) ÷ 세션당 RAM 상한</code>으로 계산하며, 시작 기준으로 세션당 1GiB RAM·5GiB 디스크·CPU 1개를 제시합니다. 상주 점검원처럼 오래 도는 워크로드는 같은 <code>session_id</code>가 항상 같은 컨테이너로 가도록 컨시스턴트 해싱을 두는 편이 안전합니다. 요청 큐, 요청별 <code>maxTurns</code>·예산, 공급자별 동시성 제한은 그 위에 둡니다.</p>
 <p><img alt="Bedrock 프로덕션 연결" src="../slides/slide-065.png" /></p>
 <p><em>▲ 교재 슬라이드 65 — Bedrock 프로덕션 연결</em></p>
-<p>W3 실습 당시 Bedrock은 쿼터 승인 대기로 실제 호출까지 확인하지 못한 채 미완으로 남겨뒀습니다(W3 Part 2 참고). 그 상태가 이어지고 있어 이 원고에서도 Bedrock 경로의 실제 호출은 재시도하지 않았습니다. 환경변수만 설정됐다고 모델 용량이 준비된 건 아니라는 것을 두 챕터에서 똑같이 확인한 셈입니다.</p>
-<h2 id="3-관측은-요청-id부터-연결합니다">3. 관측은 요청 ID부터 연결합니다<a class="headerlink" href="#3-관측은-요청-id부터-연결합니다" title="이 위치로 링크">¶</a></h2>
-<p>OTel(OpenTelemetry)은 로그·메트릭·트레이스를 한 추적 맥락으로 묶는 표준입니다. SDK는 이 설정을 코드로 새로 만들 필요가 없습니다 — <strong>실행 환경의 OTel 환경변수를 그대로 물려받습니다.</strong> W3에서 CLI에 걸었던 것과 같은 <code>CLAUDE_CODE_ENABLE_TELEMETRY=1</code>, <code>OTEL_METRICS_EXPORTER</code>/<code>OTEL_LOGS_EXPORTER=otlp</code> 같은 변수를 SDK를 돌리는 컨테이너에도 심어두면 <code>query()</code> 호출마다 스팬·메트릭·로그가 그대로 나갑니다. 여기에 SDK 결과의 session ID, 모델, turns, 비용, 종료 이유를 애플리케이션 요청 ID와 함께 남기면 어느 호출이 늦었고 왜 재시도했는지 따라갈 수 있습니다. 프롬프트와 도구 입력은 기본적으로 export에 포함되지 않습니다.</p>
+<p>W3 실습 당시 Bedrock은 쿼터 승인 대기 때문에 실제 호출까지 확인하지 못했고 미완으로 남겼습니다(W3 Part 2 참고). 그 상태가 이어져 이 원고에서도 Bedrock 경로의 실제 호출은 재시도하지 않았습니다. 환경변수만 설정됐다고 모델 용량까지 준비된 것은 아니라는 점을 두 챕터에서 확인했습니다.</p>
+<h2 id="3-선택-심화-관측은-요청-id부터-연결합니다">3. 선택 심화: 관측은 요청 ID부터 연결합니다<a class="headerlink" href="#3-선택-심화-관측은-요청-id부터-연결합니다" title="이 위치로 링크">¶</a></h2>
+<p>OTel(OpenTelemetry)은 로그·메트릭·트레이스를 하나의 추적 맥락으로 묶는 표준입니다. SDK는 이 설정을 코드로 새로 만들 필요가 없습니다. 실행 환경의 OTel 환경변수를 그대로 물려받습니다. W3에서 CLI에 적용한 <code>CLAUDE_CODE_ENABLE_TELEMETRY=1</code>, <code>OTEL_METRICS_EXPORTER</code>/<code>OTEL_LOGS_EXPORTER=otlp</code> 같은 변수를 SDK 컨테이너에도 설정하면 <code>query()</code> 호출마다 스팬·메트릭·로그가 나갑니다. SDK 결과의 session ID, 모델, turns, 비용, 종료 이유를 애플리케이션 요청 ID와 함께 남기면 어느 호출이 늦었고 왜 재시도했는지 추적할 수 있습니다. 프롬프트와 도구 입력은 기본적으로 export에 포함되지 않습니다.</p>
 <p><img alt="프로덕션 체크리스트" src="../slides/slide-066.png" /></p>
 <p><em>▲ 교재 슬라이드 66 — 프로덕션 체크리스트</em></p>
 <div class="admonition tip">
 <p class="admonition-title">현장 메모</p>
-<p>다중 레플리카 서비스가 세션 상태를 외부 저장소에 두지 않으면 재시작 때만 문제가 생기는 게 아닙니다. 같은 사용자의 다음 요청이 다른 Pod로 가는 순간에도 깨집니다. 공식 문서는 이 역할을 <code>sessionStore</code> 옵션(S3·Redis·Postgres 같은 외부 저장소에 트랜스크립트를 미러링하는 어댑터)으로 제시합니다. 스티키 세션은 임시 완화책이고, <code>sessionStore</code>·만료 정책·재개 실패 처리가 근본 계약입니다.</p>
+<p>다중 레플리카 서비스가 세션 상태를 외부 저장소에 두지 않으면 재시작 때만 문제가 생기는 것이 아닙니다. 같은 사용자의 다음 요청이 다른 Pod로 가도 깨집니다. 공식 문서는 이 역할을 <code>sessionStore</code> 옵션(S3·Redis·Postgres 같은 외부 저장소에 트랜스크립트를 미러링하는 어댑터)으로 제시합니다. 다만 store 조회 key는 working directory에서 파생됩니다. 공유 <code>sessionStore</code>를 쓰더라도 재개 호출의 <code>cwd</code>를 원 실행과 맞추거나 안정된 project key가 나오도록 보장해야 합니다. 스티키 세션은 임시 완화책일 뿐이며, 이 조건과 만료 정책·재개 실패 처리가 실제 계약입니다.</p>
 </div>
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
-<p><strong>"세션 ID만 어딘가에 저장해 두면 어느 컨테이너에서 재개해도 된다"</strong> — 아닙니다. 대화 기록(트랜스크립트) 자체가 그 컨테이너의 로컬 디스크에만 있습니다. ID를 알아도 트랜스크립트가 없는 컨테이너에서는 재개가 실패합니다 — 트랜스크립트를 <code>sessionStore</code>로 외부에 미러링해야 진짜로 풀리는 문제입니다.</p>
+<p><strong>"세션 ID만 어딘가에 저장해 두면 어느 컨테이너에서 재개해도 된다"</strong> — 아닙니다. 대화 기록(트랜스크립트) 자체가 그 컨테이너의 로컬 디스크에만 있습니다. ID를 알아도 트랜스크립트가 없는 컨테이너에서는 재개가 실패합니다. 트랜스크립트를 <code>sessionStore</code>로 외부에 미러링하고, store key가 달라지지 않도록 재개 <code>cwd</code>를 원 실행과 맞추거나 안정된 project key를 보장해야 합니다.</p>
 <p><strong>"동시성은 CPU 코어 수로 정하면 된다"</strong> — 아닙니다. 공식 문서는 세션 하나당 RAM 상한을 기준으로 동시 실행 수를 계산합니다(<code>(호스트 RAM − 오버헤드) ÷ 세션당 RAM 상한</code>). CPU를 늘려도 메모리가 부족하면 새 세션을 못 띄웁니다.</p>
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
-<p>프로덕션 준비의 최소선은 로컬에서 이미지를 빌드하고 한 query를 실행해 보는 것입니다. 그 다음에야 외부 세션 저장소, 요청 큐, 비밀 주입, OTel, Kubernetes 배치를 논의할 수 있습니다. 실제 이미지 빌드와 Bedrock 실호출은 이번 정리에서는 범위 밖으로 남겨두고 그 앞 단계인 설계 원칙까지만 다뤘습니다.</p>
+<p>이 파트의 로컬 이미지 빌드도 선택 심화입니다. 6주차 전체의 필수 완료선은 Part 1의 로컬 최소 <code>query()</code> 실행입니다. 이미지 빌드가 가능한 환경이라면 query 한 번의 실행을 먼저 확인한 뒤 외부 세션 저장소, 요청 큐, 비밀 주입, OTel, Kubernetes 배치를 검토합니다. 실제 이미지 빌드와 Bedrock 실호출은 이번 정리에서 범위 밖으로 남겼고, 그 전 단계인 설계 원칙까지만 다뤘습니다.</p>
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>
 <li>Claude Code Deep Dive Workshop — <em>Chapter 6 / Part 7: 호스팅과 프로덕션</em> (슬라이드 59~67)</li>
-<li>공식 문서: <a href="https://code.claude.com/docs/en/agent-sdk/typescript">TypeScript SDK</a>, <a href="https://code.claude.com/docs/en/amazon-bedrock">Amazon Bedrock</a></li>
+<li>공식 문서: <a href="https://code.claude.com/docs/en/agent-sdk/typescript">TypeScript SDK</a>, <a href="https://code.claude.com/docs/en/agent-sdk/sessions">Sessions</a>, <a href="https://code.claude.com/docs/en/agent-sdk/session-storage">Session storage</a>, <a href="https://code.claude.com/docs/en/amazon-bedrock">Amazon Bedrock</a></li>
 </ul>
 
 

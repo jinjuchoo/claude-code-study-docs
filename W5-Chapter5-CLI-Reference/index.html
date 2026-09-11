@@ -2218,6 +2218,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#이-주차의-최소-경로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        이 주차의 최소 경로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#회고" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2284,6 +2295,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#w6으로-가져갈-대응표" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        W6으로 가져갈 대응표
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#출처" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2312,22 +2334,38 @@
 
 
 <h1 id="5주차--chapter-5-cli-reference">5주차 — Chapter 5: CLI Reference<a class="headerlink" href="#5주차--chapter-5-cli-reference" title="이 위치로 링크">¶</a></h1>
-<p>명령 하나를 잘 외우는 것보다, 실패와 비용까지 자동화가 판정하게 만드는 방법에 초점을 맞춘 주차입니다. Claude Code를 대화창으로만 쓰지 않고, 셸 스크립트·세션·CI가 그대로 받아 쓸 수 있는 입력과 출력의 형태로 다뤄 봤습니다.</p>
+<p>명령을 외우기보다 실패와 비용까지 자동화가 판정하게 만드는 법에 집중한 주차입니다. Claude Code를 대화창에만 쓰지 않고, 셸 스크립트·세션·CI가 그대로 받을 수 있는 입력과 출력으로 다뤄 봤습니다.</p>
 <p><strong>원본</strong>: Claude Code Deep Dive Workshop / Chapter 5 — CLI Reference (9파트, 약 95 슬라이드)
 <strong>기준 버전</strong>: Claude Code v2.1.251 / 2026-08-29 · 교재는 2026년 7월판</p>
 <hr />
+<h2 id="이-주차의-최소-경로">이 주차의 최소 경로<a class="headerlink" href="#이-주차의-최소-경로" title="이 위치로 링크">¶</a></h2>
+<p>W1~W4를 읽었지만 Claude Code 자동화는 처음이라는 전제로 시작합니다. 이번 주의 첫 성공은 신뢰하는 연습 디렉터리에서 대화형으로 한 번 실행한 뒤, 같은 질문을 <code>-p</code>로 한 번 실행하고 결과를 확인하는 일입니다. 자동화는 그다음 단계입니다.</p>
+<p>먼저 W1의 설치·로그인·안전한 첫 세션을 확인합니다. W2에서 본 worktree는 파일 변경 실험을 분리하는 작업공간입니다. W4의 권한·Hook·MCP는 대화형에서도 적용되던 설정이지만, 사람이 없는 <code>-p</code> 실행에는 승인 대화상자가 없습니다. 이번 주에는 이 세 가지를 자동화의 입력·권한·작업공간 경계로 다시 씁니다.</p>
+<p>아래 1~4단계는 필수입니다. 5~6단계는 필수 완료 뒤에 권장하고, CI는 심화 내용입니다. 각 단계에서 눈으로 확인할 결과가 있어야 다음으로 넘어갑니다.</p>
+<ol>
+<li><strong>대화형 1회</strong> — <code>claude</code>를 실행하고, 현재 디렉터리에서 Claude와 한 번 주고받습니다. 성공 신호는 답변과 세션이 화면에 남는 것입니다.</li>
+<li><strong>최소 <code>-p</code> 1회</strong> — 같은 디렉터리에서 <code>claude -p 'say OK'</code>를 실행합니다. 성공 신호는 터미널에 한 번의 결과가 찍히고 명령이 끝나는 것입니다.</li>
+<li><strong>일반 출력과 JSON 비교</strong> — <code>--output-format json</code> 결과에서 <code>result</code>와 <code>is_error</code>를 함께 봅니다. 답변 내용과 실행 성공은 다른 값임을 확인합니다.</li>
+<li><strong>필드 하나로 분기</strong> — <code>is_error</code> 또는 구조화 출력의 한 필드만 검사해 통과·중단을 고릅니다. 문장을 해석하지 않습니다.</li>
+<li><strong>권장: 세션 재개</strong> — 만든 <code>session_id</code>로 이전 대화를 다시 엽니다. 대화 맥락과 작업 파일은 별개임을 확인합니다.</li>
+<li><strong>권장: 로컬 자동화</strong> — 위에서 확인한 한 호출을 스크립트로 옮기고, 입력·결과 파일·종료 상태를 남깁니다.</li>
+</ol>
+<p><strong>심화: CI</strong> — 로컬에서 검증한 읽기 전용 게이트를 CI 러너로 옮깁니다. CI 러너는 PR 같은 이벤트가 있을 때 별도 컴퓨터에서 명령을 실행하는 환경입니다.</p>
+<p>cron, Routines, CI, <code>--bg</code>, OIDC, 외부 게시, 자동 수정은 이 최소 경로를 끝낸 뒤의 주제입니다. 실제 시스템을 바꾸거나 외부에 결과를 보내는 예제는 <strong>심화</strong>로 읽고, 처음에는 실행 기록을 관찰하는 데 그칩니다.</p>
+<hr />
 <h2 id="회고">회고<a class="headerlink" href="#회고" title="이 위치로 링크">¶</a></h2>
-<p>이번 주에 제가 가장 크게 바꾼 건 <code>claude -p</code>를 보는 눈이었습니다. 처음에는 “터미널에서 답을 한 번 받는 방법”으로만 봤습니다. 그런데 이 명령을 스크립트에 물려 놓고 나온 문장만 받아서 쓰다 보면, 잘 끝난 실행과 도중에 어그러진 실행이 겉으로는 구분되지 않습니다. 둘 다 그럴듯한 한국어 문장을 돌려주기 때문입니다. 다음 단계가 읽어야 할 건 그 문장이 아니라 “이 실행이 실패로 끝났는가”, “토큰과 비용을 얼마나 썼는가”처럼 기계가 그대로 판정할 수 있는 값입니다.</p>
-<p><code>--output-format json</code>을 붙이면 이게 눈에 보입니다. 사람이 읽을 문장은 <code>result</code> 필드 하나로 들어가고 그 옆에 <code>is_error</code>, <code>usage</code>, <code>total_cost_usd</code>가 함께 담긴 봉투가 나옵니다. 이 봉투를 열어 보기 시작한 뒤로 “Claude에게 무엇을 물을까”보다 “다음 단계가 무엇을 보고 판단하게 할까”를 먼저 정하게 됐습니다.</p>
-<p>실측에서 걸린 곳은 죄다 도움말과 실제 동작 사이의 좁은 틈이었습니다. <code>stream-json</code>은 <code>-p</code>와 함께 쓰면 <code>--verbose</code>를 더 요구했습니다. <code>--json-schema</code>는 스키마 파일 경로가 아니라 JSON 문자열을 받았고 <code>--bg</code>는 <code>-p</code>와 아예 배타적이었습니다. 플래그 목록을 아무리 정확히 외워도 조합을 한 번 돌려 보기 전에는 알 수 없는 것들이라, 이번 주 정리는 읽은 것보다 돌려 본 것 위주가 됐습니다.</p>
-<p><code>--fork-session</code>으로 원 세션을 보존하는 실험대라고 이해하고 두 대안을 갈라 봤는데, 갈린 건 대화뿐이고 <strong>작업 디렉터리는 그대로 하나</strong>였습니다. 두 실행의 코드 수정이 한 파일에 겹쳐 들어간 걸 <code>git diff</code>로 보고서야 알았습니다. 대안 비교를 하려면 세션만 가르지 말고 워크트리도 함께 갈라야 한다는 걸 몸으로 배웠습니다.</p>
-<p>진단 순서도 하나 고쳐 잡았습니다. 설정이 꼬였을 때 “일단 아무것도 안 붙인 상태로 돌려 보자”며 <code>--bare</code>부터 떠올리기 쉬운데, 이건 문제를 좁히는 게 아니라 변수를 하나 더 늘리는 선택이었습니다. “최소 실행으로 좁힌다”고 할 때 <code>--bare</code>와 <code>--safe-mode</code>는 같은 카드가 아닙니다. <code>--bare</code>는 keychain과 OAuth를 아예 읽지 않습니다. 구독 로그인으로 쓰는 환경에서는 사용자 정의만 빠지는 게 아니라 로그인하지 않은 상태가 됩니다. 설정 문제를 가를 땐 <code>--safe-mode</code>가 맞고 <code>--bare</code>는 API 키를 명시적으로 쥐여 주는 CI 쪽 카드였습니다.</p>
-<p>CI 랩은 격리 실습 대신 이 정리를 발행하는 실제 저장소에 워크플로를 올리고 진짜 PR을 열어 돌렸는데, 뜻밖의 소득이 있었습니다. Claude가 그 워크플로 자체의 diff를 리뷰하다가 제가 짠 <code>run:</code> 스크립트에 <code>${{ github.base_ref }}</code>를 그대로 문자열로 넣은 게 GitHub Actions 스크립트 인젝션 패턴이라고 스스로 지적했습니다. CI 게이트를 만들려고 짠 코드에 정작 그 게이트가 걸릴 만한 결함이 있었던 셈입니다.</p>
-<p><code>/loop</code>와 <code>/goal</code>도 tmux로 실제 대화형 세션을 열어 직접 쳐 봤습니다. 이름만 보고 둘이 같은 기능의 다른 이름인 줄 알았는데, 짐작했던 것과는 반대에 가까웠습니다. 턴을 계속 새로 시작해 가며 조건이 채워질 때까지 스스로 반복하는 쪽은 <code>/goal</code>이었고, <code>/loop</code>는 세션이 열려 있는 동안 같은 프롬프트를 시간 간격으로 다시 실행하는 스케줄러였습니다. 그리고 <code>/goal</code>은 <code>-p</code> 한 번으로도 조건 판정까지 끝까지 돌아갔는데, 이건 나중에 공식 문서 예시를 보고 재현해서야 알았습니다.</p>
-<p>Remote Control도 처음엔 페어링 URL이 아예 뜨지 않아 막혔는데, 알고 보니 이 환경이 <code>setup-token</code>(모델 호출 전용 인증)으로 로그인돼 있어서 애초에 될 수 없는 구조였습니다. 계정 로그인으로 바꾸자 바로 됐고 웹에서 보낸 메시지가 로컬 컴퓨터에서 실제로 실행되는 것까지 확인했습니다. 이번 주는 결국 "재현 불가능"으로 남긴 항목이 없었습니다.</p>
+<p>이번 주에 가장 크게 달라진 것은 <code>claude -p</code>를 보는 방식이었습니다. 처음에는 터미널에서 답을 한 번 받는 방법으로만 생각했습니다. 하지만 이 명령을 스크립트에 연결해 나온 문장만 쓰면, 정상 종료와 중간 실패가 겉으로 구분되지 않습니다. 둘 다 그럴듯한 한국어 문장을 돌려주기 때문입니다. 다음 단계가 읽어야 할 것은 문장이 아니라 “이 실행이 실패로 끝났는가”, “토큰과 비용을 얼마나 썼는가”처럼 기계가 판정할 수 있는 값입니다.</p>
+<p><code>--output-format json</code>을 붙이면 이 차이가 보입니다. 사람이 읽을 문장은 <code>result</code> 필드에, <code>is_error</code>, <code>usage</code>, <code>total_cost_usd</code>는 같은 결과 객체에 함께 들어갑니다. 이 객체를 살펴본 뒤부터는 “Claude에게 무엇을 물을까”보다 “다음 단계가 무엇을 보고 판단할까”를 먼저 정하게 됐습니다.</p>
+<p>실측에서 막힌 곳은 대부분 도움말과 실제 동작 사이의 좁은 틈이었습니다. <code>stream-json</code>은 <code>-p</code>와 함께 쓰면 <code>--verbose</code>를 더 요구했습니다. <code>--json-schema</code>는 스키마 파일 경로가 아니라 JSON 문자열을 받았고 <code>--bg</code>는 <code>-p</code>와 아예 배타적이었습니다. 플래그 목록을 정확히 외워도 조합을 실행해 보기 전에는 알 수 없는 점이라, 이번 주 정리는 읽은 내용보다 실행 기록을 중심으로 남겼습니다.</p>
+<p><code>--fork-session</code>을 원 세션을 보존하는 실험대라고 이해하고 두 대안을 나눠 봤습니다. 하지만 갈린 것은 대화뿐이고 작업 디렉터리는 그대로 하나였습니다. 두 실행의 코드 수정이 한 파일에 겹쳐 들어간 것을 <code>git diff</code>로 보고서야 알았습니다. 대안을 비교하려면 세션뿐 아니라 워크트리도 나눠야 한다는 것을 직접 배웠습니다.</p>
+<p>진단 순서도 바꿨습니다. 설정이 꼬이면 “아무것도 붙이지 않고 돌려 보자”며 <code>--bare</code>부터 떠올리기 쉽습니다. 하지만 이는 문제를 좁히기보다 변수를 하나 더 늘리는 선택이었습니다. “최소 실행으로 좁힌다”고 할 때 <code>--bare</code>와 <code>--safe-mode</code>는 같은 카드가 아닙니다. <code>--bare</code>는 keychain과 OAuth를 읽지 않습니다. 구독 로그인으로 쓰는 환경에서는 사용자 정의만 빠지는 것이 아니라 로그인하지 않은 상태가 됩니다. 설정 문제를 가를 때는 <code>--safe-mode</code>가 맞고, <code>--bare</code>는 API 키를 명시적으로 주는 CI 쪽 카드였습니다.</p>
+<p>CI 랩은 격리 실습 대신 이 정리를 발행하는 실제 저장소에 워크플로를 올리고 실제 PR을 열어 실행했습니다. 뜻밖의 발견도 있었습니다. Claude가 워크플로 자체의 diff를 리뷰하다가, 제가 쓴 <code>run:</code> 스크립트에 <code>${{ github.base_ref }}</code>를 문자열로 그대로 넣은 것을 GitHub Actions 스크립트 인젝션 패턴으로 지적했습니다. CI 게이트를 만들려던 코드에 정작 그 게이트가 잡을 만한 결함이 있었던 셈입니다.</p>
+<p><code>/loop</code>와 <code>/goal</code>도 tmux에서 실제 대화형 세션을 열어 직접 입력해 봤습니다. 이름만 보고 같은 기능의 다른 이름이라 생각했지만, 예상과는 거의 반대였습니다. 턴을 새로 시작하며 조건이 채워질 때까지 반복하는 쪽은 <code>/goal</code>이었고, <code>/loop</code>는 같은 프롬프트를 시간 간격으로 다시 실행하는 스케줄러였습니다. 열린 세션이 끝나면 새 대화에서는 끝나지만, 만료 전 task는 <code>--resume</code>·<code>--continue</code>에서 복원할 수 있습니다. <code>/goal</code>은 <code>-p</code> 한 번으로도 조건 판정까지 끝까지 실행됐는데, 이는 나중에 공식 문서 예시를 보고 재현해서 알았습니다.</p>
+<p>Remote Control도 처음에는 페어링 URL이 뜨지 않아 막혔습니다. 이 실습 환경의 <code>setup-token</code>/OAuth 환경변수 인증을 지우고 계정 로그인으로 바꾸자 바로 됐고, 웹에서 보낸 메시지가 로컬 컴퓨터에서 실제로 실행되는 것까지 확인했습니다. 공식 문서가 보장하는 범위는 eligible claude.ai 로그인이 필요하고 API 키 인증은 지원하지 않는다는 점입니다. 토큰의 구현 세부는 일반화하지 않습니다. 이번 주에는 "재현 불가능"으로 남긴 항목이 없었습니다.</p>
 <h2 id="30초-요약">30초 요약<a class="headerlink" href="#30초-요약" title="이 위치로 링크">¶</a></h2>
-<p>CLI Reference의 핵심은 “Claude에게 무엇을 물을까”보다 “자동화가 무엇을 입력으로 주고 어떤 신호로 다음 행동을 고를까”입니다.</p>
+<p>CLI Reference의 핵심은 “Claude에게 무엇을 물을까”보다 “자동화에 무엇을 입력하고, 어떤 신호로 다음 행동을 고를까”에 있습니다.</p>
 <p>Part 1~3은 플래그와 세션을 정리합니다. Part 4~6은 그 위에서 스케줄과 CI, 반복 패턴을 다룹니다. Part 7~8은 환경 차이를 분리해 진단하고 실제 랩의 성공·미완 경계를 남깁니다.</p>
+<p>W6에서는 이 과정을 버리지 않습니다. 셸이 맡은 입력·검증·재시도·관측을 SDK 코드로 옮길 뿐입니다.</p>
 <h2 id="목차">목차<a class="headerlink" href="#목차" title="이 위치로 링크">¶</a></h2>
 <table>
 <thead>
@@ -2381,14 +2419,14 @@
 </tbody>
 </table>
 <h2 id="시작하기-전에-확인할-것">시작하기 전에 확인할 것<a class="headerlink" href="#시작하기-전에-확인할-것" title="이 위치로 링크">¶</a></h2>
-<p><code>-p</code>는 신뢰할 수 있는 현재 디렉터리에서 실행돼야 합니다. 가장 자주 놓치는 전제입니다. 대화형으로 프로젝트를 처음 열 때 뜨는 작업공간 신뢰 대화상자가 이 모드에서는 생략되기 때문입니다. 사람이 “이 디렉터리를 믿습니까”를 한 번 걸러 주던 자리가 통째로 비는 셈이라, 스크립트가 어느 경로에서 도는지를 스스로 챙기지 않으면 의도하지 않은 곳에서 그대로 실행됩니다.</p>
-<p>그래서 비대화 실행을 붙이기 전에 다음 셋을 명시해 두는 편이 안전합니다.</p>
+<p><code>-p</code>는 신뢰할 수 있는 현재 디렉터리에서 실행해야 합니다. 가장 자주 놓치는 전제입니다. 대화형으로 프로젝트를 처음 열 때 뜨는 작업공간 신뢰 대화상자가 이 모드에서는 생략됩니다. 사람이 “이 디렉터리를 믿습니까”라고 한 번 확인하던 단계가 없으므로, 스크립트가 어느 경로에서 실행되는지 직접 챙기지 않으면 의도하지 않은 곳에서 실행될 수 있습니다.</p>
+<p>그래서 비대화 실행을 붙이기 전에는 다음 세 가지를 명시하는 편이 안전합니다.</p>
 <ul>
 <li><strong>실행 디렉터리</strong> — 사람이 확인해 주는 단계가 없으므로 스크립트가 어디에서 도는지를 코드로 고정해 둡니다. CI 러너처럼 매번 새 작업 디렉터리를 만드는 환경에서는 특히 그렇습니다.</li>
 <li><strong>도구 권한</strong> — 대화형이라면 승인 프롬프트에서 한 번 멈췄을 동작도 비대화 실행에서는 물어볼 상대가 없습니다. 허용 범위를 미리 정해 두지 않으면 그 자리에서 어떻게 처리될지가 실행마다 달라집니다.</li>
 <li><strong>비용 상한</strong> — 한 번의 호출이 몇 턴까지 갈지는 내가 쓴 프롬프트가 아니라 상황이 정합니다. 상한이 없으면 잘못 걸린 실행 하나가 조용히 오래 돌 수 있습니다.</li>
 </ul>
-<p>마지막으로, 인증 상태 명령이 성공했다고 해서 API 호출까지 된다고 추론하지 않습니다. 확인하는 대상이 서로 다르기 때문입니다. 실제로 <code>-p</code>를 한 번 돌려 JSON 결과를 눈으로 보는 것이 가장 확실한 사전 점검입니다.</p>
+<p>마지막으로 인증 상태 명령이 성공했다고 API 호출까지 성공한다고 보지 않습니다. 확인하는 대상이 서로 다르기 때문입니다. 실제로 <code>-p</code>를 한 번 실행해 JSON 결과를 확인하는 것이 가장 확실한 사전 점검입니다.</p>
 <h2 id="실습-기록">실습 기록<a class="headerlink" href="#실습-기록" title="이 위치로 링크">¶</a></h2>
 <p>이 정리의 실습 부분은 <strong>2026-08-29에 직접 실행한 결과</strong>입니다. 실행 환경: macOS 26.6.2 / Claude Code <strong>2.1.251</strong> / jq 1.7.1-apple.</p>
 <table>
@@ -2430,6 +2468,49 @@
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> CI에서 권한·비용·결과 형식을 제한합니다.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 문제가 나면 safe mode로 사용자 정의를 분리합니다.</li>
 </ul>
+<h2 id="w6으로-가져갈-대응표">W6으로 가져갈 대응표<a class="headerlink" href="#w6으로-가져갈-대응표" title="이 위치로 링크">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>W5 CLI에서 확인한 것</th>
+<th>W6 SDK에서 이어질 것</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-p</code> 한 번 호출</td>
+<td>SDK의 단일 요청 호출</td>
+</tr>
+<tr>
+<td>stdin과 프롬프트</td>
+<td>코드에서 만드는 입력 데이터</td>
+</tr>
+<tr>
+<td>JSON 봉투</td>
+<td>일반 <code>json</code>은 단일 결과 객체, <code>stream-json</code>은 마지막 <code>type:"result"</code> 이벤트; 공통으로 필요한 필드만 확인</td>
+</tr>
+<tr>
+<td><code>--json-schema</code></td>
+<td>타입·스키마 검증</td>
+</tr>
+<tr>
+<td><code>jq -e</code> 게이트</td>
+<td>조건문·검증 함수</td>
+</tr>
+<tr>
+<td>턴·비용 상한</td>
+<td>요청 옵션·예산/재시도 정책</td>
+</tr>
+<tr>
+<td>세션 ID·raw JSON</td>
+<td>추적 ID·로그·관측 데이터</td>
+</tr>
+<tr>
+<td>셸 재시도와 CI</td>
+<td>코드의 재시도 정책과 서비스·잡 배포</td>
+</tr>
+</tbody>
+</table>
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>
 <li><strong>1차</strong>: Claude Code Deep Dive Workshop, <em>Chapter 5 — CLI Reference</em> (2026.07 판), Choi WooHyung / AWS Korea

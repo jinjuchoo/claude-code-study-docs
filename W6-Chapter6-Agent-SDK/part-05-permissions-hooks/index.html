@@ -2161,10 +2161,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-두-관문의-코드는-이렇게-다릅니다" class="md-nav__link">
+  <a href="#1-한-write-요청으로-두-관문을-구분합니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. 두 관문의 코드는 이렇게 다릅니다
+        1. 한 Write 요청으로 두 관문을 구분합니다
       
     </span>
   </a>
@@ -2183,10 +2183,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-왜-훅이-먼저-걸렸는지--평가-순서는-여섯-단계입니다" class="md-nav__link">
+  <a href="#2-등록허용권한-검사는-다른-층입니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. 왜 훅이 먼저 걸렸는지 — 평가 순서는 여섯 단계입니다
+        2. 등록·허용·권한 검사는 다른 층입니다
       
     </span>
   </a>
@@ -2375,10 +2375,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-두-관문의-코드는-이렇게-다릅니다" class="md-nav__link">
+  <a href="#1-한-write-요청으로-두-관문을-구분합니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. 두 관문의 코드는 이렇게 다릅니다
+        1. 한 Write 요청으로 두 관문을 구분합니다
       
     </span>
   </a>
@@ -2397,10 +2397,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-왜-훅이-먼저-걸렸는지--평가-순서는-여섯-단계입니다" class="md-nav__link">
+  <a href="#2-등록허용권한-검사는-다른-층입니다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. 왜 훅이 먼저 걸렸는지 — 평가 순서는 여섯 단계입니다
+        2. 등록·허용·권한 검사는 다른 층입니다
       
     </span>
   </a>
@@ -2459,13 +2459,13 @@
 
 <h1 id="part-5--권한과-훅">Part 5 — 권한과 훅<a class="headerlink" href="#part-5--권한과-훅" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p>도구 호출을 막거나 승인하는 관문이 SDK엔 두 개 있습니다 — 아직 결론이 안 난 요청만 받는 <code>canUseTool</code>과, 자동 승인된 것까지 전부 지나가는 <code>PreToolUse</code> 훅입니다.</p>
+<p>도구를 등록하고 실행을 허용한 뒤에도 쓰기 요청을 정책으로 검사하는 관문이 남습니다. 아직 결론이 나지 않은 요청은 <code>canUseTool</code>이, 자동 승인된 것을 포함한 모든 호출은 <code>PreToolUse</code> 훅이 받습니다.</p>
 <h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
-<p>감사 로그를 남기려고 <code>canUseTool</code> 콜백 안에 로깅을 넣었는데 allow 규칙으로 이미 통과된 Write 호출은 로그에 한 줄도 안 찍혔습니다 — 콜백 자체가 안 불렸기 때문입니다. 쓰기를 허용할지 묻는 콜백 하나에 정책을 다 넣으면, 이미 allow 규칙이나 권한 모드로 승인된 호출은 그 콜백을 지나지 않습니다. 모든 호출을 예외 없이 감사하거나 차단해야 하는 정책이라면 <code>canUseTool</code>보다 앞선 관문인 <code>PreToolUse</code> 훅을 써야 합니다.</p>
+<p>Part 3의 <code>allowedTools</code>는 등록된 도구를 승인 없이 실행할지 정했고, Part 4의 스키마는 결과 모양을 정했습니다. 둘 다 파일 쓰기 같은 부작용을 모든 경우에 막는 정책은 아닙니다. 감사 로그를 남기려고 <code>canUseTool</code> 콜백 안에 로깅을 넣었지만, allow 규칙으로 이미 통과된 Write 호출은 로그에 한 줄도 남지 않았습니다. 콜백 자체가 호출되지 않았기 때문입니다. 배포 점검 도우미가 상태를 읽는 범위를 넘어 파일을 쓰려 할 때 모든 요청을 검사하거나 차단해야 한다면 <code>PreToolUse</code>를 씁니다.</p>
 <p><img alt="통제 4수단 지형" src="../slides/slide-043.png" /></p>
 <p><em>▲ 교재 슬라이드 43 — 통제 4수단 지형</em></p>
-<h2 id="1-두-관문의-코드는-이렇게-다릅니다">1. 두 관문의 코드는 이렇게 다릅니다<a class="headerlink" href="#1-두-관문의-코드는-이렇게-다릅니다" title="이 위치로 링크">¶</a></h2>
-<p>이 챕터의 코드는 대부분 <code>canUseTool</code>처럼 결과를 콜백 함수 안에서 <code>return</code>(반환)하는 형태입니다. 반환값은 그 함수가 일을 마치고 호출한 쪽에 돌려주는 값이고, <code>{ behavior: "allow" }</code>처럼 <code>{ 이름: 값 }</code>으로 묶어서 여러 정보를 한 번에 돌려줍니다. <code>canUseTool</code>은 <code>behavior</code>라는 이름(필드)으로 답하고, <code>PreToolUse</code> 훅은 <code>hookSpecificOutput.permissionDecision</code>이라는 다른 이름으로 답합니다. 반환 형식부터 다릅니다.</p>
+<h2 id="1-한-write-요청으로-두-관문을-구분합니다">1. 한 Write 요청으로 두 관문을 구분합니다<a class="headerlink" href="#1-한-write-요청으로-두-관문을-구분합니다" title="이 위치로 링크">¶</a></h2>
+<p>여기서는 "배포 점검 결과를 저장하려는 Write 요청 하나"를 생각하면 됩니다. <code>canUseTool</code>은 아직 승인되지 않은 요청을 결정하고, <code>PreToolUse</code>는 이미 자동 승인될 요청까지 먼저 관찰하고 차단할 수 있습니다. 이 챕터의 코드는 대부분 <code>canUseTool</code>처럼 콜백 함수에서 <code>return</code>(반환)으로 결과를 돌려줍니다. 반환값은 함수가 일을 마친 뒤 호출한 쪽에 돌려주는 값입니다. <code>{ behavior: "allow" }</code>처럼 <code>{ 이름: 값 }</code>으로 여러 정보를 묶어 돌려줍니다. <code>canUseTool</code>은 <code>behavior</code> 필드로 답하고, <code>PreToolUse</code> 훅은 <code>hookSpecificOutput.permissionDecision</code>으로 답합니다. 반환 형식부터 다릅니다.</p>
 <div class="language-js highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// canUseTool: 아직 결론이 안 난 요청만 여기로 온다</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nx">options</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nx">canUseTool</span><span class="o">:</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">toolName</span><span class="p">,</span><span class="w"> </span><span class="nx">input</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
@@ -2498,11 +2498,11 @@
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="go">파일 쓰기가 차단되었습니다.</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="go">{&quot;subtype&quot;:&quot;success&quot;,&quot;is_error&quot;:false,&quot;num_turns&quot;:2}</span>
 </span></code></pre></div>
-<p>첫 실행은 <code>canUseTool</code> 콜백이 Write 요청을 받아 허용했습니다. 두 번째 실행은 같은 Write 호출을 <code>PreToolUse</code>가 아예 먼저 가로채 막았습니다 — 콜백까지 갈 필요도 없었습니다.</p>
+<p>첫 실행에서는 <code>canUseTool</code> 콜백이 Write 요청을 받아 허용했습니다. 두 번째 실행에서는 <code>PreToolUse</code>가 같은 Write 호출을 먼저 가로채 막았습니다. 콜백까지 가지 않았습니다.</p>
 <p><img alt="canUseTool 콜백" src="../slides/slide-044.png" /></p>
 <p><em>▲ 교재 슬라이드 44 — canUseTool 콜백</em></p>
-<h2 id="2-왜-훅이-먼저-걸렸는지--평가-순서는-여섯-단계입니다">2. 왜 훅이 먼저 걸렸는지 — 평가 순서는 여섯 단계입니다<a class="headerlink" href="#2-왜-훅이-먼저-걸렸는지--평가-순서는-여섯-단계입니다" title="이 위치로 링크">¶</a></h2>
-<p>방금 본 두 실행의 차이는 우연이 아니라 정해진 순서 때문입니다. 공식 문서 기준 순서는 hooks → deny 규칙 → ask 규칙 → permission mode → allow 규칙 → canUseTool입니다. 여섯 단계 모두가 <code>canUseTool</code>까지 내려가는 건 아닙니다 — deny 규칙에 걸리면 그 자리에서 차단되고, allow 규칙이나 권한 모드가 이미 결론을 냈으면 <code>canUseTool</code>을 거치지 않고 바로 실행됩니다. 아직 결론이 안 난 요청(ask 규칙에 걸린 경우)만 <code>canUseTool</code>로 넘어갑니다. 훅이 allow를 반환해도 뒤에 있는 deny 규칙을 건너뛰지는 않습니다.</p>
+<h2 id="2-등록허용권한-검사는-다른-층입니다">2. 등록·허용·권한 검사는 다른 층입니다<a class="headerlink" href="#2-등록허용권한-검사는-다른-층입니다" title="이 위치로 링크">¶</a></h2>
+<p>두 실행의 차이는 정해진 순서에서 나옵니다. 이 흐름은 Part 3의 도구 정의·MCP 등록·<code>allowedTools</code> 실행 허용과 별개로 실제 호출 직전에 적용됩니다. 공식 문서 기준 순서는 hooks → deny 규칙 → ask 규칙 → permission mode → allow 규칙 → canUseTool입니다. 모든 요청이 <code>canUseTool</code>까지 가는 것은 아닙니다. deny 규칙에 걸리면 그 자리에서 차단되고, allow 규칙이나 권한 모드가 이미 결론을 내렸다면 <code>canUseTool</code>을 거치지 않고 실행됩니다. 아직 결론이 나지 않은 요청, 즉 ask 규칙에 걸린 경우만 <code>canUseTool</code>로 넘어갑니다. 훅이 allow를 반환해도 뒤의 deny 규칙을 건너뛰지는 않습니다.</p>
 <pre class="mermaid"><code>flowchart TD
   A["도구 요청"] --&gt; B["PreToolUse 훅"]
   B --&gt;|deny| X["차단"]
@@ -2527,7 +2527,7 @@
 <p><strong>"<code>canUseTool</code> 콜백 하나만 있으면 모든 도구 호출을 통제할 수 있다"</strong> — 아닙니다. allow 규칙이나 권한 모드로 이미 결론이 난 호출은 이 콜백을 거치지 않습니다. 예외 없이 전부 감사하거나 차단해야 하는 정책이라면 그보다 앞단인 <code>PreToolUse</code> 훅을 써야 합니다.</p>
 <p><strong>"훅이 허용(allow)을 반환하면 그걸로 끝이다"</strong> — 아닙니다. 평가 순서상 훅이 allow해도 그 뒤의 deny 규칙에 걸리면 그 자리에서 차단됩니다. 훅은 맨 앞 관문일 뿐이고 뒷단의 deny 규칙을 건너뛰게 만들지는 못합니다.</p>
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
-<p>요점은 셋입니다. ① 관문은 <code>canUseTool</code>과 <code>PreToolUse</code> 둘이고 반환 형식부터 다릅니다. ② 요청은 hooks→deny→ask→mode→allow→canUseTool 순서로 흐르고 이미 결론 난 호출은 뒷단(<code>canUseTool</code>)까지 가지 않습니다. ③ 권한 모드는 현재 여섯 가지(<code>default</code>, <code>dontAsk</code>, <code>acceptEdits</code>, <code>plan</code>, <code>auto</code>, <code>bypassPermissions</code>)입니다 — 교재의 다섯 가지 표기는 다른 챕터의 여섯 가지와도 어긋나므로, 현행 SDK 권한 문서 기준으로 읽습니다. <code>bypassPermissions</code>는 별도 위험 허용 옵션이 필요한 예외로 취급합니다.</p>
+<p>도구 정의·등록·실행 허용과 정책 검사는 서로 다른 층입니다. 정책 관문은 <code>canUseTool</code>과 <code>PreToolUse</code>이고 반환 형식도 다릅니다. 요청은 hooks→deny→ask→mode→allow→canUseTool 순서로 흐르며, 이미 결론 난 호출은 <code>canUseTool</code>까지 가지 않습니다. 권한 모드는 현재 여섯 가지(<code>default</code>, <code>dontAsk</code>, <code>acceptEdits</code>, <code>plan</code>, <code>auto</code>, <code>bypassPermissions</code>)입니다. 교재의 다섯 가지 표기는 다른 챕터의 여섯 가지와도 어긋나므로 현행 SDK 권한 문서를 기준으로 읽습니다. <code>bypassPermissions</code>는 별도 위험 허용 옵션이 필요한 예외로 취급합니다.</p>
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>
 <li>Claude Code Deep Dive Workshop — <em>Chapter 6 / Part 5: 권한과 훅</em> (슬라이드 43~50)</li>

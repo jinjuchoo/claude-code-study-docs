@@ -2218,6 +2218,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#개인-기본-경로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개인 기본 경로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#회고" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2229,10 +2240,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#30초-요약" class="md-nav__link">
+  <a href="#핵심-개념" class="md-nav__link">
     <span class="md-ellipsis">
       
-        30초 요약
+        핵심 개념
       
     </span>
   </a>
@@ -2313,30 +2324,39 @@
 
 <h1 id="1주차--chapter-1-overview">1주차 — Chapter 1: Overview<a class="headerlink" href="#1주차--chapter-1-overview" title="이 위치로 링크">¶</a></h1>
 <blockquote>
-<p>Claude Code를 <strong>한 번도 써본 적 없는 사람</strong>이 이 문서만 읽고
-"이게 뭔지 설명할 수 있고, 내 노트북에 깔아서 첫 세션을 돌릴 수 있는" 상태가 되는 것을 목표로 썼습니다.</p>
+<p>Claude Code를 <strong>처음 쓰는 사람</strong>이 이 문서만 읽고, 무엇인지 설명하고 자신의 노트북에서 첫 세션을 시작할 수 있도록 썼습니다.</p>
 </blockquote>
 <p><strong>원본</strong>: Claude Code Deep Dive Workshop / Chapter 1 — Overview (10 파트, 약 190 슬라이드)
 <strong>기준 버전</strong>: Claude Code v2.1 / 2026년 7월 · 공식 문서 <code>code.claude.com/docs</code> 반영</p>
 <hr />
-<h2 id="회고">회고<a class="headerlink" href="#회고" title="이 위치로 링크">¶</a></h2>
-<p>Chapter 1은 Claude Code의 정체성부터 설치·인증·핵심 도구·워크플로 패턴까지를 훑는 입문 챕터입니다. 분량은 많지만 어려운 개념은 없어서, 오히려 <strong>"이미 아는 것 같은데 실은 모르는 것"</strong> 이 걸리는 챕터였습니다.</p>
-<p>정리하면서 가장 크게 바뀐 생각은 두 가지입니다.</p>
-<p>하나는 <strong>Claude Code를 "터미널에서 쓰는 자동완성"으로 이해하면 절반도 못 쓴다</strong>는 것입니다. 차이는 범위(파일 vs 저장소)보다 <strong>책임</strong>에 있었습니다. 자동완성은 제안까지가 끝이지만 Claude Code는 테스트를 돌려 스스로 검증합니다. 그래서 좋은 지시는 "무엇을 해라"가 아니라 <strong>"무엇이 완료인지"</strong> 를 함께 주는 것이더군요.</p>
-<p>다른 하나는 <strong>문서를 읽는 것과 직접 돌려보는 것의 간극</strong>입니다. 예상과 다른 지점이 계속 나왔습니다. 제 설치가 Native가 아니라 npm 경로였다는 것도 <code>claude doctor</code>를 돌리고서야 알았습니다. 디버깅 랩에서는 교재가 <code>Grep</code>으로 영향 범위를 검색할 거라고 예고했는데 <strong>실제로는 <code>Grep</code>을 쓰지 않았습니다.</strong> 파일이 네 개뿐이라 전부 읽는 게 빨랐던 겁니다. 교재 흐름도가 틀린 게 아니라 상황에 따라 도구 선택이 달라진다는 걸 눈으로 본 셈입니다.</p>
-<p>가장 인상적이었던 건 Plan 모드였습니다. soft delete 기능을 요청하면서 "<code>getUser</code>와 <code>getUserPlan</code>이 삭제된 사용자를 제외해야 한다"고 명시했는데, 계획을 보니 <strong><code>getUserPlan</code>은 고칠 필요가 없다고 반박</strong>해 왔습니다. 직전 랩에서 이미 <code>?.</code> 체이닝을 넣었기 때문에 <code>getUser</code>만 고치면 자동으로 충족된다는 것이었습니다. 액면 그대로 구현했다면 중복 방어가 들어갔을 겁니다.</p>
-<p>테스트 파일을 분리해 달라고 했을 때도, 제가 몰랐던 이유를 덧붙였습니다. 삭제 테스트가 전역 배열을 변경하는데 파일을 나누면 <strong>별도 프로세스로 실행되어 오염이 원천 차단된다</strong>는 것이었습니다. 저는 그냥 정리 차원에서 요청한 것이었는데 말이죠. <strong>계획을 협상하면 버그를 코드가 아니라 문서에서 잡는다</strong>는 걸 체감했습니다.</p>
-<p>작성을 마친 뒤 교재 PDF와 공식 문서를 전수 대조했는데, 교재가 2026년 7월판이라 <strong>v2.1.207 전후로 바뀐 사실이 여럿</strong> 있었습니다. Bedrock의 <code>opus</code> alias가 4.6에서 4.8로 바뀐 것, 자동 업데이트가 Native 전용이 아니라는 것 등입니다. 특히 후자는 <strong>제 실습 로그가 이미 반증하고 있었는데도 본문 주장을 고치지 않고 넘어갔던 것</strong>이라 뼈아팠습니다. 관찰과 결론이 어긋나는지 따로 확인하는 절차가 필요하다는 걸 배웠습니다.</p>
-<p>마지막으로 하나 더. PDF에 적힌 실습 경로(<code>ch1/lab3-buggy-app</code> 등)가 저장소에 없어서 처음에는 "교재 자산이 빠졌다"고 판단하고 시나리오를 직접 재현했습니다. <strong>그 판단이 틀렸습니다.</strong> 실습은 <code>ccw-hands-on-lab/</code> 아래 HTML로 온전히 제공되고 있었고, 저장소에서 클론하는 대신 <strong>프로젝트를 직접 만들게 설계</strong>되어 있어서 애초에 그 디렉토리가 있을 이유가 없었습니다. 없는 걸 확인하는 데서 멈추지 말고 <strong>있을 만한 다른 곳을 먼저 찾았어야</strong> 했습니다. 지금은 HTML 랩의 원본 시나리오로 다시 수행한 기록으로 바꿔뒀습니다.</p>
-<hr />
-<h2 id="30초-요약">30초 요약<a class="headerlink" href="#30초-요약" title="이 위치로 링크">¶</a></h2>
-<p>Claude Code는 <strong>터미널에서 도는 AI 코딩 에이전트</strong>입니다. 자동완성 도구와 다른 점은 딱 하나입니다.</p>
+<h2 id="개인-기본-경로">개인 기본 경로<a class="headerlink" href="#개인-기본-경로" title="이 위치로 링크">¶</a></h2>
+<p>처음에는 아래 순서만 따르세요. 조직 설정, 클라우드 인증, 자동화는 아직 필요하지 않습니다.</p>
+<ol>
+<li><a href="part-03-installation/">Part 3</a>에서 내 OS용 설치 명령 하나를 실행합니다.</li>
+<li><a href="part-04-authentication/">Part 4</a>에서 구독 계정으로 로그인합니다.</li>
+<li>프로젝트 폴더에서 <code>claude</code>를 실행한 뒤 <code>/status</code>로 로그인·모델 상태를 확인합니다.</li>
+<li>"이 저장소의 구조를 3~5줄로 설명해줘. 파일은 바꾸지 마."라고 질문합니다.</li>
+<li>작은 수정 하나를 요청합니다. <strong>현재 권한 모드가 승인을 요구하면</strong> 승인 화면에서 diff를 읽고, 승인 화면이 없더라도 변경 뒤 diff를 검토합니다.</li>
+<li>프로젝트의 기존 테스트 명령을 실행해 결과를 확인합니다.</li>
+</ol>
+<p><code>diff</code>는 변경 전후의 줄을 비교하는 화면입니다. <code>Esc</code>는 진행 중인 작업을 멈추는 키입니다. 둘 다 지금 바로 필요합니다.</p>
 <blockquote>
-<p>자동완성은 <strong>다음 몇 줄을 제안</strong>하고, Claude Code는 <strong>목표를 받아서 저장소 전체에서 작업을 끝냅니다.</strong></p>
+<p><strong>선택 심화</strong>: Bedrock·Vertex·Foundry·gateway·IAM 같은 조직·클라우드 경로는 개인 로그인과 별개입니다. 해당 계정이나 관리자 역할이 있을 때만 Part 2·3·4의 관련 절을 읽으세요.</p>
 </blockquote>
-<p>파일을 스스로 찾아 읽고, 고치고, 테스트를 돌려서 통과하는지 확인하고, 실패하면 다시 고칩니다.
-이 "수집 → 실행 → 검증" 반복을 <strong>Agentic Loop</strong>라고 부르고, 이 루프를 돌 수 있게 모델 주위에 씌운 껍데기를 <strong>하네스(Harness)</strong> 라고 부릅니다. Chapter 1은 이 하네스가 무엇으로 이루어져 있고, 내가 그걸 어떻게 통제하는지를 다룹니다.</p>
 <hr />
+<h2 id="회고">회고<a class="headerlink" href="#회고" title="이 위치로 링크">¶</a></h2>
+<p>Chapter 1은 Claude Code의 정체성부터 설치·인증·핵심 도구·워크플로 패턴까지 다루는 입문 챕터입니다. 분량은 많지만 개념 자체는 어렵지 않았고, 오히려 <strong>"이미 안다고 생각했지만 정확히는 몰랐던 것"</strong> 이 더 많이 남았습니다.</p>
+<p>정리하면서 가장 크게 바뀐 생각은 두 가지입니다.</p>
+<p>하나는 Claude Code를 "터미널에서 쓰는 자동완성"으로 이해하면 절반도 못 쓴다는 것입니다. 차이는 범위(파일 vs 저장소)보다 <strong>책임</strong>에 있었습니다. 자동완성은 제안까지가 끝이지만 Claude Code는 테스트 실행과 실패 시 재수정을 시도합니다. 테스트를 실행하지 못했거나 실패가 남았다면 사용자가 확인해야 합니다. 그래서 좋은 지시는 "무엇을 해라"가 아니라 "무엇이 완료인지"를 함께 주는 것이더군요.</p>
+<p>다른 하나는 문서를 읽는 것과 직접 돌려보는 것의 간극입니다. 예상과 다른 지점이 계속 나왔습니다. 제 설치가 Native가 아니라 npm 경로였다는 것도 <code>claude doctor</code>를 돌리고서야 알았습니다. 2026-08-02 디버깅 실행에서는 교재가 예고한 <code>Grep</code> 대신 네 파일을 모두 읽었습니다. 어느 방식이 일반적으로 빠르다는 결론이 아니라, 저장소 크기와 실행마다 도구 선택이 달라질 수 있다는 관찰입니다.</p>
+<p>가장 인상적이었던 건 Plan 모드였습니다. soft delete 기능을 요청하면서 "<code>getUser</code>와 <code>getUserPlan</code>이 삭제된 사용자를 제외해야 한다"고 명시했는데, 계획을 보니 <strong><code>getUserPlan</code>은 고칠 필요가 없다고 반박</strong>해 왔습니다. 직전 랩에서 이미 <code>?.</code> 체이닝을 넣었기 때문에 <code>getUser</code>만 고치면 자동으로 충족된다는 것이었습니다. 액면 그대로 구현했다면 중복 방어가 들어갔을 겁니다.</p>
+<p>테스트 파일을 분리해 달라고 했을 때도, 제가 몰랐던 이유를 덧붙였습니다. 삭제 테스트가 전역 배열을 변경하는데 파일을 나누면 별도 프로세스로 실행되어 오염이 원천 차단된다는 것이었습니다. 저는 그냥 정리 차원에서 요청한 것이었는데 말이죠. <strong>계획을 협상하면 버그를 코드가 아니라 문서에서 잡는다</strong>는 걸 체감했습니다.</p>
+<p>작성을 마친 뒤 교재 PDF와 공식 문서를 전수 대조했는데, 교재가 2026년 7월판이라 v2.1.207 전후로 바뀐 사실이 여럿 있었습니다. Bedrock의 <code>opus</code> alias가 4.6에서 4.8로 바뀐 것은 2026-08 실습 당시의 변경 기록이고, 현행 alias는 다시 달라질 수 있으므로 <a href="https://code.claude.com/docs/en/model-config">공식 모델 설정</a>을 확인해야 합니다. 자동 업데이트가 Native 전용이 아니라는 것도 그 예입니다. 특히 후자는 <strong>제 실습 로그가 이미 반증하고 있었는데도 본문 주장을 고치지 않고 넘어갔던 것</strong>이라 뼈아팠습니다. 관찰과 결론이 어긋나는지 따로 확인하는 절차가 필요하다는 걸 배웠습니다.</p>
+<p>마지막으로 하나 더. PDF에 적힌 실습 경로(<code>ch1/lab3-buggy-app</code> 등)가 저장소에 없어서 처음에는 "교재 자산이 빠졌다"고 판단하고 시나리오를 직접 재현했습니다. <strong>그 판단이 틀렸습니다.</strong> 실습은 <code>ccw-hands-on-lab/</code> 아래 HTML로 온전히 제공되고 있었고, 저장소에서 클론하는 대신 프로젝트를 직접 만들게 설계되어 있어서 애초에 그 디렉토리가 있을 이유가 없었습니다. 없는 걸 확인하는 데서 멈추지 말고 있을 만한 다른 곳을 먼저 찾았어야 했습니다. 지금은 HTML 랩의 원본 시나리오로 다시 수행한 기록으로 바꿔뒀습니다.</p>
+<hr />
+<h2 id="핵심-개념">핵심 개념<a class="headerlink" href="#핵심-개념" title="이 위치로 링크">¶</a></h2>
+<p>Claude Code는 터미널에서 실행하는 AI 코딩 에이전트입니다. 자동완성이 다음 몇 줄을 제안한다면, Claude Code는 목표를 받아 저장소에서 여러 단계를 수행하고 테스트와 재수정을 시도합니다. 완료 여부는 사용자가 diff와 테스트 결과로 확인합니다.</p>
+<p>이 "수집 → 실행 → 검증"의 반복을 <strong>Agentic Loop</strong>라고 합니다. 하네스(Harness)는 모델의 판단을 파일 읽기·편집·명령 실행으로 연결하고 권한을 확인하는 실행 프로그램입니다.</p>
 <h2 id="목차">목차<a class="headerlink" href="#목차" title="이 위치로 링크">¶</a></h2>
 <table>
 <thead>
@@ -2401,7 +2421,7 @@
 </table>
 <hr />
 <h2 id="시작하기-전에-확인할-것">시작하기 전에 확인할 것<a class="headerlink" href="#시작하기-전에-확인할-것" title="이 위치로 링크">¶</a></h2>
-<p>준비물은 생각보다 적습니다. 가장 자주 오해받는 것부터 짚겠습니다.</p>
+<p>필요한 준비물부터 확인하겠습니다.</p>
 <p><strong>Node.js는 필요 없습니다.</strong> 예전 자료를 보면 <code>npm install</code>이 나오지만 지금은 Native 설치가 표준이고, 단일 바이너리라 런타임 의존성이 없습니다. npm으로 설치할 때만 <strong>설치 시점에</strong> Node 22+가 필요하며(v2.1.198 기준), 설치 후 실행에는 역시 Node를 쓰지 않습니다.</p>
 <p><strong>계정은 하나 있어야 합니다.</strong> Claude 구독(Pro/Max/Team/Enterprise), Claude Console, AWS Bedrock 액세스 중 아무거나 하나면 됩니다.</p>
 <div class="admonition warning">
@@ -2415,48 +2435,12 @@
 <h2 id="실습-기록">실습 기록<a class="headerlink" href="#실습-기록" title="이 위치로 링크">¶</a></h2>
 <p>이 정리의 실습 부분은 <strong>읽고 옮긴 게 아니라 2026-08-02에 직접 실행한 결과</strong>입니다.
 실행 환경: macOS 26.5.1 (Darwin 25.5.0, arm64) / Claude Code <strong>2.1.220</strong></p>
-<table>
-<thead>
-<tr>
-<th>Lab</th>
-<th>상태</th>
-<th>핵심 발견</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Lab 1 — 설치와 첫 세션</td>
-<td>✅ 완료</td>
-<td><code>claude doctor</code> 결과 내 설치가 Native가 아닌 <strong>npm-global</strong>이었음</td>
-</tr>
-<tr>
-<td>Lab 2 — CLAUDE.md 만들기</td>
-<td>✅ 완료</td>
-<td><strong>도구를 0개만 허용</strong>해 자동 로드를 증명 (<code>permission_denials: []</code>)</td>
-</tr>
-<tr>
-<td>Lab 3 — 디버깅</td>
-<td>✅ 완료</td>
-<td>교재는 <code>Grep</code>을 예고했지만 <strong>실제로는 안 썼음</strong> — 4파일짜리라 전부 읽는 게 빨랐음</td>
-</tr>
-<tr>
-<td>Lab 4 — Plan 모드</td>
-<td>✅ 완료</td>
-<td>계획 협상 재현. 요구사항 중 <strong>하나는 고칠 필요가 없다고 반박</strong>해 옴</td>
-</tr>
-<tr>
-<td>Lab 5 — Headless</td>
-<td>✅ 완료</td>
-<td><code>total_cost_usd</code>가 JSON에 그대로 있음 / 입력의 99.99%가 캐시</td>
-</tr>
-</tbody>
-</table>
-<p><strong>5개 랩 전부 수행했습니다.</strong></p>
+<p>5개 랩을 모두 수행했습니다. <code>npm-global</code> 설치 경로, 도구 없이 <code>CLAUDE.md</code>가 로드된 결과, 한 번의 디버깅 실행에서 <code>Grep</code> 대신 네 파일을 읽은 흐름, Plan 모드의 계획 협상, Headless JSON의 <code>total_cost_usd</code>를 확인했습니다. Headless 입력은 cache read 48,286, cache creation 8,287, uncached 4토큰이었고, cache read는 전체 입력 토큰의 <strong>85.35%</strong>였습니다. 이는 토큰 구성 비율이지 비용 비율이 아닙니다.</p>
 <p>전체 로그와 원본 출력은 → <strong><a href="part-10-recap-and-labs/">Part 10 — 정리와 실습 랩</a></strong></p>
 <div class="admonition note">
 <p class="admonition-title">실습 자료 위치에 대하여</p>
 <p>PDF 슬라이드가 안내하는 <code>ch1/lab3-buggy-app</code>, <code>ch1/lab4-todo-api</code> 경로는 저장소에 실재하지 않습니다(전체 클론·전 브랜치 확인).
-실제 실습은 <strong><code>ccw-hands-on-lab/ClaudeCode_Ch1_HandsOnLab.html</code></strong> 에 Task 1~7로 온전히 제공되며, 저장소에서 클론하는 대신 <strong>힙독으로 프로젝트를 직접 만드는</strong> 방식입니다. 구판(<code>20260525</code>) PDF와 스니펫 아카이브도 같은 방식이라, 경로를 지정한 건 신판 PDF뿐입니다.
+실제 실습은 <strong><code>ccw-hands-on-lab/ClaudeCode_Ch1_HandsOnLab.html</code></strong> 에 Task 1~7로 온전히 제공되며, 저장소에서 클론하는 대신 <strong>heredoc(히어독)으로 프로젝트를 직접 만드는</strong> 방식입니다. 구판(<code>20260525</code>) PDF와 스니펫 아카이브도 같은 방식이라, 경로를 지정한 건 신판 PDF뿐입니다.
 Lab 3·4는 <strong>이 HTML 랩의 원본 시나리오</strong>를 그대로 따라 수행했습니다.</p>
 </div>
 <hr />

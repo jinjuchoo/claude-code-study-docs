@@ -2243,10 +2243,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-wiki-agent-조립도" class="md-nav__link">
+  <a href="#1-배포-점검-도우미에서-서비스-조립도로" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. wiki-agent 조립도
+        1. 배포 점검 도우미에서 서비스 조립도로
       
     </span>
   </a>
@@ -2373,10 +2373,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-wiki-agent-조립도" class="md-nav__link">
+  <a href="#1-배포-점검-도우미에서-서비스-조립도로" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. wiki-agent 조립도
+        1. 배포 점검 도우미에서 서비스 조립도로
       
     </span>
   </a>
@@ -2457,32 +2457,36 @@
 
 <h1 id="part-8--캡스톤과-labs">Part 8 — 캡스톤과 Labs<a class="headerlink" href="#part-8--캡스톤과-labs" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p>캡스톤은 새 프레임워크를 더하는 일이 아니라, query·도구·출력 계약·권한·세션·관측을 한 서비스 경계 안에 조립하는 연습입니다.</p>
+<p>캡스톤은 새 프레임워크를 더하는 일이 아닙니다. 로컬 배포 점검 도우미에 query·재개·규정 조회 도구·상태 계약·쓰기 차단·상태 저장을 순서대로 더하는 연습입니다.</p>
 <h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
-<p>Part 2~7에서 겪은 네 가지 실패 — 스키마 거부, 턴 상한 부족, 감사 로그 누락, 레플리카 재개 실패 — 는 한 서비스 안에서 동시에 터질 수 있습니다. "사내 위키 에이전트"라는 이름만으로는 이걸 어디서 막을지 설계가 나오지 않습니다. 문서를 찾는 함수, 답의 JSON 모양, 쓰기 승인, 이전 대화, 요청 로그가 각각 어디에 놓이는지 연결해야 구현 가능한 서비스가 됩니다.</p>
+<p>이 캡스톤은 새 도메인을 늘리지 않고 앞 파트의 사내 배포 점검 도우미를 같은 순서로 되짚습니다. Part 2~7에서 겪은 스키마 거부, 턴 상한 부족, 감사 로그 누락, 레플리카 재개 실패는 한 서비스에서 함께 일어날 수 있습니다. 규정 조회 함수, 답의 JSON 모양, 쓰기 차단, 이전 대화, 요청 로그를 각각 어디에 둘지 연결해야 서비스를 구현할 수 있습니다. 아래 wiki-agent 조립도는 이 배포 점검 도우미를 HTTP 서비스로 넓힌 선택 심화 설계입니다.</p>
 <p><img alt="설계 / 부품의 총조립" src="../slides/slide-068.png" /></p>
 <p><em>▲ 교재 슬라이드 68 — 설계 / 부품의 총조립</em></p>
-<h2 id="1-wiki-agent-조립도">1. wiki-agent 조립도<a class="headerlink" href="#1-wiki-agent-조립도" title="이 위치로 링크">¶</a></h2>
+<h2 id="1-배포-점검-도우미에서-서비스-조립도로">1. 배포 점검 도우미에서 서비스 조립도로<a class="headerlink" href="#1-배포-점검-도우미에서-서비스-조립도로" title="이 위치로 링크">¶</a></h2>
 <pre class="mermaid"><code>flowchart TD
-  A["HTTP 요청 + 사용자 질문"] --&gt; B["query()\nmaxTurns·settingSources"]
+  A["HTTP 요청 + 사용자 질문"] --&gt; B["query()\ncwd: /app·maxTurns·settingSources"]
   B --&gt; C["search_wiki 도구\nin-process MCP"]
-  B --&gt; D["answer JSON Schema"]
   B --&gt; E["PreToolUse / canUseTool"]
-  B --&gt; F["session_id ↔ 사용자ID 매핑(자체 DB)\n+ sessionStore로 트랜스크립트 미러링"]
+  B --&gt; S["sessionStore로 트랜스크립트 미러링\ncwd 기반 lookup key"]
+  B --&gt; H["trailing event까지 소비\nresult subtype 확인"]
+  H --&gt;|success| D["answer JSON Schema"]
+  H --&gt;|success| F["session_id ↔ 사용자ID 매핑\n자체 DB 갱신"]
+  H --&gt;|failure| I["오류 응답\n기존 DB 매핑 유지"]
   D --&gt; G["API 응답 + OTel 관측"]
   F --&gt; G
   style B fill:#e3f2fd,stroke:#1976d2,color:#000
   style G fill:#e8f5e9,stroke:#388e3c,color:#000</code></pre>
-<p>이 조립도에서 Part 3의 <code>search_note</code>는 <code>search_wiki</code>가 됩니다. Part 4의 <code>status</code> enum은 <code>answer</code>, <code>citations</code>, <code>confidence</code> 같은 API 계약으로 바뀝니다. Part 5의 Write 차단은 위키 수정이나 티켓 생성처럼 실제 부작용이 있는 도구 앞에 둡니다.</p>
-<p>구현 순서로 풀면 이렇습니다. HTTP 핸들러가 사용자 ID로 이전 <code>session_id</code>를 <strong>우리 앱의 자체 DB</strong>에서 조회합니다 → <code>query({ prompt, options: { resume, sessionStore, outputFormat, permissionMode: 'dontAsk', allowedTools: ['mcp__wiki__search_wiki'] } })</code>를 부릅니다 — 여기서 <code>sessionStore</code>는 세션 ID를 조회하는 테이블이 아니라, SDK가 대화 트랜스크립트 자체를 S3·Redis 같은 외부 저장소로 미러링하도록 넘기는 어댑터입니다(Part 7) → result의 <code>structured_output</code>(<code>answer</code>/<code>citations</code>/<code>confidence</code>)을 그대로 API 응답으로 돌려줍니다 → 받은 <code>session_id</code>는 <strong>우리 앱의 자체 DB</strong>에 다시 써서, 같은 사용자의 다음 요청이 이어받게 합니다. 사람이 승인 버튼을 눌러 줄 수 없는 서비스 계정이니 권한 모드는 <code>dontAsk</code>로 두고 허용 도구는 <code>search_wiki</code> 하나로 좁혀 사고 범위를 줄입니다.</p>
+<p>배포 점검 도우미는 <code>query()</code> → <code>resume</code> → <code>search_note</code> 규정 조회 → <code>status</code> enum → Write 차단 → 상태 저장 순서로 확장했습니다. 이 조립도에서는 Part 3의 <code>search_note</code>가 HTTP 서비스용 <code>search_wiki</code>로 바뀝니다. Part 4의 <code>status</code> enum은 <code>answer</code>, <code>citations</code>, <code>confidence</code> 같은 API 계약으로 넓어집니다. Part 5의 Write 차단은 위키 수정이나 티켓 생성처럼 실제 부작용이 있는 도구 앞에 둡니다.</p>
+<p>구현 흐름은 다음과 같습니다. HTTP 핸들러가 사용자 ID로 이전 <code>session_id</code>를 우리 앱의 자체 DB에서 조회합니다. 최초 호출과 재개 호출 모두 같은 명시적 작업 디렉터리를 넣어 <code>query({ prompt, options: { cwd: '/app', resume: previousSessionId, sessionStore, outputFormat, permissionMode: 'dontAsk', allowedTools: ['mcp__wiki__search_wiki'] } })</code>를 부릅니다. 최초 호출에서는 <code>previousSessionId</code>가 <code>undefined</code>이고, 이후 호출에서는 DB에서 읽은 값이 들어가지만 <code>cwd: '/app'</code>는 바뀌지 않습니다. 여기서 <code>sessionStore</code>는 세션 ID를 조회하는 테이블이 아니라 SDK가 대화 트랜스크립트 자체를 S3·Redis 같은 외부 저장소로 미러링하도록 넘기는 어댑터입니다(Part 7). store lookup key는 <code>cwd</code>에서 파생되므로 모든 레플리카가 원 실행과 같은 <code>cwd</code>를 써야 합니다.</p>
+<p>스트림에서는 result의 <code>structured_output</code>(<code>answer</code>/<code>citations</code>/<code>confidence</code>)과 <code>session_id</code>를 임시로 포착하되 멈추지 않고 trailing event까지 소비합니다. 반복이 끝난 뒤 <code>result.subtype === 'success'</code>를 확인한 경우에만 사용자와 session ID의 DB 매핑을 새 ID로 갱신하고 API 응답을 반환합니다. 실패 result를 받거나 반복 중 예외가 나면 오류 응답을 반환하고 기존 DB 매핑을 보존합니다. 사람이 승인 버튼을 눌러 줄 수 없는 서비스 계정이므로 권한 모드는 <code>dontAsk</code>로 두고, 허용 도구는 <code>search_wiki</code> 하나로 좁혀 사고 범위를 줄입니다.</p>
 <p><img alt="핵심 요약" src="../slides/slide-075.png" /></p>
 <p><em>▲ 교재 슬라이드 75 — 핵심 요약</em></p>
 <h2 id="2-직접-해보기--task-04-실행-결과">2. 직접 해보기 — Task 0~4 실행 결과<a class="headerlink" href="#2-직접-해보기--task-04-실행-결과" title="이 위치로 링크">¶</a></h2>
-<p><strong>Task 0</strong>은 부분 완료입니다. SDK 0.3.260과 Zod 4.5.4 설치는 성공했지만, 기본 npm 캐시가 root 소유 파일 때문에 실패해 <code>--cache ./npm-cache</code>로 우회해야 했고 <code>/status</code>도 이 환경에서는 미지원이었습니다. 인증 자체는 문제없었다는 게 Task 1 query가 기존 인증으로 성공한 것으로 확인됩니다.</p>
-<p><strong>Task 1</strong>은 성공했습니다. <code>hello.mjs</code>는 2턴, <code>$0.1208436</code>으로 이 작업 폴더를 읽고 답했습니다. assistant의 text와 result의 비용·session ID를 분리해 읽는 흐름을 확인했습니다.</p>
-<p><strong>Task 2</strong>도 성공했습니다. TTY에서 실행하자 두 번째 질문이 첫 대화의 이름을 정확히 기억했습니다 — <code>sessionId</code>를 갱신해 <code>resume</code>에 넘기는 세 줄이 실제로 대화를 이어줬습니다. 다만 대화형 stdin을 파이프로 밀어 넣었을 때는 <code>ERR_USE_AFTER_CLOSE</code>가 발생해 랩이 전제한 TTY 환경이 왜 필요한지도 함께 확인했습니다.</p>
-<p><strong>Task 3</strong> 역시 성공했습니다. <code>mcp__shelf__search_note</code>만 허용해 회식과 금요일 배포 규칙을 노트에서 조회했습니다. 반환된 근거에 과거 일정이 들어 있어 도구 응답 자체와 "다음"이라는 질문의 시간 전제는 분리해서 읽어야 함도 확인했습니다.</p>
-<p><strong>Task 4</strong>도 성공했습니다. 랩 원문의 <code>maxTurns: 4</code>로는 첫 점검이 <code>Reached maximum number of turns (4)</code>에 걸렸습니다(<code>num_turns</code>는 5로 기록). <code>8</code>로 올려 다시 돌리자 1차 점검은 OK였고, 상태 파일을 DOWN으로 바꾼 2차 점검은 "OK였는데 지금은 DOWN"이라는 변화와 원인 후보·조치까지 정확히 짚어냈습니다.</p>
+<p>Task 0은 부분 완료입니다. SDK 0.3.260과 Zod 4.5.4 설치는 성공했지만, 기본 npm 캐시는 root 소유 파일 때문에 실패해 <code>--cache ./npm-cache</code>로 우회해야 했고 <code>/status</code>도 이 환경에서는 미지원이었습니다. Task 1 query가 기존 인증으로 성공한 것은 이 환경에서의 인증 관측값입니다.</p>
+<p>Task 1은 성공했습니다. <code>hello.mjs</code>는 2턴, <code>$0.1208436</code>으로 이 작업 폴더를 읽고 답했습니다. assistant의 text와 result의 비용·session ID를 분리해 읽는 흐름을 확인했습니다.</p>
+<p>Task 2도 성공했습니다. TTY에서 실행하자 두 번째 질문이 첫 대화의 이름을 정확히 기억했습니다. 성공한 result의 <code>sessionId</code>를 다음 <code>resume</code>에 넘겨 대화가 이어졌습니다. 다만 대화형 stdin을 파이프로 밀어 넣었을 때는 <code>ERR_USE_AFTER_CLOSE</code>가 발생했습니다. 랩이 전제한 TTY 환경이 필요한 이유도 함께 확인했습니다.</p>
+<p>Task 3도 성공했습니다. <code>mcp__shelf__search_note</code>만 허용해 회식과 금요일 배포 규칙을 노트에서 조회했습니다. 반환된 근거에는 과거 일정이 있어 도구 응답 자체와 "다음"이라는 질문의 시간 전제를 나눠 읽어야 했습니다.</p>
+<p>Task 4도 성공했습니다. 랩 원문의 <code>maxTurns: 4</code>에서는 첫 점검이 <code>Reached maximum number of turns (4)</code>에 걸렸습니다(<code>num_turns</code>는 5로 기록). <code>8</code>로 올려 다시 실행하자 1차 점검은 OK였고, 상태 파일을 DOWN으로 바꾼 2차 점검은 "OK였는데 지금은 DOWN"이라는 변화와 원인 후보·조치를 짚어냈습니다.</p>
 <p><img alt="Lab 1" src="../slides/slide-078.png" /></p>
 <p><em>▲ 교재 슬라이드 78 — Lab 1</em></p>
 <p><img alt="워크샵 총정리" src="../slides/slide-082.png" /></p>
@@ -2496,14 +2500,14 @@
 <li><strong>구조화 출력</strong>: TS <code>outputFormat</code>, Python <code>output_format</code> 모두 지원합니다. Zod 4 기본 draft 2020-12는 현행 CLI에서 거부돼 draft-7 변환이 필요했습니다.</li>
 </ul>
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
-<p><strong>"실습 범위에서 뺀 항목은 이 챕터가 실패했다는 뜻이다"</strong> — 아닙니다. 컨테이너 빌드(Docker 미설치)와 Kubernetes 배포는 처음부터 범위 밖으로 정한 것이고, Bedrock 실배포는 W3부터 이어진 AWS 쿼터 승인 대기 때문에 여전히 확인하지 못한 것입니다 — 어느 쪽이든 시도했다가 실패한 게 아닙니다. 반대로 Task 4처럼 원인이 확인된 실패(<code>maxTurns</code> 부족)는 값을 올려 재실행해서 실제로 해결했습니다.</p>
+<p><strong>"실습 범위에서 뺀 항목은 이 챕터가 실패했다는 뜻이다"</strong> — 아닙니다. 컨테이너 빌드(Docker 미설치)와 Kubernetes 배포는 처음부터 범위 밖으로 정했습니다. Bedrock 실배포는 W3부터 이어진 AWS 쿼터 승인 대기 때문에 여전히 확인하지 못했습니다. 어느 쪽도 시도했다가 실패한 것은 아닙니다. 반면 Task 4처럼 원인이 확인된 실패(<code>maxTurns</code> 부족)는 값을 올려 재실행해 해결했습니다.</p>
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
-<p>6주차의 마지막 코드는 짧았지만, 그 코드 주위의 계약은 짧지 않았습니다. SDK는 라이브러리 호출 하나로 시작합니다. 그러나 실제 서비스가 되려면 반환 메시지의 의미, 도구의 권한, 스키마의 draft, 세션의 위치, 실행 환경의 쿼터까지 함께 확인해야 합니다.</p>
-<p>이번 챕터에서 다루지 않은 건 셋입니다. 컨테이너 빌드(Docker 미설치)와 Kubernetes 배포는 처음부터 범위 밖으로 정했고, Bedrock 실배포는 W3부터 이어진 AWS 쿼터 승인 대기로 여전히 확인하지 못했습니다. 셋 다 실패를 감춘 빈칸이 아니라 각자 다른 이유로 이번 정리 범위를 벗어난 것입니다.</p>
+<p>6주차의 필수 완료선은 로컬에서 <code>query()</code> 한 번을 실행하고, <code>result</code>를 포착해도 trailing event까지 스트림을 끝까지 소비하는 것입니다. 그다음 같은 배포 점검 도우미에 <code>resume</code>, 규정 조회 도구, 상태 스키마, 쓰기 차단, 상태 저장을 차례로 붙입니다. HTTP 서비스·외부 세션 저장소·컨테이너·Kubernetes·제품 인증은 그 뒤의 선택 심화입니다. 실제 서비스가 되려면 반환 메시지의 의미, 도구 권한, 스키마 draft, 세션 위치와 <code>cwd</code> 기반 store key, 실행 환경 쿼터까지 함께 확인해야 합니다.</p>
+<p>이번 챕터에서 다루지 않은 것은 컨테이너 빌드(Docker 미설치), Kubernetes 배포, Bedrock 실배포입니다. 앞의 두 항목은 처음부터 범위 밖으로 정했고, Bedrock 실배포는 W3부터 이어진 AWS 쿼터 승인 대기로 아직 확인하지 못했습니다. 모두 서로 다른 이유로 이번 정리 범위를 벗어났습니다.</p>
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>
 <li>Claude Code Deep Dive Workshop — <em>Chapter 6 / Part 8~9: 실전 프로젝트와 Recap &amp; Labs</em> (슬라이드 68~84)</li>
-<li>공식 문서: <a href="https://code.claude.com/docs/en/agent-sdk/typescript">TypeScript SDK</a>, <a href="https://code.claude.com/docs/en/agent-sdk/permissions">SDK permissions</a></li>
+<li>공식 문서: <a href="https://code.claude.com/docs/en/agent-sdk/typescript">TypeScript SDK</a>, <a href="https://code.claude.com/docs/en/agent-sdk/agent-loop">Agent loop</a>, <a href="https://code.claude.com/docs/en/agent-sdk/session-storage">Session storage</a>, <a href="https://code.claude.com/docs/en/agent-sdk/permissions">SDK permissions</a></li>
 </ul>
 
 

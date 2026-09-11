@@ -543,6 +543,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#개인-사용자의-첫-설치" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개인 사용자의 첫 설치
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#native--macos--linux--wsl" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2614,6 +2625,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#개인-사용자의-첫-설치" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개인 사용자의 첫 설치
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#native--macos--linux--wsl" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2869,20 +2891,23 @@
 
 <h1 id="part-3--설치">Part 3 — 설치<a class="headerlink" href="#part-3--설치" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p><strong>Native 원라이너 설치가 새 표준</strong>입니다. Node.js가 필요 없는 단일 바이너리이고, 백그라운드 자동 업데이트가 기본입니다. 채널(<code>stable</code>/<code>latest</code>)과 버전 하한으로 개인부터 조직 플릿까지 버전을 통제합니다.</p>
+<p><strong>Native 원라이너 설치가 새 표준</strong>입니다. Node.js가 필요 없는 단일 바이너리이며, 백그라운드 자동 업데이트를 기본으로 사용합니다. 채널(<code>stable</code>/<code>latest</code>)과 버전 하한으로 개인 환경과 조직 플릿의 버전을 관리할 수 있습니다.</p>
 <hr />
 <h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
-<p>예전 자료를 보면 <code>npm install -g @anthropic-ai/claude-code</code>가 나옵니다. <strong>이건 이제 레거시 경로입니다.</strong>
+<p>예전 자료에는 <code>npm install -g @anthropic-ai/claude-code</code>가 나옵니다. 이 방식은 이제 레거시 설치 경로입니다.
 Native 설치로 바뀌면서 Node.js 의존성이 사라졌고, 자동 업데이트와 채널 개념이 생겼습니다. 구버전 가이드를 따라하면 불필요하게 Node를 깔게 되고, 권한 문제로 헤매게 됩니다.</p>
+<blockquote>
+<p><strong>개인 기본 경로(지금 실행)</strong>: Native 설치 → <code>claude --version</code> → 프로젝트 폴더에서 <code>claude</code> 실행입니다. 첫 실행의 브라우저 로그인은 <a href="../part-04-authentication/">Part 4</a>에서 끝냅니다. Homebrew·WinGet·apt·컨테이너·조직 버전 정책은 이미 그 환경을 쓰는 경우만 선택해 읽으세요.</p>
+</blockquote>
 <hr />
 <h2 id="1-내-환경에서-돌아가는가">1. 내 환경에서 돌아가는가<a class="headerlink" href="#1-내-환경에서-돌아가는가" title="이 위치로 링크">¶</a></h2>
-<p>먼저 확인할 것들인데, 결론부터 말하면 <strong>요즘 개발 머신이면 대체로 문제없습니다.</strong></p>
+<p>먼저 지원 환경을 확인합니다. <strong>일반적인 개발 머신이라면 대체로 조건을 충족합니다.</strong></p>
 <p><strong>OS</strong>는 macOS 13 이상, Windows 10 1809·Server 2019 이상, 리눅스는 Ubuntu 20.04·Debian 10·Alpine 3.19 이상을 지원합니다.</p>
 <p><strong>하드웨어</strong>는 RAM 4GB에 x64 또는 ARM64면 됩니다. Apple Silicon은 에뮬레이션이 아니라 네이티브로 돕니다.</p>
 <p><strong>셸</strong>은 Bash, Zsh는 물론 PowerShell과 CMD까지 공식 지원합니다. Windows에서 WSL을 안 써도 된다는 뜻입니다.</p>
 <p><strong>네트워크</strong>는 인터넷 연결과 HTTPS 443이 필요합니다. 사내 프록시와 커스텀 CA를 지원하므로 폐쇄망에서도 구성할 수 있습니다.</p>
 <p><strong>의존성</strong>이 가장 중요한데, 여기가 예전 자료와 크게 달라진 부분입니다. <strong>Node.js가 필요 없습니다.</strong> 검색 엔진인 ripgrep도 설치 패키지에 기본 포함되어 있어 따로 깔 필요가 없습니다.</p>
-<p>npm으로 설치할 때만 Node.js가 등장하는데, 그것도 <strong>설치 시점에만</strong> 필요합니다(v2.1.198 기준 <strong>Node 22 이상</strong>). npm 패키지는 독립 설치본과 <strong>동일한 네이티브 바이너리</strong>를 내려받을 뿐이라, 설치가 끝나면 <code>claude</code>는 Node를 전혀 호출하지 않습니다. 구버전 Node에서는 설치가 실패하는 대신 <code>EBADENGINE</code> 경고만 출력되고 실행은 정상 동작합니다.</p>
+<p>npm 설치의 현행 요구사항은 <strong>Node.js 22 이상</strong>입니다. npm 패키지는 독립 설치본과 <strong>동일한 네이티브 바이너리</strong>를 내려받을 뿐이라, 설치가 끝나면 <code>claude</code>는 Node를 호출하지 않습니다. Node.js 18 이상이라는 하한은 이전 공식 문서의 요구사항입니다. 별도로 2026-08에 v2.1.198을 구버전 Node에서 설치했을 때는 <code>EBADENGINE</code> 경고가 출력됐지만 설치된 바이너리는 실행됐습니다. 이는 해당 버전과 날짜의 과거 관찰이며 현행 설치 요건이 아닙니다.</p>
 <p><img alt="시스템 요구사항 슬라이드" src="../slides/slide-049.png" /></p>
 <p><em>▲ 교재 슬라이드 49 — 시스템 요구사항</em></p>
 <hr />
@@ -2915,6 +2940,8 @@ Native 설치로 바뀌면서 Node.js 의존성이 사라졌고, 자동 업데�
 <p><em>▲ 교재 슬라이드 50 — 설치 방법 5종 비교</em></p>
 <hr />
 <h2 id="설치-방법별-상세">설치 방법별 상세<a class="headerlink" href="#설치-방법별-상세" title="이 위치로 링크">¶</a></h2>
+<h3 id="개인-사용자의-첫-설치">개인 사용자의 첫 설치<a class="headerlink" href="#개인-사용자의-첫-설치" title="이 위치로 링크">¶</a></h3>
+<p>macOS·Linux·WSL 사용자는 바로 아래 Native 명령을 사용합니다. Windows 사용자는 바로 다음 Windows 명령을 사용합니다. 설치가 끝나면 <code>claude --version</code>으로 명령이 실행되는지만 확인하고, 나머지 설치 방법은 건너뛰어도 됩니다.</p>
 <h3 id="native--macos--linux--wsl">Native — macOS / Linux / WSL<a class="headerlink" href="#native--macos--linux--wsl" title="이 위치로 링크">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 설치 (macOS, Linux, WSL 공통)</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://claude.ai/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
@@ -2924,18 +2951,22 @@ Native 설치로 바뀌면서 Node.js 의존성이 사라졌고, 자동 업데�
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>claude
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># 처음 실행 시 브라우저 로그인 안내가 표시됩니다</span>
 </span></code></pre></div>
+<p>설치가 끝난 뒤에는 다음 두 행동만 이어서 합니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>claude<span class="w"> </span>--version<span class="w">              </span><span class="c1"># 설치 확인</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>your-project<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>claude<span class="w">     </span><span class="c1"># 로그인과 첫 세션 시작</span>
+</span></code></pre></div>
 <p>특징:
 - Node.js 불필요, <strong>단일 바이너리</strong>
 - 백그라운드 자동 업데이트 기본 활성
 - <code>403</code>, <code>syntax error</code> 발생 시 공식 <a href="https://code.claude.com/docs/ko/troubleshoot-install">troubleshoot-install</a> 문서 참조</p>
 <h3 id="native--windows">Native — Windows<a class="headerlink" href="#native--windows" title="이 위치로 링크">¶</a></h3>
 <p>PowerShell과 CMD를 <strong>구분해야 합니다.</strong></p>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c"># Windows PowerShell (프롬프트가 PS C:\)</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">irm </span><span class="n">https</span><span class="p">://</span><span class="n">claude</span><span class="p">.</span><span class="n">ai</span><span class="p">/</span><span class="n">install</span><span class="p">.</span><span class="n">ps1</span> <span class="p">|</span> <span class="nb">iex</span>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c"># Windows PowerShell (프롬프트가 PS C:\)</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">irm </span><span class="n">https</span><span class="p">://</span><span class="n">claude</span><span class="p">.</span><span class="n">ai</span><span class="p">/</span><span class="n">install</span><span class="p">.</span><span class="n">ps1</span> <span class="p">|</span> <span class="nb">iex</span>
 </span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>:: Windows CMD (프롬프트가 C:\)
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>curl -fsSL https://claude.ai/install.cmd -o install.cmd
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>install.cmd &amp;&amp; del install.cmd
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>:: Windows CMD (프롬프트가 C:\)
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>curl -fsSL https://claude.ai/install.cmd -o install.cmd
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>install.cmd &amp;&amp; del install.cmd
 </span></code></pre></div>
 <p><strong>어느 셸인지 판별하는 팁</strong>:
 - <code>'&amp;&amp;' is not a valid statement</code> 에러 → 여기는 <strong>PowerShell</strong>
@@ -2947,25 +2978,25 @@ Native 설치로 바뀌면서 Node.js 의존성이 사라졌고, 자동 업데�
 - 경로 지정: <code>CLAUDE_CODE_GIT_BASH_PATH</code></p>
 <h3 id="homebrew-macos">Homebrew (macOS)<a class="headerlink" href="#homebrew-macos" title="이 위치로 링크">¶</a></h3>
 <p>cask가 <strong>두 개</strong>입니다.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># stable 채널 (약 1주 지연, 큰 회귀 릴리스 제외)</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>claude-code
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># latest 채널 (릴리스 즉시 반영)</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>claude-code@latest
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># 업그레이드 (자동 업데이트 없음)</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>brew<span class="w"> </span>upgrade<span class="w"> </span>claude-code
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>brew<span class="w"> </span>upgrade<span class="w"> </span>claude-code@latest
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="c1"># 디스크 정리 (이전 버전 보관 특성)</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>brew<span class="w"> </span>cleanup
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># stable 채널 (약 1주 지연, 큰 회귀 릴리스 제외)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>claude-code
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># latest 채널 (릴리스 즉시 반영)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>claude-code@latest
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># 업그레이드 (자동 업데이트 없음)</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>brew<span class="w"> </span>upgrade<span class="w"> </span>claude-code
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>brew<span class="w"> </span>upgrade<span class="w"> </span>claude-code@latest
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="c1"># 디스크 정리 (이전 버전 보관 특성)</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>brew<span class="w"> </span>cleanup
 </span></code></pre></div>
 <h3 id="winget-windows">WinGet (Windows)<a class="headerlink" href="#winget-windows" title="이 위치로 링크">¶</a></h3>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c"># 설치</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">winget</span> <span class="n">install</span> <span class="n">Anthropic</span><span class="p">.</span><span class="n">ClaudeCode</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c"># 업그레이드 (자동 업데이트 없음)</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">winget</span> <span class="n">upgrade</span> <span class="n">Anthropic</span><span class="p">.</span><span class="n">ClaudeCode</span>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c"># 설치</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">winget</span> <span class="n">install</span> <span class="n">Anthropic</span><span class="p">.</span><span class="n">ClaudeCode</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c"># 업그레이드 (자동 업데이트 없음)</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">winget</span> <span class="n">upgrade</span> <span class="n">Anthropic</span><span class="p">.</span><span class="n">ClaudeCode</span>
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -2974,50 +3005,50 @@ Native 설치로 바뀌면서 Node.js 의존성이 사라졌고, 자동 업데�
 </div>
 <h3 id="linux--apt-debian--ubuntu">Linux — apt (Debian / Ubuntu)<a class="headerlink" href="#linux--apt-debian--ubuntu" title="이 위치로 링크">¶</a></h3>
 <p><strong>서명된 공식 저장소</strong>를 사용합니다.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>install<span class="w"> </span>-d<span class="w"> </span>-m<span class="w"> </span><span class="m">0755</span><span class="w"> </span>/etc/apt/keyrings
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>sudo<span class="w"> </span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://downloads.claude.ai/keys/claude-code.asc<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span>-o<span class="w"> </span>/etc/apt/keyrings/claude-code.asc
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;deb [signed-by=/etc/apt/keyrings/claude-code.asc] \</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="s2">   https://downloads.claude.ai/claude-code/apt/stable stable main&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">   </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/claude-code.list
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>claude-code
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>install<span class="w"> </span>-d<span class="w"> </span>-m<span class="w"> </span><span class="m">0755</span><span class="w"> </span>/etc/apt/keyrings
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>sudo<span class="w"> </span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://downloads.claude.ai/keys/claude-code.asc<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span>-o<span class="w"> </span>/etc/apt/keyrings/claude-code.asc
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;deb [signed-by=/etc/apt/keyrings/claude-code.asc] \</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="s2">   https://downloads.claude.ai/claude-code/apt/stable stable main&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">   </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/claude-code.list
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>claude-code
 </span></code></pre></div>
 <p><strong>GPG 지문 검증 (신뢰 전 필수)</strong>:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>gpg<span class="w"> </span>--show-keys<span class="w"> </span>/etc/apt/keyrings/claude-code.asc
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># 31DD DE24 DDFA B679 F42D 7BD2 BAA9 29FF 1A7E CACE</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>gpg<span class="w"> </span>--show-keys<span class="w"> </span>/etc/apt/keyrings/claude-code.asc
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># 31DD DE24 DDFA B679 F42D 7BD2 BAA9 29FF 1A7E CACE</span>
 </span></code></pre></div></p>
 <div class="admonition tip">
 <p class="admonition-title">현장 메모</p>
 <p>사내 리눅스 플릿에 배포한다면 이 경로가 정답입니다. GPG 서명 검증이 되고, 기존 <code>apt upgrade</code> 운영 절차에 그대로 편입됩니다. <code>latest</code> 채널로 바꾸려면 URL과 suite를 교체하면 됩니다.</p>
 </div>
 <h3 id="linux--dnf--apk">Linux — dnf / apk<a class="headerlink" href="#linux--dnf--apk" title="이 위치로 링크">¶</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Fedora / RHEL (dnf)</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/yum.repos.d/claude-code.repo<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="s">[claude-code]</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="s">name=Claude Code</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="s">baseurl=https://downloads.claude.ai/claude-code/rpm/stable</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="s">enabled=1</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="s">gpgcheck=1</span>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="s">gpgkey=https://downloads.claude.ai/keys/claude-code.asc</span>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="s">EOF</span>
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>claude-code
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Fedora / RHEL (dnf)</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/yum.repos.d/claude-code.repo<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="s">[claude-code]</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="s">name=Claude Code</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="s">baseurl=https://downloads.claude.ai/claude-code/rpm/stable</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="s">enabled=1</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="s">gpgcheck=1</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="s">gpgkey=https://downloads.claude.ai/keys/claude-code.asc</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="s">EOF</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>claude-code
 </span></code></pre></div>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Alpine 준비물 (musl 계열)</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>apk<span class="w"> </span>add<span class="w"> </span>libgcc<span class="w"> </span>libstdc++<span class="w"> </span>ripgrep
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># settings.json에 추가: &quot;USE_BUILTIN_RIPGREP&quot;: &quot;0&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Alpine 준비물 (musl 계열)</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>apk<span class="w"> </span>add<span class="w"> </span>libgcc<span class="w"> </span>libstdc++<span class="w"> </span>ripgrep
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># settings.json에 추가: &quot;USE_BUILTIN_RIPGREP&quot;: &quot;0&quot;</span>
 </span></code></pre></div>
 <h3 id="npm-레거시">npm (레거시)<a class="headerlink" href="#npm-레거시" title="이 위치로 링크">¶</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># 설치에 Node.js 22 이상 필요 (v2.1.198 기준)</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>node<span class="w"> </span>--version
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># 글로벌 설치</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@anthropic-ai/claude-code
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="c1"># 검증</span>
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>claude<span class="w"> </span>--version
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
-</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="c1"># 업그레이드 — npm update -g 는 원래 semver 범위를 따라가므로 최신으로 안 갈 수 있음</span>
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@anthropic-ai/claude-code@latest
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># 설치에 Node.js 22 이상 필요 (v2.1.198 기준)</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>node<span class="w"> </span>--version
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># 글로벌 설치</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@anthropic-ai/claude-code
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># 검증</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>claude<span class="w"> </span>--version
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="c1"># 업그레이드 — npm update -g 는 원래 semver 범위를 따라가므로 최신으로 안 갈 수 있음</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@anthropic-ai/claude-code@latest
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -3026,14 +3057,14 @@ Native 설치로 바뀌면서 Node.js 의존성이 사라졌고, 자동 업데�
 <p>npm 경로도 자동 업데이트가 되고 실행 바이너리도 Native와 같지만, 신규 도입이라면 Node 의존을 아예 없앨 수 있는 <strong>Native 경로가 더 단순합니다.</strong></p>
 <hr />
 <h2 id="개념-2--버전-지정과-채널-선택">개념 2 — 버전 지정과 채널 선택<a class="headerlink" href="#개념-2--버전-지정과-채널-선택" title="이 위치로 링크">¶</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># stable 채널로 설치 (설치 채널이 이후 업데이트의 기본값이 됨)</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://claude.ai/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w"> </span>-s<span class="w"> </span>stable
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># 특정 버전 설치</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://claude.ai/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w"> </span>-s<span class="w"> </span><span class="m">2</span>.1.89
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># Windows PowerShell에서 버전 지정</span>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="p">&amp;</span><span class="w"> </span><span class="o">([</span>scriptblock<span class="o">]</span>::Create<span class="o">((</span>irm<span class="w"> </span>https://claude.ai/install.ps1<span class="o">)))</span><span class="w"> </span><span class="m">2</span>.1.89
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># stable 채널로 설치 (설치 채널이 이후 업데이트의 기본값이 됨)</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://claude.ai/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w"> </span>-s<span class="w"> </span>stable
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># 특정 버전 설치</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://claude.ai/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w"> </span>-s<span class="w"> </span><span class="m">2</span>.1.89
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="c1"># Windows PowerShell에서 버전 지정</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="p">&amp;</span><span class="w"> </span><span class="o">([</span>scriptblock<span class="o">]</span>::Create<span class="o">((</span>irm<span class="w"> </span>https://claude.ai/install.ps1<span class="o">)))</span><span class="w"> </span><span class="m">2</span>.1.89
 </span></code></pre></div>
 <p><strong>두 채널의 차이</strong>:</p>
 <table>
@@ -3083,60 +3114,62 @@ Native 설치로 바뀌면서 Node.js 의존성이 사라졌고, 자동 업데�
 <hr />
 <h2 id="개념-4--컨테이너에서-쓰기">개념 4 — 컨테이너에서 쓰기<a class="headerlink" href="#개념-4--컨테이너에서-쓰기" title="이 위치로 링크">¶</a></h2>
 <h3 id="docker">Docker<a class="headerlink" href="#docker" title="이 위치로 링크">¶</a></h3>
-<div class="language-dockerfile highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">ubuntu:24.04</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">RUN</span><span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>curl<span class="w"> </span>git<span class="w"> </span>ca-certificates
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">RUN</span><span class="w"> </span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://claude.ai/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="k">ENV</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/root/.local/bin:</span><span class="si">${</span><span class="nv">PATH</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/workspace</span>
+<div class="language-dockerfile highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">ubuntu:24.04</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">RUN</span><span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>curl<span class="w"> </span>git<span class="w"> </span>ca-certificates
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">RUN</span><span class="w"> </span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://claude.ai/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="k">ENV</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/root/.local/bin:</span><span class="si">${</span><span class="nv">PATH</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/workspace</span>
 </span></code></pre></div>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># 실행 예시 (키는 런타임에 주입)</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span>-e<span class="w"> </span>ANTHROPIC_API_KEY<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/workspace<span class="w"> </span>claude-dev<span class="w"> </span>claude
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># 실행 예시 (키는 런타임에 주입)</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span>-e<span class="w"> </span>ANTHROPIC_API_KEY<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">    </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/workspace<span class="w"> </span>claude-dev<span class="w"> </span>claude
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p><strong>키를 이미지에 굽지 마세요.</strong> 런타임 <code>-e</code>로 주입합니다.</p>
 </div>
 <h3 id="devcontainer">Devcontainer<a class="headerlink" href="#devcontainer" title="이 위치로 링크">¶</a></h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">{</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;claude-dev&quot;</span><span class="p">,</span>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mcr.microsoft.com/devcontainers/base:ubuntu&quot;</span><span class="p">,</span>
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">    </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">    </span><span class="nt">&quot;postCreateCommand&quot;</span><span class="p">:</span>
-</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">      </span><span class="s2">&quot;curl -fsSL https://claude.ai/install.sh | bash&quot;</span><span class="p">,</span>
-</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">    </span><span class="nt">&quot;remoteEnv&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">      </span><span class="nt">&quot;ANTHROPIC_API_KEY&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;${localEnv:ANTHROPIC_API_KEY}&quot;</span>
-</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="p">{</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;claude-dev&quot;</span><span class="p">,</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mcr.microsoft.com/devcontainers/base:ubuntu&quot;</span><span class="p">,</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="nt">&quot;postCreateCommand&quot;</span><span class="p">:</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">      </span><span class="s2">&quot;curl -fsSL https://claude.ai/install.sh | bash&quot;</span><span class="p">,</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">    </span><span class="nt">&quot;remoteEnv&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">      </span><span class="nt">&quot;ANTHROPIC_API_KEY&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;${localEnv:ANTHROPIC_API_KEY}&quot;</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="p">}</span>
 </span></code></pre></div>
 <p>VS Code에서 "Reopen in Container"로 실행하면 팀 전체가 동일 환경을 갖게 됩니다.</p>
 <hr />
 <h2 id="개념-5--설치-검증">개념 5 — 설치 검증<a class="headerlink" href="#개념-5--설치-검증" title="이 위치로 링크">¶</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># 버전 확인</span>
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>claude<span class="w"> </span>--version
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="c1"># 종합 자가 진단</span>
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>claude<span class="w"> </span>doctor
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="c1">#   설치 상태, 설정, 최근 업데이트 결과를 점검</span>
-</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="c1">#   f 키를 누르면 발견된 문제를 Claude가 수정</span>
-</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>
-</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="c1"># 즉시 수동 업데이트</span>
-</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>claude<span class="w"> </span>update
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># 버전 확인</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>claude<span class="w"> </span>--version
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># 종합 자가 진단</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>claude<span class="w"> </span>doctor
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="c1">#   읽기 전용으로 설치 상태, 설정, 최근 업데이트 결과를 점검</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="c1"># 수정 제안과 적용 확인은 Claude Code 세션 안에서</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>/doctor
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="c1"># 즉시 수동 업데이트</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>claude<span class="w"> </span>update
 </span></code></pre></div>
 <blockquote>
-<p><code>claude doctor</code>는 설치 관련 문제의 <strong>1순위 진단 도구</strong>입니다. 문제를 찾은 뒤 <code>f</code> 키를 누르면 자동 수정까지 시도합니다.</p>
+<p><code>claude doctor</code>는 설치 관련 문제의 <strong>읽기 전용 진단 도구</strong>입니다. 수정이 필요하면 세션 안의 <code>/doctor</code>가 먼저 제안을 보여 주고 확인 후 적용합니다. (<a href="https://code.claude.com/docs/en/installation">Advanced setup</a>, <a href="https://code.claude.com/docs/en/commands">Commands</a>)</p>
 </blockquote>
 <hr />
 <h2 id="개념-6--자동-업데이트와-릴리스-채널-설정">개념 6 — 자동 업데이트와 릴리스 채널 설정<a class="headerlink" href="#개념-6--자동-업데이트와-릴리스-채널-설정" title="이 위치로 링크">¶</a></h2>
 <p><code>settings.json</code>:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="nt">&quot;autoUpdatesChannel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;stable&quot;</span><span class="p">,</span>
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="nt">&quot;minimumVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2.1.100&quot;</span><span class="p">,</span>
-</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">        </span><span class="nt">&quot;DISABLE_AUTOUPDATER&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span>
-</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="p">{</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">    </span><span class="nt">&quot;autoUpdatesChannel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;stable&quot;</span><span class="p">,</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">    </span><span class="nt">&quot;minimumVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2.1.100&quot;</span><span class="p">,</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">    </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">        </span><span class="nt">&quot;DISABLE_AUTOUPDATER&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="p">}</span>
 </span></code></pre></div>
 <ul>
 <li><code>autoUpdatesChannel</code>: <code>latest</code>(기본) 또는 <code>stable</code></li>
@@ -3159,19 +3192,19 @@ Native 설치로 바뀌면서 Node.js 의존성이 사라졌고, 자동 업데�
 <hr />
 <h2 id="개념-7--제거-uninstall">개념 7 — 제거 (Uninstall)<a class="headerlink" href="#개념-7--제거-uninstall" title="이 위치로 링크">¶</a></h2>
 <p>설치 경로별로 다릅니다.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># Native (macOS, Linux, WSL)</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>rm<span class="w"> </span>-rf<span class="w"> </span>~/.local/bin/claude<span class="w"> </span>~/.local/share/claude
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># Homebrew / WinGet</span>
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>brew<span class="w"> </span>uninstall<span class="w"> </span>--cask<span class="w"> </span>claude-code
-</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>winget<span class="w"> </span>uninstall<span class="w"> </span>Anthropic.ClaudeCode
-</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>
-</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="c1"># apt / dnf</span>
-</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>sudo<span class="w"> </span>apt<span class="w"> </span>remove<span class="w"> </span>claude-code
-</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>remove<span class="w"> </span>claude-code
-</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>
-</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="c1"># 사용자 데이터 정리 (선택)</span>
-</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>rm<span class="w"> </span>-rf<span class="w"> </span>~/.claude<span class="w"> </span>~/.claude.json
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Native (macOS, Linux, WSL)</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>rm<span class="w"> </span>-rf<span class="w"> </span>~/.local/bin/claude<span class="w"> </span>~/.local/share/claude
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="c1"># Homebrew / WinGet</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>brew<span class="w"> </span>uninstall<span class="w"> </span>--cask<span class="w"> </span>claude-code
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>winget<span class="w"> </span>uninstall<span class="w"> </span>Anthropic.ClaudeCode
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="c1"># apt / dnf</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>sudo<span class="w"> </span>apt<span class="w"> </span>remove<span class="w"> </span>claude-code
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>remove<span class="w"> </span>claude-code
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="c1"># 사용자 데이터 정리 (선택)</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>rm<span class="w"> </span>-rf<span class="w"> </span>~/.claude<span class="w"> </span>~/.claude.json
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -3190,46 +3223,46 @@ Native 설치로 바뀌면서 Node.js 의존성이 사라졌고, 자동 업데�
 <blockquote>
 <p>아래는 2026-08-02에 직접 실행한 결과입니다. (전체 랩 기록은 <a href="../part-10-recap-and-labs/">Part 10</a>)</p>
 </blockquote>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="gp">$ </span>claude<span class="w"> </span>--version
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="go">2.1.220 (Claude Code)</span>
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="gp">$ </span>claude<span class="w"> </span>doctor
-</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="go">Claude Code doctor</span>
-</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>
-</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="go">Running: npm-global (2.1.220)</span>
-</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="go">Commit: 4073f59596e2</span>
-</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="go">Platform: darwin-arm64</span>
-</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="go">Path: /opt/homebrew/lib/node_modules/@anthropic-ai/claude-code/bin/claude.exe</span>
-</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="go">Config install method: global</span>
-</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="go">Search: OK (bundled)</span>
-</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="go">Auto-updates: enabled</span>
-</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="go">Auto-update channel: latest</span>
-</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="go">Last update attempt: success → 2.1.220 (2026-07-28)</span>
-</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>
-</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="go">No installation issues found.</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="gp">$ </span>claude<span class="w"> </span>--version
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="go">2.1.220 (Claude Code)</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="gp">$ </span>claude<span class="w"> </span>doctor
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="go">Claude Code doctor</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="go">Running: npm-global (2.1.220)</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="go">Commit: 4073f59596e2</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="go">Platform: darwin-arm64</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="go">Path: /opt/homebrew/lib/node_modules/@anthropic-ai/claude-code/bin/claude.exe</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="go">Config install method: global</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="go">Search: OK (bundled)</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="go">Auto-updates: enabled</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="go">Auto-update channel: latest</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="go">Last update attempt: success → 2.1.220 (2026-07-28)</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="go">No installation issues found.</span>
 </span></code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">직접 해보고 알게 된 것</p>
-<p>위 표에서 npm을 "레거시"로 분류했는데, <strong>정작 제 환경이 <code>Running: npm-global</code>이었습니다.</strong>
+<p>본문에서는 npm을 이전 설치 경로로 설명했지만, <strong>제 환경은 <code>Running: npm-global</code>이었습니다.</strong>
 경로도 <code>/opt/homebrew/lib/node_modules/@anthropic-ai/claude-code/</code>로, Native 설치의 <code>~/.local/bin/claude</code>가 아니었습니다.</p>
 <p>여기서 두 가지를 배웠습니다.
-1. <strong><code>claude doctor</code>는 "내가 어떤 경로로 설치했는지"를 알려주는 유일한 명령입니다.</strong> 문서만 읽으면 당연히 Native일 거라 생각하지만, 예전에 깔았거나 다른 도구가 번들로 깔았을 수 있습니다.
+1. <strong><code>claude doctor</code>는 설치 상태와 경로를 확인하는 공식 진단 명령입니다.</strong> 문서상 권장 경로와 실제 설치 경로가 다를 수 있습니다.
 2. npm 경로여도 <code>Auto-updates: enabled</code> / <code>Auto-update channel: latest</code>로 자동 업데이트가 동작 중이었고, <code>2026-07-28</code>에 2.1.220으로 갱신에 성공한 이력이 남아 있었습니다. <code>Search: OK (bundled)</code>로 ripgrep도 번들 버전이 정상 인식됐습니다.</p>
 <p><strong>제거 시 주의</strong>: npm 경로로 설치된 경우 <code>rm -rf ~/.local/bin/claude</code>(Native용 명령)로는 지워지지 않습니다. 위 "제거" 절의 경로별 표를 꼭 확인하세요.</p>
 </div>
 <p>이어지는 첫 세션 실습:</p>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>https://github.com/whchoi98/claude-code-workshop
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>claude-code-workshop<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>claude
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="go">&gt; 이 저장소의 구조를 설명해줘</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>https://github.com/whchoi98/claude-code-workshop
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>claude-code-workshop<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>claude
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="go">&gt; 이 저장소의 구조를 설명해줘</span>
 </span></code></pre></div>
-<p>→ 실제 응답과 관찰 결과는 <a href="../part-10-recap-and-labs/#lab-1--설치와-첫-세션-소요-15분">Part 10 / Lab 1</a>에 정리했습니다.</p>
+<p>→ 실제 응답과 관찰 결과는 <a href="../part-10-recap-and-labs/#lab-1--설치와-첫-세션">Part 10 / Lab 1</a>에 정리했습니다.</p>
 <hr />
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
 <ul>
-<li><strong>Native 원라이너가 권장 설치</strong>이고 Node.js는 필요 없습니다.</li>
-<li>패키지 매니저 경로(Homebrew, WinGet, apt, dnf, apk)도 공식 지원되지만 <strong>자동 업데이트는 Native만</strong> 됩니다.</li>
+<li><strong>Native 원라이너가 권장 설치 경로</strong>이며 Node.js는 필요 없습니다.</li>
+<li>패키지 매니저 경로(Homebrew, WinGet, apt, dnf, apk)도 공식 지원됩니다. <strong>Native와 쓰기 가능한 npm global 설치는 자동 업데이트</strong>하고, Homebrew·WinGet·apt·dnf·apk는 기본적으로 각 패키지 관리자의 업데이트 절차를 따릅니다.</li>
 <li>채널은 <code>stable</code>(약 1주 지연)과 <code>latest</code>(즉시) 두 개이고, <strong>설치 시 선택한 채널이 이후 업데이트 기준</strong>이 됩니다.</li>
-<li>문제가 생기면 <code>claude doctor</code> → <code>f</code> 키가 1순위 대응입니다.</li>
+<li>문제가 생기면 <code>claude doctor</code>로 진단하고, 수정 제안은 세션의 <code>/doctor</code>에서 검토·확인합니다.</li>
 <li>조직은 <code>requiredMinimumVersion</code> / <code>requiredMaximumVersion</code>으로 플릿 버전을 고정합니다.</li>
 <li>Windows에서 <strong>샌드박스를 쓰려면 WSL 2</strong>가 유일한 경로입니다.</li>
 </ul>

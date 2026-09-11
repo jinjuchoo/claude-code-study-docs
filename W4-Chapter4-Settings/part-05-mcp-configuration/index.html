@@ -1530,6 +1530,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="왜 알아야 하나">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#선택-심화-읽기-전용-mcp-하나" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        선택 심화: 읽기 전용 MCP 하나
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2416,6 +2433,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="왜 알아야 하나">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#선택-심화-읽기-전용-mcp-하나" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        선택 심화: 읽기 전용 MCP 하나
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2547,24 +2581,27 @@
 
 <h1 id="part-5--mcp-구성">Part 5 — MCP 구성<a class="headerlink" href="#part-5--mcp-구성" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p>MCP(Model Context Protocol)는 Claude Code를 외부 시스템에 연결하는 개방 표준입니다. 문법은 <strong>3가지 프리미티브(도구·리소스·프롬프트) × 4가지 전송(stdio·http·sse·ws) × 3가지 스코프(local·project·user)</strong>로 요약됩니다.</p>
+<p>MCP(Model Context Protocol)는 Claude Code를 외부 시스템에 연결하는 개방 표준입니다. 처음에는 인증 비밀이나 쓰기 권한 없이 <strong>읽기 전용 정보 하나를 가져오는 서버 1개</strong>부터 연결합니다. 성공한 뒤 3 프리미티브·4 전송·3 스코프를 기준으로 구성을 넓혀갑니다.</p>
 <hr />
 <h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
-<p>지금까지 다룬 Settings·Permissions·Hooks·Command·Skill은 전부 Claude Code <strong>안에서</strong> 벌어지는 일을 조율하는 도구였습니다. MCP는 여기서 한 걸음 더 나가 Claude Code를 <strong>바깥 세계</strong>(GitHub, Slack, 사내 위키, 데이터베이스)와 잇는 통로입니다.</p>
+<p>지금까지 다룬 Settings·Permissions·Hooks·Command·Skill은 Claude Code <strong>안에서</strong> 일어나는 작업을 조율했습니다. MCP는 Claude Code를 GitHub, Slack, 사내 위키, 데이터베이스 같은 <strong>외부 시스템</strong>과 연결합니다.</p>
+<h3 id="선택-심화-읽기-전용-mcp-하나">선택 심화: 읽기 전용 MCP 하나<a class="headerlink" href="#선택-심화-읽기-전용-mcp-하나" title="이 위치로 링크">¶</a></h3>
+<p>첫 MCP 요청은 “공개 저장소의 기본 브랜치를 읽어라”처럼 <strong>외부 입력을 읽기만 하는 작업</strong>이 좋습니다. 서버가 제공하는 도구와 리소스가 대상이며, Claude가 외부 정보를 요청할 때 실행됩니다. 연결·인증·Permission 중 하나라도 실패하면 호출이 멈춥니다. 쓰기 작업이 자동으로 읽기 작업으로 바뀌지는 않습니다.</p>
+<p>개인 개발자는 local 스코프에서 필요한 서버만 연결하고, 만료 기간이 짧은 읽기 전용 자격 증명으로 시작합니다. 조직 관리자는 서버 allowlist와 인증 방식, Project 배포, managed MCP 정책을 정합니다. 읽기 전용 연결이라도 서버 출력을 그대로 신뢰해서는 안 됩니다. 다음 Part 6에서 다룰 프롬프트 인젝션 경계를 똑같이 적용합니다.</p>
 <hr />
 <h2 id="1-mcp-서버-하나로-할-수-있는-세-가지">1. MCP 서버 하나로 할 수 있는 세 가지<a class="headerlink" href="#1-mcp-서버-하나로-할-수-있는-세-가지" title="이 위치로 링크">¶</a></h2>
-<p>GitHub MCP 서버를 연결했다고 해봅시다. 이런 게 가능해집니다.</p>
+<p>GitHub MCP 서버를 연결하면 다음 세 방식으로 사용할 수 있습니다.</p>
 <ul>
 <li>"이 저장소 열린 이슈 보여줘" → <strong>도구</strong> 하나를 호출</li>
 <li><code>@github:issue://123</code> 읽고 도와줘 → 이슈 내용을 <strong>리소스</strong>로 첨부</li>
 <li><code>/mcp__github__pr_review 123</code> → 서버가 미리 만들어둔 <strong>프롬프트</strong> 양식 사용</li>
 </ul>
-<p>즉 MCP 서버 하나가 노출할 수 있는 능력은 <strong>도구(Tools)·리소스(Resources)·프롬프트(Prompts)</strong> 세 가지입니다. 이를 <strong>3 프리미티브</strong>라고 부릅니다. Claude Code는 이걸 소비하는 클라이언트 역할을 합니다. 도구는 <code>mcp__서버__도구</code> 형식의 이름으로 등장하는데, Part 2에서 배운 권한 규칙 지정자와 같은 이름 체계입니다.</p>
-<p>서버를 직접 만드는 법은 Agent SDK와 6주차에서 다루므로, 이 파트는 <strong>이미 있는 서버를 연결해 쓰는</strong> 관점에 집중합니다.</p>
+<p>MCP 서버 하나는 <strong>도구(Tools)·리소스(Resources)·프롬프트(Prompts)</strong>를 제공할 수 있습니다. 이 셋을 <strong>3 프리미티브</strong>라고 부르며 Claude Code는 이를 사용하는 클라이언트입니다. 도구 이름은 <code>mcp__서버__도구</code> 형식으로 표시됩니다. Part 2에서 배운 권한 규칙 지정자와 같은 이름 체계입니다.</p>
+<p>서버를 직접 만드는 방법은 6주차 Agent SDK에서 다룹니다. 이 파트에서는 <strong>이미 있는 서버를 연결해 쓰는 방법</strong>에 집중합니다.</p>
 <p><img alt="MCP와 3 프리미티브 슬라이드" src="../slides/slide-054.png" /></p>
 <p><em>▲ 교재 슬라이드 54 — MCP와 3 프리미티브</em></p>
 <h2 id="2-전송-4종">2. 전송 4종<a class="headerlink" href="#2-전송-4종" title="이 위치로 링크">¶</a></h2>
-<p>서버와 이어지는 방식은 네 가지입니다. <strong>stdio</strong>는 로컬 프로세스를 스폰해 표준입출력으로 통신하며 <code>npx</code>로 배포되는 서버의 표준 방식입니다. <strong>http</strong>는 원격 HTTP 엔드포인트로 관리형 서비스의 표준입니다. <strong>sse</strong>(서버 전송 이벤트)는 폐지 예정(deprecated)이라 http로 이행하는 추세입니다. <strong>ws</strong>(웹소켓)는 <code>claude mcp add --transport</code>가 아니라 <code>.mcp.json</code>이나 <code>mcp add-json</code>으로만 구성하며 OAuth 인증도 지원하지 않습니다. 대략 "로컬 도구는 stdio, SaaS는 http"로 기억하면 됩니다.</p>
+<p>서버와 연결하는 전송 방식은 네 가지입니다. <strong>stdio</strong>는 로컬 프로세스를 띄워 표준입출력으로 통신하며 <code>npx</code>로 배포되는 서버에서 주로 씁니다. <strong>http</strong>는 원격 HTTP 엔드포인트에 연결하는 방식으로 관리형 서비스에서 흔합니다. <strong>sse</strong>(서버 전송 이벤트)는 폐지 예정(deprecated)이어서 http로 옮겨가는 추세입니다. <strong>ws</strong>(웹소켓)는 <code>claude mcp add --transport</code>가 아니라 <code>.mcp.json</code>이나 <code>mcp add-json</code>으로만 설정할 수 있고 OAuth 인증도 지원하지 않습니다. 우선 "로컬 도구는 stdio, SaaS는 http"로 기억하면 충분합니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp"># </span>stdio:<span class="w"> </span>--<span class="w"> </span>뒤가<span class="w"> </span>실행<span class="w"> </span>명령
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">$ </span>claude<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>playwright<span class="w"> </span>--<span class="w"> </span>npx<span class="w"> </span>-y<span class="w"> </span>@playwright/mcp@latest
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
@@ -2574,7 +2611,7 @@
 <p><img alt="전송 4종 슬라이드" src="../slides/slide-055.png" /></p>
 <p><em>▲ 교재 슬라이드 55 — 전송 4종</em></p>
 <h2 id="3-스코프-3종--상황별로-고르기">3. 스코프 3종 — 상황별로 고르기<a class="headerlink" href="#3-스코프-3종--상황별로-고르기" title="이 위치로 링크">¶</a></h2>
-<p>어디에 저장할지도 3가지인데, 상황별로 골라보면 쉽습니다.</p>
+<p>서버 설정을 저장하는 스코프도 세 가지입니다. 사용 범위에 맞춰 고릅니다.</p>
 <ul>
 <li><strong>나 혼자 잠깐 테스트해볼 때</strong> → <code>local</code>(기본값). <code>~/.claude.json</code>의 프로젝트별 항목에 저장, 나만 씁니다.</li>
 <li><strong>팀 전체가 같이 써야 할 때</strong> → <code>project</code>. 저장소 루트의 <code>.mcp.json</code>에 저장, 커밋해서 공유합니다.</li>
@@ -2583,7 +2620,7 @@
 <div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gp">$ </span>claude<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>-s<span class="w"> </span>project<span class="w"> </span>sentry<span class="w"> </span>--<span class="w"> </span>npx<span class="w"> </span>-y<span class="w"> </span>@sentry/mcp
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="gp">$ </span>claude<span class="w"> </span>mcp<span class="w"> </span>list<span class="w"> </span>/<span class="w"> </span>get<span class="w"> </span>&lt;name&gt;<span class="w"> </span>/<span class="w"> </span>remove<span class="w"> </span>&lt;name&gt;
 </span></code></pre></div>
-<p>동명 서버가 여러 스코프에 있으면 Part 1과 같은 <strong>local &gt; project &gt; user</strong> 순으로 우선합니다. 다만 <code>project</code> 스코프 서버는 저장소가 임의 명령을 실행하는 서버를 몰래 심을 수 있다는 위험 때문에 <strong>처음 쓸 때 별도의 승인 절차</strong>를 거칩니다(Lab 3에서 실제로 "pending approval" 상태를 봤습니다).</p>
+<p>이름이 같은 서버가 여러 스코프에 있으면 Part 1과 마찬가지로 <strong>local &gt; project &gt; user</strong> 순서가 적용됩니다. 대화형 세션에서는 <code>project</code> 서버를 처음 사용할 때 별도 승인을 받습니다. Lab 3에서도 실제로 "pending approval" 상태를 확인했습니다. 다만 <code>claude -p</code>, Agent SDK, cloud처럼 승인 UI를 표시할 수 없는 환경에서는 project <code>.mcp.json</code> 서버가 질문 없이 로드될 수 있습니다. CI에서는 <code>--strict-mcp-config</code>, <code>--setting-sources</code>, <code>disabledMcpjsonServers</code> 또는 managed MCP 정책으로 명시적으로 제한해야 합니다.</p>
 <p><code>.mcp.json</code>으로 팀 표준을 커밋할 때는 <code>${VAR}</code>로 환경변수를 확장하고 <code>${VAR:-기본값}</code> 문법으로 미설정 시 폴백을 지정할 수 있습니다. <strong>토큰이나 키는 절대 이 파일에 직접 적지 말고 환경변수로 외부화</strong>해야 합니다.</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nt">&quot;corp-wiki&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -2598,28 +2635,28 @@
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h2 id="4-연결-흐름--추가--인증--사용">4. 연결 흐름 — 추가 → 인증 → 사용<a class="headerlink" href="#4-연결-흐름--추가--인증--사용" title="이 위치로 링크">¶</a></h2>
-<p>원격 http 서버는 대개 OAuth(비밀번호를 직접 넘기지 않고 브라우저 로그인으로 접근 권한만 위임하는 표준 인증 방식)로 인증합니다. 서버를 추가하면 처음엔 미인증 상태입니다. <code>/mcp</code>에서 서버를 골라 Authenticate를 실행하면 브라우저가 열려 로그인과 권한 동의를 거칩니다. 그 뒤 토큰이 저장되고 이후로는 자동 갱신됩니다.</p>
+<p>원격 HTTP/SSE 서버는 <strong>해당 서버가 지원하는 경우에만</strong> OAuth를 사용할 수 있습니다. 인증 방식과 토큰 갱신 절차는 DCR/CIMD·사전 등록·헤더 인증을 포함한 서버별 계약에 따라 달라집니다. 대화형 <code>/mcp</code>의 Authenticate는 OAuth 서버에서 선택할 수 있는 경로 중 하나일 뿐이며, 모든 원격 서버에 공통으로 적용되는 절차가 아닙니다.</p>
 <div class="admonition warning">
 <p class="admonition-title">직접 해보고 알게 된 것 — 모든 원격 서버가 OAuth를 지원하지는 않는다</p>
-<p>교재 예시 그대로 <code>claude mcp add --transport http github https://api.githubcopilot.com/mcp/</code>를 추가하고 <code>claude mcp login github</code>으로 OAuth를 시도했더니 <code>"Incompatible auth server: does not support dynamic client registration"</code> 오류가 났습니다. 공식문서(<code>code.claude.com/docs/en/mcp</code>)를 확인해보니 GitHub의 이 원격 서버는 애초에 <strong>OAuth가 아니라 개인 액세스 토큰(PAT)을 헤더로 직접 넘기는 방식</strong>을 쓰라고 안내하고 있었습니다.
+<p>교재 예시 그대로 <code>claude mcp add --transport http github https://api.githubcopilot.com/mcp/</code>를 추가하고 <code>claude mcp login github</code>으로 OAuth를 시도했더니 <code>"Incompatible auth server: does not support dynamic client registration"</code> 오류가 났습니다. 이 실습 서버에는 PAT를 헤더로 직접 넘겨 연결했습니다. Claude Code 일반 문서만으로 이 GitHub 서버의 PAT 계약을 확정할 수 없으므로 서버별 인증 방식은 해당 서버 공식 문서를 확인합니다.
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>claude<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>--transport<span class="w"> </span>http<span class="w"> </span>github<span class="w"> </span>https://api.githubcopilot.com/mcp/<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span>--header<span class="w"> </span><span class="s2">&quot;Authorization: Bearer YOUR_GITHUB_PAT&quot;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span>--header<span class="w"> </span><span class="s2">&quot;Authorization: Bearer ***&quot;</span>
 </span></code></pre></div>
-fine-grained PAT(읽기 전용, 저장소 1개, 만료 짧게)를 발급해 이 방식으로 다시 등록하자 <code>claude mcp list</code>에서 바로 <code>✔ Connected</code>가 떴습니다. 실제로 "이 저장소의 기본 브랜치가 뭐야"라고 물으니 <code>mcp__github__*</code> 도구가 호출되어 정확한 저장소 정보(브랜치명, <code>has_pages</code> 여부 등)를 가져왔습니다. 즉 "원격 서버는 다 OAuth"라고 일반화하면 안 됩니다. <strong>서버마다 인증 서버 구현이 다를 수 있어 실패하면 그 서버의 문서를 따로 확인해야</strong> 합니다.</p>
+fine-grained PAT(읽기 전용, 저장소 1개, 만료 짧게)를 발급해 이 방식으로 다시 등록하자 <code>claude mcp list</code>에 <code>✔ Connected</code>가 표시됐습니다. "이 저장소의 기본 브랜치가 뭐야"라고 물으니 <code>mcp__github__*</code> 도구가 호출되어 브랜치명과 <code>has_pages</code> 여부 같은 저장소 정보를 가져왔습니다. 이 결과를 "원격 서버는 모두 OAuth를 쓴다"고 일반화하면 안 됩니다. <strong>인증 서버 구현은 서버마다 다를 수 있으므로 실패하면 해당 서버의 문서를 따로 확인해야</strong> 합니다.</p>
 </div>
-<p>일단 연결되면 소비 문법은 프리미티브별로 다릅니다. 도구는 그냥 자연어로 요청하면 내부적으로 <code>mcp__github__list_issues</code> 같은 이름으로 호출됩니다. 리소스는 <code>@corp-wiki:onboarding/backend</code>처럼 <code>@서버:경로</code> 형식으로 멘션하면 되고 서버가 제공하는 프롬프트는 <code>/mcp__github__pr_review 123</code>처럼 슬래시 명령으로 노출됩니다. 권한 규칙(Part 2)에서는 <code>mcp__github</code>(서버 전체)나 개별 도구 이름으로 세밀하게 통제할 수 있습니다.</p>
-<p><code>/mcp</code> 관리 UI는 서버 목록·연결 상태(<code>connected</code>/<code>failed</code>)·도구 수·인증 상태를 한 화면에서 보여주는 상황판입니다. 서버가 안 보이거나 이상하게 동작하면 가장 먼저 열어볼 곳입니다.</p>
+<p>연결한 뒤의 사용법은 프리미티브마다 다릅니다. 도구는 자연어로 요청하면 내부에서 <code>mcp__github__list_issues</code> 같은 이름으로 호출됩니다. 리소스는 <code>@corp-wiki:onboarding/backend</code>처럼 <code>@서버:경로</code> 형식으로 멘션합니다. 서버가 제공하는 프롬프트는 <code>/mcp__github__pr_review 123</code> 같은 슬래시 명령으로 나타납니다. Part 2의 권한 규칙에서는 <code>mcp__github</code>로 서버 전체를 지정하거나 개별 도구 이름으로 더 세밀하게 통제할 수 있습니다.</p>
+<p><code>/mcp</code> 관리 UI에서는 서버 목록·연결 상태(<code>connected</code>/<code>failed</code>)·도구 수·인증 상태를 한 화면에서 확인할 수 있습니다. 서버가 보이지 않거나 예상과 다르게 동작할 때 가장 먼저 확인합니다.</p>
 <h2 id="5-claudeai-커넥터--웹에서-연결한-서버가-cli에도-등장">5. claude.ai 커넥터 — 웹에서 연결한 서버가 CLI에도 등장<a class="headerlink" href="#5-claudeai-커넥터--웹에서-연결한-서버가-cli에도-등장" title="이 위치로 링크">¶</a></h2>
-<p><code>claude.ai</code>는 브라우저에서 쓰는 웹 버전 Claude입니다. 거기서 예를 들어 Google Drive 연동을 설정해두면 <strong>터미널에서 Claude Code를 쓸 때도 아무 설정 없이 그 연결이 자동으로 나타납니다.</strong> 실제로 스크래치 프로젝트에서 <code>claude mcp list</code>를 돌렸을 때도 따로 설정하지 않은 "Google Drive" 커넥터가 이미 떠 있었습니다.</p>
-<p>이 자동 동기화가 부담스러우면 프로젝트에 <code>disableClaudeAiConnectors</code>를 커밋해 저장소 단위로 거부할 수 있습니다. 여러 소스에서 이 값이 섞여 있으면 <strong><code>true</code>가 항상 우선 적용됩니다</strong>(한 번 차단되면 다른 소스의 <code>false</code>로 재개방이 안 됨). 조직은 <code>managed-mcp.json</code>으로 커넥터를 기본 배제하고 <code>allowAll</code> 계열 키로 예외를 병행할 수 있습니다.</p>
+<p><code>claude.ai</code>는 브라우저에서 사용하는 웹 버전 Claude입니다. 여기서 Google Drive 같은 연동을 설정하면 <strong>터미널의 Claude Code에도 별도 설정 없이 그 연결이 나타납니다.</strong> 스크래치 프로젝트에서 <code>claude mcp list</code>를 실행했을 때도 따로 추가하지 않은 "Google Drive" 커넥터가 이미 표시됐습니다.</p>
+<p>자동 동기화를 원하지 않으면 프로젝트에 <code>disableClaudeAiConnectors</code>를 커밋해 저장소 단위로 차단할 수 있습니다. 여러 소스에 값이 섞여 있으면 <strong><code>true</code>가 항상 우선합니다</strong>. 한 소스에서 차단하면 다른 소스의 <code>false</code>로 다시 열 수 없습니다. 조직에서는 <code>managed-mcp.json</code>으로 커넥터를 기본 배제하고 <code>allowAll</code> 계열 키로 예외를 둘 수 있습니다.</p>
 <h2 id="6-도구-검색tool-search과-컨텍스트-예산">6. 도구 검색(Tool Search)과 컨텍스트 예산<a class="headerlink" href="#6-도구-검색tool-search과-컨텍스트-예산" title="이 위치로 링크">¶</a></h2>
-<p>서버가 늘어날수록 각 서버의 도구 설명(스키마)이 세션 시작 컨텍스트를 잠식합니다. <strong>도구 검색</strong>은 이 문제를 "설명을 다 올려두는 대신 검색 인덱스만 두고, 실제로 필요한 도구의 정의만 그때그때 불러오는" 방식으로 완화하며 <strong>기본적으로 항상 켜져 있습니다</strong>(도구 수가 어떤 임계치를 넘어야 전환되는 게 아니라, 처음부터 모든 MCP 도구가 지연 로드 대상입니다). 예외는 <code>ANTHROPIC_BASE_URL</code>이 서드파티 프록시를 가리키거나, 도구 검색을 지원하지 않는 구형 모델·일부 클라우드 배포 조합처럼 특수한 경우뿐입니다. 이때는 도구 정의가 처음부터(upfront) 로드됩니다. 아래 <a href="#직접-해보기--lab-3-mcp-서버-연결--context-전후-비교">직접 해보기</a>에서 이걸 숫자로 직접 확인했습니다.</p>
-<p><code>/context</code>로 MCP 도구가 컨텍스트에서 차지하는 비중을 직접 확인할 수 있습니다. 처방은 명확합니다. 프로젝트별로 정말 필요한 서버만 <code>.mcp.json</code>에 두고 개인 상주(user 스코프)는 최소로 유지하며 무거운 서버는 서브에이전트의 <code>mcpServers</code>로 격리하거나(2주차 복습) <code>/mcp</code> 토글로 세션 단위로 껐다 켤 수 있습니다.</p>
+<p>서버가 늘어나면 각 서버의 도구 설명(스키마)이 세션 시작 컨텍스트를 차지할 수 있습니다. <strong>도구 검색</strong>은 모든 설명을 미리 올리지 않고 검색 인덱스만 둔 뒤, 필요한 도구 정의를 그때 불러와 이 부담을 줄입니다. 기본 배포에서는 deferred/on-demand 로딩을 사용하지만, 비-1<sup>st</sup>-party <code>ANTHROPIC_BASE_URL</code>, Azure Foundry, 구형 배포·모델, <code>ENABLE_TOOL_SEARCH</code> 설정 등에서는 upfront로 로드될 수 있습니다. 아래 <a href="#직접-해보기--lab-3-mcp-서버-연결--context-전후-비교">직접 해보기</a>의 수치는 v2.1.239 환경에서 측정했습니다.</p>
+<p><code>/context</code>를 열면 MCP 도구가 컨텍스트에서 차지하는 비중을 확인할 수 있습니다. 프로젝트에 필요한 서버만 <code>.mcp.json</code>에 두고, 항상 로드되는 user 스코프 서버는 최소화합니다. 무거운 서버는 서브에이전트의 <code>mcpServers</code>로 격리하거나(2주차 복습) <code>/mcp</code> 토글로 세션마다 켜고 끌 수 있습니다.</p>
 <p><img alt="컨텍스트 예산 슬라이드" src="../slides/slide-064.png" /></p>
 <p><em>▲ 교재 슬라이드 64 — 컨텍스트 예산</em></p>
 <hr />
 <h2 id="직접-해보기--lab-3-mcp-서버-연결--context-전후-비교">직접 해보기 — Lab 3: MCP 서버 연결 + <code>/context</code> 전후 비교<a class="headerlink" href="#직접-해보기--lab-3-mcp-서버-연결--context-전후-비교" title="이 위치로 링크">¶</a></h2>
-<p>교재가 "도구 검색이 컨텍스트 잠식을 완화한다"고 설명한 걸 실측으로 확인했습니다. 스크래치 프로젝트에서 <code>/context</code>로 기준선을 먼저 잡았습니다.</p>
+<p>교재의 "도구 검색이 컨텍스트 잠식을 완화한다"는 설명을 직접 측정했습니다. 먼저 스크래치 프로젝트에서 <code>/context</code>로 기준값을 확인했습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;/context&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>json
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="gp">#</span><span class="c1"># Context Usage</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="go">**Tokens:** 32.9k / 967k (3%)</span>
@@ -2629,7 +2666,7 @@ fine-grained PAT(읽기 전용, 저장소 1개, 만료 짧게)를 발급해 이 
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="go">| System tools (deferred) | 15.3k | 1.6% |</span>
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="go">| ...</span>
 </span></code></pre></div>
-<p>이 상태에서 교재 예시 그대로 Playwright MCP 서버를 로컬 스코프로 연결했습니다.</p>
+<p>그다음 교재 예시대로 Playwright MCP 서버를 local 스코프에 연결했습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="gp">$ </span>claude<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>playwright<span class="w"> </span>--<span class="w"> </span>npx<span class="w"> </span>-y<span class="w"> </span>@playwright/mcp@latest
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="go">Added stdio MCP server playwright with command: npx -y @playwright/mcp@latest to local config</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
@@ -2637,7 +2674,7 @@ fine-grained PAT(읽기 전용, 저장소 1개, 만료 짧게)를 발급해 이 
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="go">claude.ai Google Drive: https://drivemcp.googleapis.com/mcp/v1 - ✔ Connected</span>
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="go">playwright: npx -y @playwright/mcp@latest - ✔ Connected</span>
 </span></code></pre></div>
-<p>연결 후 <code>/context</code>를 다시 실행했습니다.</p>
+<p>연결한 뒤 <code>/context</code>를 다시 실행했습니다.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;/context&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>json
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="gp">#</span><span class="c1"># Context Usage</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="go">**Tokens:** 32.9k / 967k (3%)</span>
@@ -2654,20 +2691,20 @@ fine-grained PAT(읽기 전용, 저장소 1개, 만료 짧게)를 발급해 이 
 </span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="go">| ... (총 23개 도구) |</span>
 </span></code></pre></div>
 <div class="admonition tip">
-<p class="admonition-title">직접 해보고 알게 된 것 — 23개 도구를 붙였는데 총 컨텍스트가 그대로였다</p>
-<p>Playwright MCP는 도구 23개를 노출합니다. "도구 하나에 스키마 수백 토큰이면 23개면 못해도 수천 토큰은 늘겠지"라고 예상했는데, 결과는 달랐습니다.
-- <strong>관찰값</strong> — 연결 전후 <code>Tokens: 32.9k / 967k (3%)</code>라는 총량 표시가 완전히 동일했습니다. 대신 <code>MCP tools (deferred)</code>라는 새 카테고리가 5.9k(0.6%)로 나타났습니다.
-- <strong>알 수 있는 것</strong> — 이름 그대로 "지연된(deferred)" 상태로 인덱스만 잡혀 있고 실제 도구 정의가 세션 컨텍스트에 얹힌 게 아닙니다. 서버를 몇 개 붙이든 곧바로 컨텍스트가 늘지는 않으니 필요 이상으로 서버 추가를 겁낼 필요는 없습니다.
-- <strong>이번 실습 범위 밖</strong> — 실제로 그 도구들을 호출하기 시작하면 그때 정의가 로드되며 비용이 발생할지는 확인하지 못했습니다.</p>
+<p class="admonition-title">직접 해보고 알게 된 것 — 이 환경의 Playwright 서버 하나에서는 총 컨텍스트가 그대로였다</p>
+<p>v2.1.239에서 도구 23개를 노출하는 Playwright MCP 서버 하나를 연결하고 <code>/context</code> 전후를 확인했습니다. "도구 하나에 스키마 수백 토큰이면 23개면 못해도 수천 토큰은 늘겠지"라고 예상했는데, 결과는 달랐습니다.
+- <strong>관찰값</strong> — 연결 전후 <code>/context</code>의 <code>Tokens: 32.9k / 967k (3%)</code> 총량 표시가 완전히 동일했습니다. 대신 <code>MCP tools (deferred)</code>라는 새 카테고리가 5.9k(0.6%)로 나타났습니다.
+- <strong>알 수 있는 것</strong> — 이 구성에서는 이름 그대로 "지연된(deferred)" 상태로 인덱스만 잡혀 있고 실제 도구 정의가 세션 컨텍스트에 얹힌 게 아닙니다. 다른 배포·모델·환경변수에서는 upfront 로드될 수 있으므로 <code>/context</code>로 확인해야 합니다.
+- <strong>이번 실습 범위 밖</strong> — 다른 서버를 추가했을 때와 실제로 도구를 호출하기 시작했을 때 정의가 로드되며 비용이 발생할지는 확인하지 못했습니다.</p>
 </div>
 <p>테스트가 끝난 뒤 <code>claude mcp remove playwright</code>로 정리했습니다.</p>
-<p><strong>http 전송 서버 연결도 이어서 확인했습니다.</strong> 위 OAuth 경고에서 정리한 대로 PAT 헤더 방식으로 GitHub 서버를 다시 등록하자 <code>claude mcp list</code>에서 <code>✔ Connected</code>가 떴습니다. 실제로 공개 저장소(<code>jinjuchoo/claude-code-study-docs</code>)의 기본 브랜치와 파일 목록을 물어보니 <code>mcp__github__*</code> 도구가 호출되어 정확한 실제 데이터를 가져왔습니다. 테스트에 쓴 fine-grained PAT는 확인 직후 GitHub 쪽에서 바로 폐기했습니다.</p>
+<p><strong>http 전송 서버 연결도 확인했습니다.</strong> 위 OAuth 경고에서 설명한 대로 PAT 헤더 방식으로 GitHub 서버를 다시 등록하자 <code>claude mcp list</code>에 <code>✔ Connected</code>가 표시됐습니다. 공개 저장소(<code>jinjuchoo/claude-code-study-docs</code>)의 기본 브랜치와 파일 목록을 요청하자 <code>mcp__github__*</code> 도구가 호출되어 실제 데이터를 가져왔습니다. 테스트에 쓴 fine-grained PAT는 확인 직후 GitHub에서 폐기했습니다.</p>
 <hr />
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
-<p><strong>"MCP 서버를 연결하면 그 즉시 컨텍스트가 도구 수만큼 늘어난다"</strong> — 도구 검색이 기본적으로 항상 켜져 있어 정의를 지연 로드하므로 서버를 붙이는 행위 자체가 곧바로 컨텍스트를 크게 늘리지는 않습니다. 다만 실제로 그 도구들을 자주 호출하는 세션에서는 다른 양상이 나올 수 있습니다. 서드파티 프록시나 일부 구형 모델 조합에서는 애초에 지연 로드가 안 될 수도 있습니다.</p>
+<p><strong>"MCP 서버를 연결하면 그 즉시 컨텍스트가 도구 수만큼 늘어난다"</strong> — 기본 배포의 도구 검색은 정의를 지연 로드하므로 서버를 붙이는 행위 자체가 곧바로 컨텍스트를 크게 늘리지 않을 수 있습니다. 다만 배포·모델·환경변수에 따라 upfront 로드가 될 수 있고, 실제 호출 후 비용은 이 실습에서 측정하지 않았습니다.</p>
 <hr />
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
-<p>MCP는 3가지 프리미티브·4가지 전송·3가지 스코프라는 비교적 단순한 문법 위에서 Claude Code를 외부 시스템과 잇습니다. 팀 표준은 <code>.mcp.json</code>으로 커밋하고 비밀은 환경변수로 외부화합니다. 원격 서버 인증은 기본적으로 <code>/mcp</code>의 OAuth 위임에 맡기되 GitHub처럼 예외인 서버도 있다는 걸 실측으로 확인했습니다. Lab 3에서 확인했듯 도구 검색 덕분에 서버를 늘리는 것 자체가 곧바로 컨텍스트 예산을 위협하지는 않습니다. 그렇다고 무제한으로 서버를 쌓아도 된다는 뜻은 아니라서 스코프 설계로 노출 범위를 관리하는 습관은 여전히 유효합니다. 다음 파트는 이 연결이 곧 신뢰 경계라는 관점에서 서드파티 서버를 어떻게 안전하게 다룰지를 다룹니다.</p>
+<p>MCP는 3가지 프리미티브·4가지 전송·3가지 스코프로 Claude Code와 외부 시스템을 연결합니다. 팀에서 공유할 설정은 <code>.mcp.json</code>으로 커밋하고 비밀은 환경변수로 분리합니다. 원격 서버가 지원하면 <code>/mcp</code>에서 OAuth 인증을 진행할 수 있지만, DCR/CIMD·사전 등록·헤더 인증과 토큰 갱신 방식은 서버별 계약을 따라야 합니다. 이번 실습의 GitHub 서버는 PAT 헤더로 연결했습니다. Lab 3에서 확인한 기본 배포는 도구 정의를 지연 로드했기 때문에 서버를 추가해도 컨텍스트 총량이 바로 늘지는 않았습니다. 배포·모델·환경변수에 따라 upfront로 로드될 수 있고, 서버를 제한 없이 추가해도 된다는 의미도 아닙니다. 스코프를 나눠 노출 범위를 관리해야 합니다. 다음 파트에서는 MCP 연결을 신뢰 경계로 보고 서드파티 서버를 안전하게 다루는 방법을 살펴봅니다.</p>
 <hr />
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>

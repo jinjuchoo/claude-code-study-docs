@@ -1505,10 +1505,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-실무에서-가장-먼저-손이-가는-세-가지" class="md-nav__link">
+  <a href="#1-선택-심화-최소-실습--전에는-막고-후에는-정리한다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. 실무에서 가장 먼저 손이 가는 세 가지
+        1. 선택 심화 최소 실습 — 전에는 막고, 후에는 정리한다
       
     </span>
   </a>
@@ -2408,10 +2408,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-실무에서-가장-먼저-손이-가는-세-가지" class="md-nav__link">
+  <a href="#1-선택-심화-최소-실습--전에는-막고-후에는-정리한다" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. 실무에서 가장 먼저 손이 가는 세 가지
+        1. 선택 심화 최소 실습 — 전에는 막고, 후에는 정리한다
       
     </span>
   </a>
@@ -2525,26 +2525,26 @@
 
 <h1 id="part-4--hooks-실전">Part 4 — Hooks 실전<a class="headerlink" href="#part-4--hooks-실전" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p><code>command</code> 외 네 핸들러(http·mcp_tool·prompt·agent)는 각각 "중앙화", "무스크립트 연동", "의미 기반 판정"이라는 다른 용도가 있고 실무에서는 포맷터·가드·알림 세 가지가 가장 먼저 손이 가는 기본기입니다.</p>
+<p>처음에는 <code>command</code>로 <code>PreToolUse</code> 보호 가드 하나와 <code>PostToolUse</code> 후처리 하나만 만듭니다. 이 두 훅을 검증한 뒤 중앙화·외부 연동·의미 판정이 필요할 때 http·mcp_tool·prompt·agent로 넓혀갑니다.</p>
 <hr />
 <h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
-<p>Part 3이 훅의 뼈대(이벤트·매처·결정 출력)를 다뤘다면, 이 파트는 "그래서 실제로 뭘 만들 수 있는가"를 다룹니다.</p>
+<p>Part 3에서 훅의 뼈대인 이벤트·매처·결정 출력을 살펴봤습니다. 이 파트에서는 실제로 쓸 만한 훅을 만들어봅니다.</p>
 <hr />
-<h2 id="1-실무에서-가장-먼저-손이-가는-세-가지">1. 실무에서 가장 먼저 손이 가는 세 가지<a class="headerlink" href="#1-실무에서-가장-먼저-손이-가는-세-가지" title="이 위치로 링크">¶</a></h2>
-<p><code>command</code> 핸들러 하나만 알아도 웬만한 자동화는 됩니다. 실무에서 가장 자주 쓰는 세 가지부터 봅니다.</p>
+<h2 id="1-선택-심화-최소-실습--전에는-막고-후에는-정리한다">1. 선택 심화 최소 실습 — 전에는 막고, 후에는 정리한다<a class="headerlink" href="#1-선택-심화-최소-실습--전에는-막고-후에는-정리한다" title="이 위치로 링크">¶</a></h2>
+<p><code>command</code> 핸들러만으로도 첫 구성을 완성할 수 있습니다. 먼저 두 가지를 연결합니다.</p>
 <ul>
-<li><strong>포맷터</strong>: <code>PostToolUse</code>에서 <code>Edit|Write</code> 매처로 걸어 파일 수정 직후 자동으로 <code>prettier</code>/<code>ruff</code> 같은 포맷터를 돌립니다. 파일 확장자로 분기하면 다언어 프로젝트에도 대응할 수 있고 프로젝트 설정에 커밋하면 팀 표준 훅이 됩니다.</li>
-<li><strong>보호 가드</strong>: <code>PreToolUse</code> + <code>if: "Bash(rm *)"</code>로 걸어서 실제로 <code>rm -rf</code> 패턴이 보이면 <code>permissionDecision: "deny"</code> JSON을 반환하고 그 외엔 <code>exit 0</code>(무결정)으로 정상 권한 흐름에 맡깁니다. <strong>이건 Part 3 Lab 2에서 이미 직접 검증한 것과 정확히 같은 패턴</strong>입니다. 실습에서는 항상 deny하는 단순화된 버전을 썼지만 실전에서는 이렇게 조건부로 판단합니다.</li>
-<li><strong>알림</strong>: <code>Notification</code> 이벤트로 확인이 필요할 때 로컬 알림을 띄우거나, <code>Stop</code>(<strong>턴</strong>이 끝났을 때, 즉 내가 메시지를 보내고 Claude가 응답을 마칠 때까지의 한 사이클이 끝났을 때)에 슬랙 웹훅을 걸어 알립니다. 장기 실행 작업에서 체감 효용이 가장 큽니다.</li>
+<li><strong>후처리 1개(포맷터 또는 로그)</strong>: <code>PostToolUse</code>에 <code>Edit|Write</code> 매처를 걸어 파일 수정 직후 <code>prettier</code>/<code>ruff</code>를 실행하거나 기록을 남깁니다. 성공한 수정 호출이 대상이므로 앞의 호출이 차단되면 이 Hook은 발화하지 않습니다.</li>
+<li><strong>보호 가드</strong>: <code>PreToolUse</code>에 <code>if: "Bash(rm *)"</code>를 설정합니다. 실제로 <code>rm -rf</code> 패턴이 보이면 <code>permissionDecision: "deny"</code> JSON을 반환하고, 그 외에는 <code>exit 0</code>(무결정)으로 원래 권한 흐름에 판단을 넘깁니다. <strong>Part 3 Lab 2에서 직접 검증한 것과 같은 패턴</strong>입니다. 실습에서는 항상 deny하도록 단순화했지만 실전에서는 조건을 검사해 판단합니다.</li>
 </ul>
+<p>알림(<code>Notification</code>/<code>Stop</code>)은 세 번째 선택지입니다. 최소 경로가 성공한 뒤 장기 실행에 필요할 때 추가합니다.</p>
 <p><img alt="Recipe 2 보호 가드 슬라이드" src="../slides/slide-048.png" /></p>
 <p><em>▲ 교재 슬라이드 48 — Recipe 2 / 보호 가드</em></p>
 <div class="admonition note">
-<p class="admonition-title">인프라 관점</p>
-<p>보호 가드는 Kubernetes의 admission webhook과 판단 구조가 거의 같습니다. validating webhook이 "이 리소스를 만들어도 되는가"를 판정하듯 <code>PreToolUse</code> 훅이 "이 도구 호출을 실행해도 되는가"를 판정하고 둘 다 명시적으로 거부하지 않으면 요청을 통과시키는 fail-open 기본값을 공유합니다. 다만 admission webhook은 클러스터 API 서버 앞에서 항상 거치는 강제 관문인 반면, <code>PreToolUse</code> 훅은 어디까지나 권한 시스템의 보조 계층이라는 차이를 혼동하면 안 됩니다.</p>
+<p class="admonition-title">안전 경계</p>
+<p>Hook이 응답하지 않거나 HTTP Hook이 실패하면 원래 권한 흐름으로 통과할 수 있습니다. 따라서 “응답이 없으면 막는다”는 안전장치로 사용할 수 없습니다. 파일이나 명령을 반드시 차단해야 한다면 Part 2의 Permission을 먼저 두고, Hook은 추가 검사와 기록에 사용합니다. Kubernetes admission webhook 비유는 이 차이를 이미 아는 독자를 위한 심화 설명입니다.</p>
 </div>
 <h2 id="2-http-훅--중앙-서비스로-이벤트를-쏜다">2. HTTP 훅 — 중앙 서비스로 이벤트를 쏜다<a class="headerlink" href="#2-http-훅--중앙-서비스로-이벤트를-쏜다" title="이 위치로 링크">¶</a></h2>
-<p><code>command</code> 대신 팀 전체가 공유하는 중앙 훅 서버로 이벤트를 보내고 싶을 때 씁니다.</p>
+<p>팀이 공유하는 중앙 훅 서버로 이벤트를 보내려면 <code>command</code> 대신 HTTP 훅을 씁니다.</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;hooks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;PreToolUse&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;matcher&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bash&quot;</span><span class="p">,</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">&quot;hooks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http&quot;</span><span class="p">,</span>
@@ -2552,13 +2552,13 @@
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">&quot;headers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Authorization&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bearer $HOOK_TOKEN&quot;</span><span class="w"> </span><span class="p">},</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">&quot;allowedEnvVars&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;HOOK_TOKEN&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">}]</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<p>핵심 동작은 이 둘뿐입니다. 서버가 <strong>2xx</strong>(200번대, "성공"을 뜻하는 HTTP 상태 코드) 응답을 주면서 "막아"(<code>permissionDecision: "deny"</code>)라고 답하면 <strong>차단</strong>되고 그 외 전부(에러 응답, 타임아웃) <strong>그냥 통과</strong>시킵니다.</p>
-<p>이 방식을 <strong>fail-open</strong>(애매하면 막지 않고 통과)이라고 부릅니다. 만약 반대로(응답이 안 오면 차단) 설계했다면, 중앙 훅 서버 하나가 잠깐 다운되는 순간 그 훅을 쓰는 모든 사람의 작업이 멈춰버립니다. 서버 장애 하나로 회사 전체가 마비되는 걸 피하려고 "애매하면 통과"를 기본값으로 삼은 겁니다. 물론 Part 2의 진짜 권한 규칙(allow/ask/deny)은 이 훅과 별개로 계속 작동하니 HTTP 훅은 추가 방어선이지 유일한 방어선이 아니라는 전제가 깔려 있습니다.</p>
-<p>세부 설정 두 가지만 더 알아두면 됩니다. <code>allowedEnvVars</code>로 헤더에 보간할 환경변수를 명시적으로 허용해야 하고 조직 차원에서는 <code>allowedHttpHookUrls</code>로 훅이 쏠 수 있는 목적지 자체를 통제할 수 있습니다.</p>
+<p>동작은 두 경우로 나뉩니다. 서버가 <strong>2xx</strong>(200번대, "성공"을 뜻하는 HTTP 상태 코드)로 응답하면서 <code>permissionDecision: "deny"</code>를 반환하면 <strong>차단</strong>합니다. 에러 응답이나 타임아웃을 포함한 나머지 경우에는 <strong>통과</strong>시킵니다.</p>
+<p>이 방식을 <strong>fail-open</strong>(판단할 수 없으면 통과)이라고 합니다. 응답이 없을 때마다 차단하도록 설계하면 중앙 훅 서버가 잠시 중단된 것만으로도 모든 사용자의 작업이 멈출 수 있습니다. 이런 장애 전파를 피하려고 통과를 기본값으로 둔 것입니다. Part 2의 권한 규칙(allow/ask/deny)은 HTTP 훅과 별개로 계속 작동합니다. 따라서 HTTP 훅은 추가 방어선으로만 써야 합니다.</p>
+<p>설정할 때는 두 항목을 더 확인합니다. 헤더에 환경변수를 보간하려면 <code>allowedEnvVars</code>로 명시적으로 허용해야 합니다. 조직에서는 <code>allowedHttpHookUrls</code>로 훅이 요청을 보낼 목적지까지 통제할 수 있습니다.</p>
 <h2 id="3-mcp_toolpromptagent--상황별로-고르기">3. mcp_tool·prompt·agent — 상황별로 고르기<a class="headerlink" href="#3-mcp_toolpromptagent--상황별로-고르기" title="이 위치로 링크">¶</a></h2>
-<p>나머지 세 핸들러는 이렇게 나눠보면 헷갈리지 않습니다.</p>
+<p>나머지 세 핸들러는 판단 방식에 따라 나누면 됩니다.</p>
 <ul>
-<li>파일명 규칙 체크처럼 <strong>딱 정해진 로직</strong> → <code>command</code> (이미 봄)</li>
+<li>파일명 규칙 체크처럼 <strong>규칙이 정해진 로직</strong> → <code>command</code> (이미 봄)</li>
 <li>이미 연결된 MCP 서버의 도구를 그대로 쓰고 싶음 → <code>mcp_tool</code></li>
 <li>"이 커밋 메시지가 적절한가?"처럼 <strong>의미를 판단</strong>해야 함 → <code>prompt</code></li>
 <li>여러 파일을 실제로 열어보고 조사해야 함 → <code>agent</code></li>
@@ -2570,29 +2570,29 @@
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="nt">&quot;input&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;file_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;${tool_input.file_path}&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}]</span><span class="w"> </span><span class="p">}</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<p><code>mcp_tool</code>은 <code>${tool_input.file_path}</code>처럼 이벤트 필드를 입력에 치환해 넣을 수 있고 별도 스크립트 없이 이미 연결된 MCP 서버의 도구를 그대로 재사용합니다. 단 <strong>서버가 이미 연결된 상태여야 하고, 이 훅 자체는 새로운 OAuth 인증을 유발하지 않습니다.</strong> 그래서 <code>SessionStart</code>나 <code>Setup</code>처럼 아직 MCP 연결이 끝나지 않은 시점의 이벤트에 걸면 첫 실행에서 실패할 수 있습니다.</p>
+<p><code>mcp_tool</code>은 <code>${tool_input.file_path}</code>처럼 이벤트 필드를 입력에 치환할 수 있습니다. 별도 스크립트 없이 이미 연결된 MCP 서버의 도구를 재사용한다는 점이 장점입니다. 단, <strong>서버가 이미 연결되어 있어야 하며 이 훅이 새로운 OAuth 인증을 시작하지는 않습니다.</strong> <code>SessionStart</code>나 <code>Setup</code>처럼 MCP 연결이 끝나기 전의 이벤트에 걸면 첫 실행에서 실패할 수 있습니다.</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prompt&quot;</span><span class="p">,</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;prompt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;이 도구 호출이 마이그레이션 파일을 건드리면 deny하라. 입력: $ARGUMENTS&quot;</span><span class="p">,</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;haiku&quot;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<p><code>prompt</code> 훅은 정규식이나 권한 규칙으로는 표현 못 하는 의미적 판단을 모델 호출 한 번으로 위임합니다. 기본으로 빠른 모델(예: haiku)을 쓰며 타임아웃도 30초로 짧게 잡혀 있어 지연·비용을 통제합니다. <code>agent</code> 훅은 한 걸음 더 나아가 <code>Read</code>, <code>Grep</code> 같은 도구로 실제 diff를 읽고 스키마 파괴 여부까지 확인한 뒤 판정합니다. 교재는 이를 "실험적" 기능으로 표시하고 있어 변경 가능성을 염두에 둬야 합니다.</p>
+<p><code>prompt</code> 훅은 정규식이나 권한 규칙으로 표현하기 어려운 의미 판단을 모델 호출 한 번에 맡깁니다. 기본으로 빠른 모델(예: haiku)을 쓰고 타임아웃도 30초로 짧게 설정해 지연과 비용을 제한합니다. <code>agent</code> 훅은 <code>Read</code>, <code>Grep</code> 같은 도구로 실제 diff를 읽고 스키마가 깨지는지까지 확인한 뒤 판정합니다. 교재에서는 "실험적" 기능으로 표시하므로 변경 가능성을 염두에 둬야 합니다.</p>
 <h2 id="4-그-외-레시피-필요할-때-참고">4. 그 외 레시피 (필요할 때 참고)<a class="headerlink" href="#4-그-외-레시피-필요할-때-참고" title="이 위치로 링크">¶</a></h2>
 <ul>
 <li><strong>반응형 환경</strong>: <code>FileChanged</code>에 <code>.envrc|.env</code> 매처를 걸고 <code>async: true</code>로 <code>direnv allow</code>를 자동 실행하거나, <code>CwdChanged</code>로 디렉터리 이동 시마다 환경을 재정렬합니다.</li>
 <li><strong>Setup과 컨텍스트 주입</strong>: <code>claude --init-only</code>로 CI 환경을 1회 준비하고 <code>UserPromptSubmit</code>의 stdout을 컨텍스트에 주입해(<code>git status --short</code> 등) 매 턴 최신 상태를 자동으로 알려줍니다.</li>
 </ul>
 <h2 id="5-hooks-메뉴와-디버깅">5. <code>/hooks</code> 메뉴와 디버깅<a class="headerlink" href="#5-hooks-메뉴와-디버깅" title="이 위치로 링크">¶</a></h2>
-<p><code>/hooks</code>는 구성된 모든 훅을 읽기 전용으로 보여주는 브라우저입니다. 어느 파일(User/Project/Local/Plugin/Session/Built-in)에서 왔는지도 보여줍니다. 훅이 원인으로 의심되는 문제가 생기면 <code>disableAllHooks</code>를 켜서 훅 자체가 원인인지부터 확인하는 게 정석 디버깅 순서입니다.</p>
+<p><code>/hooks</code>는 설정된 모든 훅을 읽기 전용으로 보여줍니다. 각 훅이 어느 파일(User/Project/Local/Plugin/Session/Built-in)에서 왔는지도 확인할 수 있습니다. 훅 때문에 문제가 생긴 것 같다면 먼저 <code>disableAllHooks</code>를 켜서 증상이 사라지는지 확인합니다.</p>
 <hr />
 <h2 id="직접-해보기">직접 해보기<a class="headerlink" href="#직접-해보기" title="이 위치로 링크">¶</a></h2>
-<p><strong>보호 가드의 핵심 메커니즘은 Part 3의 Lab 2에서 이미 직접 실행하며 검증</strong>했습니다. <code>PreToolUse</code> + JSON deny 결정이 실제로 도구 호출을 차단하고, 차단된 호출은 <code>PostToolUse</code>까지 도달하지 않으며 이 차단은 <code>permission_denials</code>에 기록된다는 것까지 확인했습니다. 나머지 레시피(HTTP·mcp_tool·알림·반응형 환경)는 외부 서비스(슬랙 웹훅, MCP 서버, <code>direnv</code>)가 있어야 해서 이번 실습에서는 재현하지 않았습니다.</p>
-<p><code>disableAllHooks</code> 디버깅 순서도 실제로 검증했습니다. <code>PreToolUse</code> 훅이 로그 파일에 기록을 남기는 상태에서 파일을 하나 만들면 로그가 정상적으로 남지만 <code>disableAllHooks: true</code>를 켠 채 같은 요청을 하면 파일은 그대로 생성되면서도 로그 파일 자체가 생기지 않습니다. 훅이 완전히 꺼졌다는 뜻입니다. <code>/hooks</code> 메뉴는 대화형 전용 UI라 헤드리스(<code>-p</code>)에서는 <code>"/hooks isn't available in this environment."</code>라는 메시지만 돌아오고 소스 라벨(User/Project/Local/Plugin/Session/Built-in) 확인은 대화형 세션에서만 가능하다는 점도 함께 확인했습니다.</p>
+<p><strong>보호 가드의 핵심 동작은 Part 3의 Lab 2에서 직접 실행해 검증</strong>했습니다. v2.1.239에서 <code>PreToolUse</code>의 JSON deny 결정은 도구 호출을 차단했습니다. 차단된 호출은 <code>PostToolUse</code>에 도달하지 않았고 <code>permission_denials</code>에 기록됐습니다. 다만 이 필드의 기록 방식은 공식 계약이 아니므로 실측 보조 신호로만 보고 실제 산출물·종료 상태·훅 로그를 함께 확인합니다. 나머지 레시피(HTTP·mcp_tool·알림·반응형 환경)는 외부 서비스(슬랙 웹훅, MCP 서버, <code>direnv</code>)가 필요해 이번 실습에서는 재현하지 않았습니다.</p>
+<p><code>disableAllHooks</code>를 이용한 디버깅 순서도 직접 확인했습니다. <code>PreToolUse</code> 훅이 로그를 남기도록 설정한 상태에서 파일을 만들면 로그 파일이 생깁니다. <code>disableAllHooks: true</code>를 켜고 같은 요청을 보내면 파일은 생성되지만 로그 파일은 생기지 않았습니다. 훅이 완전히 꺼진 것입니다. <code>/hooks</code> 메뉴는 대화형 전용 UI였습니다. 헤드리스(<code>-p</code>)에서는 <code>"/hooks isn't available in this environment."</code>라는 메시지만 반환되어, 소스 라벨(User/Project/Local/Plugin/Session/Built-in)은 대화형 세션에서만 확인할 수 있었습니다.</p>
 <hr />
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
-<p><strong>"HTTP 훅이 응답을 못 받으면 안전하게 차단된다"</strong> — 정반대입니다. 비2xx나 타임아웃은 <strong>비차단 오류</strong>로 처리되어 그냥 진행됩니다. 중앙 훅 서비스의 가용성에 보안을 의존하고 있다면 이 fail-open 기본값을 반드시 감안해야 합니다.</p>
+<p><strong>"HTTP 훅이 응답을 못 받으면 안전하게 차단된다"</strong> — 정반대입니다. 비2xx나 타임아웃은 <strong>비차단 오류</strong>로 처리되어 작업이 계속됩니다. 중앙 훅 서비스의 가용성에 보안을 의존한다면 이 fail-open 기본값을 반드시 고려해야 합니다.</p>
 <hr />
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
-<p><code>command</code>를 넘어서는 네 핸들러는 각각 뚜렷한 용도가 있습니다. HTTP는 팀 전체 훅을 한 곳에서 관리하고 싶을 때, mcp_tool은 이미 연결된 도구를 스크립트 없이 재사용하고 싶을 때, prompt·agent는 정규식으로 표현 못 하는 의미 판단이 필요할 때 씁니다. 실무에서 가장 먼저 손이 가는 건 포맷터·보호 가드·알림 세 레시피이고 이 중 보호 가드는 Part 3의 Lab 2로 이미 실제 동작을 확인했습니다. <code>/hooks</code>로 출처를 추적하고 문제가 생기면 <code>disableAllHooks</code>로 훅 자체를 먼저 의심하는 게 정석 디버깅 순서입니다. 다음 파트부터는 Claude Code를 외부 시스템과 연결하는 MCP를 다룹니다.</p>
+<p><code>command</code> 외의 네 핸들러도 용도가 분명합니다. HTTP는 팀의 훅을 한곳에서 관리할 때, mcp_tool은 이미 연결된 도구를 스크립트 없이 재사용할 때 씁니다. prompt와 agent는 정규식으로 표현하기 어려운 의미 판단에 알맞습니다. 처음 적용할 만한 레시피는 포맷터·보호 가드·알림이며, 보호 가드는 Part 3의 Lab 2에서 실제 동작을 확인했습니다. 문제를 추적할 때는 <code>/hooks</code>로 출처를 확인하고 <code>disableAllHooks</code>를 켜서 훅이 원인인지 먼저 가려냅니다. 다음 파트에서는 Claude Code를 외부 시스템과 연결하는 MCP를 다룹니다.</p>
 <hr />
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>

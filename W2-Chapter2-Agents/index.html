@@ -2218,10 +2218,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#회고" class="md-nav__link">
+  <a href="#먼저-해볼-최소-경로" class="md-nav__link">
     <span class="md-ellipsis">
       
-        회고
+        먼저 해볼 최소 경로
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#실습-뒤에-읽는-회고와-관찰" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        실습 뒤에 읽는 회고와 관찰
       
     </span>
   </a>
@@ -2313,22 +2324,31 @@
 
 <h1 id="2주차--chapter-2-agents-subagents">2주차 — Chapter 2: Agents (Subagents)<a class="headerlink" href="#2주차--chapter-2-agents-subagents" title="이 위치로 링크">¶</a></h1>
 <blockquote>
-<p>맞춤 서브에이전트로 작업을 분담하고 병렬화하기. 메인 대화가 파일 덤프로 오염되는 문제를 "격리 컨텍스트에서 일하고 요약만 돌려주는 워커"라는 구조로 해결하는 챕터입니다. 에이전트를 정의하고, 부르고, 패턴으로 조합하는 전 과정을 다룹니다.</p>
+<p>이번 주에는 먼저 읽기 전용 <code>code-reviewer</code> 파일을 만듭니다. <code>@agent-code-reviewer</code>로 한 번 호출한 뒤, 결과가 실제 변경 파일을 가리키는지 확인하세요. 자동 위임, 스코프, hooks, CI처럼 운영 규모가 커질 때 필요한 기능은 그다음에 다룹니다.</p>
 </blockquote>
 <p><strong>원본</strong>: Claude Code Deep Dive Workshop / Chapter 2 — Agents (Subagents) (9파트, 108 슬라이드)<br />
-<strong>기준 버전</strong>: Claude Code v2.1.226 / 2026년 7월 교재 · 공식 문서 <code>code.claude.com/docs</code> 반영</p>
+<strong>실습·교재 기준</strong>: Claude Code v2.1.226 / 2026년 7월 교재
+<strong>현행 계약 기준</strong>: 2026-09-11 확인한 공식 문서 <code>code.claude.com/docs</code> — 아래 실측과 구분해 읽습니다.</p>
 <hr />
-<h2 id="회고">회고<a class="headerlink" href="#회고" title="이 위치로 링크">¶</a></h2>
+<h2 id="먼저-해볼-최소-경로">먼저 해볼 최소 경로<a class="headerlink" href="#먼저-해볼-최소-경로" title="이 위치로 링크">¶</a></h2>
+<p>W1에서 익힌 안전한 기본 세션과 <strong>읽기 → 수정 → 검증</strong> 흐름을 그대로 사용합니다. 이번에는 수정 대신 검토를 맡길 뿐입니다.</p>
+<ol>
+<li>프로젝트의 <code>.claude/agents/code-reviewer.md</code>에 읽기 도구만 가진 에이전트를 만듭니다(Part 2).</li>
+<li>코드 변경 뒤 터미널에서 확인한 <code>git diff -- &lt;검토할 파일&gt;</code> 출력을 붙여 <code>@agent-code-reviewer 다음 diff를 리뷰해줘: ...</code>라고 <strong>명시 호출</strong>합니다(Part 3). 읽기 도구만 가진 리뷰어는 <code>git diff</code>를 직접 실행하지 않습니다.</li>
+<li>결과에 파일·라인·근거가 있는지, 그리고 작업 파일이 바뀌지 않았는지 확인합니다(Part 4, Part 7 Task 01).</li>
+</ol>
+<p>여기까지가 이번 주의 필수 범위입니다. 자연어만으로 맡기는 자동 위임은 Claude가 처리 경로를 고르는 편의 기능입니다. 특정 에이전트를 써야 한다면 <code>@멘션</code>으로 지목하세요. <code>tools</code>, 권한 모드, Hook은 보호하는 범위가 서로 다르므로 Part 5의 행동별 표와 실험을 확인한 뒤 확장합니다.</p>
+<h2 id="실습-뒤에-읽는-회고와-관찰">실습 뒤에 읽는 회고와 관찰<a class="headerlink" href="#실습-뒤에-읽는-회고와-관찰" title="이 위치로 링크">¶</a></h2>
 <p>가장 크게 바뀐 생각은 "에이전트는 많을수록 좋다"는 편견이 깨진 것입니다. 잦은 왕복이 필요한 작업이나 한 줄짜리 초단발 작업은 메인이 직접 하는 게 더 빠릅니다. 에이전트는 "무거운 작업을 떼어내는 도구"지, "뭐든 다 나눠주는 도구"가 아닙니다.</p>
-<p>실습에서 가장 놀란 건 두 가지입니다.</p>
+<p>실습에서는 예상과 다른 결과가 여럿 나왔습니다.</p>
 <p><strong>첫째, 자동 위임이 제가 만든 에이전트로 안 갔습니다.</strong> <code>code-reviewer</code>에 시점 문구까지 넣어 잘 설명해놨는데도, "코드 리뷰해줘"라고만 하니 그 에이전트는 한 번도 안 불려왔습니다. 대신 Claude Code에 이미 내장된 <code>/code-review</code> 스킬이 처리했습니다. 완전히 방치된 건 아니고, <strong>제가 만든 에이전트가 아니라 다른 경로로 처리된 것</strong>입니다. 특정 에이전트를 꼭 쓰려면 이름을 직접 불러야 한다는 걸 이번에 실감했습니다.</p>
 <p><strong>둘째, <code>tools</code>로 도구를 제한해도 완전히 안전하진 않습니다.</strong> <code>Bash(git log:*)</code>만 허용해뒀는데 전혀 다른 명령인 <code>whoami</code>를 시켰더니 그냥 실행됐습니다. 도구 자체를 막는 건 확실하지만, Bash 안에서 어떤 명령을 치는지는 <code>tools</code>가 못 지킵니다. 진짜 안전장치가 필요하면 <code>PreToolUse</code> 훅을 따로 걸어야 합니다.</p>
-<p>공식문서와 대조해보니 오류 2건, 사실이 바뀐 것 8건이 나왔습니다. 가장 눈에 띈 건 랩이 안내하는 <code>jq '.summary'</code> 명령인데, 실제 응답에는 그런 필드가 아예 없어서 그대로 따라 하면 에러가 납니다. 반대로 <code>/agents</code> 화면이 사라졌다는 것과 <code>Task</code> 도구가 <code>Agent</code>로 이름이 바뀐 건 교재 설명이 정확했습니다. 결론은 1주차 때와 같습니다 — <strong>교재가 틀린 게 아니라, 그 뒤로 제품이 계속 바뀌었습니다.</strong></p>
+<p>공식 문서와 대조해 보니 오류 2건과 바뀐 사실 8건이 나왔습니다. 특히 랩이 안내하는 <code>jq '.summary'</code> 명령은 실제 응답에 해당 필드가 없어 그대로 실행하면 에러가 납니다. 반면 <code>/agents</code> 화면이 사라졌다는 설명과 <code>Task</code> 도구가 <code>Agent</code>로 바뀌었다는 설명은 정확했습니다. 교재 작성 뒤에도 제품이 계속 바뀐 결과입니다.</p>
 <p>마지막으로, 부모 세션의 권한 모드(<code>auto</code>)가 생각보다 결과에 크게 영향을 줍니다. 같은 에이전트라도 부모가 <code>default</code>냐 <code>acceptEdits</code>냐에 따라 파일이 바뀌기도 하고 안 바뀌기도 했습니다. "거부됐는지"는 로그 한 줄만 보지 말고, 실제로 파일이 바뀌었는지까지 같이 확인해야 안전합니다.</p>
 <hr />
 <h2 id="30초-요약">30초 요약<a class="headerlink" href="#30초-요약" title="이 위치로 링크">¶</a></h2>
-<p>Subagent는 메인 대화 안에서 무거운 작업을 대신 처리하는 격리 워커입니다 — 메인이 대량 파일을 직접 읽으면 컨텍스트가 오염되지만, Subagent에 위임하면 그 처리는 격리된 자식 컨텍스트에서 끝나고 메인에는 요약만 돌아옵니다. 정의는 YAML 프론트매터 + 시스템 프롬프트 본문으로 이루어진 마크다운 파일 한 장이고, 필수 필드는 <code>name</code>과 <code>description</code> 둘뿐입니다. 부르는 방법은 자연어로 제안하거나, <code>@agent-이름</code>으로 반드시 그 에이전트를 지목하거나, <code>--agent</code> 플래그로 세션 전체를 그 에이전트로 고정하는 세 단계입니다.</p>
-<p>실전 패턴 5종은 읽기 전용 리뷰어, worktree 격리 테스터, 이중 잠금 보안 스캐너, skills 프리로드 문서 작성가, 4겹 방어 마이그레이션 봇입니다. 실습 환경·버전·권한 모드에 관한 세부사항은 아래 "시작하기 전에 확인할 것"과 실습 기록을 참고하세요.</p>
+<p>Subagent는 메인 대화와 분리된 작업 세션에서 일한 뒤 결과를 요약해 돌려주는 워커입니다. YAML 프론트매터와 시스템 프롬프트 본문을 마크다운 파일 한 장에 적어 정의합니다. 첫 에이전트에는 <code>name</code>, <code>description</code>, 읽기 도구만 있으면 충분합니다. 자연어로 맡기거나 <code>@agent-이름</code>으로 지목할 수 있고, <code>--agent</code>로 세션 전체를 고정할 수도 있습니다. 처음에는 @멘션으로 정확한 에이전트가 호출되는지부터 확인하세요.</p>
+<p>실전 패턴 5종은 읽기 전용 리뷰어, worktree 격리 테스터, 도구 제한과 검증된 Bash 훅을 조합한 보안 스캐너, skills 프리로드 문서 작성가, 4겹 방어 마이그레이션 봇입니다. 실습 환경·버전·권한 모드에 관한 세부사항은 아래 "시작하기 전에 확인할 것"과 실습 기록을 참고하세요.</p>
 <hr />
 <h2 id="목차">목차<a class="headerlink" href="#목차" title="이 위치로 링크">¶</a></h2>
 <table>
@@ -2348,22 +2368,22 @@
 <tr>
 <td>2</td>
 <td><a href="part-02-defining-subagents/">Subagent 정의 방법</a></td>
-<td>스코프 5계층, 프론트매터 16필드</td>
+<td>첫 읽기 전용 파일 → 스코프·16필드 심화</td>
 </tr>
 <tr>
 <td>3</td>
 <td><a href="part-03-dispatch/">Agent 도구와 디스패치</a></td>
-<td>3단계 사다리, 병렬·체이닝·fork</td>
+<td>@멘션 기본 호출 → 병렬·체이닝·fork 심화</td>
 </tr>
 <tr>
 <td>4</td>
 <td><a href="part-04-patterns-quality/">패턴 1+2: 품질 자동화</a></td>
-<td>Code Reviewer + Tester</td>
+<td>Code Reviewer 성공 확인 → Tester·CI 심화</td>
 </tr>
 <tr>
 <td>5</td>
 <td><a href="part-05-pattern-security-scanner/">패턴 3: Security Scanner</a></td>
-<td>이중 잠금과 훅 검증</td>
+<td>도구 제한과 Bash 훅 검증</td>
 </tr>
 <tr>
 <td>6</td>
@@ -2380,7 +2400,7 @@
 <hr />
 <h2 id="시작하기-전에-확인할-것">시작하기 전에 확인할 것<a class="headerlink" href="#시작하기-전에-확인할-것" title="이 위치로 링크">¶</a></h2>
 <p>Chapter 2는 Chapter 1(Claude Code 기본 사용법)을 전제합니다.</p>
-<p>가장 먼저 확인할 것은 <code>claude --version</code>이 2.1.198 이상인지입니다. 이 버전부터 Background 실행이 기본값으로 바뀌고 <code>/agents</code> 위저드가 제거됐기 때문에, 이전 버전이라면 교재 내용과 다른 동작을 볼 수 있습니다. 이 정리는 v2.1.226 기준입니다.</p>
+<p>먼저 <code>claude --version</code>으로 2.1.198 이상인지 확인합니다. 이 버전부터 <code>/agents</code> 위저드가 제거됐습니다. 교재와 v2.1.226 실습에서는 Background 기본 전환을 관찰했지만, 현재는 세션 유형·fork mode·결과 의존성에 따라 실행 위치가 달라집니다. 최신 버전을 써도 교재와 다른 동작이 나타날 수 있습니다.</p>
 <p>에이전트 실습은 <code>~/claude-lab/ch1</code> 프로젝트를 이어서 씁니다. Ch1에서 만든 <code>user-service-lab</code>이 없다면 핸즈온랩 HTML의 Task 00 복구 스크립트로 재생성하면 됩니다. 복구 스크립트를 실행하면 버그 수정 커밋까지 포함된 Ch1 완료 상태가 만들어집니다.</p>
 <p>이 챕터 실습을 헤드리스(<code>claude -p</code>)로 진행한다면, <code>--allowed-tools</code>로 도구를 좁힐 때 <code>Agent</code>를 빼지 않도록 주의하세요. 비대화형에서는 권한 프롬프트를 띄울 수 없어 사전 승인 목록이 곧 실행 가능 범위가 됩니다. 다만 <strong><code>--allowed-tools</code>를 아예 쓰지 않으면 이 문제 자체가 없습니다</strong> — 이번 실습은 전부 그렇게 돌렸습니다. 단 위임 자체가 "정상 동작"한 건 @멘션·<code>--agent</code>처럼 <strong>명시적으로 지정한 경우</strong>뿐이었고, 이름 없이 자연어로 "코드 리뷰해줘"라고만 요청하면 커스텀 에이전트 대신 내장 스킬로 새는 경우가 관찰됐습니다 — 자세한 내용은 Part 07.</p>
 <hr />

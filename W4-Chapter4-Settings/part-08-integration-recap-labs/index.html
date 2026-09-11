@@ -1606,10 +1606,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-통합-예시--chapter-4가-커밋된-저장소의-모습" class="md-nav__link">
+  <a href="#1-통합-예시--필수-완료선-뒤-통합-확장-경로" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. 통합 예시 — Chapter 4가 커밋된 저장소의 모습
+        1. 통합 예시 — 필수 완료선 뒤 통합 확장 경로
       
     </span>
   </a>
@@ -2386,10 +2386,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-통합-예시--chapter-4가-커밋된-저장소의-모습" class="md-nav__link">
+  <a href="#1-통합-예시--필수-완료선-뒤-통합-확장-경로" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. 통합 예시 — Chapter 4가 커밋된 저장소의 모습
+        1. 통합 예시 — 필수 완료선 뒤 통합 확장 경로
       
     </span>
   </a>
@@ -2503,10 +2503,17 @@
 
 <h1 id="part-8--통합과-트러블슈팅--정리와-lab-4종">Part 8 — 통합과 트러블슈팅 (+ 정리와 Lab 4종)<a class="headerlink" href="#part-8--통합과-트러블슈팅--정리와-lab-4종" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p>이 챕터가 다룬 여섯 조각(Settings·Permissions·Hooks·MCP·Commands·Skills)은 결국 한 저장소의 <code>.claude/</code>와 루트의 <code>.mcp.json</code>(Part 5에서 다룬 대로 MCP 프로젝트 설정만 <code>.claude/</code> 밖에 있습니다) 안에서 동시에 맞물려 삽니다. 문제가 생겼을 때는 진단 4도구(<code>/context</code>, <code>/doctor</code>, <code>/hooks</code>, <code>/mcp</code>)로 "무엇이 실제로 로드됐는가"부터 확인하는 게 첫 걸음입니다.</p>
+<p>Settings·Permissions·Hooks·MCP·Commands·Skills는 한 저장소의 <code>.claude/</code>와 루트 <code>.mcp.json</code>에서 함께 작동합니다. MCP 프로젝트 설정만 Part 5에서 본 것처럼 <code>.claude/</code> 밖에 있습니다. README의 필수 완료선을 마친 뒤에는 Settings → Permission → 짧은 Command/Skill → <code>PreToolUse</code> 가드 1개 + <code>PostToolUse</code> 후처리 1개 → 읽기 전용 MCP 1개 순서로 확장합니다. 문제가 생기면 <code>/context</code>, <code>/doctor</code>, <code>/hooks</code>, <code>/mcp</code>에서 실제로 무엇이 로드됐는지 먼저 확인합니다.</p>
 <hr />
-<h2 id="1-통합-예시--chapter-4가-커밋된-저장소의-모습">1. 통합 예시 — Chapter 4가 커밋된 저장소의 모습<a class="headerlink" href="#1-통합-예시--chapter-4가-커밋된-저장소의-모습" title="이 위치로 링크">¶</a></h2>
-<p>이 챕터에서 다룬 조각들이 실제 저장소에서는 이렇게 공존합니다.</p>
+<h2 id="1-통합-예시--필수-완료선-뒤-통합-확장-경로">1. 통합 예시 — 필수 완료선 뒤 통합 확장 경로<a class="headerlink" href="#1-통합-예시--필수-완료선-뒤-통합-확장-경로" title="이 위치로 링크">¶</a></h2>
+<p>README의 필수 완료선을 끝낸 뒤, 아래 조합을 통합 확장 경로로 추가합니다.</p>
+<ul>
+<li><strong><code>settings.json</code></strong> — 팀 기본값과 최소 <code>permissions</code>.</li>
+<li><strong><code>commands/</code> 또는 <code>skills/</code></strong> — W1의 재현 기록을 이름 붙인 짧은 점검 절차 하나.</li>
+<li><strong><code>hooks/</code></strong> — 실행 전 가드 하나와 실행 뒤 포맷/로그 하나.</li>
+<li><strong><code>.mcp.json</code> 또는 local MCP 설정</strong> — 읽기 전용 외부 정보 하나.</li>
+</ul>
+<p>여기까지 통과한 뒤 전체 구성을 살펴봅니다.</p>
 <ul>
 <li><strong><code>settings.json</code></strong> — 팀 표준 <code>permissions</code>, 관측용 <code>env</code>, 세 가지 훅 등록.</li>
 <li><strong><code>hooks/</code></strong> — <code>format.sh</code>(Part 4 Recipe 1), <code>block-rm.sh</code>(Recipe 2), <code>mcp-write-guard.sh</code>(Part 6).</li>
@@ -2514,18 +2521,18 @@
 <li><strong><code>.mcp.json</code></strong> — <code>corp-wiki</code>, <code>github</code>, <code>db</code> 같은 팀 공유 서버 정의.</li>
 <li><strong><code>agents/</code></strong> — 2주차에서 다룬 <code>code-reviewer</code> 등의 서브에이전트 워커.</li>
 </ul>
-<p>즉 <strong>"이 저장소를 클론하는 순간 팀 표준이 그대로 서는 것"</strong>이 이 챕터 전체가 지향하는 목표입니다.</p>
+<p>목표는 저장소를 클론하면 같은 팀 설정을 바로 적용할 수 있게 만드는 것입니다.</p>
 <p><img alt="통합 예시 슬라이드" src="../slides/slide-087.png" /></p>
 <p><em>▲ 교재 슬라이드 87 — 통합 예시 / .claude 풀스택</em></p>
 <h2 id="2-진단-4도구--무엇이-실제로-로드되었나">2. 진단 4도구 — 무엇이 실제로 로드되었나<a class="headerlink" href="#2-진단-4도구--무엇이-실제로-로드되었나" title="이 위치로 링크">¶</a></h2>
-<p>문제가 생겼을 때 가장 먼저 열어볼 네 가지 도구입니다.</p>
+<p>문제가 생기면 다음 네 가지 도구부터 확인합니다.</p>
 <ul>
 <li><strong><code>/context</code></strong> — 컨텍스트 점유를 지침·도구·대화로 분해해 비대 원인을 특정합니다(Part 5에서 이미 실측).</li>
 <li><strong><code>/doctor</code></strong>(<code>claude doctor</code>) — 환경과 설정을 검증하고 자동 수정을 제안하며, 무효 항목의 출처까지 표시합니다.</li>
 <li><strong><code>/hooks</code></strong> — 훅 브라우저로 타입·매처·소스를 보여줍니다(Part 4에서 이미 다룸).</li>
 <li><strong><code>/mcp</code></strong> — 서버 상태·도구·인증을 보여줍니다(Part 5에서 이미 다룸).</li>
 </ul>
-<p>보조로는 <code>/status</code>, <code>/permissions</code>, <code>--verbose</code>가 구성 스냅샷과 로그를 보여줍니다.</p>
+<p><code>/status</code>, <code>/permissions</code>, <code>--verbose</code>에서는 구성 스냅샷과 로그를 볼 수 있습니다.</p>
 <p><img alt="진단 4도구 슬라이드" src="../slides/slide-088.png" /></p>
 <p><em>▲ 교재 슬라이드 88 — 진단 4도구</em></p>
 <h2 id="3-설정이-안-먹을-때--우선순위와-스코프의-이분-진단">3. 설정이 안 먹을 때 — 우선순위와 스코프의 이분 진단<a class="headerlink" href="#3-설정이-안-먹을-때--우선순위와-스코프의-이분-진단" title="이 위치로 링크">¶</a></h2>
@@ -2535,16 +2542,16 @@
     S1 --&gt; S2["2. /status, /permissions로&lt;br/&gt;이 값이 어느 스코프에서 왔는지 확인"]
     S2 --&gt; S3{"3. 상위 스코프에&lt;br/&gt;같은 키가 있는가?"}
     S3 --&gt;|"예"| WIN["상위 스코프 값이 이긴 것&lt;br/&gt;(Part 1 우선순위 5단)"]
-    S3 --&gt;|"아니오"| S4{"4. model/effortLevel/&lt;br/&gt;outputStyle인가?"}
-    S4 --&gt;|"예"| RESTART["/model·/effort·/clear 필요&lt;br/&gt;(Part 1 예외 세 키)"]
+    S3 --&gt;|"아니오"| S4{"4. model/effortLevel/&lt;br/&gt;modelSettings인가?"}
+    S4 --&gt;|"예"| RESTART["settings reference에서&lt;br/&gt;세션 시작 키·전환 방법 확인"]
     S4 --&gt;|"아니오"| BARE["그래도 안 되면&lt;br/&gt;새 터미널 + --bare로 최소 기동 후&lt;br/&gt;하나씩 복원하며 이분 탐색"]
     style P fill:#673ab7,stroke:#4527a0,stroke-width:3px,color:#fff
     style WIN fill:#e8f5e9,stroke:#388e3c,color:#000
     style RESTART fill:#e3f2fd,stroke:#1976d2,color:#000
     style BARE fill:#fff3e0,stroke:#ef6c00,color:#000</code></pre>
-<p>이 흐름은 이 챕터에서 이미 다룬 사실 두 가지(Part 1의 우선순위·리로드 예외)를 진단 순서로 재배열한 것뿐입니다 — 그래서 Part 1을 정확히 이해했다면 이 흐름표 없이도 원인을 찾을 수 있어야 합니다.</p>
+<p>이 흐름은 Part 1에서 다룬 우선순위와 리로드 예외를 진단 순서로 다시 배치한 것입니다.</p>
 <h2 id="4-hooksmcp-트러블슈팅--증상에서-원인으로">4. Hooks·MCP 트러블슈팅 — 증상에서 원인으로<a class="headerlink" href="#4-hooksmcp-트러블슈팅--증상에서-원인으로" title="이 위치로 링크">¶</a></h2>
-<p><strong>훅이 이상하게 동작할 때</strong> 흔한 원인은 이렇습니다.</p>
+<p>훅이 예상대로 동작하지 않으면 다음 원인을 확인합니다.</p>
 <ul>
 <li><strong>안 발화함</strong> — 매처 불일치나 이벤트를 잘못 골랐을 가능성. <code>/hooks</code>로 등록 상태와 매처를 확인합니다.</li>
 <li><strong><code>mcp__server</code> 매처가 안 걸림</strong> — Part 3에서 다룬 대로 정확 문자열로 해석되기 때문입니다. <code>__.*</code> 접미를 추가해야 합니다.</li>
@@ -2553,16 +2560,16 @@
 <li><strong>프롬프트가 느려짐</strong> — <code>UserPromptSubmit</code>에 무거운 명령을 걸었을 가능성. <code>async</code>로 돌리거나 30초 타임아웃 안에 끝내야 합니다.</li>
 <li><strong>전부 침묵함</strong> — 어느 스코프엔가 <code>disableAllHooks</code>가 남아있는지 설정 파일 전수를 확인합니다.</li>
 </ul>
-<p><strong>MCP 문제</strong>는 Part 6에서 다룬 진단표를 그대로 압축한 것이라 여기서 반복하지 않고 요지만 다시 짚습니다.</p>
+<p>MCP 문제는 Part 6의 진단 순서를 짧게 다시 정리합니다.</p>
 <ul>
 <li><strong>안 보임</strong> → 스코프·신뢰 승인 확인</li>
 <li><strong>연결 실패</strong> → 명령·URL·네트워크 확인</li>
-<li><strong>인증 오류</strong> → OAuth 토큰 확인</li>
+<li><strong>인증 오류</strong> → 서버별 OAuth·사전 등록·헤더 인증 계약과 환경변수 확인</li>
 <li><strong>호출 거부</strong> → 권한 규칙과 조직 통제 중 어느 쪽인지 구분</li>
 <li><strong>느림</strong> → 서버 과다나 도구 검색 미작동 의심</li>
 </ul>
 <h2 id="5-보안-체크리스트--커밋-전-마지막-점검">5. 보안 체크리스트 — 커밋 전 마지막 점검<a class="headerlink" href="#5-보안-체크리스트--커밋-전-마지막-점검" title="이 위치로 링크">¶</a></h2>
-<p><code>.claude/</code> 풀스택은 강력한 만큼 <strong>저장소 자체가 실행 경로</strong>이기도 합니다. 커밋 전에 네 가지를 점검하는 습관이 필요합니다.</p>
+<p><code>.claude/</code>에 훅과 명령을 넣으면 <strong>저장소 자체가 실행 경로</strong>가 됩니다. 커밋 전에 네 가지를 점검합니다.</p>
 <ul>
 <li><strong>비밀 없음</strong> — <code>settings.json</code>, <code>.mcp.json</code>, 훅 스크립트 어디에도 토큰 실값을 넣지 않았는지.</li>
 <li><strong>deny 기본선 유지</strong> — <code>.env*</code>, <code>secrets/**</code>, 파괴적 명령 차단 규칙이 그대로 살아있는지.</li>
@@ -2571,28 +2578,29 @@
 </ul>
 <hr />
 <h2 id="직접-해보기--lab-14-종합-기록">직접 해보기 — Lab 1~4 종합 기록<a class="headerlink" href="#직접-해보기--lab-14-종합-기록" title="이 위치로 링크">¶</a></h2>
-<p>이 챕터의 실습 네 개는 각 파트에서 실행하며 이미 원본 로그를 남겼습니다. 여기서는 무엇을 확인했고 무엇이 예상과 달랐는지만 모아 정리합니다. 실행 환경: macOS / Claude Code <strong>v2.1.239</strong>, 2026-08-22, 격리된 스크래치 프로젝트(실제 계정의 <code>~/.claude/settings.json</code>은 건드리지 않음).</p>
+<p>실습 네 개의 원본 로그는 각 파트에 있습니다. 여기서는 확인한 내용과 예상과 달랐던 점만 모았습니다. 실행 환경: macOS / Claude Code <strong>v2.1.239</strong>, 2026-08-22, 격리된 스크래치 프로젝트(실제 계정의 <code>~/.claude/settings.json</code>은 건드리지 않음).</p>
 <ul>
-<li><strong>Lab 1 — Settings/Permissions (Part 1·2)</strong>: 스코프 우선순위(Local &gt; Project, CLI 플래그 최우선)를 실측으로 확인했고 plan 모드가 헤드리스에서 <code>ExitPlanMode</code>를 호출할 수 없어 편집 없이 멈추는 걸 발견했습니다. 권한 규칙 문법에서는 <code>Write(path)</code>가 실제로 참조되지 않고 <code>Edit(path)</code>만 유효하다는 걸 직접 걸려보고 알게 됐습니다. <code>permission_denials</code> 필드가 정적 deny 규칙 차단은 기록하지 않는다는 것도 확인했습니다. <strong>워크스페이스 신뢰(trust) 확인을 위해 <code>~/.claude.json</code>을 일시적으로 건드렸고, 실습 종료 후 원상복구했습니다.</strong></li>
-<li><strong>Lab 2 — Hooks (Part 3·4)</strong>: <code>PreToolUse</code>/<code>PostToolUse</code>는 <code>-p</code> 헤드리스에서도 대화형과 동일한 JSON 스키마로 발화했습니다. <code>PreToolUse</code>의 JSON deny 결정이 실제로 도구 호출을 막으며 차단된 호출은 <code>PostToolUse</code>까지 도달하지 않는다는 것도 확인했습니다. 이때는 <code>permission_denials</code>에 정확히 기록되어 Lab 1의 발견을 정정하는 계기가 됐습니다. 추가로 <code>disableAllHooks: true</code>를 켜면 로그 파일 자체가 안 생길 만큼 훅이 완전히 꺼졌습니다. <code>/hooks</code> 메뉴는 헤드리스에서 <code>"/hooks isn't available in this environment."</code>만 돌아오는 대화형 전용 기능이었습니다.</li>
-<li><strong>Lab 3 — MCP (Part 5·6)</strong>: <code>claude mcp add</code>로 Playwright stdio 서버를 연결하고 <code>/context</code>로 전후를 비교했습니다. 23개 도구가 추가됐는데도 전체 컨텍스트 총량이 그대로였고 <code>MCP tools (deferred)</code>라는 별도 카테고리로만 잡혀, 도구 검색의 온디맨드 로딩이 실제로 작동하는 걸 확인했습니다. GitHub의 원격 http 서버는 처음엔 교재 예시대로 OAuth로 시도했다가 <code>"does not support dynamic client registration"</code> 오류로 막혔는데, 공식문서가 안내하는 대로 fine-grained PAT를 헤더로 넘기는 방식으로 바꾸자 연결에 성공했고 실제 저장소 정보 조회까지 확인했습니다.</li>
-<li><strong>Lab 4 — Commands (Part 7)</strong>: <code>.claude/commands/standup.md</code>를 작성해 <code>$1</code> 인자와 <code>!</code>git log<code>` 인라인 컨텍스트 수집을 담고</code>claude -p "/standup Jade"<code>로 헤드리스 호출했습니다. 인자 치환과 인라인 실행 결과가 정확히 반영된 응답을 받아 명령 자산이 헤드리스 자동화에도 그대로 재사용된다는 걸 확인했습니다. 이어서 이 명령을</code>.claude/skills/standup/`(SKILL.md + checklist.md)로 승격해 같은 호출을 다시 실행했습니다. 새로 추가한 체크리스트 항목("블로커")이 실제 응답에 반영되는 것까지 확인했습니다.</li>
+<li><strong>Lab 1 — Settings/Permissions (Part 1·2)</strong>: v2.1.239에서 스코프 우선순위(Local &gt; Project, CLI 플래그 최우선)를 실측했습니다. plan 모드는 헤드리스에서 <code>ExitPlanMode</code>를 호출할 수 없어 편집 없이 멈췄습니다. 권한 규칙에서는 <code>Write(path)</code>가 참조되지 않고 <code>Edit(path)</code>만 유효했습니다. <code>permission_denials</code>의 정적 deny 기록 여부도 이 버전·구성에서 관찰한 결과입니다. <strong>워크스페이스 신뢰(trust) 확인을 위해 <code>~/.claude.json</code>을 일시적으로 건드렸고, 실습 종료 후 원상복구했습니다.</strong></li>
+<li><strong>Lab 2 — Hooks (Part 3·4)</strong>: v2.1.239의 이 구성에서는 <code>PreToolUse</code>/<code>PostToolUse</code>가 <code>-p</code>에서도 발화했습니다. <code>PreToolUse</code>의 JSON deny 결정이 도구 호출을 막았고, 차단된 호출은 <code>PostToolUse</code>에 도달하지 않았습니다. 이때 <code>permission_denials</code>에는 기록됐습니다. 공식 필드 계약이 아닌 실측 결과입니다. <code>disableAllHooks: true</code>를 켜면 로그 파일도 생기지 않았습니다. <code>/hooks</code> 메뉴는 헤드리스에서 <code>"/hooks isn't available in this environment."</code>만 반환하는 대화형 전용 기능이었습니다.</li>
+<li><strong>Lab 3 — MCP (Part 5·6)</strong>: <code>claude mcp add</code>로 Playwright stdio 서버를 연결하고 <code>/context</code>의 전후를 비교했습니다. v2.1.239에서는 도구 23개가 추가돼도 전체 컨텍스트 총량이 같았습니다. 도구는 <code>MCP tools (deferred)</code>라는 별도 카테고리에 잡혔고, 필요할 때 불러오는 on-demand 로딩을 확인했습니다. GitHub 원격 HTTP 서버는 OAuth 시도에서 <code>"does not support dynamic client registration"</code> 오류가 나서 PAT 헤더 방식으로 연결했습니다. 이는 이 실습 서버의 결과이며, 다른 서버에는 해당 서버의 공식 인증 문서를 적용해야 합니다.</li>
+<li><strong>Lab 4 — Commands (Part 7)</strong>: <code>.claude/commands/standup.md</code>에 <code>$1</code> 인자와 <code>!</code>git log<code>` 인라인 컨텍스트 수집을 넣고</code>claude -p "/standup Jade"<code>로 헤드리스 호출했습니다. v2.1.239에서 인자 치환과 인라인 실행 결과가 응답에 반영됐습니다. 공식 작성 규칙은 첫 인자에</code>$0<code>/</code>$ARGUMENTS[0]<code>을 쓰는 것이며, 이</code>$1<code>결과는 재현 기록입니다. 이어서 명령을</code>.claude/skills/standup/`(SKILL.md + checklist.md)로 옮겨 같은 호출을 실행했습니다. 새 체크리스트의 "블로커" 항목도 응답에 반영됐습니다.</li>
 </ul>
-<p>이번 챕터의 실습 4개는 이제 전부 완료됐습니다. GitHub MCP 연결은 브라우저 OAuth 로그인이 필요해 혼자서는 재현할 수 없었던 부분인데, 함께 실제 GitHub 계정으로 PAT를 발급해 완료했습니다.</p>
+<p>실습 4개를 모두 완료했습니다. GitHub MCP 연결에는 이 실습 서버의 PAT 헤더 방식을 사용했습니다. 브라우저 OAuth 필요 여부와 PAT 지원 여부는 서버마다 다릅니다.</p>
 <hr />
 <h2 id="흔한-오해-바로잡기">흔한 오해 바로잡기<a class="headerlink" href="#흔한-오해-바로잡기" title="이 위치로 링크">¶</a></h2>
-<p><strong>"설정 문제는 항상 파일 오타 때문이다"</strong> — 실제로는 오타보다 <strong>다른 스코프의 값이 먼저 적용돼서</strong> 원인인 경우가 훨씬 흔합니다. <code>/doctor</code>로 유효성부터 보되 안 되면 곧바로 스코프 우선순위를 의심하는 순서가 효율적입니다.</p>
+<p><strong>"설정 문제는 항상 파일 오타 때문이다"</strong> — 파일이 유효해도 <strong>다른 스코프의 값이 먼저 적용돼서</strong> 원하는 설정이 보이지 않을 수 있습니다. <code>/doctor</code>로 유효성을 확인한 뒤 스코프 우선순위를 살펴봅니다.</p>
 <hr />
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
-<p>이 챕터 전체를 행동 중심으로 압축하면 넷입니다.</p>
+<p>상황별로 사용할 기능을 정리하면 다음과 같습니다.</p>
 <ul>
-<li><strong>팀 기본값을 정하고 싶다</strong> → Settings(4스코프 5단 우선순위, 값 하나짜리 키는 덮고 목록형 키는 합쳐짐)</li>
+<li><strong>팀 기본값을 정하고 싶다</strong> → Settings(4스코프 5단 우선순위, 값 하나짜리 키는 덮고 목록형 키는 원칙적으로 합쳐짐. 단, <code>fallbackModel</code>·<code>modelPicker</code>·managed <code>availableModels</code>·<code>modelSettings</code> 등 모델 관련 키에는 별도 규칙이 있음)</li>
 <li><strong>위험한 호출을 막거나 자동 반응시키고 싶다</strong> → Permissions(deny 우선, 6종 모드) / Hooks(3케이던스, 5핸들러)</li>
 <li><strong>외부 시스템과 연결하고 싶다</strong> → MCP(3프리미티브 4전송 3스코프, 도구 검색으로 규모 대응)</li>
 <li><strong>반복 작업을 굳히고 싶다</strong> → Command/Skill(사실상 같은 메커니즘)</li>
 </ul>
-<p>이 네 줄에 막힘없이 답할 수 있으면 이 챕터의 목표는 달성한 셈입니다. 막히는 부분이 있으면 해당 파트로 돌아가 복습하세요. Settings·Permissions는 Part 1·2, Hooks는 Part 3·4, MCP·Commands·Ops는 Part 5~8입니다.</p>
-<p>이번 주 실습에서 가장 값졌던 발견은 <strong>"헤드리스(<code>-p</code>)가 건너뛰는 건 사람에게 묻는 절차뿐이고, 훅·명령·인자 치환 같은 메커니즘 자체는 대화형 세션과 동일하게 작동한다"</strong>는 것과 <strong>"<code>permission_denials</code>는 차단 주체(정적 규칙 vs 훅·모드)에 따라 기록 여부가 갈린다"</strong>는 두 가지입니다. 둘 다 교재가 명시적으로 답을 주지 않은 부분이라 실측이 아니었다면 확인하지 못했을 내용입니다.</p>
+<p>Settings·Permissions는 Part 1·2, Hooks는 Part 3·4, MCP·Commands·Ops는 Part 5~8에서 다시 확인할 수 있습니다.</p>
+<p>v2.1.239 구성에서는 <strong><code>PreToolUse</code>/<code>PostToolUse</code>와 Command 인라인 실행이 <code>-p</code>에서도 관찰됐고</strong>, <strong><code>permission_denials</code>의 기록 결과는 차단 경로마다 달랐습니다.</strong> 둘 다 일반 계약이 아니라 실측입니다. 헤드리스에는 permission host가 없습니다. <code>AskUserQuestion</code>·<code>ExitPlanMode</code> 같은 UI 명령, project MCP 승인, 비동기 훅 종료도 대화형과 다를 수 있으므로 절차별로 검증합니다.</p>
+<p>W5 Headless에서는 "UI가 없다"는 사실만 확인해서는 부족합니다. W4에서 만든 절차마다 입력(프롬프트·MCP 데이터), 권한(Permission과 승인 경계), 출력(<code>--output-format json</code>의 결과), 실패 판정(종료 상태·실제 작업 결과·필요하면 훅 로그)을 함께 기록합니다. <code>permission_denials</code>는 보조 관찰값으로만 씁니다. Plan은 W1처럼 계획을 기록하고 후속 세션에서 재개한 경우와, 이 주차 Lab 1처럼 단발 <code>-p</code> 실행이 승인 경계에서 멈춘 경우를 구분합니다.</p>
 <hr />
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>

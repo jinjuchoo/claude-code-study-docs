@@ -2218,10 +2218,43 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#먼저-할-3가지" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        먼저 할 3가지
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#회고" class="md-nav__link">
     <span class="md-ellipsis">
       
         회고
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#w5에서-가져오는-지도" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        W5에서 가져오는 지도
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#이-챕터에서-이어지는-것" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        이 챕터에서 이어지는 것
       
     </span>
   </a>
@@ -2255,6 +2288,17 @@
     <span class="md-ellipsis">
       
         시작하기 전에 확인할 것
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#필수-완료선과-선택-심화" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        필수 완료선과 선택 심화
       
     </span>
   </a>
@@ -2312,17 +2356,56 @@
 
 
 <h1 id="6주차--chapter-6-agent-sdk">6주차 — Chapter 6: Agent SDK<a class="headerlink" href="#6주차--chapter-6-agent-sdk" title="이 위치로 링크">¶</a></h1>
-<p>5주차에서는 <code>claude -p</code>를 셸에 엮어 자동화했습니다. 그런데 그 답으로 다음 질문을 이어가거나, 프로그램이 값으로 직접 분기하거나, 도구를 코드로 쥐여주려는 순간 셸 문자열 처리로는 한계에 부딪힙니다. 이번 주는 그 지점을 SDK로 코드 안에서 직접 풀어본 기록입니다. 실제로 돌려보니 Zod가 만든 스키마가 <code>draft/2020-12</code> 형식이라 거부되고 <code>maxTurns: 4</code>가 실제로는 부족해 상한에 걸리는 걸 그대로 겪었습니다. Agent SDK는 이 문제들을 코드 몇 줄로 다루게 해주는 라이브러리입니다. <code>query()</code> 하나로 시작해 대화 재개, in-process MCP 도구, 출력 계약, 권한 관문까지 차례로 붙여봤습니다.</p>
+<h2 id="먼저-할-3가지">먼저 할 3가지<a class="headerlink" href="#먼저-할-3가지" title="이 위치로 링크">¶</a></h2>
+<p>Node.js 18 이상을 준비한 뒤, 로컬에서 <code>query()</code>를 한 번 실행합니다. <code>result</code>를 포착해도 멈추지 말고 스트림 끝까지 읽습니다.</p>
 <p><strong>원본</strong>: Claude Code Deep Dive Workshop / Chapter 6 — Agent SDK (9파트, 약 84 슬라이드)
 <strong>기준 버전</strong>: Claude Code 2.1.260 / <code>@anthropic-ai/claude-agent-sdk</code> 0.3.260 / 2026-09-04 · 교재는 2026년 7월판</p>
 <h2 id="회고">회고<a class="headerlink" href="#회고" title="이 위치로 링크">¶</a></h2>
-<p>첫 <code>hello.mjs</code>는 생각보다 평범했습니다. 파일 목록을 읽어 한 줄을 답하고 마지막 메시지에 session ID와 비용을 붙여 보냈습니다. CLI를 라이브러리로 바꾼다고 해서 모델 호출을 처음부터 조립하는 게 아니라는 점이 여기서 분명해졌습니다. 인증, 도구 실행, 세션 기록은 이미 Claude Code 쪽에 있고 프로그램은 그 흐름을 순회할 뿐이었습니다.</p>
-<p>랩을 그대로 따라가자 교재 시점과 현재 버전의 틈도 바로 드러났습니다. <code>claude /status</code>는 이 실행 환경에서 사용할 수 없었지만 SDK의 첫 query는 기존 CLI 인증으로 성공했습니다. 더 큰 차이는 <code>settingSources</code>였습니다. 랩은 생략하면 파일시스템 설정을 읽지 않는다고 설명하는데, 현재 타입 선언과 공식 문서는 생략 시 user·project·local을 모두 읽는다고 명시하고 있었습니다. 임베딩 프로그램에서 예측 가능한 실행을 원한다면 이제 <code>[]</code>를 직접 적어야 합니다.</p>
-<p>세션 랩은 더 조심스럽게 읽게 됐습니다. 대화 재개는 <code>sessionId</code>를 갱신해 <code>resume</code>에 넘기는 세 줄로 실제로 이어졌지만, 상태 파일 점검원은 랩 원문의 <code>maxTurns: 4</code>로는 상한에 걸려 죽었습니다. 성공 예시만 옮기지 않고 이 실패를 먼저 남긴 이유입니다. 상한을 <code>8</code>로 올려 다시 돌리자 OK→DOWN 상태 변화까지 정확히 잡아냈습니다 — 상한은 설명용 숫자가 아니라 실제 프롬프트와 모델을 넣어 직접 재봐야 하는 운영값이었습니다.</p>
-<p>6주를 마치며 남은 감각은 단순합니다. 좋은 에이전트는 프롬프트 한 줄에서 나오지 않습니다. 입력의 범위, 출력의 계약, 도구의 권한, 세션의 보존 위치가 코드에서 보일 때 비로소 다음 사람이 고칠 수 있는 프로그램이 됩니다.</p>
+<p>첫 <code>hello.mjs</code>는 생각보다 평범했습니다. 파일 목록을 읽고 한 줄로 답한 뒤, 마지막 메시지에 session ID와 비용을 담아 보냈습니다. CLI를 라이브러리로 바꾼다고 모델 호출을 처음부터 조립하는 것은 아니었습니다. 인증, 도구 실행, 세션 기록은 Claude Code 쪽에 이미 있고 프로그램은 그 흐름을 읽습니다.</p>
+<p>랩을 그대로 따라가니 교재와 현재 버전의 차이도 바로 보였습니다. <code>claude /status</code>는 이 실행 환경에서 쓸 수 없었지만 SDK의 첫 query는 기존 CLI 인증으로 성공했습니다. 가장 큰 차이는 <code>settingSources</code>였습니다. 랩은 이를 생략하면 파일시스템 설정을 읽지 않는다고 설명하지만, 현재 타입 선언과 공식 문서는 생략 시 user·project·local을 모두 읽는다고 명시합니다. 임베딩 프로그램의 실행을 예측 가능하게 하려면 <code>[]</code>를 직접 적어야 합니다.</p>
+<p>세션 랩은 더 조심해서 읽게 됐습니다. 대화 재개는 <code>sessionId</code>를 갱신해 <code>resume</code>에 넘기는 세 줄로 실제로 이어졌습니다. 반면 상태 파일 점검원은 랩 원문의 <code>maxTurns: 4</code>에서 상한에 걸려 멈췄습니다. 성공 사례만 남기지 않고 이 실패도 기록한 이유입니다. 상한을 <code>8</code>로 올려 다시 실행하니 OK→DOWN 상태 변화까지 정확히 잡아냈습니다. 상한은 설명용 숫자가 아니라 실제 프롬프트와 모델로 확인해야 하는 운영값이었습니다.</p>
+<p>6주를 마치고 보니 좋은 에이전트는 프롬프트 한 줄만으로 만들 수 없었습니다. 입력 범위, 출력 계약, 도구 권한, 세션 보존 위치가 코드에 드러나야 다음 사람도 고칠 수 있습니다.</p>
+<h2 id="w5에서-가져오는-지도">W5에서 가져오는 지도<a class="headerlink" href="#w5에서-가져오는-지도" title="이 위치로 링크">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>W5에서 한 일</th>
+<th>W6에서 같은 역할을 하는 것</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>claude -p</code> 실행</td>
+<td><code>query()</code> 호출</td>
+</tr>
+<tr>
+<td><code>stream-json</code> 줄 읽기</td>
+<td>한 호출에서 나오는 메시지 스트림 순회</td>
+</tr>
+<tr>
+<td>마지막 JSON 봉투 확인</td>
+<td><code>result</code>와 그 안의 <code>structured_output</code>을 포착한 뒤 스트림 종료 확인</td>
+</tr>
+<tr>
+<td><code>--resume</code></td>
+<td><code>resume: sessionId</code></td>
+</tr>
+<tr>
+<td><code>--allowed-tools</code></td>
+<td>도구 등록 뒤 <code>allowedTools</code>로 실행 허용</td>
+</tr>
+<tr>
+<td><code>jq -e</code>로 결과 분기</td>
+<td>JSON Schema 출력 계약 뒤 JavaScript 조건문</td>
+</tr>
+</tbody>
+</table>
+<p>차이는 호출 위치입니다. W5에서는 셸이 호출·파싱·분기를 맡았고, W6에서는 프로그램이 같은 순서를 값과 함수로 다룹니다.</p>
+<h2 id="이-챕터에서-이어지는-것">이 챕터에서 이어지는 것<a class="headerlink" href="#이-챕터에서-이어지는-것" title="이 위치로 링크">¶</a></h2>
+<p>5주차에서는 <code>claude -p</code>를 셸과 엮어 자동화했습니다. 6주차에서는 그 자동화 계약을 애플리케이션 코드로 옮깁니다. 도구 등록, 실행 허용, 쓰기 검사는 서로 다른 층입니다. 실제로 실행해 보니 Zod가 만든 스키마는 <code>draft/2020-12</code> 형식이라 거부됐고, <code>maxTurns: 4</code>는 부족해서 상한에 걸렸습니다. 이 원고는 로컬 최소 <code>query()</code>를 먼저 완성하고, 사내 배포 점검 도우미에 대화 재개, 규정 조회 도구, 상태 계약, 쓰기 차단, 상태 저장을 하나씩 더한 기록입니다.</p>
 <h2 id="30초-요약">30초 요약<a class="headerlink" href="#30초-요약" title="이 위치로 링크">¶</a></h2>
-<p>SDK는 Claude Code의 대화·도구·권한·세션 기능을 TypeScript와 Python에서 호출하는 표면입니다. <code>query()</code>의 메시지 스트림을 읽고 필요한 곳에 도구와 정책을 붙입니다.</p>
-<p>가장 먼저 실행 가능한 query를 만들고 그다음에 JSON Schema로 출력 모양을 고정합니다. 쓰기 같은 위험한 도구는 <code>canUseTool</code> 또는 <code>PreToolUse</code> 훅으로 통제합니다. 세션 ID는 메모리 안에서는 대화를 잇고, 파일·DB에 저장하면 프로세스가 바뀌어도 이력을 잇습니다.</p>
+<p>SDK는 Claude Code의 대화·도구·권한·세션 기능을 TypeScript와 Python에서 호출하는 인터페이스입니다. 한 번의 <code>query()</code>는 여러 메시지를 차례로 내보내고, <code>result</code>는 에이전트 루프가 끝났음을 알립니다. 그 뒤에도 system event가 몇 개 올 수 있으므로 result를 포착해도 스트림 끝까지 읽습니다. 이 시간 순서를 이해한 뒤 필요한 도구와 정책을 붙입니다.</p>
+<p>먼저 실행 가능한 query를 만들고, 그다음 JSON Schema로 출력 모양을 고정합니다. 쓰기처럼 위험한 도구는 <code>canUseTool</code> 또는 <code>PreToolUse</code> 훅으로 통제합니다. 세션 ID는 메모리에서 대화를 잇고, 같은 호스트에서는 로컬 트랜스크립트와 함께 재개됩니다. 다른 호스트나 컨테이너에서는 ID만으로 재개할 수 없으므로 <code>sessionStore</code>로 트랜스크립트를 공유하거나 복원해야 합니다.</p>
 <h2 id="목차">목차<a class="headerlink" href="#목차" title="이 위치로 링크">¶</a></h2>
 <table>
 <thead>
@@ -2336,48 +2419,51 @@
 <tr>
 <td>1</td>
 <td><a href="part-01-sdk-basics/">SDK 기본</a></td>
-<td>CLI 하네스가 라이브러리가 되는 지점을 봅니다.</td>
+<td>최소 <code>query()</code>에서 <code>result</code>를 포착하고 trailing event까지 읽는 흐름을 봅니다.</td>
 </tr>
 <tr>
 <td>2</td>
 <td><a href="part-02-query-multiturn/">query와 멀티턴</a></td>
-<td>메시지 스트림과 session ID를 다룹니다.</td>
+<td>점검 대화를 <code>resume</code>으로 잇습니다.</td>
 </tr>
 <tr>
 <td>3</td>
 <td><a href="part-03-custom-tools/">커스텀 도구</a></td>
-<td>함수 하나를 in-process MCP 도구로 연결합니다.</td>
+<td>배포 규정 조회 함수를 도구로 등록하고 허용합니다.</td>
 </tr>
 <tr>
 <td>4</td>
 <td><a href="part-04-structured-output/">구조화 출력</a></td>
-<td>모델 답을 파싱 대신 계약으로 받습니다.</td>
+<td>점검 상태를 문장이 아닌 계약된 값으로 받습니다.</td>
 </tr>
 <tr>
 <td>5</td>
 <td><a href="part-05-permissions-hooks/">권한과 훅</a></td>
-<td>도구 호출을 허용·차단하는 관문을 만듭니다.</td>
+<td>쓰기 요청을 정책 관문에서 차단합니다.</td>
 </tr>
 <tr>
 <td>6</td>
 <td><a href="part-06-sessions-state/">세션과 상태</a></td>
-<td>재개, 저장, 설정 출처를 구분합니다.</td>
+<td>대화 ID·점검 상태·실행 설정을 나눠 저장합니다.</td>
 </tr>
 <tr>
 <td>7</td>
 <td><a href="part-07-hosting-production/">호스팅과 프로덕션</a></td>
-<td>컨테이너와 관측의 준비선을 정합니다.</td>
+<td>선택 심화: 컨테이너·다중 인스턴스·관측의 준비선을 봅니다.</td>
 </tr>
 <tr>
 <td>8</td>
 <td><a href="part-08-capstone-recap-labs/">캡스톤과 Labs</a></td>
-<td>부품을 하나의 wiki-agent 설계에 조립합니다.</td>
+<td>배포 점검 도우미로 부품과 실습 결과를 다시 조립합니다.</td>
 </tr>
 </tbody>
 </table>
 <h2 id="시작하기-전에-확인할-것">시작하기 전에 확인할 것<a class="headerlink" href="#시작하기-전에-확인할-것" title="이 위치로 링크">¶</a></h2>
-<p>Node.js 18 이상과 Claude Code 로그인이 필요합니다. 이 랩은 별도 API 키를 만들지 않고 SDK가 Claude Code 프로세스를 실행해 기존 로그인을 그대로 씁니다 — 다만 이건 로컬 개발용 지름길입니다. 공식 문서는 claude.ai 구독 로그인을 제품·서비스에 얹는 걸 사전 승인 없이는 금지하고 지원 인증 경로로 <code>ANTHROPIC_API_KEY</code>·Bedrock·Vertex·Foundry만 명시합니다(Part 1·Part 7 참고). <code>claude /status</code>처럼 대화형 UI 명령은 실행 환경에 따라 사용할 수 없습니다. 인증의 진짜 확인은 작은 <code>query()</code>가 result 메시지를 돌려주는지입니다.</p>
+<p>Node.js 18 이상과 지원되는 인증 경로가 필요합니다. 이 랩에서는 별도 API 키를 만들지 않은 상태에서 작은 <code>query()</code>가 성공했지만, 이는 <strong>이 실습 환경의 관측값</strong>일 뿐 SDK의 일반 인증 계약은 아닙니다. 공식 문서가 명시한 제품·서비스용 경로는 <code>ANTHROPIC_API_KEY</code>·Bedrock·Vertex·Foundry입니다(Part 1·Part 7 참고). <code>claude /status</code>처럼 대화형 UI 명령은 실행 환경에 따라 사용할 수 없습니다. 이 랩에서 인증 상태를 확인한 근거는 작은 <code>query()</code>가 result를 냈다는 실행 기록입니다.</p>
 <p>SDK는 기본 설정을 상속할 수 있습니다. 로컬의 CLAUDE.md나 MCP 설정이 몰래 실행을 바꾸지 않게 하려면 <code>settingSources: []</code>를 적고 의도적으로 프로젝트 설정을 쓸 때만 <code>['project']</code>를 넣습니다.</p>
+<h2 id="필수-완료선과-선택-심화">필수 완료선과 선택 심화<a class="headerlink" href="#필수-완료선과-선택-심화" title="이 위치로 링크">¶</a></h2>
+<p><strong>필수 완료선</strong>은 로컬에서 최소 <code>query()</code> 프로그램을 실행해 assistant 메시지와 <code>result</code>를 구분하고, result 뒤 event까지 스트림을 읽는 것입니다. 이 랩은 기존 CLI 로그인 상태와 Node.js 18 이상에서 시작했습니다. <code>resume</code>, 규정 조회 도구, 상태 스키마, 쓰기 차단, 상태 저장은 이 최소 프로그램을 사내 배포 점검 도우미로 확장하는 순서입니다.</p>
+<p><strong>선택 심화</strong>는 컨테이너 이미지, Kubernetes, 다중 인스턴스 세션 저장소, 제품·서비스용 인증입니다. 이는 로컬 최소 프로그램의 완료 조건이 아닙니다. 이 원고에서 실제로 검증하지 못한 범위는 그대로 표시합니다.</p>
 <h2 id="실습-기록">실습 기록<a class="headerlink" href="#실습-기록" title="이 위치로 링크">¶</a></h2>
 <p>이 정리의 실습은 <strong>2026-09-04에 직접 실행한 결과</strong>입니다. 환경: macOS 26.6.2 / Node 25.8.1 / Claude Code 2.1.260 / SDK 0.3.260 / Zod 4.5.4.</p>
 <table>
@@ -2416,20 +2502,21 @@
 </tr>
 </tbody>
 </table>
-<p>각 태스크의 원본 실행 로그는 해당 파트의 "직접 해보기" 절에 있습니다. 실패 원인과 공식문서 대조 요약은 → <strong><a href="part-08-capstone-recap-labs/">Part 8 — 캡스톤과 Labs</a></strong></p>
+<p>각 태스크의 원본 실행 로그는 해당 파트의 "직접 해보기" 절에 있습니다. 실패 원인과 공식문서 대조는 <a href="part-08-capstone-recap-labs/">Part 8 — 캡스톤과 Labs</a>에 정리했습니다.</p>
 <h2 id="학습-목표-체크리스트">학습 목표 체크리스트<a class="headerlink" href="#학습-목표-체크리스트" title="이 위치로 링크">¶</a></h2>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <code>query()</code> 메시지 스트림과 result 메시지를 구분합니다.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> in-process MCP 서버에 Zod 도구를 연결합니다.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> JSON Schema 출력 계약을 실제로 검증합니다.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <code>canUseTool</code>과 <code>PreToolUse</code>가 다른 관문임을 실행으로 확인합니다.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 컨테이너 이미지 빌드와 Kubernetes 배포는 이 원고 범위 밖으로 남깁니다.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 로컬 최소 <code>query()</code> 프로그램을 실행합니다.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 선택 심화: 컨테이너 이미지 빌드·Kubernetes 배포·제품 인증은 이 원고 범위 밖으로 남깁니다.</li>
 </ul>
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
 <ul>
 <li><strong>1차</strong>: Claude Code Deep Dive Workshop, <em>Chapter 6 — Agent SDK</em> (2026.07 판), Choi WooHyung / AWS Korea
   → <a href="https://github.com/whchoi98/claude-code-workshop">github.com/whchoi98/claude-code-workshop</a></li>
-<li><strong>2차</strong>: Anthropic 공식 문서 <a href="https://code.claude.com/docs/en/agent-sdk/typescript">TypeScript SDK</a>, <a href="https://code.claude.com/docs/en/agent-sdk/python">Python SDK</a>, <a href="https://code.claude.com/docs/en/agent-sdk/permissions">SDK permissions</a></li>
+<li><strong>2차</strong>: Anthropic 공식 문서 <a href="https://code.claude.com/docs/en/agent-sdk/typescript">TypeScript SDK</a>, <a href="https://code.claude.com/docs/en/agent-sdk/python">Python SDK</a>, <a href="https://code.claude.com/docs/en/agent-sdk/agent-loop">Agent loop</a>, <a href="https://code.claude.com/docs/en/agent-sdk/sessions">Sessions</a>, <a href="https://code.claude.com/docs/en/agent-sdk/permissions">SDK permissions</a></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">본문에 삽입된 슬라이드 이미지에 대하여</p>

@@ -694,10 +694,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#chapter-1-핵심-요약--열-개-파트를-여섯-문장으로" class="md-nav__link">
+  <a href="#chapter-1-핵심-요약" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Chapter 1 핵심 요약 — 열 개 파트를 여섯 문장으로
+        Chapter 1 핵심 요약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#첫-성공-종료-점검" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        첫 성공 종료 점검
       
     </span>
   </a>
@@ -2309,10 +2320,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#chapter-1-핵심-요약--열-개-파트를-여섯-문장으로" class="md-nav__link">
+  <a href="#chapter-1-핵심-요약" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Chapter 1 핵심 요약 — 열 개 파트를 여섯 문장으로
+        Chapter 1 핵심 요약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#첫-성공-종료-점검" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        첫 성공 종료 점검
       
     </span>
   </a>
@@ -2349,20 +2371,33 @@
 
 <h1 id="part-10--recap--labs">Part 10 — Recap &amp; Labs<a class="headerlink" href="#part-10--recap--labs" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p>Chapter 1의 열 개 파트를 여섯 문장으로 압축하고, <strong>실습 랩 5종을 실제로 수행한 기록</strong>을 남깁니다.</p>
+<p>Chapter 1의 열 개 파트를 여섯 문장으로 정리하고, <strong>실습 랩 5종을 실제로 수행한 기록</strong>을 남깁니다.</p>
 <hr />
-<h2 id="chapter-1-핵심-요약--열-개-파트를-여섯-문장으로">Chapter 1 핵심 요약 — 열 개 파트를 여섯 문장으로<a class="headerlink" href="#chapter-1-핵심-요약--열-개-파트를-여섯-문장으로" title="이 위치로 링크">¶</a></h2>
-<p><strong>정체성.</strong> Claude Code는 Agentic Loop(수집 → 실행 → 검증의 반복)로 저장소 단위 작업을 완수하는 Anthropic의 1차 도구입니다. 자동완성과의 차이는 범위와 검증 책임입니다.</p>
-<p><strong>아키텍처.</strong> Interface / Harness / Model / Provider 네 계층이고 본체는 하네스입니다. 도구 실행, 권한 검사, 컨텍스트 관리, 체크포인트가 전부 여기서 일어납니다.</p>
-<p><strong>설치와 인증.</strong> Native 원라이너가 새 표준이며 Node.js가 필요 없습니다. 인증은 여섯 경로가 있고 충돌하면 우선순위 규칙으로 하나가 선택됩니다.</p>
-<p><strong>사용법.</strong> 좋은 프롬프트는 범위·금지 조건·완료 기준을 담습니다. 슬래시 명령은 워크플로 단계별로 묶여 있고, 권한 모드는 <strong>설정값 기준 6종 / Shift+Tab 기본 순환 3종</strong>으로 자율성을 조절합니다.</p>
-<p><strong>메모리.</strong> 내가 쓰는 <code>CLAUDE.md</code>는 4계층으로 병합되고, Claude가 쓰는 Auto memory가 학습을 축적합니다. 길어지면 <code>rules</code>의 경로 스코프로 쪼갭니다.</p>
-<p><strong>패턴.</strong> EPC를 축으로 TDD, 코드리뷰, 병렬화, Headless, Routines를 얹습니다. 모든 패턴의 공통점은 <strong>명세를 함께 준다</strong>는 것입니다.</p>
+<h2 id="chapter-1-핵심-요약">Chapter 1 핵심 요약<a class="headerlink" href="#chapter-1-핵심-요약" title="이 위치로 링크">¶</a></h2>
+<ul>
+<li>Claude Code는 Agentic Loop(수집 → 실행 → 검증의 반복)로 저장소에서 여러 단계를 수행하고 검증·재수정을 시도하는 Anthropic의 1차 도구입니다. 자동완성과 달리 완료 여부는 사용자가 diff와 테스트 결과로 확인합니다.</li>
+<li>구조는 Interface / Harness / Model / Provider 네 계층이고 본체는 하네스입니다. 도구 실행, 권한 검사, 컨텍스트 관리, 체크포인트가 전부 여기서 일어납니다.</li>
+<li>Native 원라이너가 새 설치 표준이며 Node.js가 필요 없습니다. 인증은 여섯 경로가 있고 충돌하면 우선순위 규칙으로 하나가 선택됩니다.</li>
+<li>좋은 프롬프트는 범위·금지 조건·완료 기준을 담습니다. 슬래시 명령은 워크플로 단계별로 묶여 있고, 권한 모드는 설정값 기준 6종, Shift+Tab 기본 순환 3종으로 자율성을 조절합니다.</li>
+<li>내가 쓰는 <code>CLAUDE.md</code>는 4계층으로 병합되고, Claude가 쓰는 Auto memory는 학습을 축적합니다. 길어지면 <code>rules</code>의 경로 스코프로 쪼갭니다.</li>
+<li>EPC를 축으로 TDD, 코드리뷰, 병렬화, Headless, Routines를 얹습니다. 모든 패턴에는 명세를 함께 줍니다.</li>
+</ul>
+<h2 id="첫-성공-종료-점검">첫 성공 종료 점검<a class="headerlink" href="#첫-성공-종료-점검" title="이 위치로 링크">¶</a></h2>
+<p>다음 순서를 완료했다면 이 주차의 개인 기본 경로를 마친 것입니다.</p>
+<ol>
+<li>설치하고 로그인했습니다.</li>
+<li><code>/status</code>에서 현재 상태를 확인했습니다.</li>
+<li>읽기 전용 질문으로 저장소를 설명받았습니다.</li>
+<li>파일 하나의 작은 수정을 요청했습니다.</li>
+<li><code>/diff</code>에서 변경을 읽었습니다.</li>
+<li>기존 테스트 명령을 실행하고 결과를 확인했습니다.</li>
+</ol>
+<p>조직 인증·클라우드 공급자·Headless 자동화는 위 여섯 단계와 별개의 선택 심화입니다. 필요한 권한과 계정이 있을 때만 실행하세요.</p>
 <p><img alt="Chapter 1 핵심 요약 슬라이드" src="../slides/slide-170.png" /></p>
 <p><em>▲ 교재 슬라이드 170 — Chapter 1 핵심 요약</em></p>
 <hr />
 <h2 id="faq">FAQ<a class="headerlink" href="#faq" title="이 위치로 링크">¶</a></h2>
-<p>현장에서 가장 많이 나오는 여섯 가지입니다.</p>
+<p>처음 사용할 때 자주 나오는 질문 여섯 가지를 정리했습니다.</p>
 <ul>
 <li>
 <p><strong>"코드가 학습에 쓰이나요?"</strong> — 상업용 계정은 기본적으로 학습에 사용되지 않습니다. 명시적으로 동의한 경우에만 쓰이고, ZDR(Zero Data Retention) 옵션을 계약하면 보존 자체가 없습니다. → <a href="../part-01-what-is-claude-code/">Part 1</a></p>
@@ -2374,7 +2409,7 @@
 <p><strong>"Windows에서 잘 되나요?"</strong> — Native로 공식 지원되고 CMD와 PowerShell도 지원합니다. WSL2가 필요한 건 <strong>샌드박스를 쓸 때뿐</strong>입니다. → <a href="../part-03-installation/">Part 3</a></p>
 </li>
 <li>
-<p><strong>"실수로 망가뜨리면요?"</strong> — 편집 전 스냅샷이 자동으로 남습니다. <code>Esc</code> 두 번 또는 <code>/rewind</code>로 되돌립니다. 단, <strong>파일 변경만</strong> 되돌아갑니다. → <a href="../part-05-quick-start/">Part 5</a></p>
+<p><strong>"실수로 망가뜨리면요?"</strong> — 편집 전 스냅샷이 자동으로 남습니다. <code>Esc</code> 두 번은 코드 체크포인트를 빠르게 되돌리고, <code>/rewind</code>는 코드·대화·둘 다를 선택할 수 있습니다. DB·배포 같은 외부 부작용은 되돌리지 못합니다. → <a href="../part-05-quick-start/">Part 5</a></p>
 </li>
 <li>
 <p><strong>"팀 표준은 어떻게 만드나요?"</strong> — <code>CLAUDE.md</code>와 <code>.claude/rules/</code>를 버전 관리에 넣으면 팀 전체가 같은 규칙을 공유합니다. → <a href="../part-08-claude-md-and-memory/">Part 8</a></p>
@@ -2390,7 +2425,7 @@
 실행 환경: macOS 26.5.1 (Darwin 25.5.0, arm64), Claude Code <strong>2.1.220</strong></p>
 </blockquote>
 <hr />
-<h2 id="lab-1--설치와-첫-세션-소요-15분">Lab 1 — 설치와 첫 세션 (소요 15분)<a class="headerlink" href="#lab-1--설치와-첫-세션-소요-15분" title="이 위치로 링크">¶</a></h2>
+<h2 id="lab-1--설치와-첫-세션">Lab 1 — 설치와 첫 세션<a class="headerlink" href="#lab-1--설치와-첫-세션" title="이 위치로 링크">¶</a></h2>
 <p><img alt="Lab 1 — 설치와 첫 세션 슬라이드" src="../slides/slide-174.png" /></p>
 <p><em>▲ 교재 슬라이드 174 — Lab 1 — 설치와 첫 세션 (교재 원본 실습 안내)</em></p>
 <h3 id="1-1-설치-확인">1-1. 설치 확인<a class="headerlink" href="#1-1-설치-확인" title="이 위치로 링크">¶</a></h3>
@@ -2426,7 +2461,7 @@
 <p>내 환경은 <code>Running: npm-global</code>, 경로가 <code>/opt/homebrew/lib/node_modules/@anthropic-ai/claude-code/...</code> 였습니다.
 즉 <a href="../part-03-installation/">Part 3</a>에서 "레거시"라고 정리한 <strong>npm 경로로 설치되어 있었습니다.</strong>
 다행히 <code>Auto-updates: enabled</code>, <code>Auto-update channel: latest</code>로 자동 업데이트는 동작 중이었고(<code>2026-07-28</code>에 2.1.220으로 갱신 성공), <code>Search: OK (bundled)</code>로 ripgrep도 번들 버전이 잡혀 있었습니다.
-<strong><code>claude doctor</code>는 "내가 어떤 경로로 깔았는지"를 알려주는 유일한 명령입니다.</strong> 문서만 읽었을 때는 당연히 Native일 거라 생각했는데 아니었습니다.</p>
+<strong><code>claude doctor</code>는 설치 상태와 경로를 확인하는 공식 진단 명령입니다.</strong> 문서상 권장 경로와 실제 설치 경로는 다를 수 있었습니다.</p>
 </div>
 <h3 id="1-3-실습-저장소-클론">1-3. 실습 저장소 클론<a class="headerlink" href="#1-3-실습-저장소-클론" title="이 위치로 링크">¶</a></h3>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>https://github.com/whchoi98/claude-code-workshop
@@ -2461,7 +2496,7 @@
 <li><strong>✅ Lab 1 완료 기준</strong>: <code>doctor</code> 진단 통과 + 저장소 구조 답변 획득.</li>
 </ul>
 <hr />
-<h2 id="lab-2--claudemd-만들기-소요-15분">Lab 2 — CLAUDE.md 만들기 (소요 15분)<a class="headerlink" href="#lab-2--claudemd-만들기-소요-15분" title="이 위치로 링크">¶</a></h2>
+<h2 id="lab-2--claudemd-만들기">Lab 2 — CLAUDE.md 만들기<a class="headerlink" href="#lab-2--claudemd-만들기" title="이 위치로 링크">¶</a></h2>
 <p><img alt="Lab 2 — CLAUDE.md 만들기 슬라이드" src="../slides/slide-175.png" /></p>
 <p><em>▲ 교재 슬라이드 175 — Lab 2 — CLAUDE.md 만들기 (교재 원본 실습 안내)</em></p>
 <p>교재 저장소에는 이미 <code>CLAUDE.md</code>가 있어서, <code>/init</code>의 "초안 생성"을 그대로 재현하려고 <strong>빈 데모 프로젝트를 새로 만들어서</strong> 진행했습니다.</p>
@@ -2579,7 +2614,7 @@
 <li><strong>✅ Lab 2 완료 기준</strong>: 새 세션에서 탐색 없이 즉답 → 성공.</li>
 </ul>
 <hr />
-<h2 id="lab-3--디버깅-실습-소요-20분">Lab 3 — 디버깅 실습 (소요 20분)<a class="headerlink" href="#lab-3--디버깅-실습-소요-20분" title="이 위치로 링크">¶</a></h2>
+<h2 id="lab-3--디버깅-실습">Lab 3 — 디버깅 실습<a class="headerlink" href="#lab-3--디버깅-실습" title="이 위치로 링크">¶</a></h2>
 <p><img alt="Lab 3 — 디버깅 실습 슬라이드" src="../slides/slide-176.png" /></p>
 <p><em>▲ 교재 슬라이드 176 — Lab 3 — 디버깅 실습 (교재 원본 실습 안내)</em></p>
 <div class="admonition note">
@@ -2588,13 +2623,13 @@
 <p>처음에는 "교재 자산이 빠졌다"고 판단하고 시나리오를 직접 재현했는데, <strong>그게 틀렸습니다.</strong> 실습은 온전히 제공되고 있었고 위치가 달랐을 뿐입니다.</p>
 <ul>
 <li><strong><code>ccw-hands-on-lab/ClaudeCode_Ch1_HandsOnLab.html</code></strong> ← 실제 랩은 여기 있습니다. 브라우저로 열면 Task 1~7의 완전한 가이드가 나옵니다.</li>
-<li>이 랩은 저장소에서 클론하는 방식이 아니라 <strong>힙독으로 프로젝트를 직접 만들게</strong> 설계되어 있습니다. 그래서 <code>ch1/</code> 디렉토리가 애초에 존재할 이유가 없습니다.</li>
+<li>이 랩은 저장소에서 클론하는 방식이 아니라 <strong>heredoc(히어독)으로 프로젝트를 직접 만들게</strong> 설계되어 있습니다. 그래서 <code>ch1/</code> 디렉토리가 애초에 존재할 이유가 없습니다.</li>
 <li>참고로 구판(<code>20260525</code>) PDF와 <code>Script/workshop-code/</code>의 스니펫 아카이브는 <code># 의도적으로 버그가 있는 코드 준비</code>라고만 되어 있습니다. <strong>경로를 지정한 건 신판(<code>20260703</code>) PDF뿐이고, 그 경로는 실재하지 않습니다.</strong></li>
 </ul>
 <p><strong>교훈</strong>: PDF에 경로가 적혀 있어도 <code>ccw-hands-on-lab/*.html</code>을 먼저 열어보는 게 맞습니다. 아래는 그 HTML 랩의 시나리오를 그대로 따른 기록입니다.</p>
 </div>
 <h3 id="3-0-교재가-제공하는-실습-프로젝트">3-0. 교재가 제공하는 실습 프로젝트<a class="headerlink" href="#3-0-교재가-제공하는-실습-프로젝트" title="이 위치로 링크">¶</a></h3>
-<p>랩의 Task 3이 주는 힙독을 그대로 실행했습니다. 의존성 없는 Node.js 프로젝트 4개 파일이 만들어집니다.</p>
+<p>랩의 Task 3이 주는 heredoc을 그대로 실행했습니다. 의존성 없는 Node.js 프로젝트 4개 파일이 만들어집니다.</p>
 <div class="language-javascript highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1">// src/users.js — 주의: 일부 사용자는 profile 필드가 없음 (마이그레이션 미수행 상황)</span>
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">users</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 </span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Kim&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">profile</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;kim@example.com&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">plan</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;pro&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
@@ -2635,7 +2670,7 @@
 </span></code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>이 프롬프트가 좋은 교보재입니다. <strong>에러 메시지 + 기대 동작 + 검증 방법</strong>이 한 번에 들어 있습니다. <a href="../part-05-quick-start/">Part 5</a>에서 정리한 "범위 + 완료 기준"이 그대로 구현된 형태입니다.</p>
+<p>이 프롬프트에는 <strong>에러 메시지, 기대 동작, 검증 방법</strong>이 모두 들어 있습니다. <a href="../part-05-quick-start/">Part 5</a>에서 설명한 범위와 완료 기준을 실제 요청에 담은 예입니다.</p>
 </div>
 <h3 id="3-3-자율-작업-흐름-관찰--교재-예측과-실제가-달랐던-지점">3-3. 자율 작업 흐름 관찰 — 교재 예측과 실제가 달랐던 지점<a class="headerlink" href="#3-3-자율-작업-흐름-관찰--교재-예측과-실제가-달랐던-지점" title="이 위치로 링크">¶</a></h3>
 <p>랩의 "관찰 포인트"는 이렇게 예고합니다.</p>
@@ -2648,9 +2683,9 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Bash(ls -la)  →  Read × 4  →  Edit  →  Bash(npm test)
 </span></code></pre></div>
 <div class="admonition tip">
-<p class="admonition-title">직접 해보고 알게 된 것 — <code>Grep</code>을 쓰지 않았습니다</p>
-<p>교재는 <code>Grep "profile"</code>로 영향 범위를 검색할 거라고 예고했는데, 실제로는 <strong><code>ls</code>로 구조를 보고 네 파일을 전부 읽었습니다.</strong>
-생각해보면 당연합니다. <strong>프로젝트가 4개 파일뿐이라 grep보다 전부 읽는 게 빠릅니다.</strong> 검색은 "다 읽기엔 큰" 코드베이스에서 의미가 생기는 도구입니다.</p>
+<p class="admonition-title">이 실행에서는 <code>Grep</code>을 쓰지 않았습니다</p>
+<p>교재는 <code>Grep "profile"</code>로 영향 범위를 검색할 거라고 예고했지만, 2026-08-02의 이 실행은 <code>ls</code>로 구조를 보고 네 파일을 모두 읽었습니다.
+이 한 번의 관찰만으로 어느 방식이 일반적으로 더 빠르다고 결론 내릴 수는 없습니다. 저장소 크기와 모델의 판단에 따라 도구 선택이 달라집니다.</p>
 <p>교재의 흐름도가 틀린 게 아니라 <strong>상황에 따라 도구 선택이 달라진다</strong>는 걸 보여주는 사례입니다. <a href="../part-02-architecture/">Part 2</a>에서 "모델이 판단하고 하네스가 실행한다"고 했는데, 그 판단이 실제로 어떻게 갈리는지가 여기서 드러납니다.</p>
 </div>
 <h3 id="3-4-수정-결과">3-4. 수정 결과<a class="headerlink" href="#3-4-수정-결과" title="이 위치로 링크">¶</a></h3>
@@ -2688,7 +2723,7 @@
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 변경 검토 후 커밋</li>
 </ul>
 <hr />
-<h2 id="lab-4--plan-모드-기능-추가-소요-25분">Lab 4 — Plan 모드 기능 추가 (소요 25분)<a class="headerlink" href="#lab-4--plan-모드-기능-추가-소요-25분" title="이 위치로 링크">¶</a></h2>
+<h2 id="lab-4--plan-모드-기능-추가">Lab 4 — Plan 모드 기능 추가<a class="headerlink" href="#lab-4--plan-모드-기능-추가" title="이 위치로 링크">¶</a></h2>
 <p><img alt="Lab 4 — Plan 모드 기능 추가 슬라이드" src="../slides/slide-177.png" /></p>
 <p><em>▲ 교재 슬라이드 177 — Lab 4 — Plan 모드 기능 추가 (교재 원본 실습 안내)</em></p>
 <p>PDF의 Lab 4(<code>ch1/lab4-todo-api</code>) 역시 실재하지 않는 경로입니다. Hands-on Lab HTML에서는 이 내용이 <strong>Task 5의 후반부</strong>에 들어 있습니다 — Lab 3에서 고친 그 프로젝트에 이어서 soft delete 기능을 Plan 모드로 추가하는 흐름입니다.</p>
@@ -2788,7 +2823,7 @@
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Plan 실행 후 터미널 <code>npm test</code>가 전부 PASS다 (11/11)</li>
 </ul>
 <hr />
-<h2 id="lab-5--headless-자동화-소요-15분">Lab 5 — Headless 자동화 (소요 15분)<a class="headerlink" href="#lab-5--headless-자동화-소요-15분" title="이 위치로 링크">¶</a></h2>
+<h2 id="lab-5--headless-자동화">Lab 5 — Headless 자동화<a class="headerlink" href="#lab-5--headless-자동화" title="이 위치로 링크">¶</a></h2>
 <p><img alt="Lab 5 — Headless 자동화 슬라이드" src="../slides/slide-178.png" /></p>
 <p><em>▲ 교재 슬라이드 178 — Lab 5 — Headless 자동화 (교재 원본 실습 안내)</em></p>
 <h3 id="5-1-파이프-입력--로그-분석">5-1. 파이프 입력 — 로그 분석<a class="headerlink" href="#5-1-파이프-입력--로그-분석" title="이 위치로 링크">¶</a></h3>
@@ -2813,8 +2848,8 @@
 <div class="admonition tip">
 <p class="admonition-title">현장 메모 (인프라 엔지니어 관점)</p>
 <p>이게 <a href="../part-01-what-is-claude-code/">Part 1</a>에서 "로그 파이프 분석이 한 줄로"라고 한 것의 실체입니다.
-특히 3번의 <strong>"릭이면 재시작으로 잠깐 회복 후 재발하므로 그 패턴으로 (a)와 &copy;를 구분할 수 있다"</strong> — 원인 후보를 나열하는 데 그치지 않고 <strong>감별 진단 방법</strong>을 제시했습니다.
-온콜 중에 이걸 5초 만에 받는다는 건 실제로 의미가 큽니다.</p>
+특히 3번의 <strong>"릭이면 재시작으로 잠깐 회복 후 재발하므로 그 패턴으로 (a)와 &copy;를 구분할 수 있다"</strong>는 문장은 원인 후보와 감별을 위한 후속 확인 항목을 함께 제시했습니다.
+이는 이 샘플 로그에 대한 한 번의 응답에서 관찰한 결과입니다. 실제 온콜 적용 가능성과 응답 시간은 운영 환경에서 따로 검증해야 합니다.</p>
 </div>
 <h3 id="5-2-도구-제한-안전-실행--정말-막히는지-검증">5-2. 도구 제한 안전 실행 — <strong>정말 막히는지 검증</strong><a class="headerlink" href="#5-2-도구-제한-안전-실행--정말-막히는지-검증" title="이 위치로 링크">¶</a></h3>
 <p>문서로만 "안전하다"고 쓰긴 싫어서, <strong>쓰기 도구를 뺀 상태로 일부러 파일 수정을 시켜봤습니다.</strong></p>
@@ -2837,7 +2872,7 @@
 <p class="admonition-title">검증 완료</p>
 <p>Claude는 <code>Edit</code>를 <strong>시도했고</strong>, 하네스가 <strong>차단했으며</strong>, 파일은 그대로였습니다.
 <a href="../part-02-architecture/">Part 2</a>에서 "하네스가 도구 실행 전에 권한을 검사한다"고 한 구조가 눈으로 확인됩니다.
-그리고 <code>permission_denials</code>에 <strong>시도하려던 내용까지 통째로 기록</strong>된다는 걸 알게 됐습니다. CI에서 "에이전트가 뭘 하려다 막혔는지"를 감사 로그로 뽑을 수 있다는 뜻입니다.</p>
+이 <strong>2026-08 헤드리스 실습</strong>에서는 <code>permission_denials</code>에 시도하려던 내용이 기록됐습니다. 다만 managed/static deny에서는 비어 있을 수 있고 서브에이전트 내부 거부도 누락될 수 있으므로, 모든 차단의 감사 로그로 일반화하지 말고 <code>stream-json</code> 또는 Hook 감사와 함께 봅니다.</p>
 </div>
 <h3 id="5-3-json-출력-후처리">5-3. JSON 출력 후처리<a class="headerlink" href="#5-3-json-출력-후처리" title="이 위치로 링크">¶</a></h3>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;Script/workshop-code 아래 마크다운 파일 개수를 세어서 숫자만 답해줘&quot;</span><span class="w"> </span><span class="se">\</span>
@@ -2875,8 +2910,8 @@
 <div class="admonition tip">
 <p class="admonition-title">직접 해보고 알게 된 것</p>
 <p><a href="../part-09-workflow-patterns/">Part 9</a>에서 정리한 <code>result</code> / <code>modelUsage</code> / <code>usage</code> / <code>session_id</code> 네 가지가 실제로 다 있었고, <strong>문서에 없던 필드가 더 많았습니다</strong> — <code>total_cost_usd</code>, <code>duration_ms</code>, <code>ttft_ms</code>(첫 토큰까지 시간), <code>permission_denials</code>, <code>num_turns</code>.
-특히 <code>total_cost_usd</code>가 응답에 그대로 들어있어서, <strong>CI에서 비용 상한 가드를 거는 게 아주 쉽습니다.</strong>
-그리고 <code>inputTokens: 4</code> vs <code>cacheReadInputTokens: 48286</code> — 입력의 99.99%가 <strong>캐시에서 읽혔습니다.</strong> <a href="../part-09-workflow-patterns/">Part 9의 "캐시 레버"</a>가 왜 비용의 3축 중 하나인지 숫자로 보입니다.</p>
+특히 <code>total_cost_usd</code>가 응답에 그대로 있었습니다. 이는 호출별 <strong>클라이언트 측 추정치</strong>이므로 CI 비용 가드의 보조 신호로는 쓸 수 있지만, 실제 청구 상한의 유일한 근거로 쓰지 않습니다. (<a href="https://code.claude.com/docs/en/headless">Headless</a>)
+입력은 cache read 48,286, cache creation 8,287, uncached 4토큰이므로 cache read는 전체 입력 56,577토큰의 <strong>85.35%</strong>였습니다. 이는 토큰 구성 비율이지 비용 비율이 아닙니다. <a href="../part-09-workflow-patterns/">Part 9의 "캐시 레버"</a>를 관측할 수 있는 수치입니다.</p>
 </div>
 <h3 id="5-4-모델별-비용-비교-추가-실험">5-4. 모델별 비용 비교 (추가 실험)<a class="headerlink" href="#5-4-모델별-비용-비교-추가-실험" title="이 위치로 링크">¶</a></h3>
 <p>Part 9의 "모델 레버"를 숫자로 확인하고 싶어서, <strong>완전히 같은 프롬프트</strong>를 모델만 바꿔 돌렸습니다.</p>
@@ -2929,60 +2964,23 @@
 </span></code></pre></div>
 <blockquote>
 <p>작업 디렉토리 경로가 그대로 디렉토리명이 됩니다(<code>/</code> → <code>-</code>). 이번 실습에서 만든 세 개 프로젝트가 각각 별도로 잡혔습니다.
-<strong>경로가 바뀌면 <code>--continue</code>가 이전 세션을 못 찾는다</strong>는 뜻이기도 합니다.</p>
+이 관찰은 현재 경로 기반의 최근 세션 선택에 관한 것입니다. 작업 경로나 worktree가 달라져도 session ID를 <code>--resume &lt;session_id&gt;</code>에 주면 이 머신의 다른 프로젝트에서 세션을 찾을 수 있습니다. (<a href="https://code.claude.com/docs/en/headless">Headless</a>)</p>
 </blockquote>
 <ul>
 <li><strong>✅ Lab 5 완료 기준</strong>: 4패턴 체험 → 파이프 / 도구 제한 / JSON 후처리 / (추가) 모델 비용 비교까지 5종 수행.</li>
 </ul>
 <hr />
 <h2 id="실습-총평">실습 총평<a class="headerlink" href="#실습-총평" title="이 위치로 링크">¶</a></h2>
-<table>
-<thead>
-<tr>
-<th>Lab</th>
-<th>상태</th>
-<th>비고</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Lab 1 — 설치와 첫 세션</td>
-<td>✅ 완료</td>
-<td>내 설치가 Native가 아닌 <strong>npm-global</strong>이었음을 발견</td>
-</tr>
-<tr>
-<td>Lab 2 — CLAUDE.md 만들기</td>
-<td>✅ 완료</td>
-<td>도구 0개로 즉답 검증까지 성공</td>
-</tr>
-<tr>
-<td>Lab 3 — 디버깅</td>
-<td>✅ 완료</td>
-<td>교재 원본 시나리오 수행. <strong>교재 예측과 달리 <code>Grep</code>을 안 씀</strong></td>
-</tr>
-<tr>
-<td>Lab 4 — Plan 모드</td>
-<td>✅ 완료</td>
-<td><code>--resume</code> 체이닝으로 계획 협상 재현. 11/11 통과</td>
-</tr>
-<tr>
-<td>Lab 5 — Headless</td>
-<td>✅ 완료</td>
-<td>+모델 비용 비교 실험 추가</td>
-</tr>
-</tbody>
-</table>
-<h3 id="배운-것-중-문서에-없던-것">배운 것 중 문서에 없던 것<a class="headerlink" href="#배운-것-중-문서에-없던-것" title="이 위치로 링크">¶</a></h3>
-<ol>
-<li><strong><code>claude doctor</code>는 "내가 어떤 경로로 설치했는지"를 알려주는 유일한 명령입니다.</strong> 문서만 읽으면 당연히 Native일 거라 생각하지만 아닐 수 있습니다.</li>
-<li><strong><code>--output-format json</code>의 <code>permission_denials</code>에는 시도하려던 tool_input이 통째로 들어갑니다.</strong> 무인 실행 감사 로그로 그대로 쓸 수 있습니다.</li>
-<li><strong><code>total_cost_usd</code>가 응답 JSON에 있습니다.</strong> CI 비용 가드를 거는 데 별도 계측이 필요 없습니다.</li>
-<li><strong><code>cacheReadInputTokens</code>가 실제 입력 토큰을 압도합니다</strong> (48,286 vs 4). 캐시 친화적으로 쓰는 게 비용에 미치는 영향이 생각보다 훨씬 큽니다.</li>
-<li><strong>"테스트 파일은 수정하지 마"는 디버깅 위임 시 필수 지시입니다.</strong> 없으면 테스트를 고쳐서 통과시킬 여지가 생깁니다.</li>
-<li><strong>Plan 모드는 헤드리스로도 협상할 수 있습니다.</strong> <code>--permission-mode plan</code> + <code>--resume &lt;session_id&gt;</code> 조합이면 됩니다. <code>Shift+Tab</code>은 편의를 위한 UI일 뿐, 기능의 전제조건이 아닙니다.</li>
-<li><strong>계획을 협상하면 버그를 코드가 아니라 문서에서 잡습니다.</strong> Lab 4에서 <code>0/0 = NaN</code> 문제와 <code>deepStrictEqual</code>의 <code>undefined</code> 키 문제가 구현 전에 계획서에 기록됐습니다.</li>
-<li><strong>PDF의 랩 경로는 실재하지 않지만 실습 자체는 온전히 제공됩니다.</strong> <code>ccw-hands-on-lab/*.html</code>을 먼저 열어봐야 합니다. 저장소에서 클론하는 게 아니라 힙독으로 프로젝트를 만드는 설계라, <code>ch1/</code> 디렉토리는 처음부터 있을 이유가 없었습니다.</li>
-</ol>
+<p>5개 랩의 완료 기준을 모두 충족했습니다. 핵심 관찰은 각 랩 본문에 남겼고, 다시 사용할 운영상 주의점만 추리면 다음과 같습니다.</p>
+<ul>
+<li><code>claude doctor</code>는 설치 상태와 경로를 확인하는 공식 진단 명령입니다. 문서상 권장 경로와 실제 경로가 다를 수 있습니다.</li>
+<li>이 2026-08 실습의 <code>permission_denials</code>에는 <code>tool_input</code>이 있었지만 모든 거부를 포괄하지 않습니다. 무인 실행 감사에는 <code>stream-json</code> 또는 Hook도 함께 씁니다.</li>
+<li><code>total_cost_usd</code>는 클라이언트 측 추정치입니다. CI 비용 가드의 보조 신호로만 쓰고 실제 청구 상한은 별도 계측으로 확인합니다.</li>
+<li>cache read는 전체 입력 토큰의 85.35%였습니다. 이는 비용 비율이 아닙니다.</li>
+<li>디버깅을 위임할 때 테스트 파일을 수정 금지 범위로 두면 구현 대신 테스트를 바꿔 통과시키는 일을 막을 수 있습니다.</li>
+<li>Plan 모드는 <code>--permission-mode plan</code>과 <code>--resume &lt;session_id&gt;</code>로 헤드리스에서도 협상할 수 있습니다.</li>
+<li>PDF의 랩 경로는 없지만 실습은 <code>ccw-hands-on-lab/*.html</code>에 제공됩니다. heredoc으로 프로젝트를 만드는 설계입니다.</li>
+</ul>
 <hr />
 <h2 id="추가-학습-자료">추가 학습 자료<a class="headerlink" href="#추가-학습-자료" title="이 위치로 링크">¶</a></h2>
 <table>
@@ -3029,8 +3027,11 @@
 <hr />
 <h2 id="next--chapter-2-예고-2주차">Next — Chapter 2 예고 (2주차)<a class="headerlink" href="#next--chapter-2-예고-2주차" title="이 위치로 링크">¶</a></h2>
 <blockquote>
-<p>오늘 여러 번 등장한 <strong>서브에이전트</strong>를 하루 종일 파고듭니다.</p>
+<p>다음 주에는 이 문서에서 여러 번 언급한 <strong>서브에이전트</strong>를 자세히 다룹니다.</p>
 </blockquote>
+<h3 id="w2에-넘길-선수지식과-산출물">W2에 넘길 선수지식과 산출물<a class="headerlink" href="#w2에-넘길-선수지식과-산출물" title="이 위치로 링크">¶</a></h3>
+<p><strong>선수지식</strong>: <code>Esc</code>로 작업을 멈출 수 있고, 읽기 전용 질문과 파일 수정 요청의 차이를 설명할 수 있어야 합니다. diff를 읽고 테스트 결과를 확인할 수 있어야 합니다.</p>
+<p><strong>산출물</strong>: W1에서 사용한 안전한 프로젝트 폴더, 한 번 실행한 <code>/status</code> 확인, 읽기 전용 질문 기록, 작은 수정의 diff와 테스트 결과를 남깁니다. W2에서는 이 흐름을 여러 역할로 나누고, 권한과 작업공간을 분리해도 검토 책임은 사용자에게 남는다는 점을 다룹니다.</p>
 <table>
 <thead>
 <tr>

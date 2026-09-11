@@ -689,6 +689,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#첫-성공에-적용하는-최소-예시" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        첫 성공에 적용하는 최소 예시
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#실전-예시--oauth-지원-추가" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -804,10 +815,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#비용-관리-전략--3개의-레버" class="md-nav__link">
+  <a href="#비용-관리-전략--3가지-영향-요인" class="md-nav__link">
     <span class="md-ellipsis">
       
-        비용 관리 전략 — 3개의 레버
+        비용 관리 전략 — 3가지 영향 요인
       
     </span>
   </a>
@@ -888,10 +899,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#①-headless-파이프--로그-분석이-정말-한-줄로-되는가" class="md-nav__link">
+  <a href="#①-headless-파이프--로그-분석-한-번의-관찰" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ① Headless 파이프 — 로그 분석이 정말 한 줄로 되는가
+        ① Headless 파이프 — 로그 분석 한 번의 관찰
       
     </span>
   </a>
@@ -2603,6 +2614,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#첫-성공에-적용하는-최소-예시" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        첫 성공에 적용하는 최소 예시
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#실전-예시--oauth-지원-추가" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2718,10 +2740,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#비용-관리-전략--3개의-레버" class="md-nav__link">
+  <a href="#비용-관리-전략--3가지-영향-요인" class="md-nav__link">
     <span class="md-ellipsis">
       
-        비용 관리 전략 — 3개의 레버
+        비용 관리 전략 — 3가지 영향 요인
       
     </span>
   </a>
@@ -2802,10 +2824,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#①-headless-파이프--로그-분석이-정말-한-줄로-되는가" class="md-nav__link">
+  <a href="#①-headless-파이프--로그-분석-한-번의-관찰" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ① Headless 파이프 — 로그 분석이 정말 한 줄로 되는가
+        ① Headless 파이프 — 로그 분석 한 번의 관찰
       
     </span>
   </a>
@@ -2891,31 +2913,45 @@
 
 <h1 id="part-9--워크플로-패턴">Part 9 — 워크플로 패턴<a class="headerlink" href="#part-9--워크플로-패턴" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p><strong>패턴은 조합입니다.</strong> EPC(Explore-Plan-Code)를 축으로 리뷰와 병렬화, 자동화를 얹고, <strong>비용과 컨텍스트 규율</strong>로 지속 가능하게 만듭니다.</p>
+<p>워크플로 패턴은 조합해 사용합니다. EPC(Explore-Plan-Code)를 중심으로 리뷰·병렬화·자동화를 더하고, <strong>비용과 컨텍스트를 관리</strong>해 지속적으로 운영합니다.</p>
 <hr />
 <h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
-<p>여기까지 왔으면 도구는 다 배웠습니다. 그런데 도구를 안다고 잘 쓰는 건 아닙니다.
-Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 패턴이 나오지만 관통하는 원리는 하나입니다.</p>
+<p>여기까지 도구를 살펴봤지만, 도구를 안다고 곧바로 효율적으로 쓰게 되지는 않습니다.
+Part 9에서는 <strong>검증된 사용 순서</strong>를 다룹니다. 10가지 패턴을 관통하는 원칙도 함께 설명합니다.</p>
 <blockquote>
 <p><strong>명세를 함께 준다</strong> — 무엇이 완료인지 Claude가 스스로 확인할 수 있게 만든다.</p>
 </blockquote>
-<p>이게 모든 패턴의 공통점입니다.</p>
+<p>이는 모든 패턴에 공통으로 적용됩니다.</p>
+<blockquote>
+<p><strong>처음에는 이 패턴 하나만</strong>: 읽기 전용으로 이해하기 → 작은 변경 요청하기 → diff 검토하기 → 테스트 실행하기. OAuth, TDD, 병렬 에이전트, Headless, CI는 이 기본 순서가 익숙해진 뒤의 선택 심화입니다.</p>
+</blockquote>
 <hr />
 <h2 id="pattern-1--explore-plan-code-epc">Pattern 1 — Explore-Plan-Code (EPC)<a class="headerlink" href="#pattern-1--explore-plan-code-epc" title="이 위치로 링크">¶</a></h2>
-<p><strong>가장 기본이 되는 3단계 리듬</strong>입니다. 큰 변경일수록 단계 분리의 효과가 큽니다.</p>
+<p>가장 기본적인 세 단계 흐름입니다. 변경 범위가 클수록 단계를 나누는 효과가 큽니다.</p>
 <p><img alt="Explore-Plan-Code 리듬" src="../diagrams/epc-rhythm.svg" /></p>
+<h3 id="첫-성공에-적용하는-최소-예시">첫 성공에 적용하는 최소 예시<a class="headerlink" href="#첫-성공에-적용하는-최소-예시" title="이 위치로 링크">¶</a></h3>
+<p><code>EPC</code>는 <strong>탐색(Explore) → 계획(Plan) → 구현(Code)</strong> 순서입니다. 처음에는 Plan 모드까지 쓰지 않아도 됩니다. 아래처럼 탐색과 작은 변경을 분리하면 됩니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt; 이 저장소의 테스트 명령과 README 위치를 찾아줘. 파일은 바꾸지 마.
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>&gt; README의 오타 한 곳만 고쳐줘. 다른 파일은 바꾸지 마. 수정 전에 무엇을 바꿀지 말해줘.
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>&gt; /diff
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>&gt; 방금 찾은 테스트 명령을 실행해줘.
+</span></code></pre></div>
+<p>성공 신호는 세 가지입니다. 변경 범위가 요청한 파일 하나인지 확인합니다. diff가 의도와 같은지 확인합니다. 테스트 결과를 읽습니다.</p>
 <h3 id="실전-예시--oauth-지원-추가">실전 예시 — OAuth 지원 추가<a class="headerlink" href="#실전-예시--oauth-지원-추가" title="이 위치로 링크">¶</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$ claude
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a># E: 탐색
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>&gt; src/auth를 읽고 세션 처리 방식을 정리해줘. 아직 코드는 만들지 마.
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a># P: 계획 (Shift+Tab 두 번)
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>&gt; 이 구조에 OAuth 지원을 추가하는 계획을 세워줘
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a># → 계획 검토, 항목 수정 요청, 승인
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a># C: 구현
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>&gt; 승인한 계획대로 구현하고 테스트까지 실행해줘
+<blockquote>
+<p><strong>선택 심화</strong>: OAuth는 여러 파일과 인증 정책을 함께 다루는 큰 변경 예시입니다. 첫 수정으로는 위의 최소 예시를 먼저 끝내세요.</p>
+</blockquote>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$ claude
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a># E: 탐색
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>&gt; src/auth를 읽고 세션 처리 방식을 정리해줘. 아직 코드는 만들지 마.
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a># P: 계획 (Shift+Tab 두 번)
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>&gt; 이 구조에 OAuth 지원을 추가하는 계획을 세워줘
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a># → 계획 검토, 항목 수정 요청, 승인
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a># C: 구현
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>&gt; 승인한 계획대로 구현하고 테스트까지 실행해줘
 </span></code></pre></div>
 <p>이 예시에서 눈여겨볼 게 네 가지 있습니다.</p>
 <p>첫째, <strong><code>"아직 코드는 만들지 마"</code></strong> 라고 명시했습니다. 탐색 단계임을 선언하지 않으면 Claude는 이해했다고 판단하는 순간 바로 고치기 시작합니다.</p>
@@ -2929,12 +2965,12 @@ Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 
 <blockquote>
 <p><strong>실패하는 테스트가 곧 명세입니다.</strong></p>
 </blockquote>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; validateCoupon 함수를 TDD로 만들자.
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  1) 먼저 실패하는 테스트 작성:
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>     만료 쿠폰 거부, 중복 사용 거부, 정상 쿠폰 할인율 반환
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  2) 테스트 실행해서 실패 확인
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  3) 통과할 최소 구현 작성
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  4) 재실행으로 전부 통과 확인 후 리팩토링
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; validateCoupon 함수를 TDD로 만들자.
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  1) 먼저 실패하는 테스트 작성:
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>     만료 쿠폰 거부, 중복 사용 거부, 정상 쿠폰 할인율 반환
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  2) 테스트 실행해서 실패 확인
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  3) 통과할 최소 구현 작성
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  4) 재실행으로 전부 통과 확인 후 리팩토링
 </span></code></pre></div>
 <p>네 단계 각각에 이유가 있습니다.</p>
 <p><strong>실패를 먼저 확인(Red)</strong> 하는 이유는 테스트가 진짜로 그 동작을 검사하는지 증명하기 위해서입니다. 처음부터 통과하는 테스트는 아무것도 검증하지 않는 테스트일 수 있습니다.</p>
@@ -2944,36 +2980,36 @@ Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 
 <div class="admonition tip">
 <p class="admonition-title">왜 TDD가 AI 에이전트와 특히 잘 맞는가</p>
 <p>일반적인 코딩 요청에서는 "다 됐습니다"의 판정을 결국 사람이 해야 합니다. 코드를 읽어보고 맞는지 확인해야 하죠.
-그런데 기대 출력을 테스트로 주면, <strong>판정 주체가 사람에서 테스트로 넘어갑니다.</strong> Claude는 mock 데이터가 아니라 실제 실행 결과로 스스로 검증하고, 통과할 때까지 반복합니다.
+기대 출력을 테스트로 주면 검증 기준이 훨씬 분명해집니다. Claude는 mock 데이터가 아니라 실제 실행 결과로 검증과 재수정을 시도합니다. 테스트 실패가 계속되거나 작업이 불가능하면 멈출 수 있으므로, 마지막 결과와 남은 실패는 사용자가 확인해야 합니다.
 <a href="../part-10-recap-and-labs/">Part 10의 Lab 3</a>이 정확히 이 구조였습니다. 실패하는 테스트를 주고 "테스트 파일은 명세이므로 수정하지 마"라고 못박자, 4/4 통과까지 스스로 밀고 갔습니다.</p>
 </div>
 <hr />
 <h2 id="pattern-3--code-review">Pattern 3 — Code Review<a class="headerlink" href="#pattern-3--code-review" title="이 위치로 링크">¶</a></h2>
 <p><code>/code-review</code> 명령 계열입니다. <strong>머지 전 로컬 게이트로 습관화</strong>하세요.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /code-review              # 현재 diff 리뷰
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>&gt; /code-review high         # 노력 수준 지정
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>&gt; /code-review --fix        # 발견 사항 자동 수정
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>&gt; /code-review --comment    # PR 인라인 코멘트 게시
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>&gt; /code-review ultra        # 클라우드 멀티에이전트 심층 리뷰
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>&gt; /simplify                 # 버그 탐색 없이 정리만
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>&gt; /security-review          # 보안 관점 읽기 전용 검사
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /code-review              # 현재 diff 리뷰
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&gt; /code-review high         # 노력 수준 지정
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>&gt; /code-review --fix        # 발견 사항 자동 수정
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>&gt; /code-review --comment    # PR 인라인 코멘트 게시
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>&gt; /code-review ultra        # 클라우드 멀티에이전트 심층 리뷰
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>&gt; /simplify                 # 버그 탐색 없이 정리만
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>&gt; /security-review          # 보안 관점 읽기 전용 검사
 </span></code></pre></div>
 <hr />
 <h2 id="pattern-4--multi-agent와-batch">Pattern 4 — Multi-Agent와 <code>/batch</code><a class="headerlink" href="#pattern-4--multi-agent와-batch" title="이 위치로 링크">¶</a></h2>
 <p>큰 변경을 병렬 단위로 쪼갭니다.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a># 곁가지 위임
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&gt; /fork 이 변경의 문서 업데이트를 맡아줘
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a># 대규모 분할 실행
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>&gt; /batch src/ 전체를 Solid에서 React로 마이그레이션
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a># 곁가지 작업을 인세션 위임
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>&gt; /subtask 이 변경의 문서 업데이트를 맡아줘
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a># 대규모 분할 실행
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>&gt; /batch src/ 전체를 Solid에서 React로 마이그레이션
 </span></code></pre></div>
 <p><code>/batch</code>의 동작:
 1. 코드베이스를 조사해 <strong>5~30개 독립 단위로 분해</strong>
 2. 계획 승인 후 단위별 서브에이전트 생성
 3. 각자 <strong>격리된 git worktree</strong>에서 구현과 테스트
 4. <strong>단위별 PR 오픈</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt; /tasks     # 백그라운드 작업 현황 확인
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&gt; /tasks     # 백그라운드 작업 현황 확인
 </span></code></pre></div>
 <blockquote>
 <p>단위별로 PR이 나오므로 <strong>리뷰 가능한 크기</strong>로 산출물이 유지됩니다. (설계 심화는 2주차 Chapter 2)</p>
@@ -2981,14 +3017,14 @@ Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 
 <hr />
 <h2 id="pattern-5--visual-workflow">Pattern 5 — Visual Workflow<a class="headerlink" href="#pattern-5--visual-workflow" title="이 위치로 링크">¶</a></h2>
 <p><strong>스크린샷이 명세가 되는 흐름</strong>입니다.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&gt; (디자인 시안 이미지 붙여넣기)
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  이 시안대로 ProfileCard 컴포넌트를 구현해줘.
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  구현 후 스토리북 스크린샷과 시안을 비교해서 다른 부분을 스스로 찾아 고쳐줘.
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; (디자인 시안 이미지 붙여넣기)
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  이 시안대로 ProfileCard 컴포넌트를 구현해줘.
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  구현 후 스토리북 스크린샷과 시안을 비교해서 다른 부분을 스스로 찾아 고쳐줘.
 </span></code></pre></div>
 <p>프론트엔드 검증 강화:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; /chrome 연결 후:
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>&gt; localhost:3000/profile 열어서 콘솔 에러 확인,
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  버튼 클릭했을 때 모달 동작도 검증해줘
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>&gt; /chrome 연결 후:
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>&gt; localhost:3000/profile 열어서 콘솔 에러 확인,
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  버튼 클릭했을 때 모달 동작도 검증해줘
 </span></code></pre></div></p>
 <blockquote>
 <p>여기서도 원리는 같습니다. <strong>시안이 곧 명세</strong>이고, 결과와 시안을 스스로 대조하게 만드는 것이 핵심입니다.</p>
@@ -2996,20 +3032,20 @@ Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 
 <hr />
 <h2 id="pattern-6--headless-자동화">Pattern 6 — Headless 자동화<a class="headerlink" href="#pattern-6--headless-자동화" title="이 위치로 링크">¶</a></h2>
 <p><code>-p</code> 플래그로 스크립트에 편입합니다.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># 기본형</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;package.json에서 outdated 의존성 요약&quot;</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># 파이프와 리다이렉트</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>tail<span class="w"> </span>-200<span class="w"> </span>app.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;이상 징후 보고&quot;</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;이 저장소 의존성 분석&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>deps-report.md
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="c1"># 도구 제한으로 안전한 무인 실행</span>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;보안 이슈 스캔&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">  </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Read,Grep,Glob&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">  </span>--permission-mode<span class="w"> </span>plan
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="c1"># 비용 절감</span>
-</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;간단 분류 작업&quot;</span><span class="w"> </span>--model<span class="w"> </span>haiku
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># 기본형</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;package.json에서 outdated 의존성 요약&quot;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># 파이프와 리다이렉트</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>tail<span class="w"> </span>-200<span class="w"> </span>app.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;이상 징후 보고&quot;</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;이 저장소 의존성 분석&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>deps-report.md
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="c1"># 도구 제한으로 안전한 무인 실행</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;보안 이슈 스캔&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">  </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Read,Grep,Glob&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">  </span>--permission-mode<span class="w"> </span>plan
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="c1"># 비용 절감</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;간단 분류 작업&quot;</span><span class="w"> </span>--model<span class="w"> </span>haiku
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -3018,14 +3054,14 @@ Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 
 <hr />
 <h2 id="pattern-7--pipeline과-json-출력">Pattern 7 — Pipeline과 JSON 출력<a class="headerlink" href="#pattern-7--pipeline과-json-출력" title="이 위치로 링크">¶</a></h2>
 <p>구조화 출력으로 후처리합니다.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;현재 디렉토리 스택 분석&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span>--output-format<span class="w"> </span>json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.result&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;현재 디렉토리 스택 분석&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span>--output-format<span class="w"> </span>json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.result&#39;</span>
 </span></code></pre></div>
 <p>응답 JSON에는 최종 답변만 들어 있는 게 아닙니다. <strong>후처리에 쓸 메타데이터가 함께 옵니다.</strong></p>
 <p><code>result</code>가 최종 응답 텍스트이고, <code>modelUsage</code>에 실제로 어떤 모델이 쓰였는지, <code>usage</code>에 토큰 사용량과 비용 근거가 들어옵니다. 그리고 <code>session_id</code>가 있어서 이 세션을 나중에 <code>--resume</code>으로 이어붙일 수 있습니다.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># 실시간 이벤트 스트림</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>stream-json
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># 이벤트 단위 파싱으로 진행 표시 구현</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># 실시간 이벤트 스트림</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>stream-json
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="c1"># 이벤트 단위 파싱으로 진행 표시 구현</span>
 </span></code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -3034,18 +3070,18 @@ Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 
 <hr />
 <h2 id="pattern-8--ci-통합">Pattern 8 — CI 통합<a class="headerlink" href="#pattern-8--ci-통합" title="이 위치로 링크">¶</a></h2>
 <p><code>.github/workflows/claude-review.yml</code> 최소 예시:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">on</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">pull_request</span><span class="p p-Indicator">]</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nt">jobs</span><span class="p">:</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">review</span><span class="p">:</span>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">curl -fsSL https://claude.ai/install.sh | bash</span>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">          </span><span class="no">claude -p &quot;이 PR의 diff를 리뷰하고 위험을 보고&quot; \</span>
-</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">            </span><span class="no">--allowed-tools &quot;Read,Grep,Glob,Bash(git diff:*)&quot;</span>
-</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">        </span><span class="nt">env</span><span class="p">:</span>
-</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">          </span><span class="nt">ANTHROPIC_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.ANTHROPIC_API_KEY }}</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">on</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">pull_request</span><span class="p p-Indicator">]</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nt">jobs</span><span class="p">:</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="nt">review</span><span class="p">:</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">curl -fsSL https://claude.ai/install.sh | bash</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">          </span><span class="no">claude -p &quot;이 PR의 diff를 리뷰하고 위험을 보고&quot; \</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">            </span><span class="no">--allowed-tools &quot;Read,Grep,Glob,Bash(git diff:*)&quot;</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">        </span><span class="nt">env</span><span class="p">:</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">          </span><span class="nt">ANTHROPIC_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.ANTHROPIC_API_KEY }}</span>
 </span></code></pre></div>
 <ul>
 <li>공식 액션도 제공됩니다</li>
@@ -3056,43 +3092,39 @@ Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 
 <hr />
 <h2 id="pattern-9--routines-예약-실행">Pattern 9 — Routines 예약 실행<a class="headerlink" href="#pattern-9--routines-예약-실행" title="이 위치로 링크">¶</a></h2>
 <p><strong>머신이 꺼져도 도는 자동화</strong>입니다.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>&gt; /schedule
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a># Routine 생성 흐름 시작
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a># 예: 평일 09:00, 열린 PR 리뷰 상태 요약을 Slack #dev 채널로 보고
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>&gt; /schedule
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a># Routine 생성 흐름 시작
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a># 예: 평일 09:00, 열린 PR 리뷰 상태 요약을 Slack #dev 채널로 보고
 </span></code></pre></div>
 <p><strong>Routines 특성</strong>:
 - Anthropic 관리 인프라에서 실행
 - 스케줄 외에 <strong>API 호출, GitHub 이벤트 트리거</strong> 가능
 - 웹과 Desktop 앱에서도 생성·관리</p>
 <p><strong>세션 내 반복은 <code>/loop</code></strong> (내 머신이 켜져 있어야 함):
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>&gt; /loop 10m CI 상태 확인하고 실패하면 원인 요약
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>&gt; /loop 10m CI 상태 확인하고 실패하면 원인 요약
 </span></code></pre></div></p>
 <hr />
 <h2 id="pattern-10--goal-지속-실행">Pattern 10 — <code>/goal</code> 지속 실행<a class="headerlink" href="#pattern-10--goal-지속-실행" title="이 위치로 링크">¶</a></h2>
-<p><strong>조건이 참이 될 때까지</strong> 계속 작업합니다.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>&gt; /goal 전체 테스트 스위트가 통과하고 lint 경고가 0이 될 때
+<p>목표 조건을 두고 여러 턴에 걸쳐 작업합니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>&gt; /goal 전체 테스트 스위트가 통과하고 lint 경고가 0이 될 때
 </span></code></pre></div>
 <p><strong>동작</strong>:
-- Claude가 턴을 넘겨도 <strong>목표 달성까지 계속 작업</strong>
+- Claude가 턴을 넘겨 작업을 이어가되, 실패·불가능 판정이나 사용자 조치가 필요한 오류에서는 종료될 수 있음
 - 각 턴 종료 시 조건 충족 여부를 스스로 점검</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>&gt; /goal            # 현재 목표 확인
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>&gt; /goal clear      # 목표 조기 해제
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>&gt; /goal            # 현재 목표 확인
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>&gt; /goal clear      # 목표 조기 해제
 </span></code></pre></div>
 <blockquote>
-<p>Fable 5와 조합하면 장시간 자율 작업에 최적입니다.</p>
+<p>Fable alias의 실제 해석은 세션·공급자에 따라 다릅니다. 장시간 자율 작업 전에 <a href="https://code.claude.com/docs/en/model-config">공식 모델 설정</a>에서 확인하세요.</p>
 </blockquote>
 <hr />
-<h2 id="비용-관리-전략--3개의-레버">비용 관리 전략 — 3개의 레버<a class="headerlink" href="#비용-관리-전략--3개의-레버" title="이 위치로 링크">¶</a></h2>
-<p>비용을 줄이려면 먼저 비용이 무엇으로 결정되는지 알아야 합니다. 공식은 이렇습니다.</p>
-<blockquote>
-<p>비용 = <strong>모델 선택 × 컨텍스트 크기 × 캐시 적중</strong></p>
-</blockquote>
-<p>세 개가 곱해지므로, 하나만 잡아도 효과가 크고 셋을 다 잡으면 배수로 줄어듭니다.</p>
+<h2 id="비용-관리-전략--3가지-영향-요인">비용 관리 전략 — 3가지 영향 요인<a class="headerlink" href="#비용-관리-전략--3가지-영향-요인" title="이 위치로 링크">¶</a></h2>
+<p>비용에는 선택한 모델, 입출력 토큰 수, 프롬프트 캐시 사용량이 영향을 줍니다. 각 요인을 따로 관찰하고 작업에 맞게 조정합니다.</p>
 <pre class="mermaid"><code>flowchart TD
     C["&lt;b&gt;비용&lt;/b&gt;"]
     C --- M["&lt;b&gt;① 모델 레버&lt;/b&gt;&lt;br/&gt;작업 난이도별 배분&lt;br/&gt;&lt;br/&gt;일상은 sonnet&lt;br/&gt;난제만 opus&lt;br/&gt;배치는 haiku"]
     C --- X["&lt;b&gt;② 컨텍스트 레버&lt;/b&gt;&lt;br/&gt;윈도우를 가볍게&lt;br/&gt;&lt;br/&gt;/clear · /compact&lt;br/&gt;경로 스코프 rules&lt;br/&gt;MCP 다이어트"]
-    C --- K["&lt;b&gt;③ 캐시 레버&lt;/b&gt;&lt;br/&gt;캐시 적중률 유지&lt;br/&gt;&lt;br/&gt;잦은 모델 전환 ✗&lt;br/&gt;세션 중 CLAUDE.md 수정 ✗"]
+    C --- K["&lt;b&gt;③ 캐시 레버&lt;/b&gt;&lt;br/&gt;캐시 적중률 유지&lt;br/&gt;&lt;br/&gt;잦은 모델 전환 ✗&lt;br/&gt;CLAUDE.md는 다음 세션 경계에서 반영"]
 
     M -.-&gt; O["&lt;b&gt;관측&lt;/b&gt;&lt;br/&gt;/usage 분해 뷰로 소비처 특정&lt;br/&gt;조직은 OTel 로 팀 단위 추적"]
     X -.-&gt; O
@@ -3103,13 +3135,13 @@ Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 
     style X fill:#e8f5e9,stroke:#388e3c,color:#000
     style K fill:#fff3e0,stroke:#f57c00,color:#000
     style O fill:#ede7f6,stroke:#673ab7,color:#000</code></pre>
-<p><strong>모델 레버</strong>는 가장 직관적입니다. 모든 작업을 <code>opus</code>로 돌리면 당연히 비쌉니다. 일상 작업은 <code>sonnet</code>, 정말 어려운 것만 <code>opus</code>, 단순 배치는 <code>haiku</code>로 나눕니다.</p>
+<p><strong>모델 레버</strong>는 이해하기 쉽습니다. 모든 작업에 <code>opus</code>를 쓰면 비용이 커집니다. 일상 작업은 <code>sonnet</code>, 어려운 작업은 <code>opus</code>, 단순 배치는 <code>haiku</code>로 나눕니다.</p>
 <p><strong>컨텍스트 레버</strong>는 윈도우에 뭐가 들어있느냐의 문제입니다. 작업 경계마다 <code>/clear</code>하고, 같은 작업이 길어지면 <code>/compact</code>하고, 경로 스코프 <code>rules</code>로 필요할 때만 규칙이 로드되게 합니다. 안 쓰는 MCP 서버를 끄는 것도 여기 해당합니다.</p>
 <p><strong>캐시 레버</strong>가 가장 의외이고, 그래서 가장 자주 놓칩니다.</p>
 <div class="admonition warning">
-<p class="admonition-title">세션 중간에 모델을 계속 바꾸거나 <code>CLAUDE.md</code>를 수정하면 오히려 비용이 올라갑니다</p>
-<p>프롬프트 캐시가 무효화되기 때문입니다. 캐시가 살아 있으면 매번 보내는 시스템 지침과 프로젝트 문서를 다시 계산하지 않아도 되는데, 앞부분이 하나라도 바뀌면 전체를 다시 계산합니다.</p>
-<p><a href="../part-10-recap-and-labs/">Part 10의 실측</a>에서 이걸 숫자로 확인했습니다. 실제 입력 토큰은 <strong>4개</strong>였는데 캐시에서 읽은 토큰이 <strong>48,286개</strong>였습니다. 입력의 99.99%가 캐시였다는 뜻이고, 뒤집으면 <strong>그 48,286 토큰이 통째로 재계산될 수 있다</strong>는 뜻이기도 합니다.</p>
+<p class="admonition-title">Warning</p>
+<p><strong>세션 중간의 모델 전환은 캐시 미스를 만들 수 있습니다.</strong> 반면 프로젝트 루트·사용자 <code>CLAUDE.md</code>를 세션 중 수정해도 캐시는 유지되지만, 그 수정은 현재 세션에 적용되지 않습니다. 다음 <code>/clear</code>, <code>/compact</code>, 또는 재시작에서 반영됩니다. (<a href="https://code.claude.com/docs/en/prompt-caching">Prompt caching</a>)</p>
+<p><a href="../part-10-recap-and-labs/">Part 10의 실측</a>은 cache read 48,286, cache creation 8,287, uncached input 4토큰이었습니다. 따라서 cache read는 전체 입력 56,577토큰의 <strong>85.35%</strong>입니다. 이는 입력 토큰 구성 비율이며 비용 비율이 아닙니다.</p>
 </div>
 <p><img alt="프롬프트 캐시가 비용에 미치는 영향" src="../diagrams/cache-lever.svg" /></p>
 <p><img alt="비용 관리 전략 슬라이드" src="../slides/slide-164.png" /></p>
@@ -3164,33 +3196,33 @@ Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 
 <p><em>▲ 교재 슬라이드 168 — 패턴 조합: 신규 기능 하나의 전체 여정</em></p>
 <hr />
 <h2 id="패턴-조합-예시--신규-기능-하나의-전체-여정">패턴 조합 예시 — 신규 기능 하나의 전체 여정<a class="headerlink" href="#패턴-조합-예시--신규-기능-하나의-전체-여정" title="이 위치로 링크">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a># 1. EPC + Plan: 기능 설계
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>&gt; (Plan 모드) /users API 페이지네이션 계획
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
-</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a># 2. 병렬화: 독립 단위 위임
-</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>&gt; /fork 문서와 예제 코드 업데이트 맡아줘
-</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
-</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a># 3. 품질 게이트
-</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>&gt; /code-review --fix
-</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>&gt; /security-review
-</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>
-</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a># 4. 배송
-</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>&gt; 커밋하고 PR 만들어줘
-</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>&gt; /autofix-pr 로 CI 감시
-</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>
-</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a># 5. 정리
-</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>&gt; /usage 확인
-</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>&gt; /clear 다음작업
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a># 1. EPC + Plan: 기능 설계
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>&gt; (Plan 모드) /users API 페이지네이션 계획
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a># 2. 병렬화: 독립 단위 위임
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>&gt; /subtask 문서와 예제 코드 업데이트 맡아줘
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a># 3. 품질 게이트
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>&gt; /code-review --fix
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>&gt; /security-review
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a># 4. 배송
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>&gt; 커밋하고 PR 만들어줘
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>&gt; /autofix-pr 로 CI 감시
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>
+</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a># 5. 정리
+</span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>&gt; /usage 확인
+</span><span id="__span-16-17"><a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>&gt; /clear 다음작업
 </span></code></pre></div>
 <p><strong>설계 → 병렬화 → 품질·보안 게이트 → 배송 → 정리.</strong> 이 5단계가 하루의 리듬이 됩니다.</p>
 <hr />
 <h2 id="직접-해보기--실제-실행-기록">직접 해보기 — 실제 실행 기록<a class="headerlink" href="#직접-해보기--실제-실행-기록" title="이 위치로 링크">¶</a></h2>
 <blockquote>
-<p>2026-08-02, Claude Code 2.1.220 환경에서 직접 실행. (전체 기록: <a href="../part-10-recap-and-labs/#lab-5--headless-자동화-소요-15분">Part 10 / Lab 5</a>)</p>
+<p>2026-08-02, Claude Code 2.1.220 환경에서 직접 실행. (전체 기록: <a href="../part-10-recap-and-labs/#lab-5--headless-자동화">Part 10 / Lab 5</a>)</p>
 </blockquote>
-<h3 id="①-headless-파이프--로그-분석이-정말-한-줄로-되는가">① Headless 파이프 — 로그 분석이 정말 한 줄로 되는가<a class="headerlink" href="#①-headless-파이프--로그-분석이-정말-한-줄로-되는가" title="이 위치로 링크">¶</a></h3>
+<h3 id="①-headless-파이프--로그-분석-한-번의-관찰">① Headless 파이프 — 로그 분석 한 번의 관찰<a class="headerlink" href="#①-headless-파이프--로그-분석-한-번의-관찰" title="이 위치로 링크">¶</a></h3>
 <p>5줄짜리 샘플 로그를 파이프로 넣었습니다.</p>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="gp">$ </span>cat<span class="w"> </span>/tmp/ccw-sample.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;이상 징후가 있으면 원인 후보와 함께 3줄로 보고&quot;</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="gp">$ </span>cat<span class="w"> </span>/tmp/ccw-sample.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;이상 징후가 있으면 원인 후보와 함께 3줄로 보고&quot;</span>
 </span></code></pre></div>
 <p>응답 (발췌):</p>
 <blockquote>
@@ -3202,48 +3234,48 @@ Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 
 </blockquote>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>원인 후보를 나열하는 데 그치지 않고 <strong>감별 진단 방법</strong>까지 제시한 게 인상적이었습니다. 온콜 상황에서 실제로 쓸 수 있는 수준입니다.</p>
+<p>이 샘플 로그에 대한 한 번의 응답에서는 원인 후보와 감별에 필요한 후속 확인 항목까지 제시했습니다. 실제 온콜 적용 가능성은 운영 환경의 로그 품질과 후속 검증 절차를 포함해 따로 평가해야 합니다.</p>
 </div>
 <h3 id="②-json-출력--문서에-없던-필드가-더-많았다">② JSON 출력 — 문서에 없던 필드가 더 많았다<a class="headerlink" href="#②-json-출력--문서에-없던-필드가-더-많았다" title="이 위치로 링크">¶</a></h3>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="w"> </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Bash(find:*),Glob&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>json<span class="w"> </span>&gt;<span class="w"> </span>out.json
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="gp">$ </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.result&#39;</span><span class="w"> </span>out.json
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="go">562</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="gp">$ </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="w"> </span>--allowed-tools<span class="w"> </span><span class="s2">&quot;Bash(find:*),Glob&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>json<span class="w"> </span>&gt;<span class="w"> </span>out.json
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="gp">$ </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.result&#39;</span><span class="w"> </span>out.json
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="go">562</span>
 </span></code></pre></div>
 <p>응답 JSON의 최상위 키 <strong>전체</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>api_error_status   duration_api_ms   duration_ms   fast_mode_disabled_reason
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>fast_mode_state    is_error          modelUsage    num_turns
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>permission_denials result            session_id    stop_reason
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>subtype            terminal_reason   time_to_request_ms
-</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>total_cost_usd     ttft_ms           ttft_stream_ms  type   usage   uuid
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>api_error_status   duration_api_ms   duration_ms   fast_mode_disabled_reason
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>fast_mode_state    is_error          modelUsage    num_turns
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>permission_denials result            session_id    stop_reason
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>subtype            terminal_reason   time_to_request_ms
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>total_cost_usd     ttft_ms           ttft_stream_ms  type   usage   uuid
 </span></code></pre></div></p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="p">{</span>
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="nt">&quot;session_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8f580579-c5cf-4bfe-9178-43125217ef9f&quot;</span><span class="p">,</span>
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="nt">&quot;total_cost_usd&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.109508</span><span class="p">,</span>
-</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span><span class="nt">&quot;duration_ms&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3898</span><span class="p">,</span>
-</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span><span class="nt">&quot;modelUsage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">    </span><span class="nt">&quot;claude-opus-5[1m]&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">      </span><span class="nt">&quot;inputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
-</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">      </span><span class="nt">&quot;outputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">99</span><span class="p">,</span>
-</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="w">      </span><span class="nt">&quot;cacheReadInputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">48286</span><span class="p">,</span>
-</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="w">      </span><span class="nt">&quot;cacheCreationInputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8287</span><span class="p">,</span>
-</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="w">      </span><span class="nt">&quot;costUSD&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.109508</span><span class="p">,</span>
-</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="w">      </span><span class="nt">&quot;contextWindow&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span>
-</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-19-15"><a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="p">{</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="nt">&quot;session_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8f580579-c5cf-4bfe-9178-43125217ef9f&quot;</span><span class="p">,</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span><span class="nt">&quot;total_cost_usd&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.109508</span><span class="p">,</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span><span class="nt">&quot;duration_ms&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3898</span><span class="p">,</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">  </span><span class="nt">&quot;modelUsage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">    </span><span class="nt">&quot;claude-opus-5[1m]&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">      </span><span class="nt">&quot;inputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">      </span><span class="nt">&quot;outputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">99</span><span class="p">,</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">      </span><span class="nt">&quot;cacheReadInputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">48286</span><span class="p">,</span>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">      </span><span class="nt">&quot;cacheCreationInputTokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8287</span><span class="p">,</span>
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">      </span><span class="nt">&quot;costUSD&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.109508</span><span class="p">,</span>
+</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">      </span><span class="nt">&quot;contextWindow&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span>
+</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-20-15"><a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="p">}</span>
 </span></code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">직접 해보고 알게 된 것 두 가지</p>
 <ol>
-<li><strong><code>total_cost_usd</code>가 응답에 그대로 들어있습니다.</strong> 별도 계측 없이 CI에서 비용 상한 가드를 걸 수 있습니다. <code>ttft_ms</code>(첫 토큰까지 시간), <code>num_turns</code>, <code>permission_denials</code>도 문서 표에는 없던 필드입니다.</li>
-<li><strong><code>inputTokens: 4</code> vs <code>cacheReadInputTokens: 48286</code></strong> — 입력의 99.99%가 캐시에서 읽혔습니다. 위 "3개의 레버"에서 캐시를 모델·컨텍스트와 나란히 놓은 이유가 숫자로 보입니다. <strong>세션 중 <code>CLAUDE.md</code>를 고치면 이 48,286 토큰이 통째로 캐시 미스가 됩니다.</strong></li>
+<li><strong><code>total_cost_usd</code>가 응답에 그대로 들어있습니다.</strong> 호출별 <strong>클라이언트 측 추정치</strong>로 비용 가드에 활용할 수 있지만 실제 청구액과 다를 수 있으므로, 청구 상한의 유일한 근거로 쓰지 않습니다. <code>ttft_ms</code>(첫 토큰까지 시간), <code>num_turns</code>, <code>permission_denials</code>도 이 실습의 출력에 있었습니다. (<a href="https://code.claude.com/docs/en/headless">Headless</a>)</li>
+<li>이 2026-08 실습은 cache read 48,286, cache creation 8,287, uncached input 4토큰으로, cache read가 전체 입력의 <strong>85.35%</strong>였습니다. 이는 비용 비율이 아닙니다. 세션 중 <code>CLAUDE.md</code> 수정은 캐시 미스가 아니라 현 세션 미적용이며, 다음 세션 경계에서 반영됩니다.</li>
 </ol>
 </div>
 <h3 id="③-모델-레버-검증--완전히-같은-프롬프트-모델만-교체">③ 모델 레버 검증 — 완전히 같은 프롬프트, 모델만 교체<a class="headerlink" href="#③-모델-레버-검증--완전히-같은-프롬프트-모델만-교체" title="이 위치로 링크">¶</a></h3>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="gp">$ </span><span class="k">for</span><span class="w"> </span>M<span class="w"> </span><span class="k">in</span><span class="w"> </span>haiku<span class="w"> </span>sonnet<span class="p">;</span><span class="w"> </span><span class="k">do</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="go">    claude -p &quot;src/checkout.js가 무슨 일을 하는지 한 문장으로&quot; \</span>
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="go">      --model $M --allowed-tools &quot;Read&quot; --output-format json</span>
-</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="go">  done</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="gp">$ </span><span class="k">for</span><span class="w"> </span>M<span class="w"> </span><span class="k">in</span><span class="w"> </span>haiku<span class="w"> </span>sonnet<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="go">    claude -p &quot;src/checkout.js가 무슨 일을 하는지 한 문장으로&quot; \</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="go">      --model $M --allowed-tools &quot;Read&quot; --output-format json</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="go">  done</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -3279,15 +3311,15 @@ Part 9는 <strong>"검증된 사용 순서"</strong> 를 다룹니다. 10가지 
 </div>
 <h3 id="④-무인-실행-안전선--화이트리스트가-실제로-막는지">④ 무인 실행 안전선 — 화이트리스트가 실제로 막는지<a class="headerlink" href="#④-무인-실행-안전선--화이트리스트가-실제로-막는지" title="이 위치로 링크">¶</a></h3>
 <p><code>--allowed-tools "Read,Grep,Glob"</code> 상태로 파일 수정을 시켰더니 <code>Edit</code>가 차단됐고 <code>git status</code>는 깨끗했습니다.
-<code>permission_denials</code>에 <strong>시도하려던 <code>tool_input</code>이 통째로 기록</strong>됩니다 → 그대로 감사 로그로 활용 가능. (상세: <a href="../part-06-core-capabilities/#직접-해보기--권한이-정말-막는지-실제로-검증">Part 6</a>)</p>
+이 2026-08 실습에서는 <code>permission_denials</code>에 시도하려던 <code>tool_input</code>이 기록됐습니다. managed/static deny와 서브에이전트까지 포괄하는 감사 계약은 아니므로, <code>stream-json</code> 또는 Hook 감사와 함께 사용합니다. (상세: <a href="../part-06-core-capabilities/#직접-해보기--권한이-정말-막는지-실제로-검증">Part 6</a>)</p>
 <hr />
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
 <ul>
-<li>기본 리듬은 <strong>Explore → Plan → Code</strong>. 큰 변경일수록 단계 분리 효과가 큽니다.</li>
+<li>기본 흐름은 <strong>Explore → Plan → Code</strong>이며, 큰 변경일수록 단계를 나누는 효과가 큽니다.</li>
 <li>품질은 <strong>TDD</strong>와 <strong><code>/code-review</code> 계열</strong>로 확보합니다.</li>
-<li>확장은 <strong><code>/fork</code>, <code>/batch</code>, Routines, <code>/goal</code></strong> 로 합니다.</li>
+<li>확장은 <strong><code>/subtask</code>, <code>/batch</code>, Routines, <code>/goal</code></strong> 로 합니다. <code>/fork</code>는 위임이 아니라 세션 분기입니다.</li>
 <li>규율은 <strong><code>/usage</code>, <code>/clear</code>, <code>/compact</code></strong> 로 유지합니다.</li>
-<li><strong>모든 패턴의 공통점은 "명세 동봉"</strong> 입니다 — 무엇이 완료인지 스스로 확인할 수 있게 만드세요.</li>
+<li>모든 패턴에는 <strong>명세를 함께 제공</strong>합니다. 무엇이 완료인지 스스로 확인할 수 있게 해야 합니다.</li>
 <li>무인 실행(headless/CI)의 안전선은 <code>--allowed-tools</code> 화이트리스트입니다.</li>
 </ul>
 <hr />

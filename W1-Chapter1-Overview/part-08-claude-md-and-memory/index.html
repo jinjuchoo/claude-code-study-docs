@@ -2849,7 +2849,7 @@
 
 <h1 id="part-8--claudemd--memory">Part 8 — CLAUDE.md &amp; Memory<a class="headerlink" href="#part-8--claudemd--memory" title="이 위치로 링크">¶</a></h1>
 <h2 id="한-줄-요약">한 줄 요약<a class="headerlink" href="#한-줄-요약" title="이 위치로 링크">¶</a></h2>
-<p><strong>지시는 <code>CLAUDE.md</code>에, 학습은 Auto memory에</strong> 쌓입니다. 짧고 구체적으로 유지하고, 커지면 <code>rules</code>와 <code>skills</code>로 분리합니다.</p>
+<p><strong>지시는 <code>CLAUDE.md</code>에, 학습 기록은 Auto memory에</strong> 쌓입니다. 둘 다 짧고 구체적으로 유지하고, 내용이 커지면 <code>rules</code>와 <code>skills</code>로 나눕니다.</p>
 <hr />
 <h2 id="왜-알아야-하나">왜 알아야 하나<a class="headerlink" href="#왜-알아야-하나" title="이 위치로 링크">¶</a></h2>
 <p>Part 2에서 이런 경고를 했습니다.</p>
@@ -2857,10 +2857,13 @@
 <p>컨텍스트 한계에 접근하면 오래된 것부터 정리되므로, <strong>초반에 준 세부 지시는 사라질 수 있습니다.</strong></p>
 </blockquote>
 <p>그래서 매 세션 "우리 프로젝트는 들여쓰기 2칸이야", "커밋 전에 테스트 돌려" 같은 말을 반복하게 됩니다.
-이걸 <strong>한 번 적어두면 매 세션 자동으로 로드되게</strong> 하는 장치가 메모리 시스템입니다. Part 8은 Claude Code를 "쓸 만한 도구"에서 "우리 팀 도구"로 바꾸는 지점입니다.</p>
+이 내용을 <strong>한 번 적어 두면 매 세션 자동으로 로드</strong>하는 장치가 메모리 시스템입니다. Part 8에서는 개인의 사용 규칙을 팀의 공유 규칙으로 관리하는 방법을 다룹니다.</p>
+<blockquote>
+<p><strong>지금 필요한 선택</strong>: 처음에는 프로젝트의 <code>CLAUDE.md</code>만 직접 만들거나 읽으면 됩니다. 이 파일은 팀이 검토하고 버전 관리할 수 있는 지시입니다. Auto memory는 Claude가 축적하는 기록입니다. Managed 정책은 조직 관리자가 배포하는 강제 정책입니다. 개인 메모와 조직 정책의 상세는 선택 심화입니다.</p>
+</blockquote>
 <hr />
 <h2 id="개념-1--두-가지-메모리-시스템">개념 1 — 두 가지 메모리 시스템<a class="headerlink" href="#개념-1--두-가지-메모리-시스템" title="이 위치로 링크">¶</a></h2>
-<p>메모리 시스템이 두 개인데, <strong>둘 다 매 세션 시작 시 자동으로 로드됩니다.</strong> 차이는 딱 하나입니다. <strong>누가 쓰는가.</strong></p>
+<p>메모리 시스템은 두 가지이며, <strong>둘 다 세션 시작 시 자동으로 로드됩니다.</strong> 차이는 <strong>누가 작성하는지</strong>입니다.</p>
 <pre class="mermaid"><code>flowchart TD
     subgraph A ["CLAUDE.md — 내가 쓴다"]
         A1["코딩 표준 · 워크플로 · 아키텍처 &lt;b&gt;지시&lt;/b&gt;"]
@@ -2886,7 +2889,7 @@
 <p><strong>Auto memory는 Claude가 씁니다.</strong> 작업하다 알게 된 것들이 자동으로 쌓입니다. "이 프로젝트는 빌드가 이렇게 돌더라", "저 파일은 이런 패턴이더라" 같은 <strong>발견</strong>입니다. 내가 따로 관리할 필요가 없고, 교정해줄수록 정확해집니다.</p>
 <blockquote>
 <p>한 줄로 구분하면 이렇습니다.
-<strong>"내가 지켜달라고 하는 것" = <code>CLAUDE.md</code></strong>, <strong>"Claude가 알아낸 것" = Auto memory.</strong></p>
+<strong>"내가 지켜달라고 하는 것" = <code>CLAUDE.md</code></strong>, <strong>"Claude가 알아낸 것" = Auto memory.</strong> <code>CLAUDE.md</code>는 사람이 검토·수정합니다. Auto memory는 자동 기록이므로 중요한 규칙의 유일한 저장 장소로 쓰지 않습니다.</p>
 </blockquote>
 <hr />
 <h2 id="개념-2--메모리-4계층-구조">개념 2 — 메모리 4계층 구조<a class="headerlink" href="#개념-2--메모리-4계층-구조" title="이 위치로 링크">¶</a></h2>
@@ -2921,7 +2924,7 @@
 </span></code></pre></div>
 <p><strong>추가 규칙</strong>:
 - <strong>하위</strong> 디렉토리의 <code>CLAUDE.md</code>는 그 폴더의 파일을 읽을 때 <strong>온디맨드로</strong> 로드됩니다
-- HTML 주석(<code>&lt;!-- --&gt;</code>)은 컨텍스트 주입 전에 제거됩니다 → 컨텍스트 비용 없이 메모 가능</p>
+- HTML 주석(<code>&lt;!-- --&gt;</code>)의 컨텍스트 주입 전 제거 여부는 이번 <a href="https://code.claude.com/docs/en/memory">공식 메모리 문서</a> 대조에서 확인하지 못했습니다. 비용 없는 메모 저장소처럼 전제하지 말고, 실제 세션에 노출되는지 확인하세요.</p>
 <hr />
 <h2 id="개념-3--project-memory-표준-골격">개념 3 — Project Memory 표준 골격<a class="headerlink" href="#개념-3--project-memory-표준-골격" title="이 위치로 링크">¶</a></h2>
 <p><code>./CLAUDE.md</code>:</p>
@@ -2985,16 +2988,15 @@
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a># 로드된 메모리 파일 목록과 편집 진입
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>&gt; # 커밋 전에는 반드시 npm test 실행
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a># 문장 앞의 &#39;#&#39; 은 빠른 메모리 추가 단축
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>#   어느 파일에 넣을지 선택 프롬프트가 표시됨
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a># `#` 빠른 메모리 추가와 저장 위치 선택은 2026-08 교재/실습 설명이며,
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a># 이번 현행 공식 문서 대조에서는 확인하지 못함
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>&gt; /init
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a># 초안 생성 또는 기존 파일 개선안
 </span></code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">가장 중요한 습관</p>
-<p>반복해서 말하게 되는 지시가 생기면, <strong>그 순간 <code>#</code>으로 바로 박제</strong>하세요.
-"또 말해야 하네"라고 느끼는 순간이 신호입니다.</p>
+<p>반복해서 말하게 되는 지시는 <code>/memory</code>로 현재 지원되는 저장·편집 경로를 확인해 기록하세요. <code>#</code> 단축키의 현행 지원 여부는 사용 중인 버전에서 확인합니다.</p>
 </div>
 <hr />
 <h2 id="개념-6--import-문법-경로">개념 6 — Import 문법 (<code>@경로</code>)<a class="headerlink" href="#개념-6--import-문법-경로" title="이 위치로 링크">¶</a></h2>
@@ -3200,21 +3202,21 @@
 <div class="language-json highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span><span class="nt">&quot;num_turns&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;permission_denials&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]}</span>
 </span></code></pre></div></p>
 <div class="admonition success">
-<p class="admonition-title">증명 완료</p>
-<p><code>permission_denials</code>가 <strong>비어 있습니다.</strong> 도구를 쓰려다 막힌 게 아니라 <strong>애초에 쓸 필요가 없었습니다.</strong>
+<p class="admonition-title">검증 결과</p>
+<p><code>permission_denials</code>가 <strong>비어 있습니다.</strong> 도구 사용을 시도하다 차단된 것이 아니라, <strong>애초에 도구가 필요하지 않았습니다.</strong>
 <code>CLAUDE.md</code>가 세션 시작 시 컨텍스트에 자동으로 들어간다는 게 숫자로 확인됩니다.</p>
 <p>덤으로 알게 된 것: <code>## Don't</code>에 적은 규칙을 그냥 읊는 게 아니라, <strong>"그 규칙을 지금 지킬 수 없는 상태"라는 것까지 짚어줬습니다.</strong> 메모리는 명령이 아니라 판단 재료로 쓰인다는 걸 보여주는 장면입니다.</p>
 </div>
-<p>(전체 기록: <a href="../part-10-recap-and-labs/#lab-2--claudemd-만들기-소요-15분">Part 10 / Lab 2</a>)</p>
+<p>(전체 기록: <a href="../part-10-recap-and-labs/#lab-2--claudemd-만들기">Part 10 / Lab 2</a>)</p>
 <hr />
 <h2 id="정리">정리<a class="headerlink" href="#정리" title="이 위치로 링크">¶</a></h2>
 <ul>
 <li>두 시스템: <strong>지시는 <code>CLAUDE.md</code>, 자동 학습은 Auto memory(<code>MEMORY.md</code>)</strong>.</li>
 <li>4계층: <strong>Managed → User → Project → Local</strong>. 위에서 아래로 <strong>병합</strong>되며, 작업 디렉토리가 마지막입니다.</li>
-<li>세션 중 <code>#</code> 단축으로 즉시 추가하고, <code>/memory</code>로 편집합니다.</li>
+<li>세션 중에는 <code>/memory</code>로 현재 지원되는 저장·편집 경로를 확인합니다. <code>#</code> 빠른 메모리 추가는 이번 현행 공식 문서 대조에서 확인하지 못했으므로 사용 중인 버전에서 지원 여부를 확인합니다.</li>
 <li><code>@import</code>는 최대 4단계 재귀. <code>rules/</code>는 주제별 분리, <code>paths:</code> frontmatter로 <strong>경로 매칭 시에만 로드</strong>.</li>
 <li><code>AGENTS.md</code>는 <code>@import</code>로 공유하고, <code>/init</code>이 다른 도구 설정도 흡수합니다.</li>
-<li><strong>200줄 이하, 구체적으로, 모순 없이.</strong> 길어지면 rules와 skills로 쪼갭니다.</li>
+<li><strong>200줄 이하로, 구체적이고 모순 없이</strong> 유지합니다. 길어지면 rules와 skills로 나눕니다.</li>
 </ul>
 <hr />
 <h2 id="출처">출처<a class="headerlink" href="#출처" title="이 위치로 링크">¶</a></h2>
